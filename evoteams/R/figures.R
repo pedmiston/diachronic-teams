@@ -10,3 +10,13 @@ find_figure <- function(name, ext) {
 find_graphviz <- function(name) {
   find_figure(name, ext = ".gv")
 }
+
+#' @importFrom knitr read_chunk
+#' @export
+read_all_graphviz_chunks <- function() {
+  graphviz_chunks <- c("team-structure-single-project", "team-structure-multiple-projects")
+  for (chunk in graphviz_chunks) {
+    chunk_path <- find_graphviz(chunk)
+    read_chunk(chunk_path, labels = chunk)
+  }
+}
