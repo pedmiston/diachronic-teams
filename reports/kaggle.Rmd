@@ -1,0 +1,36 @@
+---
+title: "Kaggle competition leaderboards"
+author: "Pierce Edmiston"
+output:
+  html_document:
+    theme: flatly
+    toc: true
+    toc_float: true
+---
+
+```{r config, echo = FALSE}
+library(knitr)
+opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  fig.path = "figs/"
+)
+```
+
+```{r setup}
+library(ggplot2)
+
+library(evoteams)
+data("leaderboards")
+```
+
+```{r leaderboards}
+ggplot(leaderboards, aes(Entries, Score)) +
+  geom_point(aes(color = slug), position = position_jitter(0.1, 0),
+             alpha = 0.6) +
+  scale_x_log10() +
+  theme_minimal() +
+  theme(
+    axis.ticks = element_blank()
+  )
+```

@@ -1,6 +1,9 @@
 # reproducible
 figs/
 
+# python
+__pycache__/
+
 # R
 .Rproj.user
 .Rhistory
