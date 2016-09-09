@@ -1,0 +1,38 @@
+---
+title: "Proposal"
+author: "Pierce Edmiston"
+output:
+  html_document:
+    theme: flatly
+    toc: true
+    toc_float: true
+    fig_caption: true
+---
+
+```{r config, echo = FALSE}
+library(knitr)
+opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  fig.path = "figs/",
+  fig.height = 4,
+  fig.width = 4
+)
+```
+
+```{r setup}
+library(evoteams)
+read_evoteams_chunks()
+```
+
+# Team structures
+
+```{r team-structure, engine = "dot", dev = "svg", fig.cap = "Two ways of allocating the same number of labor hours. In synchronic teams, team members work on a project at the same time, interacting as necessary. In diachronic teams, the products of the collaboration are passed from one team member to the next."}
+```
+
+# Enforcing monotonic growth
+
+# Multiple projects
+
+```{r multiple-projects, engine = "dot", dev = "svg"}
+```

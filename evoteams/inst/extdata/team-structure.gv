@@ -17,7 +17,7 @@ digraph {
   // Invisible last nodes
   sinv1, sinv2, sinv3, sinv4, dinv1[style=invis];
 
-  subgraph cluster1 {
+  subgraph cluster0 {
     label="Synchronic team";
     s1 -> sinv1;
     s2 -> sinv2;
@@ -25,7 +25,7 @@ digraph {
     s4 -> sinv4;
   }
 
-  subgraph cluster0 {
+  subgraph cluster1 {
     label="Diachronic team";
     d1 -> d2 -> d3 -> d4 -> dinv1;
   }
