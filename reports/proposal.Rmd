@@ -34,5 +34,5 @@ read_evoteams_chunks()
 
 # Multiple projects
 
-```{r multiple-projects, engine = "dot", dev = "svg"}
+```{r multiple-projects, engine = "dot", dev = "svg", fig.cap = "Three ways of allocating the same number of calendar hours toward multiple projects. In synchronic teams, team members work on each project from beginning to completion. In divide and conquer teams, team members are assigned independent projects. In diachronic teams, team members work on different projects at the same time, and collaborate over time."}
 ```
