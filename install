@@ -1,3 +1,8 @@
 #!/usr/bin/env Rscript
-devtools::document("evoteams")
-devtools::install("evoteams")
+library(devtools)
+
+# Install dependencies
+install_github("pedmiston/crotchet")
+
+document("evoteams")
+install("evoteams")
