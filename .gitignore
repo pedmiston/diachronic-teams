@@ -1,3 +1,7 @@
+# reproducible
+figs/
+
+# R
 .Rproj.user
 .Rhistory
 .RData
