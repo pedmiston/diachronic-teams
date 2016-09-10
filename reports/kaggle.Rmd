@@ -13,7 +13,8 @@ library(knitr)
 opts_chunk$set(
   echo = FALSE,
   message = FALSE,
-  fig.path = "figs/"
+  fig.path = "figs/",
+  dpi = 144
 )
 ```
 
@@ -30,16 +31,30 @@ leaderboards %<>%
   arrange(desc(Score)) %>%
   mutate(Place = 1:n()) %>%
   ungroup
+
+entries_per_place <- leaderboards %>%
+  group_by(Place) %>%
+  summarize(
+    Entries = mean(Entries, na.rm = TRUE)
+  )
+
+top_100 <- entries_per_place %>%
+  filter(Place <= 100)
+
+# theme
+base_theme <- theme_minimal() +
+  theme(
+    axis.ticks = element_blank(),
+    panel.grid.minor.x = element_blank()
+  )
 ```
 
-```{r leaderboards}
-ggplot(leaderboards, aes(Entries, Place)) +
-  geom_point(aes(color = slug), alpha = 0.4) +
-  guides(color = "none") +
-  xlab("Iterations of final solution") +
-  scale_y_reverse() +
-  theme_minimal() +
-  theme(
-    axis.ticks = element_blank()
-  )
+```{r top_100}
+ggplot(top_100, aes(Place, Entries)) +
+  geom_point(alpha = 0.4) +
+  scale_x_continuous(breaks = c(1, seq(10, 100, by = 10))) +
+  scale_y_continuous("Entries (average)", breaks = seq(0, 100, by = 5)) +
+  coord_cartesian(xlim = c(0.8, 100.2)) +
+  base_theme +
+  ggtitle("Number of entries by place for the\n180 most popular Kaggle competitions")
 ```
