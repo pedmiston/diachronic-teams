@@ -4,6 +4,9 @@ figs/
 # python
 __pycache__/
 
+# tests
+.cache/
+
 # R
 .Rproj.user
 .Rhistory
