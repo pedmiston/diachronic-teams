@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 import sys
-import argparse
+import logging
 import pandas
+
+logger = logging.getLogger(__name__)
+
 
 def get_leaderboard(slug):
     url = 'https://www.kaggle.com/c/{}/leaderboard'
@@ -12,5 +15,12 @@ def get_leaderboard(slug):
 
 
 def get_leaderboards(slugs):
-    leaderboards = [get_leaderboard(slug) for slug in slugs]
+    leaderboards = []
+    for slug in slugs:
+        try:
+            leaderboard = get_leaderboard(slug)
+        except Exception:
+            logger.error('error getting leaderboard {}'.format(slug))
+        else:
+            leaderboards.append(leaderboard)
     return pandas.concat(leaderboards, ignore_index=True)

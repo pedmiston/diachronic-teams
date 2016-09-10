@@ -1,3 +1,7 @@
+# reproducible
+data-raw/kaggle/*.csv
+data/*.rda
+
 .Rproj.user
 .Rhistory
 .RData
