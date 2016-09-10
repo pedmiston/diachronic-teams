@@ -18,17 +18,26 @@ opts_chunk$set(
 ```
 
 ```{r setup}
+library(dplyr)
+library(magrittr)
 library(ggplot2)
 
 library(evoteams)
 data("leaderboards")
+
+leaderboards %<>%
+  group_by(slug) %>%
+  arrange(desc(Score)) %>%
+  mutate(Place = 1:n()) %>%
+  ungroup
 ```
 
 ```{r leaderboards}
-ggplot(leaderboards, aes(Entries, Score)) +
-  geom_point(aes(color = slug), position = position_jitter(0.1, 0),
-             alpha = 0.6) +
-  scale_x_log10() +
+ggplot(leaderboards, aes(Entries, Place)) +
+  geom_point(aes(color = slug), alpha = 0.4) +
+  guides(color = "none") +
+  xlab("Iterations of final solution") +
+  scale_y_reverse() +
   theme_minimal() +
   theme(
     axis.ticks = element_blank()

@@ -1,5 +1,6 @@
 # reproducible
 figs/
+*.html
 
 # python
 __pycache__/
