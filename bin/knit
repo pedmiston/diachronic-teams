@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-# knit [name1 name2 ...] -- render an RMarkdown file to its output formats
-# Usage:
-# $ knit  # renders all *.Rmd recursively from current directory
-./install
-find . -name *.Rmd |
-    sed -e "s/^/Rscript -e 'rmarkdown::render(\"/" \
-        -e "s/$/\")'/" |
-    sh -x    
