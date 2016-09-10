@@ -9,6 +9,9 @@ ROOT = Path(__file__).absolute().ancestor(2)
 R_PKG = Path(ROOT, 'evoteams')
 DST = Path(R_PKG, 'data-raw/kaggle')
 
+if not DST.isdir():
+    DST.mkdir(True)
+
 
 @task
 def competitions(ctx, n_pages=10):
