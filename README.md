@@ -15,6 +15,13 @@ Here's how I set up to work on this repository.
 
     # List all available invoke tasks
     $ inv -l
+    Available tasks:
+
+      evoteams.install      Install the evoteams R pkg.
+      evoteams.use_data     Compile data to .rda in evoteams R pkg.
+      kaggle.competitions   Scrape pages of Kaggle competition listings.
+      kaggle.leaderboards   Download current leaderboards from Kaggle competitions.
+      reports.render        Compile RMarkdown reports to their output formats.
 
 Other requirements:
 
