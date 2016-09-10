@@ -12,4 +12,8 @@ for (path in data_files) {
   assign(name, frame)
 }
 
-use_data(leaderboards, overwrite = TRUE)
+use_data(
+  competitions,
+  leaderboards,
+  overwrite = TRUE
+)
