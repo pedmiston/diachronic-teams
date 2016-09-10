@@ -24,4 +24,4 @@ def leaderboards(ctx, competitions=None):
     competitions = pandas.read_csv(competitions_csv)
     assert 'slug' in competitions
     leaderboards = kaggle.get_leaderboards(competitions.slug)
-    leaderboards.to_csv(Path(DST, 'leaderboard.csv'), index=False)
+    leaderboards.to_csv(Path(DST, 'leaderboards.csv'), index=False)

@@ -1,4 +1,5 @@
 library(tools)
+library(dplyr)
 library(readr)
 library(devtools)
 
