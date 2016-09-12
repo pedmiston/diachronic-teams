@@ -1,6 +1,8 @@
 ---
 title: "Proposal"
 author: "Pierce Edmiston"
+abstract: |
+  Testing 123
 output:
   html_document:
     theme: flatly
@@ -25,12 +27,18 @@ library(evoteams)
 read_evoteams_chunks()
 ```
 
+Our species is great at working together in teams. Teamwork is typically studied as a network, e.g. the problem solving capabilities of groups of people arranged in different network structures. But a different form of teamwork is collaboration over time, where the products of labor (artifacts) are passed from one generation to the next. In this research I will compare the effectiveness of teams working either synchronously, at the same time, or diachronically, over evolutionary time to see which form of collaboration results 
+
+
+
+> In this competition, Kagglers are challenged to create a classification algorithm that accurately identifies which customers have the most potential business value for Red Hat based on their characteristics and activities.
+
 # Team structures
 
-```{r team-structure, engine = "dot", dev = "svg", fig.cap = "Two ways of allocating the same number of labor hours. In synchronic teams, team members work on a project at the same time, interacting as necessary. In diachronic teams, the products of the collaboration are passed from one team member to the next."}
+```{r team-structure, engine = "dot", dev = "svg", fig.cap = "Two ways to allocate the same number of labor hours. In synchronic teams, team members work on a project at the same time. In diachronic teams, the products of the collaboration are passed from one team member to the next."}
 ```
 
-# Enforcing monotonic growth
+# Monotonic growth
 
 # Multiple projects
 
