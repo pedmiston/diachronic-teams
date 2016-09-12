@@ -16,3 +16,6 @@ __pycache__/
 
 # editor
 *.swp
+
+# os
+.DS_Store
