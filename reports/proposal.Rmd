@@ -18,6 +18,8 @@ opts_chunk$set(
   fig.height = 4,
   fig.width = 4
 )
+
+library(pander)
 ```
 
 ```{r setup}
@@ -25,11 +27,57 @@ library(evoteams)
 read_evoteams_chunks()
 ```
 
-Our species is great at working together in teams. Teamwork is typically studied as a network, e.g. the problem solving capabilities of groups of people arranged in different network structures. But a different and pervasive form of teamwork is collaboration over time, where the products of labor (artifacts) are passed from one generation to the next. In this research I will investigate the extent to which team structure determines the type and quality of solutions reached through teamwork. I will compare the effectiveness of teams working either synchronously, at the same time, or diachronically, over evolutionary time to see which form of collaboration results in the greatest progress on a particular problem.
+Humans are great at working together in teams. The study of what makes for successful collaboration has expanded beyond an understanding of individual interactions and leadership roles to include the properties of the networks that connect teams. For example, small world networks tend to result in populations of good solutions when there is a possibility for a fully connected group to get stuck on a locally optimal solution. But a network analysis of teamwork occuring synchronically misses the more pervasive form of diachronic collaboration that occurs over generations in a culture, where innovation and progress accumulate as each generation attempts to improve the products of the past. In this research I compare the effectiveness of diachronic and synchronic collaboration in small teams (microcultures). Teams will collaborate either at the same time, **synchronically**, or over generations, **diachronically**, using the same number of total labor hours. My hypothesis is that diachronic collaboration will be a more effective form of collaboration because diachronic collaborations free each generation to improve upon the previous generation's design in any way possible, whereas synchronic collaboration is more restricted by effortful coordination and movement toward an identified goal.
 
-# Hypotheses
+To test this hypothesis, first I will compare the effectiveness of 4-person teams collaborating on the same task either diachronically or synchronically using the same number of labor hours. My prediction is that diachronic collaboration will result in better results than synchronic collaboration. One of the propsed mechanisms is that diachronic collaborators are better able to utilize feedback in always improving the effectiveness of the team as a whole through iteration. To test this, some of the teams are given no feedback while for others the feedback is enforced such that individual contributions can only be shared with the members of the team if the contribution measurably improves group performance. My predictions are that when feedback is taken away, diachronic team performance will decrease more than synchronic team performance. In contrast, when feedback is enforced, synchronic team performance will improve more than diachronic team performance. These results explain some of the mechanisms behind the success of cumulative cultural evolution as a form of diachronic collaboration.
+
+# Design
+
+```{r ivs, results = "asis"}
+ivs <- list(
+  `Team structure` = c("diachronic", "synchronic"),
+  `Feedback` = c("no", "yes", "enforce")
+)
+pandoc.table(ivs, caption = "Independent variables (between teams)")
+```
 
 # Problem space
+
+```{r problem-spaces, fig.width = 6}
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+
+problem_space_levels <- c("grueling", "rugged", "insight")
+
+x_range <- seq(-5, 5, length.out = 100)
+
+curves <- list(
+  grueling = function(x) -x^2, 
+  rugged = function(x) {
+    runif(length(x)) * x^3 + runif(length(x)) + x^2 + runif(length(x))
+  },
+  insight = function(x) ifelse(x >= 2 & x < 5, 8, 2.2)
+)
+to_z <- function(x) (x - mean(x))/sd(x)
+
+set.seed(683)  # reproducible randomness
+mountains <- lapply(curves, function(curve_fn) curve_fn(x_range) %>% to_z) %>%
+  as.data.frame %>%
+  mutate(x = x_range) %>%
+  gather(problem_space, y, -x) %>%
+  mutate(problem_space = factor(problem_space, levels = problem_space_levels))
+
+ggplot(mountains, aes(x, y)) +
+  geom_line(aes(group = problem_space)) +
+  facet_wrap("problem_space") +
+  scale_x_continuous("", labels = NULL) +
+  theme_minimal() +
+  theme(
+    axis.ticks = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+```
 
 # Kaggle competitions
 
@@ -41,6 +89,8 @@ Our species is great at working together in teams. Teamwork is typically studied
 ```
 
 # Monotonic growth
+
+# Feedback
 
 # Multiple projects
 
