@@ -27,19 +27,67 @@ library(evoteams)
 read_evoteams_chunks()
 ```
 
-Humans are great at working together in teams. The study of what makes for successful collaboration has expanded beyond an understanding of individual interactions and leadership roles to include the properties of the networks that connect teams. For example, small world networks tend to result in populations of good solutions when there is a possibility for a fully connected group to get stuck on a locally optimal solution. But a network analysis of teamwork occuring synchronically misses the more pervasive form of diachronic collaboration that occurs over generations in a culture, where innovation and progress accumulate as each generation attempts to improve the products of the past. In this research I compare the effectiveness of diachronic and synchronic collaboration in small teams (microcultures). Teams will collaborate either at the same time, **synchronically**, or over generations, **diachronically**, using the same number of total labor hours. My hypothesis is that diachronic collaboration will be a more effective form of collaboration because diachronic collaborations free each generation to improve upon the previous generation's design in any way possible, whereas synchronic collaboration is more restricted by effortful coordination and movement toward an identified goal.
+Humans are great at working together in teams, but what makes for effective collaboration? The study of what makes for successful collaboration has expanded beyond an understanding of individual interactions and leadership roles to include the properties of the networks that interconnect teams. For example, small world network "teams" outperform fully connected networks when there is a possibility of getting stuck on a locally optimal solution. But a network analysis of teamwork occurring synchronically ignores the more pervasive form of human collaboration that occurs diachronically over generations in a culture. In diachronic collaboration, innovation and progress accumulate as each generation attempts to improve the products of the past. Innovation and incremental improvements can occur in synchronic collaboration, but when the problem space is sufficiently complex, diachronic collaboration is expected to be a more effective form of collaboration. The reason is hypothesized to be that in diachronic collaborations each generation is free to improve upon the previous generation's design in any way possible, whereas in synchronic collaboration, teamwork may be restricted by efforts to coordinate and move toward an identified goal. From an evolutionary perspective, diachronic collaboration is hypothesized to be more adaptive than synchronic collaboration.
 
-To test this hypothesis, first I will compare the effectiveness of 4-person teams collaborating on the same task either diachronically or synchronically using the same number of labor hours. My prediction is that diachronic collaboration will result in better results than synchronic collaboration. One of the propsed mechanisms is that diachronic collaborators are better able to utilize feedback in always improving the effectiveness of the team as a whole through iteration. To test this, some of the teams are given no feedback while for others the feedback is enforced such that individual contributions can only be shared with the members of the team if the contribution measurably improves group performance. My predictions are that when feedback is taken away, diachronic team performance will decrease more than synchronic team performance. In contrast, when feedback is enforced, synchronic team performance will improve more than diachronic team performance. These results explain some of the mechanisms behind the success of cumulative cultural evolution as a form of diachronic collaboration.
+To test this hypothesis I will compare the effectiveness of diachronic and synchronic collaboration in small teams of collaborators. Teams of 4 will collaborate either at the same time, **synchronically**, or over generations, **diachronically**, using the same number of total labor hours. My prediction is that diachronic collaboration will result in better outcomes than synchronic collaboration. One of the proposed mechanisms is that diachronic collaborators, by collaborating over time, are better able to iterate and utilize feedback in such a way to encourage each contribution to have a measurable improvement in team performance. To test this, some of the teams are given no feedback while for others the feedback is enforced such that individual contributions can only be shared with the members of the team if the contribution measurably improves group performance. My predictions are that when feedback is taken away, diachronic team performance will decrease more than synchronic team performance, consistent with the hypothesis that the diachronic team is better able to use feedback than the synchronic team. In contrast, when feedback is enforced, synchronic team performance will improve more than diachronic team performance because the synchronic team is now forced to focus on incremental improvements. The results of these experiments speak to the relative roles of diachronic versus synchronic collaboration in explaining the success of progressive human cultural evolution.
 
 # Design
 
 ```{r ivs, results = "asis"}
 ivs <- list(
   `Team structure` = c("diachronic", "synchronic"),
-  `Feedback` = c("no", "yes", "enforce")
+  `Feedback` = c("yes", "no", "enforce")
 )
 pandoc.table(ivs, caption = "Independent variables (between teams)")
 ```
+
+## Team structures
+
+```{r team-structure, engine = "dot", dev = "svg", fig.cap = "Two ways to allocate the same number of labor hours. In synchronic teams, team members work on a project at the same time. In diachronic teams, the products of the collaboration are passed from one team member to the next."}
+```
+
+## Feedback
+
+```{r feedback, engine = "dot", dev = "svg", fig.width = 6, fig.cap = "Three ways of sharing individual contributions with a team of collaborators. When feedback is provided (**left**), the impact of an individual contribution on the performance of the team as a whole is made available on every contribution. When feedback is not provided (**middle**), individual contributions are shared directly with the members of the team without revealing its impact on team performance. When feedback is enforced (**right**), contributions that do not improve team performance are rejected, and cannot be shared with the members of the team."}
+digraph {
+  rankdir = BT;
+  node[label="", shape=circle, fontname=helvetica; style=filled];
+  edge[fontname=helvetica];
+  
+  fontname=helvetica;
+  labelloc="b";
+  
+  // Colors are people
+  y1, n1, e1, ya, na, ea[fillcolor="#66C2A5"];
+  yb, nb, eb[fillcolor="#FC8D62"];
+  yc, nc, ec[fillcolor="#8DA0CB"];
+  yd, nd, ed[fillcolor="#E78AC3"];
+  
+  // Shapes
+  yfeedback, efeedback[shape=rect, label="Evaluator"];
+  nfeedback[style=none, shape=none, width=0]
+  
+  subgraph cluster0 {
+    label="Feedback: Yes";
+    y1 -> yfeedback -> {ya, yb, yc, yd};
+  }
+  
+  subgraph cluster1 {
+    label="Feedback: No";
+    n1 -> nfeedback[arrowhead=none, headclip=false];
+    nfeedback -> {na, nb, nc, nd}[tailclip=false];
+  }
+  
+  subgraph cluster2 {
+    label="Feedback: Enforced";
+    e1 -> efeedback;
+    efeedback -> e1[tailport=e, headport=e, weight=0];
+    efeedback -> {ea, eb, ec, ed};
+  }
+
+}
+```
+
 
 # Problem space
 
@@ -53,7 +101,7 @@ problem_space_levels <- c("grueling", "rugged", "insight")
 x_range <- seq(-5, 5, length.out = 100)
 
 curves <- list(
-  grueling = function(x) -x^2, 
+  grueling = function(x) -x^2,
   rugged = function(x) {
     runif(length(x)) * x^3 + runif(length(x)) + x^2 + runif(length(x))
   },
@@ -83,10 +131,6 @@ ggplot(mountains, aes(x, y)) +
 
 > In this competition, Kagglers are challenged to create a classification algorithm that accurately identifies which customers have the most potential business value for Red Hat based on their characteristics and activities.
 
-# Team structures
-
-```{r team-structure, engine = "dot", dev = "svg", fig.cap = "Two ways to allocate the same number of labor hours. In synchronic teams, team members work on a project at the same time. In diachronic teams, the products of the collaboration are passed from one team member to the next."}
-```
 
 # Feedback
 
