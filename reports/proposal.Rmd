@@ -88,8 +88,6 @@ ggplot(mountains, aes(x, y)) +
 ```{r team-structure, engine = "dot", dev = "svg", fig.cap = "Two ways to allocate the same number of labor hours. In synchronic teams, team members work on a project at the same time. In diachronic teams, the products of the collaboration are passed from one team member to the next."}
 ```
 
-# Monotonic growth
-
 # Feedback
 
 # Multiple projects
