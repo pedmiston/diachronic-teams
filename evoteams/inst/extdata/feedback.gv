@@ -30,7 +30,7 @@ digraph {
   subgraph cluster2 {
     label="Feedback: Enforced";
     e1 -> efeedback;
-    efeedback -> e1[tailport=e, headport=e, weight=0];
+    efeedback -> e1[tailport=se, headport=e, weight=0];
     efeedback -> {ea, eb, ec, ed};
   }
 

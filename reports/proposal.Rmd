@@ -31,7 +31,7 @@ Humans are great at working together in teams, but what makes for effective coll
 
 To test this hypothesis I will compare the effectiveness of diachronic and synchronic collaboration in small teams of collaborators. Teams of 4 will collaborate either at the same time, **synchronically**, or over generations, **diachronically**, using the same number of total labor hours. My prediction is that diachronic collaboration will result in better outcomes than synchronic collaboration. One of the proposed mechanisms is that diachronic collaborators, by collaborating over time, are better able to iterate and utilize feedback in such a way to encourage each contribution to have a measurable improvement in team performance. To test this, some of the teams are given no feedback while for others the feedback is enforced such that individual contributions can only be shared with the members of the team if the contribution measurably improves group performance. My predictions are that when feedback is taken away, diachronic team performance will decrease more than synchronic team performance, consistent with the hypothesis that the diachronic team is better able to use feedback than the synchronic team. In contrast, when feedback is enforced, synchronic team performance will improve more than diachronic team performance because the synchronic team is now forced to focus on incremental improvements. The results of these experiments speak to the relative roles of diachronic versus synchronic collaboration in explaining the success of progressive human cultural evolution.
 
-# Design
+# IVs
 
 ```{r ivs, results = "asis"}
 ivs <- list(
@@ -43,7 +43,7 @@ pandoc.table(ivs, caption = "Independent variables (between teams)")
 
 ## Team structures
 
-```{r team-structure, engine = "dot", dev = "svg", fig.cap = "Two ways to allocate the same number of labor hours. In synchronic teams, team members work on a project at the same time. In diachronic teams, the products of the collaboration are passed from one team member to the next."}
+```{r team-structure, engine = "dot", dev = "svg", fig.cap = "Two ways to allocate the same number of labor hours. In synchronic teams, team members work on a project at the same time. In diachronic teams, the products of collaboration are passed from one team member to the next."}
 ```
 
 ## Feedback
@@ -51,8 +51,9 @@ pandoc.table(ivs, caption = "Independent variables (between teams)")
 ```{r feedback, engine = "dot", dev = "svg", fig.width = 6, fig.cap = "Three ways of sharing individual contributions with a team of collaborators. When feedback is provided (**left**), the impact of an individual contribution on the performance of the team as a whole is made available on every contribution. When feedback is not provided (**middle**), individual contributions are shared directly with the members of the team without revealing its impact on team performance. When feedback is enforced (**right**), contributions that do not improve team performance are rejected, and cannot be shared with the members of the team."}
 ```
 
+# Design
 
-# Problem space
+## Problem space
 
 ```{r problem-spaces, fig.width = 6}
 library(ggplot2)
@@ -90,14 +91,15 @@ ggplot(mountains, aes(x, y)) +
   )
 ```
 
-# Kaggle competitions
+## Kaggle competitions
 
 > In this competition, Kagglers are challenged to create a classification algorithm that accurately identifies which customers have the most potential business value for Red Hat based on their characteristics and activities.
 
+# Extensions
 
-# Feedback
+## Multiple projects
 
-# Multiple projects
-
-```{r multiple-projects, engine = "dot", dev = "svg", fig.cap = "Three ways of allocating the same number of calendar hours toward multiple projects. In synchronic teams, team members work on each project from beginning to completion. In divide and conquer teams, team members are assigned independent projects. In diachronic teams, team members work on different projects at the same time, and collaborate over time."}
+```{r multiple-projects, engine = "dot", dev = "svg", fig.cap = "Two ways of allocating the same number of calendar hours toward multiple projects. In synchronic teams, team members work on each project from beginning to completion in lockstep. In diachronic teams, team members work on different projects at the same time, and collaborate over time."}
 ```
+
+# Possible outcomes
