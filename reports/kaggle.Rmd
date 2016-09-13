@@ -28,18 +28,19 @@ data("leaderboards")
 
 leaderboards %<>%
   group_by(slug) %>%
-  arrange(desc(Score)) %>%
-  mutate(Place = 1:n()) %>%
+  arrange(desc(score)) %>%
+  mutate(place = 1:n()) %>%
   ungroup
 
 entries_per_place <- leaderboards %>%
-  group_by(Place) %>%
+  group_by(place) %>%
   summarize(
-    Entries = mean(Entries, na.rm = TRUE)
+    entries = mean(entries),
+    team_size = mean(team_size)
   )
 
 top_100 <- entries_per_place %>%
-  filter(Place <= 100)
+  filter(place <= 100)
 
 # theme
 base_theme <- theme_minimal() +
@@ -50,11 +51,15 @@ base_theme <- theme_minimal() +
 ```
 
 ```{r top_100}
-ggplot(top_100, aes(Place, Entries)) +
+ggplot(top_100, aes(place, entries)) +
   geom_point(alpha = 0.4) +
   scale_x_continuous(breaks = c(1, seq(10, 100, by = 10))) +
   scale_y_continuous("Entries (average)", breaks = seq(0, 100, by = 5)) +
   coord_cartesian(xlim = c(0.8, 100.2)) +
   base_theme +
   ggtitle("Number of entries by place for the\n180 most popular Kaggle competitions")
+```
+
+```{r team-size}
+ggplot()
 ```

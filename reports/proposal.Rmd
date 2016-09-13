@@ -32,14 +32,15 @@ Humans are great at working together in teams, but what makes for effective coll
 
 To test this hypothesis I will compare the effectiveness of diachronic and synchronic collaboration in small teams of collaborators. Teams of 4 will collaborate either at the same time, **synchronically**, or over generations, **diachronically**, using the same number of total labor hours. My prediction is that diachronic collaboration will result in better outcomes than synchronic collaboration. One of the proposed mechanisms is that diachronic collaborators, by collaborating over time, are better able to iterate and utilize feedback in such a way to encourage each contribution to have a measurable improvement in team performance. To test this, some of the teams are given no feedback while for others the feedback is enforced such that individual contributions can only be shared with the members of the team if the contribution measurably improves group performance. My predictions are that when feedback is taken away, diachronic team performance will decrease more than synchronic team performance, consistent with the hypothesis that the diachronic team is better able to use feedback than the synchronic team. In contrast, when feedback is enforced, synchronic team performance will improve more than diachronic team performance because the synchronic team is now forced to focus on incremental improvements. The results of these experiments speak to the relative roles of diachronic versus synchronic collaboration in explaining the success of progressive human cultural evolution.
 
-# IVs
+# Independent variables
 
 ```{r ivs, results = "asis"}
 ivs <- list(
   `Team structure` = c("diachronic", "synchronic"),
-  `Feedback` = c("yes", "no", "enforce")
+  `Feedback` = c("yes", "no", "enforce"),
+  `Problem space` = c("rugged", "insight")
 )
-pandoc.table(ivs, caption = "Independent variables (between teams)")
+pandoc.table(ivs, caption = "Independent variables", justify = "left")
 ```
 
 ## Team structures
@@ -52,18 +53,18 @@ pandoc.table(ivs, caption = "Independent variables (between teams)")
 ```{r feedback, engine = "dot", dev = "svg", fig.width = 6, fig.cap = "Three ways of sharing individual contributions with a team of collaborators. When feedback is provided (**left**), the impact of an individual contribution on the performance of the team as a whole is made available on every contribution. When feedback is not provided (**middle**), individual contributions are shared directly with the members of the team without revealing its impact on team performance. When feedback is enforced (**right**), contributions that do not improve team performance are rejected, and cannot be shared with the members of the team."}
 ```
 
-# Design
-
 ## Problem space
 
-The type of problem hypothesized to benefit the most from diachronic as opposed to synchronic collaboration is characterized as one in which there are a lot of ways to come up with particular solutions, but there is not a single, authoritative way to get the answer. This type of problem is assumed to be common in human history. These "rugged" problems, with many local maxima, exist on a dimension between "grueling" problems and "insight" problems. The dimension that these problems are arranged on is the extent to which progress is incremental and transparent. For grueling problems, progress is both incremental and transparent, making it somewhat predictable. For insight problems, progress is harder to determine because it is not incremental, and not always transparent when progress is being made. Rugged problems are somewhere inbetween, demanding enough insight to be challenging, but all members of a team are still able to contribute productively to team progress.
-
-```{r problem-spaces, fig.width = 6, fig.height = 3, fig.cap = "Three different types of problems solved by teams. The range of possible solutions is shown along a single dimension for simplicity. Making progress on a grueling problems is obvious, whereas progress on an insight problem is more difficult to predict. Rugged problems are inbetween, with local progress usually observable but global success being harder to determine. Rugged problems represent the types of problems hypothesized to benefit the most from diachronic as opposed to synchronic collaboration."}
+```{r problem-spaces}
 ```
 
-## Kaggle competitions
+### Kaggle competitions
+
+Kaggle competitions are data-oriented challenges where teams 
 
 > In this competition, Kagglers are challenged to create a classification algorithm that accurately identifies which customers have the most potential business value for Red Hat based on their characteristics and activities.
+
+### "Draw my data"
 
 # Extensions
 
