@@ -25,6 +25,7 @@ library(pander)
 ```{r setup}
 library(evoteams)
 read_evoteams_chunks()
+read_chunk("chunks/problem-spaces.R")
 ```
 
 Humans are great at working together in teams, but what makes for effective collaboration? The study of what makes for successful collaboration has expanded beyond an understanding of individual interactions and leadership roles to include the properties of the networks that interconnect teams. For example, small world network "teams" outperform fully connected networks when there is a possibility of getting stuck on a locally optimal solution. But a network analysis of teamwork occurring synchronically ignores the more pervasive form of human collaboration that occurs diachronically over generations in a culture. In diachronic collaboration, innovation and progress accumulate as each generation attempts to improve the products of the past. Innovation and incremental improvements can occur in synchronic collaboration, but when the problem space is sufficiently complex, diachronic collaboration is expected to be a more effective form of collaboration. The reason is hypothesized to be that in diachronic collaborations each generation is free to improve upon the previous generation's design in any way possible, whereas in synchronic collaboration, teamwork may be restricted by efforts to coordinate and move toward an identified goal. From an evolutionary perspective, diachronic collaboration is hypothesized to be more adaptive than synchronic collaboration.
@@ -55,40 +56,9 @@ pandoc.table(ivs, caption = "Independent variables (between teams)")
 
 ## Problem space
 
-```{r problem-spaces, fig.width = 6}
-library(ggplot2)
-library(tidyr)
-library(dplyr)
+The type of problem hypothesized to benefit the most from diachronic as opposed to synchronic collaboration is characterized as one in which there are a lot of ways to come up with particular solutions, but there is not a single, authoritative way to get the answer. This type of problem is assumed to be common in human history. These "rugged" problems, with many local maxima, exist on a dimension between "grueling" problems and "insight" problems. The dimension that these problems are arranged on is the extent to which progress is incremental and transparent. For grueling problems, progress is both incremental and transparent, making it somewhat predictable. For insight problems, progress is harder to determine because it is not incremental, and not always transparent when progress is being made. Rugged problems are somewhere inbetween, demanding enough insight to be challenging, but all members of a team are still able to contribute productively to team progress.
 
-problem_space_levels <- c("grueling", "rugged", "insight")
-
-x_range <- seq(-5, 5, length.out = 100)
-
-curves <- list(
-  grueling = function(x) -x^2,
-  rugged = function(x) {
-    runif(length(x)) * x^3 + runif(length(x)) + x^2 + runif(length(x))
-  },
-  insight = function(x) ifelse(x >= 2 & x < 5, 8, 2.2)
-)
-to_z <- function(x) (x - mean(x))/sd(x)
-
-set.seed(683)  # reproducible randomness
-mountains <- lapply(curves, function(curve_fn) curve_fn(x_range) %>% to_z) %>%
-  as.data.frame %>%
-  mutate(x = x_range) %>%
-  gather(problem_space, y, -x) %>%
-  mutate(problem_space = factor(problem_space, levels = problem_space_levels))
-
-ggplot(mountains, aes(x, y)) +
-  geom_line(aes(group = problem_space)) +
-  facet_wrap("problem_space") +
-  scale_x_continuous("", labels = NULL) +
-  theme_minimal() +
-  theme(
-    axis.ticks = element_blank(),
-    panel.grid.minor = element_blank()
-  )
+```{r problem-spaces, fig.width = 6, fig.height = 3, fig.cap = "Three different types of problems solved by teams. The range of possible solutions is shown along a single dimension for simplicity. Making progress on a grueling problems is obvious, whereas progress on an insight problem is more difficult to predict. Rugged problems are inbetween, with local progress usually observable but global success being harder to determine. Rugged problems represent the types of problems hypothesized to benefit the most from diachronic as opposed to synchronic collaboration."}
 ```
 
 ## Kaggle competitions
