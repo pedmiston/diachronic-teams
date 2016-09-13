@@ -46,13 +46,15 @@ def get_leaderboard(slug):
     return leaderboard[output]
 
 
-def get_leaderboards(slugs):
+def get_leaderboards(slugs, skip=True):
     leaderboards = []
     for slug in slugs:
         try:
             leaderboard = get_leaderboard(slug)
-        except Exception:
+        except Exception as e:
             logger.error('error getting leaderboard {}'.format(slug))
+            if not skip:
+                raise e
         else:
             leaderboards.append(leaderboard)
     return pandas.concat(leaderboards, ignore_index=True)
