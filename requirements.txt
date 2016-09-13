@@ -24,3 +24,4 @@ wcwidth==0.1.7
 webencodings==0.5
 Unipath==1.1
 pytest==3.0.2
+betamax==0.8.0
