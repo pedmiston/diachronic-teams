@@ -37,5 +37,5 @@ read_chunk("chunks/kaggle.R")
 
 # Predicting place
 
-```{r predict-place, fig.width = 8}
+```{r predicting-place, fig.width = 8}
 ```
