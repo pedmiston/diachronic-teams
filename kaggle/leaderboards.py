@@ -5,12 +5,17 @@ import pandas
 import requests
 import bs4
 from betamax import Betamax
+from unipath import Path
 
 logger = logging.getLogger(__name__)
 session = requests.Session()
 
+CASSETTES = Path('cassettes')
+if not CASSETTES.isdir():
+    CASSETTES.mkdir()
+
 with Betamax.configure() as config:
-    config.cassette_library_dir = 'cassettes'
+    config.cassette_library_dir = CASSETTES
     config.default_cassette_options['record_mode'] = 'new_episodes'
 
 

@@ -8,11 +8,9 @@ import kaggle
 ROOT = Path(__file__).absolute().ancestor(2)
 R_PKG = Path(ROOT, 'evoteams')
 DST = Path(R_PKG, 'data-raw/kaggle')
-CASSETTES = Path(ROOT, 'kaggle/cassettes')
 
-for x in [DST, CASSETTES]:
-    if not x.isdir():
-        x.mkdir(True)
+if not DST.isdir():
+    DST.mkdir(True)
 
 
 @task
