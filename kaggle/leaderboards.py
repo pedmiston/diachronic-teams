@@ -4,15 +4,24 @@ import logging
 import pandas
 import requests
 import bs4
+from betamax import Betamax
 
 logger = logging.getLogger(__name__)
+session = requests.Session()
+
+with Betamax.configure() as config:
+    config.cassette_library_dir = 'cassettes'
+    config.default_cassette_options['record_mode'] = 'new_episodes'
 
 
 def get_leaderboard(slug):
     output = 'slug team_name team_members team_size entries score'.split()
     url = 'https://www.kaggle.com/c/{}/leaderboard'
-    response = requests.get(url.format(slug))
-    html = response.content.decode()
+
+    with Betamax(session).use_cassette('leaderboards'):
+        response = session.get(url.format(slug))
+        html = response.content.decode()
+
     # Let pandas do as much as possible
     tables = pandas.read_html(html, header=0)
     leaderboard = tables[0]
@@ -20,7 +29,6 @@ def get_leaderboard(slug):
     leaderboard['slug'] = slug
 
     # Get the team members from the soup
-    teams = extract_team_members(html)
     soup = bs4.BeautifulSoup(html, 'html.parser')
     team_divs = [el.parent
                  for el in soup.find_all('a', class_='team-link')]

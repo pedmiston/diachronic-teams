@@ -1,6 +1,7 @@
 # reproducible
 figs/
 *.html
+cassettes/
 
 # python
 __pycache__/
