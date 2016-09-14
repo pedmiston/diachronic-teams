@@ -9,7 +9,19 @@ output:
     fig_caption: true
 ---
 
-Our species has evolved an impressive variety of strategies for working together in teams to solve problems. One example is the divide and conquer strategy, where teams solve problems by breaking them up into parts and delegating those parts to the individual members of the team. One of the issues with the divide and conquer strategy is that it requires knowing how the
+Our species has evolved an impressive variety of strategies for solving problems by working together in teams. Although teamwork is typically thought to involve everyone in a team working to solve a problem all at the same time, a different form of teamwork, called diachronic collaboration, unfolds over time, as generations of problem solvers inherit and improve the products of the previous generation.
+
+A simple example of synchronic collaboration is the divide and conquer strategy, where teams solve problems by dividing the work into parts and delegating responsibilities to the individual members of the team. This is a form of synchronic collaboration because the members of the team have coordinated efforts so that each can work independently and in parallel. In contrast, diachronic teams organize linearly so that each works one after another, inheriting the products of previous labor and continuing to work on them. In this research, I compare the effectiveness of synchronic and diachronic collaboration in solving the same problem. My hypothesis is that diachronic collaboration will result in more effective problem solving than synchronic collaboration when the problem being solved requires adaptive problem solving.
+
+Adaptive problem solving is coming up with solutions to problems that can be tinkered and incrementally changed. For adaptive problems there is not a definitive right or wrong answer, but different solutions vary in degree of success in achieving some goal or goals. Adaptive problem solving is assumed to be a pervasive type of problem facing our species.
+
+Diachronic collaboration is hypothesized to be a particulary adept strategy for solving adaptive problems because diachronic collaboration is better able to utilize feedback at every stage of development. Utilizing feedback is the key to any adaptive problem. Although synchronic collaboration is still able to use feedback during problem solving tasks, they do so less efficiently when tasks are divided and delegated to different team members. The progress of the team can only be evaluated at the point that the team puts the pieces back together.
+
+
+
+Diachronic collaboration in many ways resembles the cultural evolutionary process where the cultural products of one generation are maintained, modified, or lost in 
+
+One of the issues with the divide and conquer strategy is that it requires knowing how the
 
 the solutions to all problems are not always known at the start of the project, and
 
