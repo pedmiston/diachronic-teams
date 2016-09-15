@@ -15,9 +15,12 @@ def render(ctx, names=None):
 @task
 def list_chunks(ctx, chunk_file):
     """Print the available chunks to use in an RMarkdown document"""
-    cmd = r'sed -n "s/^#/ ----\ \(.*\)/\1/p" < {}'
-    print cmd.format(chunk_file)
-    run(cmd.format(chunk_file))
+
+    chunks = [line.strip().split()[-1]
+              for line in open(chunk_file, 'r').readlines()
+              if line.startswith('# ---- ')]
+    for chunk in chunks:
+        print(chunk)
 
 
 def _parse_names(names=None):
