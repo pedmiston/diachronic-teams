@@ -4,12 +4,13 @@ library(tidyr)
 library(dplyr)
 library(stringr)
 
-problem_space_levels <- c("rugged", "insight")
+problem_space_levels <- c("adaptive", "insight")
+problem_space_labels <- c("Adaptive problem", "Insight problem")
 
 x_range <- seq(-5, 5, length.out = 100)
 
 curves <- list(
-  rugged = function(x) {
+  adaptive = function(x) {
     # brownian noise
     sig2 <- 0.01
     noise <- rnorm(length(x) - 1, sd = sqrt(sig2))
@@ -19,7 +20,7 @@ curves <- list(
     # washington monument
     floor <- 0
     ifelse(x < 3 | x > 4, floor,
-           -abs(x - 3.6) * 10 + 10)
+           -abs(x - 3.4) * 10 + 10)
   }
 )
 to_z <- function(x) (x - mean(x))/sd(x)
@@ -31,15 +32,15 @@ mountains <- lapply(curves, function(curve_fn) curve_fn(x_range) %>% to_z) %>%
   gather(problem_space, y, -x) %>%
   mutate(
     problem_space = factor(problem_space, levels = problem_space_levels,
-                           labels = str_to_title(problem_space_levels)),
-    # Lower insight problem. NB: labels are titlecase 
-    y = ifelse(problem_space == "Insight", y - 1.8, y)
+                           labels = problem_space_labels),
+    # Lower insight problem. NB: matching happens on labels
+    y = ifelse(problem_space == problem_space_labels[2], y - 1.8, y)
   )
 
 ggplot(mountains, aes(x, y)) +
   geom_line(aes(group = problem_space)) +
   facet_wrap("problem_space") +
-  scale_x_continuous("Possible solutions", labels = NULL) +
+  scale_x_continuous("Range of possible solutions", labels = NULL) +
   scale_y_continuous("Solution success", labels = NULL) +
   theme_minimal() +
   theme(
