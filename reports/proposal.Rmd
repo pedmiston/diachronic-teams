@@ -9,15 +9,7 @@ output:
     fig_caption: true
 ---
 
-Our species has evolved an impressive variety of strategies for solving problems by working together in teams. Although teamwork is typically thought to involve everyone in a team working all at the same time, a different form of teamwork, called diachronic collaboration, unfolds over time, as generations of problem solvers inherit and improve the products of the previous generation.
-
-A simple example of synchronic collaboration is the divide and conquer strategy, where teams solve problems by dividing the work into parts and delegating responsibilities to the individual members of the team. This is a form of synchronic collaboration because the members of the team have coordinated efforts so that each can work independently and in parallel. In contrast, diachronic teams organize linearly so that each works one after another, inheriting the products of previous labor and continuing to work on them. In this research, I compare the effectiveness of synchronic and diachronic collaboration in solving the same problem. My hypothesis is that diachronic collaboration will result in more effective problem solving than synchronic collaboration when the problem being solved requires adaptive problem solving.
-
-Adaptive problem solving is coming up with solutions to problems that can be tinkered and incrementally changed. For adaptive problems there is not a definitive right or wrong answer, but different solutions vary in degree of success in achieving some goal or goals. Adaptive problem solving is assumed to be a pervasive type of problem facing our species.
-
-Diachronic collaboration is hypothesized to be a particulary adept strategy for solving adaptive problems because diachronic collaboration is better able to utilize feedback at every stage of development. Utilizing feedback is the key to any adaptive problem. Although synchronic collaboration is still able to use feedback during problem solving tasks, they do so less efficiently when tasks are divided and delegated to different team members. The progress of the team can only be evaluated at the point that the team puts the pieces back together.
-
-To test this hypothesis I will compare the effectiveness of diachronic and synchronic collaboration in small teams of collaborators. Teams of 4 will collaborate either at the same time, **synchronically**, or over generations, **diachronically**, using the same number of total labor hours. My prediction is that diachronic collaboration will result in better outcomes than synchronic collaboration. One of the proposed mechanisms is that diachronic collaborators, by collaborating over time, are better able to iterate and utilize feedback in such a way to encourage each contribution to have a measurable improvement in team performance. To test this, some of the teams are given no feedback while for others the feedback is enforced such that individual contributions can only be shared with the members of the team if the contribution measurably improves group performance. My predictions are that when feedback is taken away, diachronic team performance will decrease more than synchronic team performance, consistent with the hypothesis that the diachronic team is better able to use feedback than the synchronic team. In contrast, when feedback is enforced, synchronic team performance will improve more than diachronic team performance because the synchronic team is now forced to focus on incremental improvements. The results of these experiments speak to the relative roles of diachronic versus synchronic collaboration in explaining the success of progressive human cultural evolution.
+Teamwork is considered effective when the team accomplishes something together that they could not have alone. One of the most basic forms of teamwork involves breaking big problems into small problems that can each be solved independent of one another. I call this "synchronic collaboration" because it involves all of the members of a team working at the same time. In contrast, "diachronic collaboration" involves team members working one at a time, each inheriting and improving the products of the previous generation. Wikipedia article writing is an example of diachronic collaboration. In most cases, real world teams incorporate both synchronic and diachronic collaboration, which makes it difficult to assess the relative effectiveness of each type of collaboration. In the experiments proposed below I compare the effectiveness of diachronic and synchronic teams in solving the same problem. My hypothesis is that diachronic collaboration will be a more effective form of collaboration when the problem being solved can be iteratively improved in response to feedback.
 
 ```{r config, echo = FALSE}
 library(knitr)
@@ -29,6 +21,7 @@ opts_chunk$set(
   fig.width = 4
 )
 
+library(tidyr)
 library(pander)
 ```
 
@@ -36,6 +29,7 @@ library(pander)
 library(evoteams)
 read_evoteams_chunks()
 read_chunk("chunks/problem-spaces.R")
+read_chunk("chunks/hypotheses.R")
 ```
 
 # Design
@@ -47,6 +41,15 @@ ivs <- list(
   `Problem` = c("adaptive", "insight")
 )
 pandoc.table(ivs, caption = "Independent variables", justify = "left")
+
+exps <- data.frame(
+  row.names = c("Team structure", "Problem", "Feedback"),
+  `Exp 1` = c("diachronic/synchronic", "adaptive", "yes"),
+  `Exp 2` = c("diachronic/synchronic", "adaptive", "no/enforce"),
+  `Exp 3` = c("diachronic/synchronic", "insight", NA),
+  `Exp 4` = c("diachronic/synchronic", "multiple adaptive", "yes")
+) %>% t
+pandoc.table(exps, caption = "Overview of experiments and conditions. All manipulations are between team.", justify = "left", missing = "")
 ```
 
 ## Team structures
@@ -59,21 +62,42 @@ pandoc.table(ivs, caption = "Independent variables", justify = "left")
 ```{r feedback, engine = "dot", dev = "svg", fig.width = 6, fig.cap = "Three ways of sharing individual contributions with a team of collaborators. When feedback is provided (**left**), the impact of an individual contribution on the performance of the team as a whole is made available on every contribution. When feedback is not provided (**middle**), individual contributions are shared directly with the members of the team without revealing its impact on team performance. When feedback is enforced (**right**), contributions that do not improve team performance are rejected, and cannot be shared with the members of the team."}
 ```
 
-## Problem spaces
+## Problems
 
 ```{r problem-spaces, fig.width = 6}
 ```
 
-### Adaptive problem: Kaggle competition
+### Kaggle competition
 
 Kaggle competitions are data-oriented challenges where teams build machine learning algorithms and use them to predict some outcome variable. For example, in the Titanic competition, teams are given data about the passengers on the Titanic, including their age, gender, and cabin, and tasked with predicting whether or not the passenger survived the Titanic crash.
 
 Kaggle competitions are examples of adaptive problems because there are many possible solutions to a classification problem (e.g., which algorithm to us, which features to train on, etc.) and they all vary in success. It's not always clear at the start of a classification problem what level of success is obtainable. What teams do know is how their performance compares to others performance, including their past performance. In fact, iteration appears to be key in predicting Kaggle competition winners. The winners in Kaggle competitions appear to be the ones that submit the most entries.
 
-### Search problem: "Draw my data" search
+### "Draw my data"
 
+# Experiments
 
-# Multiple projects
+## Piloting
+
+## Experiment 1
+
+```{r team-structure-results}
+```
+
+## Experiment 2
+
+```{r feedback-results}
+```
+
+## Experiment 3
+
+```{r insight-results}
+```
+
+## Experiment 4
 
 ```{r multiple-projects, engine = "dot", dev = "svg", fig.cap = "Two ways of allocating the same number of calendar hours toward multiple projects. In synchronic teams, team members work on each project from beginning to completion in lockstep. In diachronic teams, team members work on different projects at the same time, and collaborate over time."}
+```
+
+```{r multiple-projects-results}
 ```
