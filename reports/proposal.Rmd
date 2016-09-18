@@ -9,7 +9,7 @@ output:
     fig_caption: true
 ---
 
-Teamwork is considered effective when the team accomplishes something together that the members of the team could not have alone. One of the most basic forms of teamwork involves breaking big problems into smaller problems that can be divided among the team members. I call this **synchronic collaboration** because all the members of the team are working, though independently, at the same time. In contrast, **diachronic collaboration** involves team members working one at a time, each building upon the previous solution. Wikipedia article writing is an example of diachronic collaboration. Most real world collaborations have both synchronic and diachronic elements, which makes it difficult to assess the relative effectiveness of each type of collaboration. The experiments outlined below are designed to measure the problem solving capacities of teams organized either diachronically or synchronically. My hypothesis is that organizing teamwork diachronically will make teams more efficient at utilizing feedback to solve problems.
+Teamwork is considered effective when the team accomplishes something together that the members of the team could not have alone. One of the most basic forms of teamwork involves breaking big problems into smaller problems that can be divided among the team members. I call this **synchronic collaboration** because all the members of the team are working, though on independent problems, at the same time. In contrast, **diachronic collaboration** involves team members working one at a time on the same problem, each building upon the previous solution. Wikipedia article writing is an example of diachronic collaboration. Most real world collaborations have both synchronic and diachronic elements, which makes it difficult to assess the relative effectiveness of each type of collaboration. The experiments outlined below are designed to measure the problem solving capacities of teams organized either diachronically or synchronically. My hypothesis is that organizing teamwork diachronically will make teams more effective at utilizing feedback to solve problems.
 
 ```{r config, echo = FALSE}
 library(knitr)
@@ -18,7 +18,9 @@ opts_chunk$set(
   message = FALSE,
   fig.path = "figs/",
   fig.height = 4,
-  fig.width = 4
+  fig.width = 4,
+  cache = TRUE,
+  cache.path = ".cache/"
 )
 
 library(tidyr)
@@ -32,13 +34,16 @@ read_chunk("chunks/problem-spaces.R")
 read_chunk("chunks/hypotheses.R")
 ```
 
+```{r hypotheses}
+```
+
 ```{r ivs, results = "asis"}
 ivs <- list(
   `Team structure` = c("diachronic", "synchronic"),
   `Feedback` = c("yes", "no", "enforce"),
   `Problem` = c("adaptive", "insight")
 )
-pandoc.table(ivs, caption = "Independent variables", justify = "left")
+pandoc.table(ivs, caption = "Independent variables.", justify = "left")
 
 exps <- data.frame(
   row.names = c("Team structure", "Problem", "Feedback"),
@@ -47,30 +52,37 @@ exps <- data.frame(
   `Exp 3` = c("diachronic/synchronic", "insight", NA),
   `Exp 4` = c("diachronic/synchronic", "multiple adaptive", "yes")
 ) %>% t
-pandoc.table(exps, caption = "Overview of experiments and conditions. All manipulations are between team.", justify = "left", missing = "")
+pandoc.table(exps, justify = "left", missing = "",
+             caption = "Overview of experiments and conditions. All manipulations are between team.")
 ```
 
-# Team structures
+# Team structure
 
-```{r team-structure, engine = "dot", dev = "svg", fig.cap = "Team structures. Teams of four are allotted the same number of labor hours. In synchronic teams, teams work on a problem all at the same time. In diachronic teams, team members work one at a time, each inheriting a previous solution and improving upon it."}
+```{r team-structure, engine = "dot", dev = "svg", fig.cap = "Team structures. Teams are allotted the same number of labor hours to solve a problem. In synchronic teams, teams work on a problem all at the same time. In diachronic teams, team members work one at a time, each inheriting the team's solution and improving it."}
 ```
 
-Kaggle competitions are data-oriented challenges where teams build machine learning algorithms and use them to predict some outcome variable. For example, in the Titanic competition, teams are given data about the passengers on the Titanic, including their age, gender, and cabin, and tasked with predicting whether or not the passenger survived the Titanic crash.
+In solving a problem where there are many possible solutions, all varying in degree of success, teams organized diachronically are expected to use labor hours more efficiently than teams organized synchronically. In Experiment 1, teams of four are tasked with solving a classification problem. Classification problems involve generating predicted classes for unlabeled data using statistics and machine learning to improve classification accuracy. For example, a typical classification problem is to predict whether or not a passenger on the Titanic survived based on their age, gender, ticket price, and cabin. Teams working diachronically or synchronically are tasked with building a computer program that, when run, generates predicted classes for test data that was withheld from the training data. The programs created by diachronic teams are predicted to have higher classification accuracy on this test data at the end of the allotted labor hours than the programs of synchronic teams.
 
-Kaggle competitions are examples of adaptive problems because there are many possible solutions to a classification problem (e.g., which algorithm to us, which features to train on, etc.) and they all vary in success. It's not always clear at the start of a classification problem what level of success is obtainable. What teams do know is how their performance compares to others performance, including their past performance. In fact, iteration appears to be key in predicting Kaggle competition winners. The winners in Kaggle competitions appear to be the ones that submit the most entries.
+Classification problems have many possible solutions. Teams can use decision trees, linear regression, neural networks, or some other method to generate the predicted classes. Within each type of solution, there exist innumerable parameters that can be tweaked based on the available training data, including transformations of the input and how to weigh different variables. As varied as the different solutions are, they can all be compared in terms of classification accuracy of some test data that was withheld from the training set. Given this clear way of measuring success, classification problems lend themselves easily to competitions. For example, Kaggle competitions offer cash rewards to teams with the highest classification accuracy on a particular classification problem.
+
+In Experiment 1, participants with experience solving classification problems are recruited and randomly assigned into teams. Synchronic teams are given two hours with all four team members in the same room to complete the problem. Each team member is provided a personal work station and network access to the team's program files, but there are no constraints on how the members of the synchronic teams interact or distribute labor over the course of the two hours. Diachronic teams work one at a time, each spending two hours on the program, and thus are never allowed to interact with the whole team at once. For diachronic teams, only a single workstation is needed, as each team member simply picks up where the last one left off.
+
+Each team is provided a starter program that generates baseline predictions for the test data. For example, for the Titanic data, the baseline program predicts that everyone dies. The purpose of this baseline program is to establish the interface used to score the team's solutions automatically. With this in place, teams can submit solutions prior to the end of the experiment in order to get feedback on their performance.
+
+After eight labor hours have been spent by each team, the success of the different team's solutions can be compared. The primary hypothesis tested in Experiment 1 is that programs created by diachronic teams will have higher classification accuracy than programs created by synchronic teams.
 
 ```{r team-structure-results}
 ```
 
-# Exp 2: Feedback
+# Feedback
 
-```{r feedback, engine = "dot", dev = "svg", fig.width = 6, fig.cap = "Three ways of sharing individual contributions with a team of collaborators. When feedback is provided (**left**), the impact of an individual contribution on the performance of the team as a whole is made available on every contribution. When feedback is not provided (**middle**), individual contributions are shared directly with the members of the team without revealing its impact on team performance. When feedback is enforced (**right**), contributions that do not improve team performance are rejected, and cannot be shared with the members of the team."}
+```{r feedback, engine = "dot", dev = "svg", fig.width = 6, fig.cap = "Three ways of sharing individual contributions with a team of collaborators. When feedback is provided (**passive**, left), the impact of an individual contribution on the performance of the team as a whole is made available on every contribution. When feedback is not provided (**none**, middle), individual contributions are shared directly with the members of the team without revealing its impact on team performance. When feedback is enforced (**enforced**, right), contributions that do not improve team performance are rejected, and cannot be shared with the members of the team."}
 ```
 
 ```{r feedback-results}
 ```
 
-# Exp. 3: Insight problems
+# Insight problem
 
 ```{r problem-spaces, fig.width = 6}
 ```
@@ -78,7 +90,7 @@ Kaggle competitions are examples of adaptive problems because there are many pos
 ```{r problem-spaces-results}
 ```
 
-# Exp. 4: Multiple projects
+# Multiple projects
 
 ```{r multiple-projects, engine = "dot", dev = "svg", fig.cap = "Two ways of allocating the same number of calendar hours toward multiple projects. In synchronic teams, team members work on each project from beginning to completion in lockstep. In diachronic teams, team members work on different projects at the same time, and collaborate over time."}
 ```
