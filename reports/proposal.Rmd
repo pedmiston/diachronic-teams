@@ -9,7 +9,9 @@ output:
     fig_caption: true
 ---
 
-Teamwork is considered effective when the team accomplishes something together that they could not have alone. One of the most basic forms of teamwork involves breaking big problems into small problems that can each be solved independent of one another. I call this "synchronic collaboration" because it involves all of the members of a team working at the same time. In contrast, "diachronic collaboration" involves team members working one at a time, each inheriting and improving the products of the previous generation. Wikipedia article writing is an example of diachronic collaboration. In most cases, real world teams incorporate both synchronic and diachronic collaboration, which makes it difficult to assess the relative effectiveness of each type of collaboration. In the experiments proposed below I compare the effectiveness of diachronic and synchronic teams in solving the same problem. My hypothesis is that diachronic collaboration will be a more effective form of collaboration when the problem being solved can be iteratively improved in response to feedback.
+Teamwork is considered effective when the team accomplishes something together that the members of the team could not have alone. One of the most basic forms of teamwork involves breaking big problems into smaller problems that can be divided among the team members. I call this **synchronic collaboration** because all the members of the team are working, though independently, at the same time. In contrast, **diachronic collaboration** involves team members working one at a time building upon the previous solution.  Wikipedia article writing is an example of diachronic collaboration. Most real world collaborations have both synchronic and diachronic elements, which makes it difficult to assess the relative effectiveness of each type of collaboration. The experiments outlined below are designed to measure the problem solving capacities of teams organized either diachronically or synchronically. My hypothesis is that organizing teamwork diachronically will result in more efficient problem solving when there is feedback available
+
+Adaptive problems are problems for which a solution may already exist but it needs to be improved. A requirement for adaptive problems is some way to measure improvement. In contrast, in solving an insight problem, there is no continuity between a partial solution and a whole solution. Insight problems are either solved or they're not, and there is only a way to measure success, but not improvement. In comparing the two, adaptive problems are far more common looking back on human history, especially in the history of technology. The history of human invention is a story of incremental improvements, not insightful leaps and bounds. But we do not yet know whether this is only true on the time scale of historical change, or if we really are better at adapting existing solutions than inventing our own.
 
 ```{r config, echo = FALSE}
 library(knitr)
@@ -52,49 +54,35 @@ exps <- data.frame(
 pandoc.table(exps, caption = "Overview of experiments and conditions. All manipulations are between team.", justify = "left", missing = "")
 ```
 
-## Team structures
+# Exp 1: Team structures
 
-```{r team-structure, engine = "dot", dev = "svg", fig.cap = "Two ways of allocating the same number of labor hours. In synchronic teams, teams work on a project at the same time. In diachronic teams, the products of collaboration are inherited, improved, and passed on to the next member."}
+```{r team-structure, engine = "dot", dev = "svg", fig.cap = "Two ways of allocating the same number of labor hours. In synchronic teams, teams are allowed to work on a problem at the same time. This is the most common form of teamwork. In diachronic teams, teams work one at a time on a problem, and contributions are inherited. Wikipedia is an example of diachronic collaboration."}
 ```
-
-## Feedback
-
-```{r feedback, engine = "dot", dev = "svg", fig.width = 6, fig.cap = "Three ways of sharing individual contributions with a team of collaborators. When feedback is provided (**left**), the impact of an individual contribution on the performance of the team as a whole is made available on every contribution. When feedback is not provided (**middle**), individual contributions are shared directly with the members of the team without revealing its impact on team performance. When feedback is enforced (**right**), contributions that do not improve team performance are rejected, and cannot be shared with the members of the team."}
-```
-
-## Problems
-
-```{r problem-spaces, fig.width = 6}
-```
-
-### Kaggle competition
 
 Kaggle competitions are data-oriented challenges where teams build machine learning algorithms and use them to predict some outcome variable. For example, in the Titanic competition, teams are given data about the passengers on the Titanic, including their age, gender, and cabin, and tasked with predicting whether or not the passenger survived the Titanic crash.
 
 Kaggle competitions are examples of adaptive problems because there are many possible solutions to a classification problem (e.g., which algorithm to us, which features to train on, etc.) and they all vary in success. It's not always clear at the start of a classification problem what level of success is obtainable. What teams do know is how their performance compares to others performance, including their past performance. In fact, iteration appears to be key in predicting Kaggle competition winners. The winners in Kaggle competitions appear to be the ones that submit the most entries.
 
-### "Draw my data"
-
-# Experiments
-
-## Piloting
-
-## Experiment 1
-
 ```{r team-structure-results}
 ```
 
-## Experiment 2
+# Exp 2: Feedback
+
+```{r feedback, engine = "dot", dev = "svg", fig.width = 6, fig.cap = "Three ways of sharing individual contributions with a team of collaborators. When feedback is provided (**left**), the impact of an individual contribution on the performance of the team as a whole is made available on every contribution. When feedback is not provided (**middle**), individual contributions are shared directly with the members of the team without revealing its impact on team performance. When feedback is enforced (**right**), contributions that do not improve team performance are rejected, and cannot be shared with the members of the team."}
+```
 
 ```{r feedback-results}
 ```
 
-## Experiment 3
+# Exp. 3: Insight problems
 
-```{r insight-results}
+```{r problem-spaces, fig.width = 6}
 ```
 
-## Experiment 4
+```{r problem-spaces-results}
+```
+
+# Exp. 4: Multiple projects
 
 ```{r multiple-projects, engine = "dot", dev = "svg", fig.cap = "Two ways of allocating the same number of calendar hours toward multiple projects. In synchronic teams, team members work on each project from beginning to completion in lockstep. In diachronic teams, team members work on different projects at the same time, and collaborate over time."}
 ```
