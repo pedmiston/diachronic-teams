@@ -50,6 +50,9 @@ read_chunk("chunks/kaggle.R")
 
 # Predicting place
 
+```{r predicting-place-by-submissions}
+```
+
 ```{r predicting-place-mod, echo = 1}
 ```
 

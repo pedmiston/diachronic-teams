@@ -9,9 +9,7 @@ output:
     fig_caption: true
 ---
 
-Teamwork is considered effective when the team accomplishes something together that the members of the team could not have alone. One of the most basic forms of teamwork involves breaking big problems into smaller problems that can be divided among the team members. I call this **synchronic collaboration** because all the members of the team are working, though independently, at the same time. In contrast, **diachronic collaboration** involves team members working one at a time building upon the previous solution.  Wikipedia article writing is an example of diachronic collaboration. Most real world collaborations have both synchronic and diachronic elements, which makes it difficult to assess the relative effectiveness of each type of collaboration. The experiments outlined below are designed to measure the problem solving capacities of teams organized either diachronically or synchronically. My hypothesis is that organizing teamwork diachronically will result in more efficient problem solving when there is feedback available
-
-Adaptive problems are problems for which a solution may already exist but it needs to be improved. A requirement for adaptive problems is some way to measure improvement. In contrast, in solving an insight problem, there is no continuity between a partial solution and a whole solution. Insight problems are either solved or they're not, and there is only a way to measure success, but not improvement. In comparing the two, adaptive problems are far more common looking back on human history, especially in the history of technology. The history of human invention is a story of incremental improvements, not insightful leaps and bounds. But we do not yet know whether this is only true on the time scale of historical change, or if we really are better at adapting existing solutions than inventing our own.
+Teamwork is considered effective when the team accomplishes something together that the members of the team could not have alone. One of the most basic forms of teamwork involves breaking big problems into smaller problems that can be divided among the team members. I call this **synchronic collaboration** because all the members of the team are working, though independently, at the same time. In contrast, **diachronic collaboration** involves team members working one at a time, each building upon the previous solution. Wikipedia article writing is an example of diachronic collaboration. Most real world collaborations have both synchronic and diachronic elements, which makes it difficult to assess the relative effectiveness of each type of collaboration. The experiments outlined below are designed to measure the problem solving capacities of teams organized either diachronically or synchronically. My hypothesis is that organizing teamwork diachronically will make teams more efficient at utilizing feedback to solve problems.
 
 ```{r config, echo = FALSE}
 library(knitr)
@@ -34,8 +32,6 @@ read_chunk("chunks/problem-spaces.R")
 read_chunk("chunks/hypotheses.R")
 ```
 
-# Design
-
 ```{r ivs, results = "asis"}
 ivs <- list(
   `Team structure` = c("diachronic", "synchronic"),
@@ -54,9 +50,9 @@ exps <- data.frame(
 pandoc.table(exps, caption = "Overview of experiments and conditions. All manipulations are between team.", justify = "left", missing = "")
 ```
 
-# Exp 1: Team structures
+# Team structures
 
-```{r team-structure, engine = "dot", dev = "svg", fig.cap = "Two ways of allocating the same number of labor hours. In synchronic teams, teams are allowed to work on a problem at the same time. This is the most common form of teamwork. In diachronic teams, teams work one at a time on a problem, and contributions are inherited. Wikipedia is an example of diachronic collaboration."}
+```{r team-structure, engine = "dot", dev = "svg", fig.cap = "Team structures. Teams of four are allotted the same number of labor hours. In synchronic teams, teams work on a problem all at the same time. In diachronic teams, team members work one at a time, each inheriting a previous solution and improving upon it."}
 ```
 
 Kaggle competitions are data-oriented challenges where teams build machine learning algorithms and use them to predict some outcome variable. For example, in the Titanic competition, teams are given data about the passengers on the Titanic, including their age, gender, and cabin, and tasked with predicting whether or not the passenger survived the Titanic crash.
