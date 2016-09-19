@@ -3,10 +3,12 @@ library(ggplot2)
 library(dplyr)
 library(magrittr)
 
+library(evoteams)
+
 diachronic <- data_frame(
   team_structure = "diachronic",
   projects = "single",
-  calendar_hours = 1:8,
+  calendar_hours = 0:8,
   project_name = "a",
   labor_hours = calendar_hours
 )
@@ -14,7 +16,7 @@ diachronic <- data_frame(
 synchronic <- data_frame(
   team_structure = "synchronic",
   projects = "single",
-  calendar_hours = 1:2,
+  calendar_hours = 0:2,
   project_name = "a",
   labor_hours = calendar_hours * 4
 )
@@ -36,6 +38,7 @@ synchronic_multiple <- data_frame(
 )
 
 time <- rbind(diachronic, synchronic, diachronic_multiple, synchronic_multiple) %>%
+  recode_team_structures %>%
   mutate(
     projects_label = factor(projects, levels = c("single", "multiple"),
                             labels = c("Single project", "Multiple projects")),
@@ -46,9 +49,11 @@ colors <- RColorBrewer::brewer.pal(3, "Set2")
 names(colors) <- c("green", "orange", "blue")
 team_colors <- c(colors[["green"]], colors[["blue"]])
 
+line_size <- 1.5
+
 time_plot <- ggplot(time, aes(calendar_hours, labor_hours)) +
-  scale_x_continuous("calendar hours", seq(0, 8, by = 2)) +
-  scale_y_continuous("labor hours", seq(0, 32, by = 2)) +
+  scale_x_continuous("Calendar hours", seq(0, 8, by = 2)) +
+  scale_y_continuous("Labor hours", seq(0, 32, by = 2)) +
   theme_minimal() +
   theme(
     axis.ticks = element_blank()
@@ -56,10 +61,12 @@ time_plot <- ggplot(time, aes(calendar_hours, labor_hours)) +
 
 # ---- hours-per-team
 (time_plot %+% filter(time, projects == "single")) +
-  geom_line(aes(color = team_structure), size = 1.5) +
-  scale_color_manual(values = team_colors)
+  geom_line(aes(color = team_factor), size = line_size) +
+  scale_color_manual("", values = team_colors) +
+  coord_cartesian(ylim = c(0, 8), xlim = c(0, 8)) +
+  theme(legend.position = "top")
 
 # ---- hours-for-multiple-projects
 (time_plot %+% filter(time, projects == "multiple")) +
-  geom_line(aes(color = project_name), size = 2, alpha = default_alpha) +
+  geom_line(aes(color = project_name), size = line_size) +
   facet_wrap("team_structure")

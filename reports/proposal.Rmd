@@ -9,7 +9,7 @@ output:
     fig_caption: true
 ---
 
-Teamwork is considered effective when the team accomplishes something together that the members of the team could not have alone. One of the most basic forms of teamwork involves breaking big problems into smaller problems that can be divided among the team members. I call this **synchronic collaboration** because all the members of the team are working, though on independent problems, at the same time. In contrast, **diachronic collaboration** involves team members working one at a time on the same problem, each building upon the previous solution. Wikipedia article writing is an example of diachronic collaboration. Most real world collaborations have both synchronic and diachronic elements, which makes it difficult to assess the relative effectiveness of each type of collaboration. The experiments outlined below are designed to measure the problem solving capacities of teams organized either diachronically or synchronically. My hypothesis is that organizing teamwork diachronically will make teams more effective at utilizing feedback to solve problems.
+Teamwork is considered effective when the team accomplishes something together that the members of the team could not have alone. One of the most basic forms of teamwork involves breaking big problems into smaller problems that can be divided among the members of the team. I call this **synchronic collaboration** because all the members of the team are working, though independently, at the same time. In contrast, **diachronic collaboration** involves team members working one at a time on the same problem, each building upon the previous solution. Wikipedia article writing is an example of diachronic collaboration. Most real world collaborations have both synchronic and diachronic elements, which makes it difficult to assess the relative effectiveness of each type of collaboration. The experiments outlined below are designed to measure the problem solving capacities of teams organized either diachronically or synchronically. My hypothesis is that organizing teamwork diachronically will make teams more effective at utilizing feedback to solve problems.
 
 ```{r config, echo = FALSE}
 library(knitr)
@@ -86,18 +86,21 @@ In understanding the difference between the number of diachronic and synchronic 
 ```{r hours-per-team}
 ```
 
+The type of collaboration required for this task centers on a single product: the computer program that implements a classifier. Given that the purpose of the teamwork is to collaborate on this one, single product, the number of submissions a team can provide is expected to be constrained by calendar hours more than by labor hours. The rate at which submissions are made by diachronic teams and synchronic teams is expected to be equal in terms of calendar hours. But if the rate at which submissions are made is calculated instead in terms of labor hours, the rate of submissions per labor hour for synchronic teams is expected to be much lower than for diachronic teams.
+
 ```{r submissions-per-hour}
 ```
 
-```{r delegation}
-```
+It seems likely that the rate of submissions per labor hour will be greater for diachronic teams given that the submission rate is constrained more by calendar hours than by labor hours. If diachronic teams outperform sychronic teams, one of the reasons may be because they are better able to adapt a program by incorporating feedback that comes with each additional submission. The purpose of the next experiment is to manipulate the feedback provided to each team.
 
 # Feedback
 
-```{r feedback, engine = "dot", dev = "svg", fig.width = 6, fig.cap = "Three ways of sharing individual contributions with a team of collaborators. When feedback is provided (**passive**, left), the impact of an individual contribution on the performance of the team as a whole is made available on every contribution. When feedback is not provided (**none**, middle), individual contributions are shared directly with the members of the team without revealing its impact on team performance. When feedback is enforced (**enforced**, right), contributions that do not improve team performance are rejected, and cannot be shared with the members of the team."}
+```{r feedback, engine = "dot", dev = "svg", fig.width = 6, fig.cap = "Three ways of sharing individual contributions with a team of collaborators. When feedback is provided (**left**), the impact of an individual contribution on the performance of the team as a whole is made available on every contribution. When feedback is not provided (**middle**), individual contributions are shared directly with the members of the team without revealing its impact on team performance. When feedback is enforced (**right**), contributions that do not improve team performance are rejected, and cannot be shared with the members of the team."}
 ```
 
-```{r feedback-results}
+The hypothesis being tested in Experiment 2 is that diachronic teams outperform sychronic teams on adaptive problem solving because they are better able to utilize feedback to incrementally improve solutions. The type of feedback used in Experiment 1 was passive because it was given on request and in no way affected the team's collaborations. Teams in Experiment 2 either receive no feedback or feedback is enforced such that each contribution cannot be shared with the members of the team unless the contribution improves team performance.
+
+```{r feedback-results, fig.cap = "Impact of feedback types on team performance. Taking feedback away is predicted to impair diachronic team performance more than synchronic team performance. Enforcing feedback such that every change to the code base must improve program performance is predicted to aid synchronic teams more than diachronic teams."}
 ```
 
 # Insight problem
