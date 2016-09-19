@@ -1,3 +1,4 @@
+# ---- time
 library(ggplot2)
 library(dplyr)
 library(magrittr)
@@ -29,12 +30,10 @@ diachronic_multiple <- data_frame(
 synchronic_multiple <- data_frame(
   team_structure = "synchronic",
   projects = "multiple",
-  calendar_hours = seq(0, 8, by = 0.5),
-  project_name = rep(letters[1:4], length.out = length(calendar_hours)),
+  calendar_hours = seq(0, 8, length.out = 20),
+  project_name = rep(letters[1:4], each = 5),
   labor_hours = calendar_hours * 4
 )
-
-
 
 time <- rbind(diachronic, synchronic, diachronic_multiple, synchronic_multiple) %>%
   mutate(
@@ -43,7 +42,11 @@ time <- rbind(diachronic, synchronic, diachronic_multiple, synchronic_multiple) 
     project_name = factor(project_name, levels = c("a", "b", "c", "d", "abcd"))
   )
 
-gg_base <- ggplot(time, aes(calendar_hours, labor_hours)) +
+colors <- RColorBrewer::brewer.pal(3, "Set2")
+names(colors) <- c("green", "orange", "blue")
+team_colors <- c(colors[["green"]], colors[["blue"]])
+
+time_plot <- ggplot(time, aes(calendar_hours, labor_hours)) +
   scale_x_continuous("calendar hours", seq(0, 8, by = 2)) +
   scale_y_continuous("labor hours", seq(0, 32, by = 2)) +
   theme_minimal() +
@@ -51,13 +54,12 @@ gg_base <- ggplot(time, aes(calendar_hours, labor_hours)) +
     axis.ticks = element_blank()
   )
 
-single_project <- (gg_base %+% filter(time, projects == "single")) +
-  geom_line(aes(color = team_structure))
+# ---- hours-per-team
+(time_plot %+% filter(time, projects == "single")) +
+  geom_line(aes(color = team_structure), size = 1.5) +
+  scale_color_manual(values = team_colors)
 
-single_project
-
-multiple_projects <- (gg_base %+% filter(time, projects == "multiple")) +
-  geom_line(aes(color = project_name)) +
+# ---- hours-for-multiple-projects
+(time_plot %+% filter(time, projects == "multiple")) +
+  geom_line(aes(color = project_name), size = 2, alpha = default_alpha) +
   facet_wrap("team_structure")
-
-multiple_projects

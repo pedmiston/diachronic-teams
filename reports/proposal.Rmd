@@ -20,8 +20,7 @@ opts_chunk$set(
   fig.path = "figs/",
   fig.height = 4,
   fig.width = 4,
-  cache = TRUE,
-  cache.path = ".cache/"
+  cache = FALSE  # warning! cache is bad with graphviz
 )
 
 library(tidyr)
@@ -33,9 +32,13 @@ library(evoteams)
 read_evoteams_chunks()
 read_chunk("chunks/problem-spaces.R")
 read_chunk("chunks/hypotheses.R")
+read_chunk("chunks/time.R")
 ```
 
 ```{r hypotheses}
+```
+
+```{r time}
 ```
 
 ```{r ivs, results = "asis"}
@@ -59,20 +62,34 @@ pandoc.table(exps, justify = "left", missing = "",
 
 # Team structure
 
-```{r team-structure, engine = "dot", dev = "svg", fig.cap = "Team structures. Teams are allotted the same number of labor hours to solve a problem. In synchronic teams, teams work on a problem all at the same time. In diachronic teams, team members work one at a time, each inheriting the team's solution and improving it."}
+```{r team-structure, engine = "dot", dev = "svg", fig.cap = "**Team structures.** Teams are allotted the same number of labor hours to solve a problem. In synchronic teams, teams work on a problem all at the same time. In diachronic teams, team members work one at a time, each inheriting the team's solution and improving it."}
 ```
 
-In solving a problem where there are many possible solutions, all varying in degree of success, teams organized diachronically are expected to use labor hours more efficiently than teams organized synchronically. In Experiment 1, teams of four are tasked with solving a classification problem. Classification problems involve generating predicted classes for unlabeled data using statistics and machine learning to improve classification accuracy. For example, a typical classification problem is to predict whether or not a passenger on the Titanic survived based on their age, gender, ticket price, and cabin. Teams working diachronically or synchronically are tasked with building a computer program that, when run, generates predicted classes for test data that was withheld from the training data. The programs created by diachronic teams are predicted to have higher classification accuracy on this test data at the end of the allotted labor hours than the programs of synchronic teams.
+In solving a problem where there are many possible solutions, all varying in degree of success, a team organized diachronically is expected to use labor hours more efficiently than a team organized synchronically. In Experiment 1, teams of four are tasked with solving a classification problem. Classification problems involve generating predicted classes for unlabeled data using statistics and machine learning to improve classification accuracy. For example, a typical classification problem is to predict whether or not a passenger on the Titanic survived based on their age, gender, ticket price, cabin, and other features available in the training data. Teams working diachronically or synchronically are tasked with building a computer program that, when run, generates predicted classes for test data that was withheld from the training set. The programs developed by diachronic teams are predicted to have higher classification accuracy on this test data at the end of the allotted labor hours than the programs developed by synchronic teams.
 
-Classification problems have many possible solutions. Teams can use decision trees, linear regression, neural networks, or some other method to generate the predicted classes. Within each type of solution, there exist innumerable parameters that can be tweaked based on the available training data, including transformations of the input and how to weigh different variables. As varied as the different solutions are, they can all be compared in terms of classification accuracy of some test data that was withheld from the training set. Given this clear way of measuring success, classification problems lend themselves easily to competitions. For example, Kaggle competitions offer cash rewards to teams with the highest classification accuracy on a particular classification problem.
+Classification problems have many possible solutions. Teams can use decision trees, linear regression, neural networks, or any other method to generate the predicted classes. Within each type of solution, there exist innumerable parameters that can be tweaked based on the available training data, including transformations of the input and how to weigh different variables. As varied as the different solutions are, they can all be compared in classification accuracy of the same test data. Given this clear measure of success, classification problems lend themselves easily to competitions. For example, Kaggle competitions offer cash rewards to teams with the highest classification accuracy on a particular classification problem.
 
-In Experiment 1, participants with experience solving classification problems are recruited and randomly assigned into teams. Synchronic teams are given two hours with all four team members in the same room to complete the problem. Each team member is provided a personal work station and network access to the team's program files, but there are no constraints on how the members of the synchronic teams interact or distribute labor over the course of the two hours. Diachronic teams work one at a time, each spending two hours on the program, and thus are never allowed to interact with the whole team at once. For diachronic teams, only a single workstation is needed, as each team member simply picks up where the last one left off.
+In Experiment 1, participants with experience solving classification problems are recruited and randomly assigned into teams. Synchronic teams are given two hours with all four team members in the same room to develop a classifier. Each team member is provided a personal work station and network access to the team's program files, but there are no constraints on how the members of the synchronic teams interact or distribute labor over the course of the two hours. Diachronic teams work one at a time, each spending two hours on the program, and thus are never allowed to interact with the whole team at once. For diachronic teams, only a single workstation is needed, as each team member simply picks up where the last one left off.
 
-Each team is provided a starter program that generates baseline predictions for the test data. For example, for the Titanic data, the baseline program predicts that everyone dies. The purpose of this baseline program is to establish the interface used to score the team's solutions automatically. With this in place, teams can submit solutions prior to the end of the experiment in order to get feedback on their performance.
+Teams can choose to test the success of their program at any time against the test data. As feedback, teams receive their classification accuracy, but are given no information about the particular items that were misclassified. After eight labor hours have been spent by each team, the final version of each team's classifier is submitted. The primary hypothesis tested in Experiment 1 is that programs created by diachronic teams will have higher classification accuracy than programs created by synchronic teams.
 
-After eight labor hours have been spent by each team, the success of the different team's solutions can be compared. The primary hypothesis tested in Experiment 1 is that programs created by diachronic teams will have higher classification accuracy than programs created by synchronic teams.
+```{r team-structure-results, fig.cap = "Classification accuracy by team structure. Diachronic teams are predicted to be more effective at solving adaptive problems than synchronic teams."}
+```
 
-```{r team-structure-results}
+The reason diachronic teams are more effective at solving classification problems is hypothesized to be because they are better able to iterate on solutions in response to feedback. If true, this would mean that diachronic teams should submit more solutions than synchronic teams.
+
+```{r submissions-per-team}
+```
+
+In understanding the difference between the number of diachronic and synchronic submissions, it's important to distinguish between calendar hours and labor hours. Calendar hours are hours in the traditional sense of hours in a day. Labor hours are calendar hours multiplied by how many people are working. Both diachronic and synchronic teams are allotted 8 labor hours. While synchronic teams spend all their labor hours in the first 2 calendar hours, diachronic teams spread the labor out over 8 calendar hours.
+
+```{r hours-per-team}
+```
+
+```{r submissions-per-hour}
+```
+
+```{r delegation}
 ```
 
 # Feedback
