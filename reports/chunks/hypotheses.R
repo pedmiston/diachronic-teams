@@ -119,3 +119,32 @@ exp3 <- data_frame(
   ggtitle("Insight problems")
 
 # ---- multiple-projects-results
+exp4 <- expand.grid(
+  team_structure = team_structures,
+  problem_id = letters[1:4]
+)
+# > exp4
+#   team_structure problem_id
+# 1     synchronic          a
+# 2     diachronic          a
+# 3     synchronic          b
+# 4     diachronic          b
+# 5     synchronic          c
+# 6     diachronic          c
+# 7     synchronic          d
+# 8     diachronic          d
+exp4$classification_accuracy <- c(72, 78, 62, 68, 81, 84, 74, 76)/100
+exp4 %<>%
+  recode_team_structures
+
+(base_plot %+% exp4) +
+  geom_line(aes(team_factor, classification_accuracy, group = problem_id, color = problem_id),
+            size = 1, alpha = default_alpha) +
+  geom_point(aes(team_factor, classification_accuracy, shape = problem_id, color = problem_id),
+             size = 3) +
+  xlab("") +
+  scale_y_classification_accuracy +
+  scale_color_brewer("Problem", palette = "Set2") +
+  scale_shape_manual("Problem", values = c(19, 15, 18, 17)) +
+  theme(legend.position = "top") +
+  ggtitle("Multiple adaptive problems")
