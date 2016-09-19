@@ -16,6 +16,7 @@ library(knitr)
 opts_chunk$set(
   echo = FALSE,
   message = FALSE,
+  warning = FALSE,
   fig.path = "figs/",
   fig.height = 4,
   fig.width = 4,
@@ -84,10 +85,12 @@ After eight labor hours have been spent by each team, the success of the differe
 
 # Insight problem
 
+On an insight problem, you can still get feedback on whether or not your solution is correct, but if you are wrong you don't know if you've gotten any closer to the correct solution.
+
 ```{r problem-spaces, fig.width = 6}
 ```
 
-```{r problem-spaces-results}
+```{r insight-results}
 ```
 
 # Multiple projects

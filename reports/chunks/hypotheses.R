@@ -60,7 +60,8 @@ exp1 <- data_frame(
   xlab("") +
   scale_y_classification_accuracy +
   scale_fill_team_factor +
-  guides(fill = "none")
+  guides(fill = "none") +
+  ggtitle("Adaptive problems")
 
 # ---- feedback-results
 exp2 <- expand.grid(
@@ -102,5 +103,19 @@ treatment_plot <- base_plot +
   ggtitle("Enforcing feedback helps synchronic teams")
 
 # ---- insight-results
+exp3 <- data_frame(
+  team_structure = team_structures,
+  labor_hours_to_solution = c(5.8, 7.1)
+) %>%
+  recode_team_structures
+
+(base_plot %+% exp3) +
+  geom_bar(aes(team_factor, labor_hours_to_solution, fill = team_factor),
+           stat = "identity", width = default_bar_width, alpha = default_alpha) +
+  xlab("") +
+  scale_y_continuous("Labor hours to solution", breaks = 1:8) +
+  scale_fill_team_factor +
+  guides(fill = "none") +
+  ggtitle("Insight problems")
 
 # ---- multiple-projects-results
