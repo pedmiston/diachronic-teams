@@ -7,9 +7,12 @@ output:
     toc: true
     toc_float: true
     fig_caption: true
+    css: style.css
 ---
 
-Teamwork is considered effective when the team accomplishes something together that the members of the team could not have alone. One of the most common forms of teamwork involves breaking big problems into smaller problems that can be divided among the members of the team. I call this **synchronic collaboration** because all the members of the team are working, though independently, at the same time. In contrast, **diachronic collaboration** involves team members working one at a time on the same problem, each building upon the previous solution. Wikipedia article writing is an example of diachronic collaboration. Most real world collaborations have both synchronic and diachronic elements, which makes it difficult to assess the relative effectiveness of each type of collaboration. The experiments outlined below are designed to measure the problem solving capacities of teams organized either diachronically or synchronically. My hypothesis is that organizing teamwork diachronically will make teams more effective at utilizing feedback to solve problems.
+Teamwork is considered effective when the team accomplishes something together that the members of the team could not have on their own. One of the most common forms of teamwork involves breaking big problems into smaller problems that can be divided among the members of the team. I call this **synchronic collaboration** because all the members of the team are working, though independently, all at the same time. In contrast, **diachronic collaboration** involves team members working one at a time on the same problem, each building upon the previous solution. Wikipedia article writing is an example of diachronic collaboration. Most real world collaborations have both synchronic and diachronic elements, which makes it difficult to assess the relative effectiveness of each type of collaboration. The experiments outlined below are designed to measure the problem solving capacities of teams organized either diachronically or synchronically. My hypothesis is that organizing teamwork diachronically will make teams more effective at utilizing feedback to solve problems.
+
+This research intends to reveal the relative roles of diachronic and synchronic collaboration in the history of human culture and its evolution, in particular the evolution of technology. Although culturally we uphold certain inventors and teams as visionaries working independently and creating artifacts well ahead of their time, the reality is that technological progress does not advance in leaps and bounds, and instead is a much more continuous process of incremental improvements. One conclusion that can be drawn from this evidence is that humans are especially proficient at solving adaptive problems, where progress can be incrementally measured. However, this may only be true when looking across years and generations of human history. This research for the first time compares diachronic and synchronic collaboration as techniques for solving adaptive problems in the same time frame. If, as predicted, diachronic organization is more effective than synchronic organization at utilizing feedback to solve problems, it suggests that the human abilities that allow for diachronic collaboration--having a way to pass the solutions of one generation on to the next via physical artifacts, written language, and now computer code, as well as defining objective measures of success--are more important factors in explaining human technological advancements than accounting for the ingenuity of individuals.
 
 ```{r config, echo = FALSE}
 library(knitr)
@@ -20,6 +23,7 @@ opts_chunk$set(
   fig.path = "figs/",
   fig.height = 4,
   fig.width = 4,
+  fig.align = "center",
   cache = FALSE  # warning! cache is bad with graphviz * svg * read_chunk
 )
 
@@ -52,39 +56,43 @@ ivs <- list(
 pandoc.table(ivs, caption = "Independent variables.", justify = "left")
 
 exps <- data.frame(
-  row.names = c("Team structure", "Problem", "Feedback"),
-  `Exp 1` = c("diachronic/synchronic", "adaptive", "yes"),
-  `Exp 2` = c("diachronic/synchronic", "adaptive", "no/enforce"),
-  `Exp 3` = c("diachronic/synchronic", "insight", NA),
-  `Exp 4` = c("diachronic/synchronic", "multiple adaptive", "yes")
-) %>% t
+    row.names = c("Experiment", "Team structure", "Problem", "Feedback"),
+    `1` = c("Team structure", "diachronic, synchronic", "adaptive", "yes"),
+    `2` = c("Feedback", "diachronic, synchronic", "adaptive", "no, enforce"),
+    `3` = c("Insight problem", "diachronic, synchronic", "insight", NA),
+    `4` = c("Multiple problems", "diachronic, synchronic", "multiple adaptive", "yes")
+  ) %>%
+  t %>%
+  as.data.frame %>%
+  mutate(
+    `#` = 1:n()
+  ) %>%
+  select(`#`, everything())
 pandoc.table(exps, justify = "left", missing = "",
              caption = "Overview of experiments and conditions. All manipulations are between team.")
 ```
 
-Experiment 1 is designed to illustrate the predicted effect of team structure on team performance, where diachronic teams outperform synchronic teams. To investigate whether this difference is due to responsiveness to feedback, in Experiment 2 the feedback made available to the teams is manipulated, either removing it completely or enforcing monotonic improvements in team performance. The predictions are that removing feedback should impair diachronic performance more than synchronic performance, and enforcing feedback should improve synchronic performance more than diachronic performances. In Experiment 3, the impact of team structure on solving insight problems is tested. Unlike adaptive problems, for insight problems feedback is usually unhelpful, as there is not a gradation between a partial solution and a whole solution. In solving these problems, synchronic collaboration is hypothesized to be more effective than diachronic collaboration. Finally, Experiment 4 is a larger scale version of Experiment 1 that addresses the discrepancy between calendar hours and labor hours in the team structure manipulation by having both teams complete 4 problems in the same timeframe. These results as predicted stand to demonstrate the conditions under which diachronic collaboration is a more effective strategy than synchronic collaboration.
-
-The conclusions that can be drawn from these results shed light on the relative roles of diachronic and synchronic collaboration in human cultural evolution, especially in the evolution of technology. Although our culture upholds inventors as visionaries working all alone and creating artifacts well ahead of their time, the reality is that technological progress is much more gradual than punctuated by the rare genius. One conclusion that can be drawn from this evidence of continuous improvements is that humans are especially adept at solving tinkering problems. However, this may only be true at the time scale of human generations. This research for the first time compares diachronic and synchronic collaboration as techniques for tinkering over the same time frame. If diachronic organization is more affective, it speaks to the role of diachronic collaboration in the history of human cultural evolution.
+Experiment 1 is designed to illustrate the predicted effect of team structure on team performance, where diachronic teams outperform synchronic teams on adaptive problems. To investigate whether this difference is due to responsiveness to feedback, in Experiment 2 the feedback made available to the teams is manipulated, either removing it completely or enforcing it such that team performance is only allowed to improve. Removing feedback is expected to impair diachronic more than synchronic performance, and enforcing feedback should improve synchronic more than diachronic performances. In Experiment 3, the impact of team structure on solving insight problems is tested. Unlike adaptive problems, for insight problems feedback on partial solutions is unhelpful, as there is no gradation between partial and whole solutions. In solving insight problems, synchronic collaboration is hypothesized to be more effective than diachronic collaboration, because diachronic teams no longer have an advantage in adapting in response to feedback. The final Experiment 4 is a larger scale version of Experiment 1 that addresses the discrepancy between calendar hours and labor hours in the team structure manipulation by having both teams complete 4 problems in the same number of calendar hours. These results will demonstrate the conditions under which diachronic collaboration is a more effective strategy than synchronic collaboration.
 
 # 1 Team structure
 
 ```{r team-structure, engine = "dot", dev = "svg", fig.cap = "**Team structures.** Teams are allotted the same number of labor hours to solve a problem. In synchronic teams, teams work on a problem all at the same time. In diachronic teams, team members work one at a time, each inheriting the team's solution and improving it."}
 ```
 
-In solving a problem where there are many possible solutions, all varying in degree of success, a team organized diachronically is expected to use labor hours more efficiently than a team organized synchronically. In Experiment 1, teams of four are tasked with solving a classification problem. Classification problems involve generating predicted classes for unlabeled data using statistics and machine learning to improve classification accuracy. For example, a typical classification problem is to predict whether or not a passenger on the Titanic survived based on their age, gender, ticket price, cabin, and other features available in the training data. Teams working diachronically or synchronically are tasked with building a computer program that, when run, generates predicted classes for test data that was withheld from the training set. The programs developed by diachronic teams are predicted to have higher classification accuracy on this test data at the end of the allotted labor hours than the programs developed by synchronic teams.
+In solving a problem where there are many possible solutions, all varying in degree of success, a team organized diachronically is expected to use labor hours more efficiently than a team organized synchronically. In Experiment 1, teams of four are tasked with solving a classification problem. Classification problems involve generating predicted classes for unlabeled data using statistics and machine learning to improve classification accuracy. A typical classification problem is to predict whether or not a group of passengers on the Titanic survived based on their age, gender, ticket price, cabin, and other features available in the training data. Teams working diachronically or synchronically are tasked with building a computer program that, when run, generates predicted classes for test data that was withheld from the training set. The programs developed by diachronic teams are predicted to have higher classification accuracy on this test data at the end of the allotted labor hours than the programs developed by synchronic teams.
 
 Classification problems have many possible solutions. Teams can use decision trees, linear regression, neural networks, or any other method to generate the predicted classes. Within each type of solution, there exist innumerable parameters that can be tweaked based on the available training data, including transformations of the input and how to weigh different variables. As varied as the different solutions are, they can all be compared in classification accuracy of the same test data. Given this clear measure of success, classification problems lend themselves easily to competitions. For example, Kaggle competitions offer cash rewards to teams with the highest classification accuracy on a particular classification problem.
 
 In Experiment 1, participants with experience solving classification problems are recruited and randomly assigned into teams. Synchronic teams are given two hours with all four team members in the same room to develop a classifier. Each team member is provided a personal work station and network access to the team's program files, but there are no constraints on how the members of the synchronic teams interact or distribute labor over the course of the two hours. Diachronic teams work one at a time, each spending two hours on the program, and thus are never allowed to interact with the whole team at once. For diachronic teams, only a single workstation is needed, as each team member simply picks up where the last one left off.
 
-Teams can choose to test the success of their program at any time against the test data. As feedback, teams receive their classification accuracy, but are given no information about the particular items that were misclassified. After eight labor hours have been spent by each team, the final version of each team's classifier is submitted. The primary hypothesis tested in Experiment 1 is that programs created by diachronic teams will have higher classification accuracy than programs created by synchronic teams.
+Teams receive feedback on their performance by submitting their program for evaluation against the test data at any time. As feedback, teams receive their classification accuracy, but are given no information about the particular items that were misclassified. After eight labor hours have been spent by each team, the final version of each team's classifier is submitted and tested. The primary hypothesis tested in Experiment 1 is that programs created by diachronic teams will have higher classification accuracy than programs created by synchronic teams.
 
-```{r team-structure-results, fig.cap = "Classification accuracy by team structure. Diachronic teams are predicted to be more effective at solving adaptive problems than synchronic teams."}
+```{r team-structure-results, fig.cap = "**Adaptive problems**. Diachronic teams are predicted to be more effective at solving adaptive problems than synchronic teams."}
 ```
 
 The reason diachronic teams are more effective at solving classification problems is hypothesized to be because they are better able to iterate on solutions in response to feedback. If true, this would mean that diachronic teams should submit more solutions than synchronic teams.
 
-```{r submissions-per-team}
+```{r submissions-per-team, fig.cap = "**Submissions per team**. Diachronic teams are predicted to submit more versions of their program for evaluation than synchronic teams."}
 ```
 
 In understanding the difference between the number of diachronic and synchronic submissions, it's important to distinguish between calendar hours and labor hours. Calendar hours are hours in the traditional sense of hours in a day. Labor hours are calendar hours multiplied by how many people are working. Both diachronic and synchronic teams are allotted 8 labor hours. While synchronic teams spend all their labor hours in the first 2 calendar hours, diachronic teams spread the labor out over 8 calendar hours.
@@ -119,10 +127,12 @@ On an insight problem, you can still get feedback on whether or not your solutio
 ```{r insight-results}
 ```
 
-# 4 Multiple projects
+# 4 Multiple problems
 
 ```{r multiple-projects, engine = "dot", dev = "svg", fig.cap = "Two ways of allocating the same number of calendar hours toward multiple projects. In synchronic teams, team members work on each project from beginning to completion in lockstep. In diachronic teams, team members work on different projects at the same time, and collaborate over time."}
 ```
 
 ```{r multiple-projects-results}
 ```
+
+# Summary
