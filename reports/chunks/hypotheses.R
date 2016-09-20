@@ -48,40 +48,44 @@ exp1 <- data_frame(
   ggtitle("Adaptive problems")
 
 # ---- submissions-per-team
+diachronic <- data_frame(
+  team_structure = "diachronic",
+  calendar_hours = 0:8,
+  labor_hours = calendar_hours
+)
+
+synchronic <- data_frame(
+  team_structure = "synchronic",
+  calendar_hours = 0:2,
+  labor_hours = calendar_hours * 4
+)
+
+hours <- rbind(diachronic, synchronic) %>%
+  recode_team_structures
+
+hours_plot <- (base_plot %+% hours) +
+  geom_line(aes(calendar_hours, labor_hours, color = team_factor),
+            size = 1.5) +
+  scale_color_manual("", values = team_colors) +
+  coord_cartesian(ylim = c(0, 8), xlim = c(0, 8)) +
+  scale_x_continuous("Calendar hours", seq(0, 8, by = 2)) +
+  scale_y_continuous("Labor hours", seq(0, 32, by = 2)) +
+  theme(legend.position = "top")
+
 submissions <- data_frame(
   team_structure = team_structures,
-  per_calendar_hour = c(2.4, 2.4),
-  total = per_calendar_hour * c(2, 8),
-  per_labor_hour = c(2.4/8, 2.4)
+  submissions = c(8.3, 15.2)
 ) %>% recode_team_structures
 
 submissions_plot <- (base_plot %+% submissions) +
+  geom_bar(aes(team_factor, submissions, fill = team_factor),
+           stat = "identity", width = default_bar_width, alpha = default_alpha) +
   xlab("") +
   ylab("Submissions") +
   scale_fill_team_factor +
   guides(fill = "none")
 
-submissions_plot +
-  geom_bar(aes(team_factor, total, fill = team_factor), stat = "identity",
-           width = default_bar_width, alpha = default_alpha) +
-  ggtitle("Submissions per team")
-
-# ---- submissions-per-hour
-submissions_by_time <- submissions %>%
-  select(team_structure, per_calendar_hour, per_labor_hour) %>%
-  gather(unit, submissions, -team_structure) %>%
-  recode_team_structures %>%
-  mutate(
-    unit_label = factor(unit, levels = c("per_calendar_hour", "per_labor_hour"),
-                        labels = c("Per calendar hour", "Per labor hour"))
-  )
-
-(submissions_plot %+% submissions_by_time) +
-  geom_bar(aes(team_factor, submissions, fill = team_factor), stat = "identity",
-           width = default_bar_width, alpha = default_alpha) +
-  scale_y_continuous("Submissions", breaks = 1:10) +
-  facet_wrap("unit_label") +
-  ggtitle("Submissions per hour")
+grid.arrange(hours_plot, submissions_plot, nrow = 1)
 
 # ---- delegation
 delegation <- data_frame(
