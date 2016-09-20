@@ -45,8 +45,8 @@ time <- rbind(diachronic, synchronic, diachronic_multiple, synchronic_multiple) 
     project_name = factor(project_name, levels = c("a", "b", "c", "d", "abcd"))
   )
 
-colors <- RColorBrewer::brewer.pal(3, "Set2")
-names(colors) <- c("green", "orange", "blue")
+colors <- RColorBrewer::brewer.pal(4, "Set2")
+names(colors) <- c("green", "orange", "blue", "pink")
 team_colors <- c(colors[["green"]], colors[["blue"]])
 
 line_size <- 1.5
@@ -69,4 +69,5 @@ time_plot <- ggplot(time, aes(calendar_hours, labor_hours)) +
 # ---- hours-for-multiple-projects
 (time_plot %+% filter(time, projects == "multiple")) +
   geom_line(aes(color = project_name), size = line_size) +
+  scale_color_manual("Problem", values = c(unname(colors), "gray")) +
   facet_wrap("team_structure")
