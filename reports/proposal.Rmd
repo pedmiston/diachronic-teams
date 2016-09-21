@@ -4,9 +4,8 @@ author: "Pierce Edmiston"
 output:
   html_document:
     theme: flatly
-    toc: true
-    fig_caption: true
     css: style.css
+    fig_caption: true
 ---
 
 ```{r config, echo = FALSE, message = FALSE}
@@ -29,10 +28,7 @@ read_chunk("chunks/hypotheses.R")
 
 Teamwork is considered effective when the team accomplishes something together that the members of the team could not have on their own. One of the most common forms of teamwork involves breaking big problems into smaller problems that can be divided among the members of the team and worked on independently. Though the team members are working independently, they are all working at the same time, and this type of teamwork can be called **synchronic collaboration**. In contrast, **diachronic collaboration** involves team members working one after the other on the same problem, each building upon the previous solution. Wikipedia article writing is an example of diachronic collaboration. Most real world collaborations have both synchronic and diachronic elements, which makes it difficult to assess the relative effectiveness of each type of collaboration. The experiments outlined below are designed to measure the problem solving capacities of teams organized either diachronically or synchronically. My hypothesis is that organizing teamwork diachronically will make teams more effective at utilizing feedback to solve problems.
 
-```{r team-structure, engine = "dot", dev = "svg", fig.cap = "**Team structures.** Teams are allotted the same number of labor hours to create a solution to a problem. In synchronic teams, teams work on a solution all at the same time. In diachronic teams, team members work one at a time, each inheriting the team's solution and improving it."}
-```
-
-Examining the relative strengths of diachronic and synchronic collaboration is relevant to the history of human culture and its evolution, in particular the evolution of technology. Culturally we uphold specific inventors as heroes, having created artifacts and ideas without precedent or precursor, when in fact the historical evidence favors an alternative view. Technological progress does not advance by leaps and bounds, but by many small steps and incremental improvements. One conclusion to draw from this evidence is that it is easier to inherit and incrementally improve an existing artifact than to create one from scratch. However, this continuity may only exist when looking across years and generations of human history. This research for the first time compares diachronic and synchronic collaboration as techniques for solving problems over the same time frame. If teams organized diachronically are more effective at solving adaptive problems, it suggests that the abilities that allow for diachronic collaboration (having reliable ways to inherit and modify past solutions), may be more important factors in accounting for the evolution of technology than the ingenuity of individuals.
+Examining the relative strengths of diachronic and synchronic collaboration is relevant to the history of human culture and its evolution, in particular the evolution of technology. Culturally we uphold specific inventors as heroes, having created artifacts and ideas without precedent or precursor, when in fact the historical evidence favors an alternative view. Technological progress does not advance by leaps and bounds, but by many small steps and incremental improvements. One conclusion to draw from this evidence is that it is easier to inherit and incrementally improve an existing artifact than to create one from scratch. However, this continuity may only exist when looking across years and generations of human history. This research for the first time compares diachronic and synchronic collaboration as techniques for solving problems over the same time frame. If teams organized diachronically are more effective at solving adaptive problems, it suggests that the abilities that allow for diachronic collaboration (e.g., having reliable ways to inherit and modify past solutions), may be more important factors in accounting for the evolution of technology than the ingenuity of individuals.
 
 # Design
 
@@ -42,7 +38,7 @@ Examining the relative strengths of diachronic and synchronic collaboration is r
 ```{r experiment-table, results = "asis"}
 ```
 
-These experiments are designed to reveal the conditions under which diachronic collaboration is more effective than synchronic collaboration. The purpose of the Pilot Experiment is to calibrate the difficulty of the adaptive and insight problems used in the main experiments to be suitable for four person teams. Experiment 1 is designed to test the hypothesis that diachronic collaboration is more effective than synchronic collaboration at solving adaptive problems. To investigate whether this advantage is due to responsiveness to feedback, in Experiment 2 the feedback made available to the teams is manipulated, either removing it completely or enforcing it such that team performance is only allowed to improve. Removing feedback should impair diachronic more than synchronic performance, and enforcing feedback should improve synchronic more than diachronic performance. Experiment 3 tests the impact of team structure on solving insight problems. Unlike adaptive problems, for insight problems feedback is generally unhelpful, as there is no gradation between partial and whole solutions. In solving insight problems, diachronic collaboration is no longer predicted to be more effective than synchronic collaboration, because informative feedback is no longer available. The final Experiment 4 is an extension of Experiment 1 that addresses the discrepancy between calendar hours and labor hours in the team structure manipulation by having teams complete four problems in the same number of calendar hours.
+These experiments are designed to reveal the conditions under which diachronic collaboration is more effective than synchronic collaboration. Participants are randomly assigned into teams of four and given a problem to solve. The purpose of the Pilot Experiment is to calibrate the difficulty of the problems used in the main experiments. Experiment 1 investigates the effect of team structure on solving adaptive problems, with the prediction that diachronic collaboration will be more effective than synchronic collaboration. To investigate whether this difference might be due to responsiveness to feedback, in Experiment 2 the feedback made available to the teams is manipulated, either removing it completely or enforcing it such that team performance is only allowed to improve. Removing feedback should impair diachronic more than synchronic performance, and enforcing feedback should improve synchronic more than diachronic performance. Experiment 3 tests the impact of team structure on solving insight problems. Unlike adaptive problems, for insight problems feedback is generally unhelpful, as there is no gradation between partial and whole solutions. In solving insight problems, diachronic collaboration is no longer predicted to be more effective than synchronic collaboration, because informative feedback is no longer available. The final Experiment 4 is an extension of Experiment 1 that addresses the discrepancy between calendar hours and labor hours in the team structure manipulation by having teams complete four problems in the same number of calendar hours.
 
 Classification problems involve generating predicted labels for unlabeled data using statistics and machine learning to improve the accuracy of the predictions. For example, a typical classification problem is to predict whether or not a group of passengers on the Titanic survived based on their age, gender, ticket price, cabin location, and other features availabe in the training data. Regardless of method or parameters, all solutions can be compared in terms of classification accuracy, which makes classification problems lend themselves to competition. For example, Kaggle competitions offer cash rewards to teams with the highest classification accuracy on a particular classification problem. Experiment 1 is modeled after a Kaggle competition for the purposes of recruiting skilled and motivated participants.
 
@@ -50,12 +46,15 @@ Synchronic teams are given two hours with all four team members in the same room
 
 # 1 Team structure
 
+```{r team-structure, engine = "dot", dev = "svg", fig.cap = "**Team structures.** Teams are allotted the same number of labor hours to solve a problem. Synchronic teams work on the same or part of the same solution. Diachronic teams work one at a time, each inheriting the team's solution and improving it."}
+```
+
 ## Is teamwork necessary for this task?
 
 ```{r teamwork}
 ```
 
-## Is diachronic collaboration more effective?
+## Is diachronic collaboration more effective at adaptive problem solving?
 
 ```{r team-structure-results, fig.cap = "**Adaptive problems**. Diachronic teams are predicted to be more effective at solving adaptive problems than synchronic teams."}
 ```
@@ -101,6 +100,11 @@ On an insight problem, you can still get feedback on whether or not your solutio
 ```{r multiple-projects-results}
 ```
 
-## 
+## Do teams get more efficient?
+
+```{r team-efficiency}
+```
 
 # Summary
+
+These experiments are designed to reveal the problem solving capacities of teams organized either diachronically or synchronically. The purpose of this investigation is not to prescribe certain team structures, since it seems likely different team structures are better equipped to solve different problems, but to outline the conditions for which diachronic collaboration is most effective. Diachronic collaboration is hypothesized to be most effective in solving problems that can be adapted in response to feedback. 
