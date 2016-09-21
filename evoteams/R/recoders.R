@@ -16,7 +16,7 @@ recode_team_structures <- function(frame) {
 #' @import stringr
 #' @export
 recode_feedback_types <- function(frame) {
-  feedback_types <- c("yes", "no", "enfore")
+  feedback_types <- c("yes", "no", "enforce")
   feedback_map <- data_frame(
     feedback_type = feedback_types,
     feedback_factor = factor(feedback_type, levels = feedback_types,

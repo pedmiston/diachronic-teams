@@ -3,17 +3,17 @@ digraph {
   node[fontname=helvetica; label=""; style=filled];
 
   rankdir=LR;
-  
+
   // Shapes are projects
   s1, s2, s3, s4, d1, d2, d3, d4[shape=circle];
-  
+
   // Colors are people
   s1, d1[fillcolor="#66C2A5"];
   s2, d2[fillcolor="#FC8D62"];
   s3, d3[fillcolor="#8DA0CB"];
   s4, d4[fillcolor="#E78AC3"];
 
-  
+
   // Invisible last nodes
   sinv1, sinv2, sinv3, sinv4, dinv1[style=invis];
 

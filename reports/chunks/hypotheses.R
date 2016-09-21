@@ -6,6 +6,7 @@ library(stringr)
 library(ggplot2)
 library(scales)
 library(gridExtra)
+library(pander)
 
 library(evoteams)
 
@@ -31,6 +32,75 @@ scale_fill_team_factor <- scale_fill_manual(values = team_colors)
 
 base_plot <- ggplot() +
   base_theme
+
+# data used in multiple chunks
+exp2 <- expand.grid(
+  feedback_type = feedback_types,
+  team_structure = team_structures
+)
+# > exp2
+#   feedback_type team_structure
+# 1           yes     synchronic
+# 2            no     synchronic
+# 3       enforce     synchronic
+# 4           yes     diachronic
+# 5            no     diachronic
+# 6       enforce     diachronic
+exp2$classification_accuracy <- c(62, 58, 78, 81, 69, 83)/100
+exp2 %<>%
+  recode_team_structures %>%
+  recode_feedback_types
+
+exp2_treatment_no <- exp2 %>%
+  filter(feedback_type %in% c("yes", "no"))
+
+exp2_treatment_yes <- exp2 %>%
+  filter(feedback_type %in% c("yes", "enforce"))
+
+treatment_plot <- base_plot +
+  geom_bar(aes(feedback_factor, classification_accuracy, fill = team_factor),
+           stat = "identity", width = default_bar_width, alpha = default_alpha) +
+  facet_wrap("team_factor", nrow = 1) +
+  xlab("Feedback") +
+  scale_y_classification_accuracy +
+  scale_fill_team_factor +
+  guides(fill = "none")
+
+# ---- iv-table
+ivs <- list(
+  `Team structure` = c("diachronic", "synchronic"),
+  `Feedback` = c("yes", "no", "enforce"),
+  `Problem` = c("adaptive", "insight")
+)
+pandoc.table(ivs, caption = "Independent variables.", justify = "left")
+
+# ---- experiment-table
+exps <- data.frame(
+    row.names = c("Experiment", "Team structure", "Problem", "Feedback"),
+    `0` = c("Pilot", "solo", "adaptive, insight", "yes"),
+    `1` = c("Team structure", "diachronic, synchronic", "adaptive", "yes"),
+    `2` = c("Feedback", "diachronic, synchronic", "adaptive", "no, enforce"),
+    `3` = c("Insight problem", "diachronic, synchronic", "insight", NA),
+    `4` = c("Multiple problems", "diachronic, synchronic", "multiple adaptive", "yes")
+  ) %>% t %>% as.data.frame %>%
+  mutate(`#` = 1:n() - 1) %>%
+  select(`#`, everything())
+pandoc.table(exps, justify = "left", missing = "",
+             caption = "Overview of experiments and conditions. All manipulations are between team.")
+
+# ---- teamwork
+solo_v_team <- data_frame(
+  team_structure = c("solo", "team"),
+  classification_accuracy = c(0.56, 0.72)
+)
+
+(base_plot %+% solo_v_team) +
+  geom_bar(aes(team_structure, classification_accuracy, fill = team_structure),
+           stat = "identity", width = default_bar_width, alpha = default_alpha) +
+  scale_x_discrete("", labels = c("Solo", "Team")) +
+  scale_y_classification_accuracy +
+  scale_fill_manual(values = team_colors) +
+  guides(fill = "none")
 
 # ---- team-structure-results
 exp1 <- data_frame(
@@ -70,7 +140,8 @@ hours_plot <- (base_plot %+% hours) +
   coord_cartesian(ylim = c(0, 8), xlim = c(0, 8)) +
   scale_x_continuous("Calendar hours", seq(0, 8, by = 2)) +
   scale_y_continuous("Labor hours", seq(0, 32, by = 2)) +
-  theme(legend.position = "top")
+  theme(legend.position = "top") +
+  ggtitle("Calendar and labor hours")
 
 submissions <- data_frame(
   team_structure = team_structures,
@@ -83,7 +154,8 @@ submissions_plot <- (base_plot %+% submissions) +
   xlab("") +
   ylab("Submissions") +
   scale_fill_team_factor +
-  guides(fill = "none")
+  guides(fill = "none") +
+  ggtitle("Submissions")
 
 grid.arrange(hours_plot, submissions_plot, nrow = 1)
 
@@ -102,42 +174,11 @@ delegation <- data_frame(
   guides(fill = "none") +
   ggtitle("Delegation")
 
-# ---- feedback-results
-exp2 <- expand.grid(
-  feedback_type = feedback_types,
-  team_structure = team_structures
-)
-# > exp2
-#   feedback_type team_structure
-# 1           yes     synchronic
-# 2            no     synchronic
-# 3       enforce     synchronic
-# 4           yes     diachronic
-# 5            no     diachronic
-# 6       enforce     diachronic
-exp2$classification_accuracy <- c(62, 58, 78, 81, 69, 83)/100
-exp2 %<>%
-  recode_team_structures %>%
-  recode_feedback_types
-
-exp2_treatment_no <- exp2 %>%
-  filter(feedback_type %in% c("yes", "no"))
-
-exp2_treatment_yes <- exp2 %>%
-  filter(feedback_type %in% c("yes", "enforce"))
-
-treatment_plot <- base_plot +
-  geom_bar(aes(feedback_factor, classification_accuracy, fill = team_factor),
-           stat = "identity", width = default_bar_width, alpha = default_alpha) +
-  facet_wrap("team_factor", nrow = 1) +
-  xlab("Feedback") +
-  scale_y_classification_accuracy +
-  scale_fill_team_factor +
-  guides(fill = "none")
-
+# ---- removing-feedback-results
 (treatment_plot %+% exp2_treatment_no) +
   ggtitle("Removing feedback")
 
+# ---- enforcing-feedback-results
 (treatment_plot %+% exp2_treatment_yes) +
   ggtitle("Enforcing feedback")
 
