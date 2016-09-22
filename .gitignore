@@ -1,6 +1,7 @@
 # reproducible
 figs/
 *.html
+*.pdf
 cassettes/
 
 # python
