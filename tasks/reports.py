@@ -5,14 +5,14 @@ from .paths import REPORTS
 
 
 @task
-def render(ctx, names=None, clear_cache=False):
+def render(ctx, names=None, clear_cache=False, output='all'):
     """Compile RMarkdown reports to their output formats."""
     rmds = _parse_names(names)
     for rmd in rmds:
         if clear_cache:
             _clear_report_cache(rmd)
-        cmd = 'Rscript -e "rmarkdown::render(\'{}\')"'
-        run(cmd.format(rmd))
+        cmd = 'Rscript -e "rmarkdown::render(\'{}\', \'{}\')"'
+        run(cmd.format(rmd, output))
 
 
 @task
