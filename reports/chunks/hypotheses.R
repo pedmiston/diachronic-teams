@@ -117,7 +117,7 @@ exp1 <- data_frame(
   guides(fill = "none") +
   ggtitle("Adaptive problems")
 
-# ---- submissions-per-team
+# ---- hours
 diachronic <- data_frame(
   team_structure = "diachronic",
   calendar_hours = 0:8,
@@ -140,9 +140,11 @@ hours_plot <- (base_plot %+% hours) +
   coord_cartesian(ylim = c(0, 8), xlim = c(0, 8)) +
   scale_x_continuous("Calendar hours", seq(0, 8, by = 2)) +
   scale_y_continuous("Labor hours", seq(0, 32, by = 2)) +
-  theme(legend.position = "top") +
-  ggtitle("Calendar and labor hours")
+  theme(legend.position = "top")
 
+hours_plot
+
+# ---- submissions-plot
 submissions <- data_frame(
   team_structure = team_structures,
   submissions = c(8.3, 15.2)

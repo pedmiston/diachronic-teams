@@ -39,60 +39,50 @@ read_chunk("chunks/problem-spaces.R")
 ```{r experiment-table, results = "asis"}
 ```
 
-These experiments are designed to reveal the conditions under which diachronic collaboration is more effective than synchronic collaboration. Participants are randomly assigned into teams and given a problem to solve in a fixed amount of time. The purpose of the Pilot Experiment is to calibrate the difficulty of the problems used in the main experiments to be suitable for four person teams. Experiment 1 investigates the effect of team structure on solving adaptive problems, with the prediction that diachronic collaboration will be more effective than synchronic collaboration. To investigate whether this difference might be due to responsiveness to feedback, in Experiment 2 the feedback made available to the teams is manipulated, either removing it completely or enforcing it such that team performance is only allowed to improve. Removing feedback is predicted to impair diachronic more than synchronic performance, and enforcing feedback should improve synchronic more than diachronic performance. Experiment 3 tests the impact of team structure on solving insight problems. Unlike adaptive problems, for insight problems feedback is generally unhelpful, as there is no gradation between partial and whole solutions. In solving insight problems, diachronic collaboration is no longer predicted to be more effective than synchronic collaboration, because informative feedback is no longer available. The final Experiment 4 is an extension of Experiment 1 that addresses the discrepancy between calendar hours and labor hours in the team structure manipulation by having teams complete four problems in the same number of calendar hours.
+The experiments are designed to reveal the conditions under which diachronic collaboration is more effective than synchronic collaboration. Participants are randomly assigned into teams and given a problem to solve in a fixed amount of time. The purpose of the Pilot Experiment is to calibrate the difficulty of the problems used in the main experiments to be suitable for four person teams. Experiment 1 investigates the effect of team structure on solving adaptive problems, with the prediction that diachronic collaboration will be more effective than synchronic collaboration. To investigate whether this difference might be due to responsiveness to feedback, in Experiment 2 the feedback made available to the teams is manipulated, either removing it completely or enforcing it such that team performance is only allowed to improve. Removing feedback is predicted to impair diachronic more than synchronic performance, and enforcing feedback should improve synchronic more than diachronic performance. Experiment 3 tests the impact of team structure on solving insight problems. Unlike adaptive problems, for insight problems feedback is generally unhelpful, as there is no gradation between partial and whole solutions. In solving insight problems, diachronic collaboration is no longer predicted to be more effective than synchronic collaboration, because informative feedback is not available. The final Experiment 4 is an extension of Experiment 1 that addresses the discrepancy between calendar hours and labor hours in the team structure manipulation by having teams complete four problems in the same number of calendar hours.
 
 # 1 Team structure
 
-Experiment 1 is designed to test the hypothesis that diachronic collaboration is more effective than synchronic collaboration at solving adaptive problems. The type of adaptive problems solved by teams in Experiment 1 are classification problems. The solution to a classification problem involves generating predicted labels for unlabeled data using statistics and machine learning to improve the accuracy of the predictions. For example, a typical classification problem is to predict whether or not passengers on the Titanic survived based on their age, gender, ticket price, cabin location, and other features of the person. Classification problems are good examples of adaptive problems because there are many possible solutions, all varying in degree of success. For example, teams can use decision trees, linear regression, neural network models, and combinations of these, each varying in which features they are trained on and the parameters of the models. Given the vast space of possible solutions, a useful strategy for solving classification problems is to iteratively try out different solutions and incrementally improve classification accuracy. Although both diachronic and synchronic teams are able to iteratively develop solutions to classification problems, diachronic teams are hypothesized to be more effective than synchronic teams at utilizing this feedback to improve classification accuracy.
+Experiment 1 is designed to test the hypothesis that diachronic collaboration is more effective than synchronic collaboration at solving adaptive problems. The type of adaptive problems solved by teams in Experiment 1 are classification problems. The solution to a classification problem involves generating predicted labels for unlabeled data using statistics and machine learning to improve the accuracy of the predictions. For example, a typical classification problem is to predict whether or not passengers on the Titanic survived based on their age, gender, ticket price, cabin location, and other features of the passenger. Classification problems are good examples of adaptive problems because there are many possible solutions, all varying in degree of success. For example, teams can use decision trees, linear regression, neural network models, and combinations of these, each varying in which features they are trained on and the parameters of the models. Given the vast space of possible solutions, a useful strategy for solving classification problems is to iteratively try out different solutions and incrementally improve classification accuracy. Although both diachronic and synchronic teams are able to iteratively develop solutions to classification problems, diachronic teams are hypothesized to be more effective than synchronic teams at utilizing this feedback to improve classification accuracy.
 
 ```{r team-structure, engine = "dot", dev = "svg", fig.cap = "**Team structures.** Teams of four are allotted the same number of total labor hours to solve a problem. Synchronic teams work all at the same time on a single solution. Diachronic teams work one at a time, each inheriting the previous solution and improving it."}
 ```
 
-**Procedure**. Synchronic teams are given two hours with all four team members in the same room to write a program that accepts unlabeled data and produces predicted labels. Each team member is provided a personal work station and network access to the team's program files, but there are no constraints on how the members of the synchronic teams interact or delegate labor over the course of the two hours. Diachronic teams work one at a time, each spending two hours on the program, and are not allowed to interact with their whole team all at once. For diachronic teams, only a single workstation is needed. Team members can at any time submit their program for evaluation against the test data, and receive feedback in the form of a classification accuracy score. After eight labor hours have been spent by each team, the final version of each team's program is submitted and evaluated. The primary hypothesis tested in Experiment 1 is that diachronic collaboration will result in better team performance (higher classification accuracy) than synchronic collaboration.
+**Procedure**. Skilled and motivated participants are randomly assigned team and condition. Each team is given training data and instructed to write a program that accepts unlabeled test data and generates predicted labels. Synchronic teams are given two hours with all four team members in the same room. Each team member is provided a personal work station and network access to the team's program files, but there are no constraints on how the members of the synchronic teams interact or delegate labor over the course of the two hours. Diachronic teams work one at a time, each spending two hours on the program, and are not allowed to interact with their whole team all at once. For diachronic teams, only a single workstation is needed. Team members can at any time submit their program for evaluation against the test data, and receive feedback in the form of a classification accuracy score. After eight labor hours have been spent by each team, the final version of each team's program is submitted and evaluated. The primary hypothesis tested in Experiment 1 is that diachronic teams will produce more accurate predictions than synchronic teams.
 
 ## Is it worth it to work in teams on this problem?
 
-In order to measure the impact of team structure on team performance, it's first necessary to demonstrate that the task being performed is one that benefits from teamwork. This analysis can be done by comparing overall team performance to performance on the same problem for the same amount of time by a solo individual with equal skill and motivation working alone. Teams are expected to outperform individuals. This result is interpreted as evidence that teamwork is effective for classification problems.
-
-```{r teamwork}
-```
+In order to interpret the impact of team structure on team performance, it's important to confirm that the task being performed is one that benefits from teamwork. This analysis is done by comparing overall team performance to performance on the same problem for the same amount of time by an individual with equal skill and motivation working alone. Teams are predicted to outperform individuals on classification problems.
 
 ## Are diachronic teams more effective adaptive problem solvers?
 
-The primary hypothesis tested in Experiment 1 is that diachronic collaboration will be more effective than synchronic collaborations at solving adaptive problems. Participants are assumed to be equally skilled and motivated, in which case a difference in team performance can be attributed to the organization of the team's labor.
-
-```{r team-structure-results}
-```
+The primary hypothesis tested in Experiment 1 is that diachronic collaboration will be more effective than synchronic collaborations at solving adaptive problems. Problem solving effectiveness is measured in terms of the classification accuracy of the team's final submission. Participants are equally skilled and motivated, in which case a difference in team performance can be attributed to the structure of the team's interactions.
 
 ## Do diachronic teams make more submissions?
 
-The primary reason to diachronic teams are expected to outperform synchronic teams is because they are better able to utilize feedback and incrementally improve solutions. If this is true, we should expect to see diachronic teams make more submissions (and receive more feedback) than synchronic teams. Part of the reason diachronic teams may make more submissions reflects that submission rate may be more dependent on calendar hours than on labor hours. If controlling for submission rate by calendar hours still reveals a difference in submissions for diachronic and synchronic teams, then part of the reason diachronic teams are better able to utilize feedback is that they are engaging in a faster development cycle than synchronic teams.
+The primary reason diachronic teams are expected to outperform synchronic teams is because they are better able to utilize feedback and incrementally improve solutions. If this is true, we should expect to see diachronic teams make more submissions (and thus receive more feedback) than synchronic teams.
 
-```{r submissions-per-team, fig.width = 7, fig.cap = "**Rate of submission depends on calendar hours**. _Left_: Calendar hours are hours in the traditional sense of hours in a day. Labor hours are calendar hours multiplied by how many people are working. Both diachronic and synchronic teams are allotted 8 labor hours. While synchronic teams spend all labor hours in the first 2 calendar hours, diachronic teams spread the labor out over 8 calendar hours. _Right_: Diachronic teams are expected to make more submissions than synchronic teams, controlling for baseline submission rate, indicating that diachronic teams are engaging in faster iteration."}
+```{r hours, fig.cap = "**Calendar and labor hours**. Teams are allotted 8 total labor hours. Synchronic teams of four use all 8 labor hours in the first 2 calendar hours. Diachronic teams spread out their labor hours over 8 calendar hours."}
 ```
+
+Part of the reason diachronic teams may make more submissions reflects the fact that a team's submission rate may be more dependent on calendar hours than on labor hours. If controlling for submission rate by calendar hours still reveals a difference in submissions for diachronic and synchronic teams, then part of the reason diachronic teams are better able to utilize feedback may be because they able to engage in a faster development cycle.
 
 # 2 Feedback
 
-In Experiment 2, the feedback made available to teams about their performance is altered in order to test the hypothesis that the effectiveness of diachronic collaboration in solving adaptive problems depends on reliable sources of feedback. In the first condition, feedback is removed completely, and teams do not know their performance until the end of the experiment. Removing feedback is expected to impair diachronic more than synchronic team performance. In the second condition, feedback is enforced such that a team members contributions can only be shared with the rest of the team if that contribution measurably improves team performance. If diachronic teams are already using feedback to incrementally improve team performance, enforcing feedback should only help synchronic teams by encouraging them to focus on incremental improvements in team performance.
+In Experiment 2, the feedback made available to teams about their performance is altered in order to test the hypothesis that the effectiveness of diachronic collaboration in solving adaptive problems depends on reliable sources of feedback. In the first condition, feedback is removed completely, and teams do not know for certain their performance until the end of the experiment. Removing feedback is expected to impair diachronic more than synchronic team performance. In the second condition, feedback is enforced such that a team members contributions can only be shared with the rest of the team if that contribution measurably improves team performance. If diachronic teams are already using feedback to incrementally improve team performance, enforcing feedback should only help synchronic teams by encouraging them to focus on incremental improvements in team performance.
 
-```{r feedback, engine = "dot", dev = "svg", fig.width = 6, fig.cap = "**Feedback mechanisms**. When feedback is provided (**left**), the impact of an individual contribution on the performance of the team as a whole is made available after submitting the team's program for evaluation. When feedback is not provided (**middle**), individual contributions are shared directly with the members of the team without revealing its impact on team performance. When feedback is enforced (**right**), every contribution is evaluated, and contributions that do not improve team performance are rejected and cannot be shared with the members of the team."}
+```{r feedback, engine = "dot", dev = "svg", fig.width = 6, fig.cap = "**Feedback mechanisms**. When feedback is provided (**left**), changes in team performance are made available to the team after submitting the program for evaluation. This is the feedback condition used in Experiment 1. Experiment 2 included two other feedback conditions. Feedback is either removed (**middle**) or enforced (**right**) such that contributions that do not improve team performance are rejected and cannot be shared with the members of the team."}
 ```
 
 **Procedure**. Teams in Experiment 2 are assigned to either the no feedback condition or the enforced feedback position. In the no feedback condition, diachronic and synchronic teams are no longer able to submit their programs for evaluation prior to the end of the experiment. In the enforced feedback condition, every time a team member commits a change to the team's program files, the program is evaluated against the test data. If the contribution does not improve past team performance, it is rejected, and subject to further editing. Otherwise, the contribution is distributed to the other members of the team.
 
 ## Do diachronic teams depend on feedback?
 
-If the adaptive problem solving abilities of diachronic teams are due to increased responsiveness to feedback, then removing feedback should impair diachronic team performance more than synchronic team performance.
-
-```{r removing-feedback-results}
-```
+If the adaptive problem solving abilities of diachronic teams are due to increased responsiveness to feedback, then removing feedback should impair diachronic team performance relative to synchronic team performance.
 
 ## Does enforcing feedback improve synchronic performance?
 
 If the reason synchronic teams are outperformed by diachronic teams is that they aren't utilizing feedback as effectively, enforcing feedback so that team performance must improve through all changes to the team's solution should improve synchronic team performance more than diachronic team performance.
-
-```{r enforcing-feedback-results}
-```
 
 # 3 Insight problem
 
@@ -105,9 +95,6 @@ Experiment 3 investigates the effect of team structure on solving a problem wher
 
 ## Do synchronic teams excel at insight problems?
 
-```{r insight-results}
-```
-
 # 4 Multiple problems
 
 ```{r multiple-projects, engine = "dot", dev = "svg", fig.cap = "Two ways of allocating the same number of calendar hours toward multiple projects. In synchronic teams, team members work on each project from beginning to completion in lockstep. In diachronic teams, team members work on different projects at the same time, and collaborate over time."}
@@ -115,13 +102,7 @@ Experiment 3 investigates the effect of team structure on solving a problem wher
 
 ## Do the results extend to multiple projects?
 
-```{r multiple-projects-results}
-```
-
 ## Do teams get more efficient?
-
-```{r team-efficiency}
-```
 
 # Summary
 
