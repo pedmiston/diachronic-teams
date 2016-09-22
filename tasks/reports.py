@@ -34,7 +34,5 @@ def _parse_names(names=None):
 def _clear_report_cache(rmd):
     assert rmd.exists()
     cache_dir = unipath.Path(rmd.parent, '.cache')
-    print('clearing cache dir ', cache_dir)
     if cache_dir.isdir():
-        print('removing')
         cache_dir.rmtree()
