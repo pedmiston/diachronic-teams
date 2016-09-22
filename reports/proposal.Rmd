@@ -60,7 +60,7 @@ The primary hypothesis tested in Experiment 1 is that diachronic collaboration w
 
 ## Do diachronic teams make more submissions?
 
-The primary reason diachronic teams are expected to outperform synchronic teams is because they are better able to utilize feedback and incrementally improve solutions. If this is true, we should expect to see diachronic teams make more submissions (and thus receive more feedback) than synchronic teams.
+The primary reason diachronic teams are expected to outperform synchronic teams is because they are better able to utilize feedback and iteratively improve solutions. If this is true, we should expect to see diachronic teams make more submissions (and thus receive more feedback) than synchronic teams.
 
 ```{r hours, fig.cap = "**Calendar and labor hours**. Teams are allotted 8 total labor hours. Synchronic teams of four use all 8 labor hours in the first 2 calendar hours. Diachronic teams spread out their labor hours over 8 calendar hours."}
 ```
