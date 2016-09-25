@@ -1,5 +1,5 @@
 ---
-title: "Kaggle competition leaderboards"
+title: "The success of iteration and teamwork as strategies for winning Kaggle competitions"
 author: "Pierce Edmiston"
 output:
   html_document:
@@ -7,6 +7,14 @@ output:
     toc: true
     toc_float: true
 ---
+
+Kaggle competitions are data-oriented challenges in which teams and individuals use statistics and machine learning to make accurate predictions about unlabeled data. For example, a standard Kaggle competition is to predict the survivors of the Titanic. Given a passenger's ticket information, how accurately can teams predict whether or not the passenger survived? This example is more morbid than usual, but it's illustrative: perfect performance is often not possible in a Kaggle competition, but people can do far better than chance. The way teams improve their predictions is by using statistics and machine learning to generate more and more accurate predictions. Teams can use any method in statistics and machine learning to generate the predictions, which means there are many possible solutions to any Kaggle competition.
+
+Some methods work better for some problems than others, but what strategies work for all problems? This report investigates the success of two possible strategies to completing Kaggle competitions: **iteration** and **teamwork**. Iteration as a strategy is making multiple submissions with the goal of incrementally improving performance each time. Do teams that make more entries have a better chance of winning? The second strategy investigated in this report is the effect of teamwork. How much do additional teammates improve a team's chance of success? 
+
+The data used to answer these questions was taken from the Kaggle public leaderboards for the top 180 most popular Kaggle competitions. Although this data is public, it is not mine. Also, given the nature of the data, my conclusions are correlational. The extent to which iteration and teamwork may be causally involved in Kaggle competition success is the subject of my future research[^proposal].
+
+[^proposal]: The research proposal can be found here: [rpubs.com/pedmiston/proposal](http://rpubs.com/pedmiston/proposal).
 
 ```{r config, echo = FALSE}
 library(knitr)
@@ -30,37 +38,18 @@ read_chunk("chunks/kaggle.R")
 ```{r setup}
 ```
 
-# Top 100 places
+# Iteration
 
-```{r submissions-by-place}
+```{r submissions-from-place}
 ```
 
-```{r relative-submissions-by-place}
+```{r place-from-submissions}
 ```
 
 # Team size
 
-```{r by-place, fig.width = 8}
+```{r teamsize-from-place}
 ```
 
-# Submissions per team member
-
-```{r correlation}
-```
-
-# Predicting place
-
-```{r predicting-place-by-submissions}
-```
-
-```{r predicting-place-mod, echo = 1}
-```
-
-```{r predicting-place-mod-results, results = "asis"}
-tidy(place_mod, effects = "fixed") %>%
-  filter(term != "(Intercept)") %>%
-  pandoc.table(justify = "left")
-```
-
-```{r predicting-place, fig.width = 8}
+```{r place-from-teamsize}
 ```

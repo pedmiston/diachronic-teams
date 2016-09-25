@@ -34,11 +34,18 @@ summarize_by_place <- function(frame) {
     )
 }
 
-place_by_team_size <- top_100 %>%
+by_place <- top_100 %>%
+  group_by(first_place, place) %>%
+  summarize(
+    entries = mean(entries),
+    team_size = mean(team_size)
+  )
+
+by_team_size <- top_100 %>%
   group_by(team_size) %>%
   summarize_by_place
 
-place_by_submissions <- top_100 %>%
+by_submissions <- top_100 %>%
   group_by(entries) %>%
   summarize_by_place
 
@@ -65,15 +72,8 @@ scale_y_team_size <- scale_y_continuous("team size", breaks = 1:4)
 scale_y_submissions <- scale_y_continuous("submissions", breaks = c(1, seq(5, 100, by = 5)))
 scale_y_place <- scale_y_reverse("place", breaks = c(1, seq(10, 100, by = 10)))
 
-# ---- submissions-by-place
-by_place <- top_100 %>%
-  group_by(first_place, place) %>%
-  summarize(
-    entries = mean(entries),
-    team_size = mean(team_size)
-  )
-
-gg_entries_by_place <- ggplot(by_place, aes(place, entries)) +
+# ---- submissions-from-place
+ggplot(by_place, aes(place, entries)) +
   geom_point(aes(color = first_place), alpha = default_alpha) +
   scale_x_place +
   scale_y_submissions +
@@ -81,9 +81,52 @@ gg_entries_by_place <- ggplot(by_place, aes(place, entries)) +
   coord_cartesian(xlim = c(1, 100), ylim = c(1, 39)) +
   base_theme +
   ggtitle("Number of submissions")
-gg_entries_by_place
 
-# ---- relative-submissions-by-place
+# ---- place-from-submissions
+gg_place_from_submissions <- ggplot(by_submissions, aes(entries, place)) +
+  geom_point(aes(size = pct), alpha = default_alpha, color = colors[["submissions"]]) +
+  scale_x_continuous("submissions", breaks = c(1, seq(100, 600, by = 100))) +
+  scale_y_place +
+  scale_size_continuous("Teams", labels = percent) +
+  coord_cartesian(xlim = c(1, 600), ylim = c(1, 100)) +
+  base_theme +
+  theme(
+    legend.position = "bottom"
+  )
+
+place_mod <- lm(place ~ entries + team_size, data = top_100)
+
+x_preds <- expand.grid(entries = 1:200, team_size = 1)
+y_preds <- predict(place_mod, x_preds, se = TRUE)
+preds <- cbind(x_preds, y_preds) %>%
+  rename(place = fit, se = se.fit)
+
+gg_place_from_submissions +
+  geom_smooth(aes(ymin = place - se, ymax = place + se), data = preds,
+              stat = "identity", color = colors[["orange"]])
+
+# ---- teamsize-from-place
+ggplot(by_place, aes(place, team_size)) +
+  geom_point(aes(color = first_place), alpha = default_alpha) +
+  scale_x_place +
+  scale_y_team_size +
+  scale_color_manual(values = c(colors[["team_size"]], colors[["first_place"]])) +
+  coord_cartesian(xlim = c(1, 100), ylim = c(1:3)) +
+  base_theme +
+  ggtitle("Size of team")
+
+# ---- place-from-teamsize
+ggplot(by_team_size, aes(team_size, place)) +
+  geom_point(aes(size = pct), alpha = default_alpha, color = colors[["team_size"]]) +
+  scale_x_continuous("team size", breaks = c(1, seq(10, 40, by = 10))) +
+  scale_y_place +
+  scale_size_continuous("Teams", labels = percent) +
+  base_theme +
+  theme(
+    legend.position = "bottom"
+  )
+
+# ---- relative-submissions-from-place
 submissions_relative_first_place <- top_100 %>%
   group_by(slug) %>%
   mutate(
@@ -100,18 +143,6 @@ ggplot(submissions_relative_first_place, aes(place, submissions_relative_first_p
   scale_color_manual(values = c(colors[["submissions"]], colors[["first_place"]])) +
   base_theme
 
-# ---- by-place
-gg_team_size_by_place <- ggplot(by_place, aes(place, team_size)) +
-  geom_point(aes(color = first_place), alpha = default_alpha) +
-  scale_x_place +
-  scale_y_team_size +
-  scale_color_manual(values = c(colors[["team_size"]], colors[["first_place"]])) +
-  coord_cartesian(xlim = c(1, 100), ylim = c(1:3)) +
-  base_theme +
-  ggtitle("Size of team")
-
-grid.arrange(gg_entries_by_place, gg_team_size_by_place, ncol = 2)
-
 # ---- correlation
 place_breaks <- c(100, 50, 25, 1)
 first_place <- by_place %>% filter(place == 1) %>% as.list
@@ -122,43 +153,3 @@ ggplot(by_place, aes(team_size, entries)) +
   scale_color_manual(values = c("gray", colors[["first_place"]])) +
   coord_cartesian(xlim = c(1, 3), ylim = c(1, 39)) +
   base_theme
-
-# ---- predicting-place-by-submissions
-gg_place_by_submissions <- ggplot(place_by_submissions, aes(entries, place)) +
-  geom_point(aes(size = pct), alpha = default_alpha, color = colors[["submissions"]]) +
-  scale_x_continuous("submissions", breaks = c(1, seq(100, 600, by = 100))) +
-  scale_y_place +
-  scale_size_continuous("Teams", labels = percent) +
-  coord_cartesian(xlim = c(1, 600), ylim = c(1, 100)) +
-  base_theme +
-  theme(
-    legend.position = "bottom"
-  )
-
-gg_place_by_submissions
-
-# ---- predicting-place-mod
-place_mod <- lm(place ~ entries + team_size, data = top_100)
-
-# ---- predicting-place-by-submissions-with-error
-x_preds <- expand.grid(entries = 1:200, team_size = 1)
-y_preds <- predict(place_mod, x_preds, se = TRUE)
-preds <- cbind(x_preds, y_preds) %>%
-  rename(place = fit, se = se.fit)
-
-gg_place_by_submissions +
-  geom_smooth(aes(ymin = place - se, ymax = place + se), data = preds,
-              stat = "identity", color = colors[["orange"]])
-
-# ---- predicting-place
-gg_place_by_team_size <- ggplot(place_by_team_size, aes(team_size, place)) +
-  geom_point(aes(size = pct), alpha = default_alpha, color = colors[["team_size"]]) +
-  scale_x_continuous("team size", breaks = c(1, seq(10, 40, by = 10))) +
-  scale_y_place +
-  scale_size_continuous("Teams", labels = percent) +
-  base_theme +
-  theme(
-    legend.position = "bottom"
-  )
-
-grid.arrange(gg_place_by_submissions, gg_place_by_team_size, ncol = 2)
