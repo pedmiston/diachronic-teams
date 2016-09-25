@@ -54,7 +54,8 @@ base_theme <- theme_minimal() +
   theme(
     legend.position = "none",
     axis.ticks = element_blank(),
-    panel.grid.minor.x = element_blank()
+    panel.grid.minor.x = element_blank(),
+    plot.title = element_text(size = 12)
   )
 
 colors <- RColorBrewer::brewer.pal(3, "Set2")
@@ -80,7 +81,7 @@ ggplot(by_place, aes(place, entries)) +
   scale_color_manual(values = c(colors[["submissions"]], colors[["first_place"]])) +
   coord_cartesian(xlim = c(1, 100), ylim = c(1, 39)) +
   base_theme +
-  ggtitle("Number of submissions")
+  ggtitle("Top place teams make more submissions")
 
 # ---- place-from-submissions
 gg_place_from_submissions <- ggplot(by_submissions, aes(entries, place)) +
@@ -92,7 +93,8 @@ gg_place_from_submissions <- ggplot(by_submissions, aes(entries, place)) +
   base_theme +
   theme(
     legend.position = "bottom"
-  )
+  ) +
+  ggtitle("Making more submissions improves place")
 
 place_mod <- lm(place ~ entries + team_size, data = top_100)
 
@@ -113,10 +115,10 @@ ggplot(by_place, aes(place, team_size)) +
   scale_color_manual(values = c(colors[["team_size"]], colors[["first_place"]])) +
   coord_cartesian(xlim = c(1, 100), ylim = c(1:3)) +
   base_theme +
-  ggtitle("Size of team")
+  ggtitle("First place teams are usually bigger")
 
 # ---- place-from-teamsize
-ggplot(by_team_size, aes(team_size, place)) +
+gg_place_from_teamsize <- ggplot(by_team_size, aes(team_size, place)) +
   geom_point(aes(size = pct), alpha = default_alpha, color = colors[["team_size"]]) +
   scale_x_continuous("team size", breaks = c(1, seq(10, 40, by = 10))) +
   scale_y_place +
@@ -124,7 +126,19 @@ ggplot(by_team_size, aes(team_size, place)) +
   base_theme +
   theme(
     legend.position = "bottom"
-  )
+  ) +
+  ggtitle("Teammates help a little")
+
+place_mod <- lm(place ~ entries + team_size, data = top_100)
+
+x_preds <- expand.grid(entries = mean(top_100$entries), team_size = 1:5)
+y_preds <- predict(place_mod, x_preds, se = TRUE)
+preds <- cbind(x_preds, y_preds) %>%
+  rename(place = fit, se = se.fit)
+
+gg_place_from_teamsize +
+  geom_smooth(aes(ymin = place - se, ymax = place + se), data = preds,
+              stat = "identity", color = colors[["orange"]])
 
 # ---- relative-submissions-from-place
 submissions_relative_first_place <- top_100 %>%
