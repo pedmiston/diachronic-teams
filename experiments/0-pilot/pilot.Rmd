@@ -1,0 +1,35 @@
+---
+title: "Selecting adaptive and insight problems"
+author: "Pierce Edmiston"
+output:
+  html_document:
+    theme: flatly
+---
+
+```{r config, echo = FALSE, message = FALSE}
+library(knitr)
+
+opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+
+library(dplyr)
+library(pander)
+```
+
+```{r cost, results = 'asis'}
+subjs_per_dataset <- 4
+
+data_frame(
+  problem = c("adaptive", "insight"),
+  `datasets (starting)` = c(8, 15),
+  participants = `datasets (starting)` * subjs_per_dataset,
+  `datasets (final)` = c(4, 10),
+  `per participant ($)` = c(10, 5),
+  `total cost ($)` = participants * `per participant ($)`
+) %>% 
+  bind_rows(data_frame(`total cost ($)` = sum(.$`total cost ($)`))) %>%
+  pandoc.table(justify = "left", split.tables = Inf, missing = "")
+```

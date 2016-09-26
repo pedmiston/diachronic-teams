@@ -1,0 +1,38 @@
+---
+title: "Investigating the effect of team structure on adaptive problem solving"
+author: "Pierce Edmiston"
+output:
+  html_document:
+    theme: flatly
+---
+
+```{r config, echo = FALSE, message = FALSE}
+library(knitr)
+
+opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+
+library(dplyr)
+library(pander)
+```
+
+```{r cost, results = 'asis'}
+team_size <- 4
+teams_per_structure <- 20
+cost_per_participant <- 20
+
+total_participants <- team_size * teams_per_structure
+total_cost <- total_participants * cost_per_participant
+
+list(
+  `team structures` = c("diachronic", "synchronic"),
+  `team size` = team_size,
+  `teams per structure` = teams_per_structure,
+  `total participants` = total_participants,
+  `per participant ($)` = cost_per_participant,
+  `total cost ($)` = total_cost
+) %>% pandoc.table(split.table = Inf)
+```
