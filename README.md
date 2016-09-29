@@ -2,7 +2,7 @@
 
 This research project investigates the role of iteration and inheritance in successful collaborations by comparing the problem solving abilities of teams arranged either diachronically or synchronically.
 
-![](/static/team-structures.svg)
+![](/static/team-structures.png)
 
 # Installing
 
