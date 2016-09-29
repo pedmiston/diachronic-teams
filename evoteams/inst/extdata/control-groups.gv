@@ -11,10 +11,9 @@ digraph {
   s, a[fillcolor="#66C2A5"];
   b[fillcolor="#FC8D62"];
   c[fillcolor="#8DA0CB"];
-  d[fillcolor="#E78AC3"];
 
   // Invisible last nodes
-  sinv, ainv, binv, cinv, dinv[style=invis];
+  sinv, ainv, binv, cinv[style=invis];
 
   subgraph cluster0 {
     label="Solo team";
@@ -26,7 +25,6 @@ digraph {
     a -> ainv;
     b -> binv;
     c -> cinv;
-    d -> dinv;
   }
 
 }
