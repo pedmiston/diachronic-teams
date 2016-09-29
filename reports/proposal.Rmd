@@ -1,14 +1,13 @@
 ---
-title: "Diachronic collaboration yields adaptive problem solving"
+title: "What is the role of inheritance in the problem solving abilities of individuals?"
 author: "Pierce Edmiston"
+bibliography: diachronic-collaboration.bib
 output:
   html_document:
     theme: flatly
     css: style.css
     fig_caption: true
 ---
-
-In understanding and explaining human cultural evolution, two causes that must be balanced are the relative roles of our cognitive abilities and the abilities afforded by the culture we are brought up in. Humans are smart, but we are also hoarders; human cultures accumulate artifacts, ideas, and information far more than any other culture [but see @]. Part of what makes this accumulation helpful is that people never have to start from scratch when solving a problem. People today inherit and adapt existing solutions to problems so pervasively as to make the story of technological invention one of near continuous change, with each new invention depending heavily on its precursors [@Ballas]. But what this historical evidence does not provide is a way to understand more directly the role of inheritance may play in the problem solving abilities of individuals. The experiments below are designed to test and measure the impact of inheritance on the problem solving abilities of individuals working together in teams. In the control condition, teams of four are given two hours in the same room to solve a problem. In the experimental condition, teams work one at a time, each inheriting as a starting point the previous team member's solution. Determining the types of problem solving most affected by team structure will be used as evidence to argue for the role of inheritance in understanding the problem solving abilities of humans. If inheritance plays a role in determining problem solving ability, then it suggests that the tools and abilities that allow and facilitate inheritance--e.g., having a way to inherit and modify past solutions--may be more important factors in the explaining the evolution of technology than accounting for the ingenuity of individuals.
 
 ```{r config, echo = FALSE, message = FALSE}
 library(knitr)
@@ -30,6 +29,16 @@ read_chunk("chunks/problem-spaces.R")
 ```
 
 ```{r hypotheses}
+```
+
+What individuals can do and learn to do today critically depends on what others were able to do yesterday. Humans are smart, but we are also hoarders; human cultures accumulate artifacts, ideas, and information far more than any other animal [but see @Hunt:2003dj]. Part of what makes this accumulation helpful is that people never have to start from scratch when solving a problem. Inventors, for example, inherit and adapt existing solutions to problems so pervasively as to make the history of technology one of near continuous change, with each new invention depending heavily on its precursors [@Basalla:1989wq]. But what this historical evidence does not provide is a way to understand more directly the role inheritance may play in the problem solving abilities of individuals. The experiments below are designed to test and measure the impact of inheritance on the problem solving abilities of individuals working together in teams. In the control condition, three person teams are given two hours in the same room to solve a problem. In the experimental condition, teams work one at a time, each inheriting as a starting point the previous team member's solution. The effect of inheritance on problem solving ability is measured by improvement in solution success per labor hour when a starting solution is inherited compared to when it must be created.
+
+```{r team-structure, engine = "dot"}
+```
+
+Much depends on the type of problem being solved. In order to be an informative experiment, the problems must be hard enough to benefit from teamwork but not so hard as to prevent contributions from all team members. These conditions can be met by recruiting skilled and motivated participants, and verifying the difficulty of the problems with additional control groups. Under these conditions, where teamwork is helpful but not essential to problem solving, the role of inheritance on the problem solving ability of individuals can be measured.
+
+```{r control-groups, engine = "dot"}
 ```
 
 # Design
@@ -121,3 +130,5 @@ Participants in Experiment 4 work on four different problems in a row. Do they g
 # Summary
 
 These experiments are designed to reveal the problem solving capacities of teams organized either diachronically or synchronically. The purpose of this investigation is not to prescribe certain team structures over others, since it seems likely that the most effective teams have elements of both team structures, but to outline the conditions for which diachronic collaboration is most effective. Diachronic collaboration is hypothesized to be most effective in solving problems that can be adapted in response to feedback. Since adaptive problem solving forms the basis for technological evolution, these results suggest that the methods and mechanisms that allow for diachronic collaboration might be critical to explaining the evolution of our species.
+
+# References
