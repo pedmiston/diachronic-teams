@@ -1,20 +1,25 @@
 from glob import glob
 
 from invoke import task, run
-import unipath
+from unipath import Path
 
 from .paths import PROJ
 
+
 @task
 def render(ctx, names=None, clear_cache=False, output='all',
-           directory='reports'):
+           directory='reports', open_on_exit=False, report_ext='html'):
     """Compile RMarkdown reports to their output formats."""
+    cmd = 'Rscript -e "rmarkdown::render(\'{rmd}\', \'{output_dir}\')"'
     rmds = _parse_names(directory, names)
     for rmd in rmds:
         if clear_cache:
             _clear_report_cache(rmd)
-        cmd = 'Rscript -e "rmarkdown::render(\'{}\', \'{}\')"'
-        run(cmd.format(rmd, output))
+        run(cmd.format(rmd=rmd, output_dir=output))
+
+        if open_on_exit:
+            output_file = Path(rmd.parent, '{}.{}'.format(rmd.stem, report_ext))
+            run('open {}'.format(output_file))
 
 
 @task
@@ -29,13 +34,14 @@ def list_chunks(ctx, chunk_file):
 
 def _parse_names(directory, names=None):
     names = names or '*.Rmd'
-    matcher = '{proj}/{directory}/**/{names}'
-    return glob(matcher.format(proj=PROJ, directory=directory, names=names),
-                recursive=True)
+    matcher = '{proj}/{directory}/**/{names}'.format(
+        proj=PROJ, directory=directory, names=names
+    )
+    return [Path(rmd) for rmd in glob(matcher, recursive=True)]
 
 
 def _clear_report_cache(rmd):
     assert rmd.exists()
-    cache_dir = unipath.Path(rmd.parent, '.cache')
+    cache_dir = Path(rmd.parent, '.cache')
     if cache_dir.isdir():
         cache_dir.rmtree()

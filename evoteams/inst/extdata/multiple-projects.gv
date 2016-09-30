@@ -2,6 +2,7 @@ digraph {
   fontname=helvetica;
   node[fontname=helvetica; label=""; style=filled; width=0.5];
   rankdir=LR;
+  bgcolor=transparent;
 
   // Determine subgraph order
   d1a, s1a;

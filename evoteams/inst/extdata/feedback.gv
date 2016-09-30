@@ -2,6 +2,7 @@ digraph {
   rankdir = BT;
   node[label="", shape=circle, fontname=helvetica; style=filled];
   edge[fontname=helvetica];
+  bgcolor=transparent;
 
   fontname=helvetica;
   label = "Feedback conditions";

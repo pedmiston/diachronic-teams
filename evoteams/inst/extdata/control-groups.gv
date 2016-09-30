@@ -3,6 +3,7 @@ digraph {
   node[fontname=helvetica; label=""; style=filled; width=0.5];
   edge[minlen=4.0];
   rankdir=LR;
+  bgcolor=transparent;
 
   // Determine subgraph order
   a, s
