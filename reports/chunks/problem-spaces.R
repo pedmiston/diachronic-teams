@@ -4,13 +4,13 @@ library(tidyr)
 library(dplyr)
 library(stringr)
 
-problem_space_levels <- c("adaptive", "insight")
-problem_space_labels <- c("Adaptive problem", "Insight problem")
+problem_space_levels <- c("classification", "insight")
+problem_space_labels <- c("Classification problem", "Insight problem")
 
 x_range <- seq(-5, 5, length.out = 100)
 
 curves <- list(
-  adaptive = function(x) {
+  classification = function(x) {
     # brownian noise
     sig2 <- 0.01
     noise <- rnorm(length(x) - 1, sd = sqrt(sig2))

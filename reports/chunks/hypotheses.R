@@ -77,7 +77,7 @@ pandoc.table(ivs, caption = "Independent variables.", justify = "left")
 # ---- experiment-table
 exps <- data.frame(
     row.names = c("Experiment", "Team structure", "Problem", "Feedback"),
-    `0` = c("Pilot", "solo", "adaptive, insight", "yes"),
+    `0` = c("Pilot", "solo, expensive", "adaptive, insight", "yes"),
     `1` = c("Team structure", "diachronic, synchronic", "adaptive", "yes"),
     `2` = c("Feedback", "diachronic, synchronic", "adaptive", "no, enforce"),
     `3` = c("Insight problem", "diachronic, synchronic", "insight", NA),
