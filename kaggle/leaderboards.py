@@ -1,29 +1,21 @@
 #!/usr/bin/env python3
 import sys
 import logging
+
 import pandas
 import requests
 import bs4
-from betamax import Betamax
-from unipath import Path
+import betamax
 
 logger = logging.getLogger(__name__)
 session = requests.Session()
-
-CASSETTES = Path('cassettes')
-if not CASSETTES.isdir():
-    CASSETTES.mkdir()
-
-with Betamax.configure() as config:
-    config.cassette_library_dir = CASSETTES
-    config.default_cassette_options['record_mode'] = 'new_episodes'
 
 
 def get_leaderboard(slug):
     output = 'slug team_name team_members team_size entries score'.split()
     url = 'https://www.kaggle.com/c/{}/leaderboard'
 
-    with Betamax(session).use_cassette('leaderboards'):
+    with betamax.Betamax(session).use_cassette('leaderboards'):
         response = session.get(url.format(slug))
         html = response.content.decode()
 

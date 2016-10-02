@@ -1,17 +1,17 @@
 import requests
+import betamax
 import pandas
 
+session = requests.Session()
 
 def get_competitions(page):
     url = 'https://www.kaggle.com/competitions.json'
-    kwargs = dict(
-        sortBy='numberOfTeams',
-        group='all',
-        page=page,
-        site='main',
-    )
-    response = requests.get(url, params=kwargs)
-    records = response.json()['competitions']
+    kwargs = dict(sortBy='numberOfTeams', group='all', page=page, site='main')
+
+    with betamax.Betamax(session).use_cassette('competitions'):
+        response = session.get(url, params=kwargs)
+        records = response.json()['competitions']
+
     competitions = pandas.DataFrame.from_records(records)
     # Extract slug from last component of URL
     competitions['slug'] = (competitions.competitionUrl
