@@ -30,7 +30,8 @@ summarize_by_place <- function(frame) {
       n = n()
     ) %>%
     mutate(
-      pct = n/sum(n)      
+      pct = n/sum(n),
+      pct_label = percent(pct)
     )
 }
 
@@ -139,6 +140,15 @@ preds <- cbind(x_preds, y_preds) %>%
 gg_place_from_teamsize +
   geom_smooth(aes(ymin = place - se, ymax = place + se), data = preds,
               stat = "identity", color = colors[["orange"]])
+
+# ---- additional-teammates
+max_team_size <- 4
+
+gg_place_from_teamsize %+% filter(by_team_size, team_size <= max_team_size) +
+  scale_x_continuous("team size", breaks = 1:max_team_size) +
+  geom_text(aes(label = pct_label), nudge_y = 1.2) +
+  guides(size = "none") +
+  ggtitle("By far most submissions are from individuals")
 
 # ---- relative-submissions-from-place
 submissions_relative_first_place <- top_100 %>%
