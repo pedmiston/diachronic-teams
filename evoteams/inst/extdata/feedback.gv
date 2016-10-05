@@ -14,7 +14,7 @@ digraph {
 
   // Shapes
   yfeedback, efeedback[shape=rect, label="Evaluator"];
-  nfeedback[style=none, shape=none, width=0]
+  nfeedback[style=invis, width=0];
 
   subgraph cluster0 {
     label = "Yes";

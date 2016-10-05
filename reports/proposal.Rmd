@@ -8,7 +8,12 @@ output:
     theme: flatly
     css: style.css
     fig_caption: true
+    toc: true
+    toc_float: true
+    toc_depth: 1
 ---
+
+What individuals can do and learn to do today critically depends on what others were able to do yesterday. Humans are smart, but we are also hoarders; human cultures accumulate artifacts, ideas, and information far more than any other animal. Part of what makes this accumulation helpful is that people never have to start from scratch when solving a problem. Inventors, for example, inherit and adapt existing solutions to problems so pervasively as to make the history of technology one of near continuous change, with each new invention depending heavily on its precursors [@Basalla:1989wq]. But what this historical evidence does not provide is a way to understand more directly the role inheritance may play in the problem solving abilities of individuals. Does inheriting someone else's solution just give a head start on a problem or does it actually make for more effective problem solving? The purpose of this research is to better understand the role of inheritance in the problem solving ability of individuals.
 
 ```{r config, echo = FALSE, message = FALSE}
 library(knitr)
@@ -17,9 +22,9 @@ opts_chunk$set(
   message = FALSE,
   warning = FALSE,
   dev = "svg",
+  fig.height = 3,
+  fig.width = 3,
   fig.path = "figs/",
-  fig.height = 4,
-  fig.width = 4,
   fig.align = "center",
   cache = FALSE  # warning! cache is bad with graphviz * svg * read_chunk
 )
@@ -33,23 +38,15 @@ read_chunk("chunks/problem-spaces.R")
 ```{r hypotheses}
 ```
 
-What individuals can do and learn to do today critically depends on what others were able to do yesterday. Humans are smart, but we are also hoarders; human cultures accumulate artifacts, ideas, and information far more than any other animal[^uniqueness]. Part of what makes this accumulation helpful is that people never have to start from scratch when solving a problem. Inventors, for example, inherit and adapt existing solutions to problems so pervasively as to make the history of technology one of near continuous change, with each new invention depending heavily on its precursors [@Basalla:1989wq]. But what this historical evidence does not provide is a way to understand more directly the role inheritance may play in the problem solving abilities of individuals. Does inheriting a partial solution just give people a head start or does it actually make them more effective problem solvers? The experiments below are designed to test and measure the impact of inheritance on the problem solving abilities of individuals by studying their productivity in teams. In the control condition, three person teams are given two hours in the same room to solve a problem. Because the members of the team are all working at the same time, these are called **synchronic teams**. In the experimental condition, teamwork is not synchronous and is instead organized around inheritance over time. These **diachronic teams** work one at a time, each (other than the first) inheriting as a starting point the previous team member's solution. My hypothesis is that organizing teamwork diachronically will make for more effective problem solving. These results would explain how the tools and abilities that facilitate inheritance and diachronic collaboration may serve to bootstrap the problem solving abilities of humans.
+To answer this question, I consider the simplest form of inheritance where one person works on a solution to a problem and passes it on to a second person to serve as the starting point for continued work. Wikipedia article writing is an example of this type of teamwork. My hypothesis is that organizing teamwork around inheritance or **diachronic** teamwork will result in more effective problem solving than other strategies for allocating the same number of labor hours (Experiment 1). The two alternative strategies that are considered in Experiment 1 are (a) individuals working alone for the same total amount of time (**solo** "teams") and (b) teams of two working together at the same time (**synchronic** versus diachronic). The remaining experiments are designed to test the reasons and conditions under which inheritance leads to more effective problem solving. The first proposed reason is that organizing teamwork around inheritance makes solutions more responsive to feedback (Experiments 2 and 3). When solutions are inherited rather than designed, improvements are likely to be incremental and thus dependent on informative sources of feedback. The second proposed reason is that inheritance is most effective when the members of the team have overlapping skills. This question is posed as a modeling question to be reported as Experiment 4. Experiment 5 is an important extension of Experiment 1 that addresses the discrepancy between calendar hours and labor hours in the team structure manipulation by having diachronic and synchronic teams complete multiple problems in the same number of calendar hours. Together these results would suggest that the tools and abilities that facilitate inheritance may have served to bootstrap the problem solving abilities of humans.
 
-[^uniqueness]: Some elements of cumulative culture appear in other animals. See @Hunt:2003dj for an investigation of inherited variation in tools among New Caledonian crows.
-
-```{r team-structure, engine = "dot", fig.cap = "Team structures. Teams of three are allotted the same number of labor hours to solve a problem. Synchronic teams work all at the same time on a single solution. Diachronic teams work one at a time, each (other than the first) inheriting the previous solution and improving it. The extent to which diachronic teamwork is more effective than synchronic teamwork is proposed as a test of the role of inheritance in the problem solving ability of individuals."}
+```{r team-structures, engine = "dot", fig.width = 2, fig.cap = "Teams are allotted the same number of labor hours to solve a problem. In **diachronic** teams, the experimental condition, team members work one at a time on a solution, and the second team member inherits the first team member's solution as a starting point. The two control conditions are **solo** \"teams\" where individuals work alone on a solution for the same total amount of time, and **synchronic** teams who instead of working one at a time, work together at the same time. The extent to which diachronic teams are more effective than either solo or synchronic teams is proposed as a test of the role of inheritance in the problem solving ability of individuals."}
 ```
-
-The conclusions that can be drawn from these experiments depend heavily on the problem being solved. Obviously there are many problems that cannot be accomplished by three-person teams each working for two hours, and many more that are not difficult enough to warrant teamwork. In addition to being the right level of difficulty, the problems must also allow for inheritance of solutions. The final requirement is that there are objective measures of solution success. These requirements enable the investigation of the role of inheritance in problem solving ability.
-
-Why might inheritance lead to more effective problem solving? One potential explanation is that inheriting an existing solution promotes responsiveness to feedback. If this is true, then altering the feedback available to teams should differentially impact diachronic and synchronic teams. What these results would mean for our understanding of cultural evolution is that inheritance may have the strongest impact on problem solving ability for problems where there are informative sources of feedback.
 
 # Design
 
-```{r experiment-table, results = "asis"}
+```{r experiment-table, results = 'asis'}
 ```
-
-The experiments are designed to reveal the conditions under which diachronic collaboration based on inheritance is more effective than synchronic collaboration. Participants are randomly assigned into teams and given a problem to solve in a fixed amount of time. The purpose of the Pilot Experiment is to calibrate the difficulty of the problems used in the main experiments to be difficult enough to warrant teamwork, but not impossible for the individual participants to progress given enough time. Experiment 1 investigates the effect of team structure on solving classification problems, with the prediction that diachronic collaboration will be more effective than synchronic collaboration. To investigate whether this difference might be due to responsiveness to feedback, in Experiment 2 the feedback made available to the teams is manipulated, either removing it completely or enforcing it such that team performance is only allowed to improve. Removing feedback is predicted to impair diachronic more than synchronic performance, and enforcing feedback should improve synchronic more than diachronic performance. Experiment 3 tests the impact of team structure on solving insight problems. Unlike classification problems, for insight problems feedback is generally unhelpful, as there is no gradation between partial and whole solutions. In solving insight problems, diachronic collaboration is no longer predicted to be more effective than synchronic collaboration, because informative feedback is not available. The final Experiment 4 is an extension of Experiment 1 that addresses the discrepancy between calendar hours and labor hours in the team structure manipulation by having teams complete four problems in the same number of calendar hours.
 
 # 1. Team structure
 
@@ -57,80 +54,64 @@ Experiment 1 is designed to test the hypothesis that diachronic collaboration is
 
 [^kaggle]: For some preliminary evidence of the role of iteration in completing real world classification problems, see my analysis of [classification competition leaderboards](http://rpubs.com/pedmiston/kaggle).
 
-```{r all-teams, engine = "dot", fig.width = 6, fig.cap = "All team structures. **Synchronic teams** are the primary control group, where team members work all at the same time and can discuss and divide labor without constraint. **Diachronic teams** are the experimental condition organized around inheritance where team members work one at a time, each (after the first) starting with the previous team member's solution. To verify that teamwork is necessary to solve the problem, **solo \"teams\"** are recruited and work alone for 6 hours in 2 hour increments. **Expensive teams** are given 3 times as many labor hours as diachronic and synchronic teams and are used to estimate ceiling performance. The effect of inheritance on the problem solving ability of teams is measured as the difference in solution success between diachronic and synchronic teams."}
-```
-
 **Procedure**. Skilled and motivated participants are randomly assigned team and condition. Each team is given training data and instructed to write a program that accepts unlabeled test data and generates predicted labels. Synchronic teams are given two hours with all four team members in the same room. Each team member is provided a personal work station and network access to the team's program files, but there are no constraints on how the members of the synchronic teams interact or delegate labor over the course of the two hours. Diachronic teams work one at a time, each spending two hours on the program, and are not allowed to interact with their whole team all at once. Diachronic teamwork is incentivized by explaining diachronic team structures and rewarding participants based on team performance, not on individual performance. For diachronic teams, only a single workstation is needed. In either team, members can at any time submit their program for evaluation against the test data, and receive feedback in the form of a classification accuracy score. After eight labor hours have been spent by each team, the final version of each team's program is submitted and evaluated. The primary hypothesis tested in Experiment 1 is that diachronic teams will produce more accurate predictions than synchronic teams.
 
-## Is it worth it to work in teams on this problem?
+## Research questions
 
-In order to interpret the impact of team structure on team performance, it's important to confirm that the task being performed is one that benefits from teamwork. This analysis is done by comparing overall team performance to performance on the same problem for the same amount of time by an individual with equal skill and motivation working alone (**solo teams**). Teams are predicted to outperform individuals on classification problems.
+**Are diachronic teams more effective problem solvers?** The primary hypothesis tested in Experiment 1 is that diachronic collaboration will be more effective than synchronic collaborations at solving classification problems. Problem solving effectiveness is measured in terms of the classification accuracy of the team's final submission. Participants are equally skilled and motivated, in which case a difference in team performance can be attributed to the structure of the team's interactions.
 
-## Are diachronic teams more effective adaptive problem solvers?
-
-The primary hypothesis tested in Experiment 1 is that diachronic collaboration will be more effective than synchronic collaborations at solving classification problems. Problem solving effectiveness is measured in terms of the classification accuracy of the team's final submission. Participants are equally skilled and motivated, in which case a difference in team performance can be attributed to the structure of the team's interactions.
-
-## Do diachronic teams make more submissions?
-
-The primary reason diachronic teams are expected to outperform synchronic teams is because they are better able to utilize feedback and iteratively improve solutions. If this is true, we should expect to see diachronic teams make more submissions (and thus receive more feedback) than synchronic teams.
-
-```{r hours, fig.cap = "Calendar and labor hours. Teams are allotted 8 total labor hours. Synchronic teams of four use all 8 labor hours in the first 2 calendar hours. Diachronic teams spread out their labor hours over 8 calendar hours."}
-```
-
-Part of the reason diachronic teams may make more submissions reflects the fact that a team's submission rate may be more dependent on calendar hours than on labor hours. If controlling for submission rate by calendar hours still reveals a difference in submissions for diachronic and synchronic teams, then part of the reason diachronic teams are better able to utilize feedback may be because they able to engage in a faster development cycle.
+**Do diachronic teams make more submissions?** The primary reason diachronic teams are expected to outperform synchronic teams is because they are better able to utilize feedback and iteratively improve solutions. If this is true, we should expect to see diachronic teams make more submissions (and thus receive more feedback) than synchronic teams. Part of the reason diachronic teams may make more submissions reflects the fact that a team's submission rate may be more dependent on calendar hours than on labor hours. If controlling for submission rate by calendar hours still reveals a difference in submissions for diachronic and synchronic teams, then part of the reason diachronic teams are better able to utilize feedback may be because they able to engage in a faster development cycle.
 
 # 2. Feedback
 
 In Experiment 2, the feedback made available to teams about their performance is altered in order to test the hypothesis that the effectiveness of diachronic collaboration in solving problems depends on reliable sources of feedback. In the first condition, feedback is removed completely, and teams do not know for certain their performance until the end of the experiment. Removing feedback is expected to impair diachronic more than synchronic team performance. In the second condition, feedback is enforced such that a team members contributions can only be shared with the rest of the team if that contribution measurably improves team performance. If diachronic teams are already using feedback to incrementally improve team performance, enforcing feedback should help synchronic teams more by encouraging them to focus on adaptive and incremental improvements in team performance.
 
-```{r feedback, engine = "dot", fig.width = 6, fig.cap = "Feedback mechanisms. When feedback is provided (**left**), changes in team performance are made available to the team after submitting the program for evaluation. This is the feedback condition used in Experiment 1. Experiment 2 includes two other feedback conditions. Feedback is either removed (**middle**) or enforced (**right**) such that contributions that do not improve team performance are rejected and cannot be shared with the members of the team."}
+```{r feedback, engine = "dot", fig.width = 4, fig.cap = "Feedback mechanisms. When feedback is provided (**left**), teams can submit solutions for evaluation. This is the feedback condition used in Experiment 1. Experiment 2 includes two other feedback conditions. Feedback is either removed (**middle**) or enforced (**right**) such that changes to a solution that do not improve solution success are rejected."}
 ```
 
 **Procedure**. Teams in Experiment 2 are assigned to either the no feedback condition or the enforced feedback position. In the no feedback condition, diachronic and synchronic teams are no longer able to submit their programs for evaluation prior to the end of the experiment. In the enforced feedback condition, every time a team member submits a change to the team's program files, the program is evaluated against the test data. If the contribution does not improve past team performance, it is rejected, and returned for further editing. Otherwise, the contribution can be distributed to the other members of the team.
 
-## Do diachronic teams depend on feedback?
+## Research questions
 
-If the adaptive problem solving abilities of diachronic teams are due to increased responsiveness to feedback, then removing feedback should impair diachronic team performance relative to synchronic team performance.
+**Do diachronic teams depend on feedback?** If the adaptive problem solving abilities of diachronic teams are due to increased responsiveness to feedback, then removing feedback should impair diachronic team performance relative to synchronic team performance.
 
-## Does enforcing feedback improve synchronic performance?
-
-If the reason synchronic teams are outperformed by diachronic teams is that they aren't utilizing feedback as effectively, enforcing feedback so that team performance must improve through all changes to the team's solution should improve synchronic team performance more than diachronic team performance.
+**Does enforcing feedback improve synchronic performance?** If the reason synchronic teams are outperformed by diachronic teams is that they aren't utilizing feedback as effectively, enforcing feedback so that team performance must improve through all changes to the team's solution should improve synchronic team performance more than diachronic team performance.
 
 # 3. Insight problem
 
 Not all problems have informative sources of feedback. Where classification problems have many possible solutions, all varying in degree of success, insight problems have only one solution; they are either solved or not. Experiment 3 investigates the effect of team structure on solving insight problems. Because feedback is unhelpful, diachronic teams do not have an advantage in being able to incrementally improve solutions. For teamwork to be helpful in solving an insight problem, everyone in a team should search for the solution in parallel. This type of problem solving is hypothesized to be better equipped for synchronic collaboration.
 
-```{r problem-spaces, fig.width = 6}
+```{r problem-spaces, fig.width = 4, fig.height = 2}
 ```
 
 The insight problems in Experiment 3 are similarly data-oriented to facilitate comparison across experiments. Participants with the same skills and motivation compete in a "Draw my data" contest. In this contest, teams are given artificial data and asked to identify the object who's image is contained hidden within the data. Solving this problem requires searching through the many variables of the data (most of them irrelevant) and visualizing various combinations until the correct view of the data is discovered. Discovering the object that was "drawn" in the data is the moment of insight that solves the problem.
 
 **Procedure**. Teams complete as many "Draw my data" problems as they can in 8 labor hours, organized synchronically or diachronically. Solutions are submitted by naming the object in the data. If correct, teams receive another dataset. The code used to generate the visualizations and the plots themselves are shared among the members of the team.
 
-## Do insight problems benefit from teamwork?
+## Research questions
 
-Before the effect of team structure on performance can be interpreted, the effectiveness of teamwork in solving insight problems first needs to be demonstrated. Teams are expected to complete insight problems at a faster rate than individuals working alone.
+**Do synchronic teams excel at insight problems?** Without feedback to guide iteration and change, diachronic teams no longer have an advantage over synchronic teams when solving insight problems. Synchronic teams are expected to outperform diachronic teams because they are better able to coordinate search for the solution in parallel.
 
-## Do synchronic teams excel at insight problems?
+# 4. Overlapping skills
 
-Without feedback to guide iteration and change, diachronic teams no longer have an advantage over synchronic teams when solving insight problems. Synchronic teams are expected to outperform diachronic teams because they are better able to coordinate search for the solution in parallel.
+One of the proposed reasons for why inheritance might make for more effective problem solving is that inheritance of solutions is an efficient use of labor hours when team members have overlapping skills. However, it is inherently difficult to manipulate the skills of participants coming in to an experiment, and so an alternative approach where problem solving abilities of teams are modeled is used.
 
-# 4. Multiple problems
+**Procedure**. Individuals are initialized with differing skills in two domains and arranged in either diachronic or synchronic teams to solve some problem. Diachronic teams, since individuals work one at a time, can use both of an individuals skills in order to attempt an improvement of the team's solution. Synchronic teams, since individuals have to work at the same time, delegate problem solving by domain to the most qualified team member. I intend to show that as the skill level of the team members overlaps, diachronic collaboration becomes more effective than synchronic collaboration. Conversely, when team members differ widely in skills, synchronic collaboration is expected to become more effective.
+
+# 5. Multiple problems
 
 The purpose of Experiment 4 is to replicate Experiment 1 and extend it to include teams solving multiple adaptive problems over the same number of calendar hours. In Experiment 1, synchronic teams completed their task in 2 calendar hours, where diachronic teams required 8. Even if diachronic teams outperformed synchronic teams, synchronic collaboration may still be seen as effective because they completed the task sooner. In Experiment 4, the conclusions of Experiment 1 are tested in conditions where teams of four complete four different problems in either diachronic or synchronic teams over the same 8 calendar hour time frame.
 
-```{r multiple-projects, engine = "dot", fig.cap = "Two ways of allocating the same number of calendar hours toward multiple problems. Different people are different colors, and different projects are different shapes. In synchronic teams, team members work on each problem from beginning to end in lockstep. In diachronic teams, team members work on different problems at the same time, and collaborate over time."}
+```{r multiple-problems, engine = "dot", fig.cap = "Two ways of allocating the same number of calendar hours toward multiple problems. Different people are different colors, and different projects are different shapes. In synchronic teams, team members work on each problem from beginning to end in lockstep. In diachronic teams, team members work on different problems at the same time, and collaborate over time."}
 ```
 
 **Procedure**. Experiment 4 is conducted like Experiment 1, except both teams now compete for 8 hours. Diachronic teams are now placed in the same room with three workstations so they can work all at the same time, though they are prevented from working on unassigned problems.
 
-## Do the results extend to multiple problems?
+## Research questions
 
-The predicted results for Experiment 4 are that diachronic teams will outperform synchronic teams across multiple problems.
+**Do the results extend to multiple problems?** The predicted results for Experiment 4 are that diachronic teams will outperform synchronic teams across multiple problems.
 
-## Do teams get more efficient?
-
-Participants in Experiment 4 work on four different problems in a row. Do they get better at solving adaptive problems?
+**Do teams get more efficient?** Participants in Experiment 4 work on four different problems in a row. Do they get better at solving adaptive problems?
 
 # Summary
 

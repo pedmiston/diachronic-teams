@@ -1,6 +1,6 @@
 digraph {
   rankdir=LR;
-  label="Multiple projects";
+  label="Multiple problems";
   labelloc=t;
   fontname=helvetica;
   bgcolor=transparent;

@@ -77,15 +77,15 @@ pandoc.table(ivs, caption = "Independent variables.", justify = "left")
 # ---- experiment-table
 exps <- data.frame(
     row.names = c("Experiment", "Team structure", "Problem", "Feedback"),
-    `0` = c("Pilot", "solo, expensive", "adaptive, insight", "yes"),
-    `1` = c("Team structure", "diachronic, synchronic", "adaptive", "yes"),
-    `2` = c("Feedback", "diachronic, synchronic", "adaptive", "no, enforce"),
-    `3` = c("Insight problem", "diachronic, synchronic", "insight", NA),
-    `4` = c("Multiple problems", "diachronic, synchronic", "multiple adaptive", "yes")
+    `1` = c("Team structure", "diachronic, solo, synchronic", "classification", "yes"),
+    `2` = c("Feedback", "diachronic, synchronic", "classification", "no, enforce"),
+    `3` = c("Insight problem", "diachronic, synchronic", "insight", "yes"),
+    `4` = c("Overlapping skills", "diachronic, synchronic", "(modeling)", "yes"),
+    `5` = c("Multiple problems", "diachronic, synchronic", "multiple classification", "yes")
   ) %>% t %>% as.data.frame %>%
-  mutate(`#` = 1:n() - 1) %>%
+  mutate(`#` = 1:n()) %>%
   select(`#`, everything())
-pandoc.table(exps, justify = "left", missing = "",
+pandoc.table(exps, justify = "left", missing = "", split.tables = Inf,
              caption = "Overview of experiments and conditions. All manipulations are between team.")
 
 # ---- teamwork
@@ -118,16 +118,17 @@ exp1 <- data_frame(
   ggtitle("Adaptive problems")
 
 # ---- hours
+team_size <- 2
 diachronic <- data_frame(
   team_structure = "diachronic",
-  calendar_hours = 0:8,
+  calendar_hours = 0:(2*team_size),
   labor_hours = calendar_hours
 )
 
 synchronic <- data_frame(
   team_structure = "synchronic",
   calendar_hours = 0:2,
-  labor_hours = calendar_hours * 4
+  labor_hours = calendar_hours * team_size
 )
 
 hours <- rbind(diachronic, synchronic) %>%
@@ -137,7 +138,7 @@ hours_plot <- (base_plot %+% hours) +
   geom_line(aes(calendar_hours, labor_hours, color = team_factor),
             size = 1.5) +
   scale_color_manual("", values = team_colors) +
-  coord_cartesian(ylim = c(0, 8), xlim = c(0, 8)) +
+  coord_cartesian(ylim = c(0, 4), xlim = c(0, 4)) +
   scale_x_continuous("Calendar hours", seq(0, 8, by = 2)) +
   scale_y_continuous("Labor hours", seq(0, 32, by = 2)) +
   theme(legend.position = "top")
