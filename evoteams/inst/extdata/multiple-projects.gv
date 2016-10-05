@@ -1,8 +1,11 @@
 digraph {
-  fontname=helvetica;
-  node[fontname=helvetica; label=""; style=filled; width=0.5];
   rankdir=LR;
+  label="Multiple projects";
+  labelloc=t;
+  fontname=helvetica;
   bgcolor=transparent;
+
+  node[fontname=helvetica; label=""; style=filled; width=0.5];
 
   // Set cluster order (top to bottom) by initializing
   // nodes in each cluster starting from bottom to top

@@ -1,5 +1,7 @@
 digraph {
   rankdir=LR;
+  label="Team structures";
+  labelloc=t;
   fontname=helvetica;
   bgcolor=transparent;
 
