@@ -1,5 +1,5 @@
 # reproducible
-data-raw/kaggle/*.csv
+data-raw/kaggle/*.sqlite
 data/*.rda
 
 .Rproj.user
