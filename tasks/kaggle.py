@@ -1,8 +1,6 @@
 from invoke import task
 from unipath import Path
-import pandas
-
-import kaggle
+import webbrowser
 
 
 ROOT = Path(__file__).absolute().ancestor(2)
@@ -14,30 +12,10 @@ if not DST.isdir():
 
 
 @task
-def competitions(ctx, n_pages=10):
-    """Scrape pages of Kaggle competition listings."""
-    competitions = kaggle.get_competition_pages(n_pages)
-    competitions.to_csv(Path(DST, 'competitions.csv'), index=False)
-
-
-@task
-def leaderboards(ctx, competitions=None, stop=False):
-    """Download current leaderboards from Kaggle competitions."""
-    if competitions and Path(competitions).exists():
-        # A path to a custom competitions file was given
-        slugs = read_competition_slugs_from_file(competitions)
-    elif competitions:
-        # Get leaderboard for a single competition
-        slugs = [competitions]
-    else:
-        # Look for competitions in expected location
-        slugs = read_competition_slugs_from_file(Path(DST, 'competitions.csv'))
-
-    leaderboards = kaggle.get_leaderboards(slugs, skip=not stop)
-    leaderboards.to_csv(Path(DST, 'leaderboards.csv'), index=False)
-
-
-def read_competition_slugs_from_file(csv):
-    competitions = pandas.read_csv(csv)
-    assert 'slug' in competitions
-    return competitions.slug
+def download(ctx):
+    """Download the public Kaggle competition sqlite database."""
+    downloads_url = "https://www.kaggle.com/kaggle/meta-kaggle/downloads/{}"
+    filename = "database.sqlite.zip"
+    webbrowser.open(downloads_url.format(filename))
+    print("When the download completes, unzip it and move it to the R pkg:\n"
+          "\t$ unzip ~/Downloads/database.sqlite.zip -d evoteams/data-raw/kaggle")

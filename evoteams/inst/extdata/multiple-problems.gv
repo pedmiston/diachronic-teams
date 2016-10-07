@@ -3,7 +3,7 @@ digraph {
   label="Multiple problems";
   labelloc=t;
   fontname=helvetica;
-  bgcolor=transparent;
+  // bgcolor=transparent;
 
   node[fontname=helvetica; label=""; style=filled; width=0.5];
 
