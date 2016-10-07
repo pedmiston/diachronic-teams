@@ -3,7 +3,7 @@ digraph {
   label="Feedback conditions";
   labelloc="t";
   fontname=helvetica;
-  bgcolor=transparent;
+  // bgcolor=transparent;
 
   node[label="", shape=circle, fontname=helvetica; style=filled];
   edge[fontname=helvetica];

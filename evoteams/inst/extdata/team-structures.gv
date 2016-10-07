@@ -3,7 +3,7 @@ digraph {
   label="Team structures";
   labelloc=t;
   fontname=helvetica;
-  bgcolor=transparent;
+  // bgcolor=transparent;
 
   node[fontname=helvetica; label=""; style=filled];
 
