@@ -1,0 +1,8 @@
+---
+title: "Models of diachronic and synchronic problem solvers"
+author: "Pierce Edmiston"
+output:
+  html_document:
+    theme: flatly
+---
+
