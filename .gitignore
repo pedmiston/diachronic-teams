@@ -2,6 +2,7 @@
 figs/
 *.html
 *.pdf
+*.docx
 cassettes/
 
 # python

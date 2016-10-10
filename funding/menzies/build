@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+pandoc -t docx -A references.md -A use-of-funds.md proposal.md \
+    -o Edmiston-Menzies-Application.docx
