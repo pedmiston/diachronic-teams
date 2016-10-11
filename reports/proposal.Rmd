@@ -1,8 +1,8 @@
 ---
 title: "What is the role of inheritance in the problem solving abilities of individuals?"
 author: "Pierce Edmiston"
-bibliography: ../docs/refs/diachronic-collaboration.bib
-csl: ../docs/refs/apa.csl
+bibliography: ../docs/references/diachronic-collaboration.bib
+csl: ../docs/references/apa.csl
 output:
   html_document:
     theme: flatly
