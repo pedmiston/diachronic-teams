@@ -7,14 +7,16 @@ from .paths import PROJ
 
 
 @task
-def render(ctx, names=None, clear_cache=False, output='all',
+def render(ctx, names=None, cache_clear=False, figs_clear=False, output='all',
            directory='reports', open_on_exit=False, report_ext='html'):
     """Compile RMarkdown reports to their output formats."""
     cmd = 'Rscript -e "rmarkdown::render(\'{rmd}\', \'{output_dir}\')"'
     rmds = _parse_names(directory, names)
     for rmd in rmds:
-        if clear_cache:
+        if cache_clear:
             _clear_report_cache(rmd)
+        if figs_clear:
+            _clear_report_figs(rmd)
         run(cmd.format(rmd=rmd, output_dir=output))
 
         if open_on_exit:
@@ -45,3 +47,9 @@ def _clear_report_cache(rmd):
     cache_dir = Path(rmd.parent, '.cache')
     if cache_dir.isdir():
         cache_dir.rmtree()
+
+def _clear_report_figs(rmd):
+    assert rmd.exists()
+    figs_dir = Path(rmd.parent, 'figs')
+    if figs_dir.isdir():
+        figs_dir.rmtree()
