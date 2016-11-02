@@ -14,15 +14,40 @@ opts_chunk$set(
   message = FALSE,
   warning = FALSE,
   fig.path = "figs/",
+  fig.width = 6,
+  fig.height = 3,
   cache.path = ".cache/"
 )
 
 read_chunk("chunks/modeling.R")
 read_chunk("chunks/problem-spaces.R")
+read_chunk("chunks/time.R")
+crotchet::read_graphviz_chunk("team-structures", "evoteams")
 ```
 
 ```{r setup}
 ```
+
+# Team structures
+
+```{r team-structures, engine = "dot", fig.width = 3}
+```
+
+When is diachronic teamwork a more efficient use of labor hours than synchronic teamwork?
+
+# Labor hours versus calendar hours
+
+The definition of "efficient" used in this research is based on the minimization of labor hours required to solve some problem. Diachronic and synchronic teams consume labor hours per calendar hour at different rates. The comparison of diachronic and synchronic teamwork proposed here requires controlling for labor hours. My prediction is that the solution to many problems depends more heavily on calendar hours than on labor hours, in which case diachronic teamwork should be a more efficient use of labor hours than synchronic teamwork.
+
+```{r time}
+```
+
+```{r hours-per-team, fig.width = 3, fig.height = 3}
+```
+
+# Team abilities
+
+Teams vary in how much their members overlap in skills. Teams made up of identical team members are likely to be different in problem solving ability than teams of diverse problem solvers. Diachronic teamwork is expected to be most advantageous to teams with largely overlapping skill sets.
 
 ```{r team-abilities}
 ```
@@ -30,44 +55,9 @@ read_chunk("chunks/problem-spaces.R")
 ```{r search-areas}
 ```
 
+# Problem spaces
+
+The sort of problem being studied in this research is one with many possible solutions, all varying in degree of success. That there are multiple "peaks" in the space of possible solutions is critical to ensure some possibility of getting stuck with a locally maximal solution.
+
 ```{r problem-spaces}
-```
-
-```{r team-structures, engine = "dot", fig.width = 3}
-digraph {
-  rankdir=LR;
-  label="Team structures";
-  labelloc=t;
-  fontname=helvetica;
-  // bgcolor=transparent;
-
-  node[fontname=helvetica; label=""; style=filled];
-
-  // Set cluster order (top to bottom) by initializing
-  // nodes in each cluster starting from bottom to top
-  s1, d1;
-
-  // Shapes are projects
-  d1, d2, s1, s2[shape=circle];
-
-  // Colors are people
-  s1, d1[fillcolor="#66C2A5"];
-  s2, d2[fillcolor="#8DA0CB"];
-
-  // Invisible last nodes
-  dinv1, sinv1, sinv2[style=invis, width=0];
-
-
-  subgraph cluster1 {
-    label="Diachronic";
-    d1 -> d2 -> dinv1;
-  }
-
-  subgraph cluster2 {
-    label="Synchronic";
-    s1 -> sinv1;
-    s2 -> sinv2;
-  }
-
-}
 ```
