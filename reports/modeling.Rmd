@@ -18,6 +18,7 @@ opts_chunk$set(
 )
 
 read_chunk("chunks/modeling.R")
+read_chunk("chunks/problem-spaces.R")
 ```
 
 ```{r setup}
@@ -26,10 +27,13 @@ read_chunk("chunks/modeling.R")
 ```{r team-abilities}
 ```
 
-```{r search-areas, results = 'hold', fig.height = 2, fig.width = 2}
+```{r search-areas}
 ```
 
-```{r team-structures, engine = "dot", fig.width = 2}
+```{r problem-spaces}
+```
+
+```{r team-structures, engine = "dot", fig.width = 3}
 digraph {
   rankdir=LR;
   label="Team structures";
