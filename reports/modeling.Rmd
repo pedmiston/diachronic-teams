@@ -6,3 +6,64 @@ output:
     theme: flatly
 ---
 
+```{r config, echo = FALSE, message = FALSE}
+library(knitr)
+
+opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  fig.path = "figs/",
+  cache.path = ".cache/"
+)
+
+read_chunk("chunks/modeling.R")
+```
+
+```{r setup}
+```
+
+```{r team-abilities}
+```
+
+```{r search-areas, results = 'hold', fig.height = 2, fig.width = 2}
+```
+
+```{r team-structures, engine = "dot", fig.width = 2}
+digraph {
+  rankdir=LR;
+  label="Team structures";
+  labelloc=t;
+  fontname=helvetica;
+  // bgcolor=transparent;
+
+  node[fontname=helvetica; label=""; style=filled];
+
+  // Set cluster order (top to bottom) by initializing
+  // nodes in each cluster starting from bottom to top
+  s1, d1;
+
+  // Shapes are projects
+  d1, d2, s1, s2[shape=circle];
+
+  // Colors are people
+  s1, d1[fillcolor="#66C2A5"];
+  s2, d2[fillcolor="#8DA0CB"];
+
+  // Invisible last nodes
+  dinv1, sinv1, sinv2[style=invis, width=0];
+
+
+  subgraph cluster1 {
+    label="Diachronic";
+    d1 -> d2 -> dinv1;
+  }
+
+  subgraph cluster2 {
+    label="Synchronic";
+    s1 -> sinv1;
+    s2 -> sinv2;
+  }
+
+}
+```
