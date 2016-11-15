@@ -27,9 +27,15 @@ def render(ctx, names=None, cache_clear=False, figs_clear=False, output='all',
 @task
 def list_chunks(ctx, chunk_file):
     """Print the available chunks to use in an RMarkdown document"""
+    if not Path(chunk_file).exists():
+        chunk_file = Path('reports/chunks', chunk_file)
+        if not chunk_file.exists():
+            raise AssertionError('chunk file {} not found'.format(chunk_file))
+
     chunks = [line.strip().split()[-1]
               for line in open(chunk_file, 'r').readlines()
               if line.startswith('# ---- ')]
+
     for chunk in chunks:
         print(chunk)
 
