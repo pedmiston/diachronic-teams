@@ -1,6 +1,6 @@
 # reproducible
-data-raw/kaggle/*.sqlite
 data/*.rda
+inst/extdata/kaggle.sqlite
 
 .Rproj.user
 .Rhistory
