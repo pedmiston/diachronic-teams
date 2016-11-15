@@ -1,20 +1,47 @@
-library(tools)
+library(magrittr)
 library(dplyr)
-library(readr)
 library(devtools)
 
-data_files <- list.files("data-raw", pattern = "*.csv",
-                         full.names = TRUE, recursive = TRUE)
-stem <- function(path) file_path_sans_ext(basename(path))
+db <- src_sqlite("data-raw/kaggle/database.sqlite")
+# src_tbls(db)
 
-for (path in data_files) {
-  frame <- read_csv(path)
-  name <- stem(path)
-  assign(name, frame)
-}
+teams <- tbl(db, "Teams") %>%
+  select(TeamId = Id, CompetitionId)
+
+team_sizes <- tbl(db, "TeamMemberships") %>%
+  select(TeamId, UserId) %>%
+  count(TeamId) %>%
+  rename(TeamSize = n)
+
+n_submissions <- tbl(db, "Submissions") %>%
+  select(TeamId) %>%
+  left_join(teams) %>%
+  group_by(CompetitionId) %>%
+  count(TeamId) %>%
+  rename(Submissions = n) %>%
+  ungroup
+
+max_scores <- tbl(db, "Submissions") %>%
+  select(TeamId, PublicScore) %>%
+  left_join(teams) %>%
+  group_by(CompetitionId, TeamId) %>%
+  summarize(Score = max(PublicScore)) %>%
+  ungroup
+
+leaderboards <- left_join(n_submissions, max_scores) %>%
+  left_join(team_sizes) %>%
+  as_data_frame() %>%
+  na.omit()
+
+# Convert to format used in original reports
+leaderboards %<>% rename(
+  slug = CompetitionId,
+  score = Score,
+  team_size = TeamSize,
+  entries = Submissions
+)
 
 use_data(
-  competitions,
   leaderboards,
   overwrite = TRUE
 )

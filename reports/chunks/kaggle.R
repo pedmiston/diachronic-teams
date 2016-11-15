@@ -13,6 +13,8 @@ library(AICcmodavg)
 library(evoteams)
 data("leaderboards")
 
+leaderboards %<>% mutate(team_size = as.numeric(team_size))
+
 leaderboards %<>%
   group_by(slug) %>%
   arrange(desc(score)) %>%
