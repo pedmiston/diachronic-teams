@@ -9,48 +9,80 @@ library(scales)
 library(lme4)
 library(AICcmodavg)
 
-# data
 library(evoteams)
-data("leaderboards")
 
-leaderboards %<>% mutate(team_size = as.numeric(team_size))
+db <- connect_kaggle()
 
-leaderboards %<>%
-  group_by(slug) %>%
-  arrange(desc(score)) %>%
-  mutate(place = 1:n()) %>%
-  ungroup
+# Get submissions
+
+submissions <- tbl(db, "Submissions") %>%
+  select(TeamId, DateSubmitted, Score = PublicScore) %>%
+  as_data_frame() %>%  # break DBI to allow normal data_frame functions, e.g., n()
+  group_by(TeamId) %>%
+  arrange(DateSubmitted) %>%
+  mutate(SubmissionNum = 1:n()) %>%
+  ungroup()
+
+# Get leaderboards
+
+# Get final submissions for each team
+final_submissions <- submissions %>%
+  group_by(TeamId) %>%
+  filter(SubmissionNum == max(SubmissionNum)) %>%
+  rename(TotalSubmissions = SubmissionNum) %>%
+  ungroup()
+
+# Label competition id
+team_competitions <- tbl(db, "Teams") %>%
+  select(TeamId = Id, CompetitionId)
+
+team_sizes <- tbl(db, "TeamMemberships") %>%
+  select(TeamId, UserId) %>%
+  count(TeamId) %>%
+  rename(TeamSize = n)
+
+teams <- left_join(team_competitions, team_sizes)
+
+final_submissions %<>% left_join(teams, copy = TRUE)
+
+# Create leaderboards
+leaderboards <- final_submissions %>%
+  group_by(CompetitionId) %>%
+  arrange(desc(Score)) %>%  # assumes bigger scores are better
+  mutate(Place = 1:n()) %>%
+  ungroup() %>%
+  as_data_frame()
 
 top_100 <- leaderboards %>%
-  filter(place <= 100) %>%
-  mutate(first_place = place == 1)
+  filter(Place <= 100) %>%
+  mutate(FirstPlaceTeam = Place == 1)
 
 summarize_by_place <- function(frame) {
   frame %>%
     summarize(
-      place = mean(place),
-      n = n()
+      Place = mean(Place),
+      NTeams = n()
     ) %>%
     mutate(
-      pct = n/sum(n),
-      pct_label = percent(pct)
+      PercentTeams = NTeams/sum(NTeams),
+      PercentTeamsLabel = percent(PercentTeams)
     )
 }
 
 by_place <- top_100 %>%
-  group_by(first_place, place) %>%
+  group_by(FirstPlaceTeam, Place) %>%
   summarize(
-    entries = mean(entries),
-    team_size = mean(team_size)
+    TotalSubmissions = mean(TotalSubmissions),
+    Team = mean(TeamSize)
   )
 
 by_team_size <- top_100 %>%
-  group_by(team_size) %>%
-  summarize_by_place
+  group_by(TeamSize) %>%
+  summarize_by_place()
 
 by_submissions <- top_100 %>%
-  group_by(entries) %>%
-  summarize_by_place
+  group_by(TotalSubmissions) %>%
+  summarize_by_place()
 
 # theme
 base_theme <- theme_minimal() +
@@ -77,8 +109,8 @@ scale_y_submissions <- scale_y_continuous("submissions", breaks = c(1, seq(5, 10
 scale_y_place <- scale_y_reverse("place", breaks = c(1, seq(10, 100, by = 10)))
 
 # ---- submissions-from-place
-ggplot(by_place, aes(place, entries)) +
-  geom_point(aes(color = first_place), alpha = default_alpha) +
+ggplot(by_place, aes(Place, TotalSubmissions)) +
+  geom_point(aes(color = FirstPlaceTeam), alpha = default_alpha) +
   scale_x_place +
   scale_y_submissions +
   scale_color_manual(values = c(colors[["submissions"]], colors[["first_place"]])) +
@@ -99,19 +131,19 @@ gg_place_from_submissions <- ggplot(by_submissions, aes(entries, place)) +
   ) +
   ggtitle("Making more submissions improves place")
 
-place_mod <- lm(place ~ entries + team_size, data = top_100)
+place_mod <- lm(Place ~ entries + team_size, data = top_100)
 
 x_preds <- expand.grid(entries = 1:200, team_size = 1)
 y_preds <- predict(place_mod, x_preds, se = TRUE)
 preds <- cbind(x_preds, y_preds) %>%
-  rename(place = fit, se = se.fit)
+  rename(Place = fit, SE = se.fit)
 
 gg_place_from_submissions +
-  geom_smooth(aes(ymin = place - se, ymax = place + se), data = preds,
+  geom_smooth(aes(ymin =  Place - SE, ymax =  Place + SE), data = preds,
               stat = "identity", color = colors[["orange"]])
 
 # ---- teamsize-from-place
-ggplot(by_place, aes(place, team_size)) +
+ggplot(by_place, aes(Place, team_size)) +
   geom_point(aes(color = first_place), alpha = default_alpha) +
   scale_x_place +
   scale_y_team_size +
