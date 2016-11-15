@@ -41,6 +41,17 @@ leaderboards %<>% rename(
   entries = Submissions
 )
 
+# Enumerate submissions per team
+
+submissions <- tbl(db, "Submissions") %>%
+  as_data_frame() %>%
+  group_by(TeamId) %>%
+  arrange(DateSubmitted) %>%
+  mutate(SubmissionNum = 1:n()) %>%
+  ungroup() %>%
+  select(TeamId, Score = PublicScore, SubmissionNum)
+
+
 use_data(
   leaderboards,
   overwrite = TRUE
