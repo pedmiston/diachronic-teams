@@ -8,11 +8,7 @@ output:
     toc_float: true
 ---
 
-Kaggle competitions are data-oriented challenges in which teams and individuals use statistics and machine learning to make accurate predictions about unlabeled data. Teams can use any method to generate the predictions, which means there are many possible solutions to any Kaggle competition. Some methods work better for some problems than others, but what strategies work for all problems? This report investigates the success of two possible strategies to completing Kaggle competitions: **iteration** and **team size**. Iteration as a strategy is making multiple submissions with the goal of incrementally improving performance each time. Do teams that make more entries have a better chance of winning? The second strategy investigated in this report is the effect of team size. How much do additional teammates improve a team's chance of success? 
-
-The data used to answer these questions was taken from the Kaggle public leaderboards for the top 180 most popular Kaggle competitions. Although this data is public, it is not mine. Also, given the nature of the data, my conclusions are correlational. The extent to which iteration and teamwork may be causally involved in Kaggle competition success is the subject of my future research.[^proposal]
-
-[^proposal]: The research proposal can be found here: [rpubs.com/pedmiston/proposal](http://rpubs.com/pedmiston/proposal).
+Kaggle competitions are data-oriented challenges in which teams and individuals use statistics and machine learning to make accurate predictions about unlabeled data. Teams can use any method to generate the predictions, which means there are many possible solutions to any Kaggle competition. Some methods work better for some problems than others, but what strategies work for all problems? This report investigates the success of two possible strategies to completing Kaggle competitions: **iteration** and **team size**. Iteration as a strategy in a Kaggle competition is making multiple submissions with the goal of incrementally improving performance each time. Do teams that make more submissions have a better chance of winning? The second strategy investigated in this report is the effect of team size. How much do additional teammates improve a team's chance of success?
 
 ```{r config, echo = FALSE}
 library(knitr)
@@ -22,6 +18,7 @@ library(pander)
 opts_chunk$set(
   echo = FALSE,
   message = FALSE,
+  warning = FALSE,
   dev = c("svg", "png"),
   fig.path = "figs/",
   fig.height = 3.5,
@@ -45,6 +42,9 @@ read_chunk("chunks/kaggle.R")
 ```{r submissions-from-place}
 ```
 
+```{r relative-submissions-from-place}
+```
+
 ```{r place-from-submissions}
 ```
 
@@ -54,4 +54,14 @@ read_chunk("chunks/kaggle.R")
 ```
 
 ```{r place-from-teamsize}
+```
+
+```{r place-from-teamsize-zoom}
+```
+
+# Correlation
+
+Do teams that are bigger tend to make more submissions?
+
+```{r correlation}
 ```
