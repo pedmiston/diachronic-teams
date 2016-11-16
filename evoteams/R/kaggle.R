@@ -16,3 +16,14 @@ connect_kaggle <- function(sqlite_location) {
 
   dplyr::src_sqlite(sqlite_location)
 }
+
+
+#' Label predicted place.
+#' @export
+predict_place <- function(submissions, leaderboards) {
+  breaks <- c(-Inf, leaderboards$Score, Inf)
+  submissions %>%
+    mutate(
+      PredictedPlace = cut(rev(Score), breaks=breaks, labels=FALSE)
+    )
+}
