@@ -13,10 +13,16 @@ library(evoteams)
 
 db <- connect_kaggle()
 
+# Create map between TeamId -> CompetitionId
+
+team_competitions <- tbl(db, "Teams") %>%
+  select(TeamId = Id, CompetitionId)
+
 # Get submissions
 
 submissions <- tbl(db, "Submissions") %>%
   select(TeamId, DateSubmitted, Score = PublicScore) %>%
+  left_join(team_competitions) %>%
   as_data_frame() %>%  # break DBI to allow normal data_frame functions, e.g., n()
   group_by(TeamId) %>%
   arrange(DateSubmitted) %>%
@@ -32,18 +38,13 @@ final_submissions <- submissions %>%
   rename(TotalSubmissions = SubmissionNum) %>%
   ungroup()
 
-# Label competition id
-team_competitions <- tbl(db, "Teams") %>%
-  select(TeamId = Id, CompetitionId)
-
-# Label team size
+# Label team size on leaderboards
 team_sizes <- tbl(db, "TeamMemberships") %>%
   select(TeamId, UserId) %>%
   count(TeamId) %>%
   rename(TeamSize = n)
 
-teams <- left_join(team_competitions, team_sizes)
-final_submissions %<>% left_join(teams, copy = TRUE)
+final_submissions %<>% left_join(team_sizes, copy = TRUE)
 
 # Create leaderboards
 leaderboards <- final_submissions %>%
@@ -52,6 +53,37 @@ leaderboards <- final_submissions %>%
   mutate(Place = 1:n()) %>%
   ungroup() %>%
   as_data_frame()
+
+# Predict submission place based on final leaderboard.
+
+# Given the submissions made to a competition, 
+get_predicted_places <- function(competition_submissions) {
+  place_bins <- leaderboards %>%
+    filter(CompetitionId == competition_submissions$CompetitionId[[1]]) %>%
+    mutate(
+      MinScore = Score,
+      MaxScore = lag(Score, default = Inf)
+    ) %>%
+    select(CompetitionId, MinScore, MaxScore, Place)
+  
+  get_predicted_place <- function(score) {
+    place <- place_bins %>%
+      filter(score >= MinScore, score < MaxScore) %>%
+      .$Place
+    if (length(place) == 0) place <- NA
+    place
+  }
+  
+  competition_submissions %>%
+    rowwise() %>%
+    mutate(PredictedPlace = get_predicted_place(Score))
+}
+
+submissions %<>%
+  group_by(CompetitionId) %>%
+  do({ get_predicted_places(.) })
+
+# Investigate top 100 places only
 
 top_100 <- leaderboards %>%
   filter(Place <= 100) %>%
