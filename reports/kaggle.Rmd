@@ -48,6 +48,9 @@ read_chunk("chunks/kaggle.R")
 ```{r place-from-submissions}
 ```
 
+```{r predicted-place-from-submission}
+```
+
 # Team size
 
 ```{r teamsize-from-place}

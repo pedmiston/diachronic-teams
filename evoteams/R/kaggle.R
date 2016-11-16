@@ -25,6 +25,7 @@ predict_place <- function(submissions, leaderboards) {
     leaderboards %>%
       filter(CompetitionId == competition_id) %>%
       .$Score %>%
+      unique %>%
       c(-Inf, ., Inf)
   }
 

@@ -56,32 +56,7 @@ leaderboards <- final_submissions %>%
 
 # Predict submission place based on final leaderboard.
 
-# Given the submissions made to a competition, 
-get_predicted_places <- function(competition_submissions) {
-  place_bins <- leaderboards %>%
-    filter(CompetitionId == competition_submissions$CompetitionId[[1]]) %>%
-    mutate(
-      MinScore = Score,
-      MaxScore = lag(Score, default = Inf)
-    ) %>%
-    select(CompetitionId, MinScore, MaxScore, Place)
-  
-  get_predicted_place <- function(score) {
-    place <- place_bins %>%
-      filter(score >= MinScore, score < MaxScore) %>%
-      .$Place
-    if (length(place) == 0) place <- NA
-    place
-  }
-  
-  competition_submissions %>%
-    rowwise() %>%
-    mutate(PredictedPlace = get_predicted_place(Score))
-}
-
-submissions %<>%
-  group_by(CompetitionId) %>%
-  do({ get_predicted_places(.) })
+submissions %<>% predict_place(leaderboards)
 
 # Investigate top 100 places only
 
@@ -191,6 +166,30 @@ preds <- cbind(x_preds, y_preds) %>%
 gg_place_from_submissions +
   geom_smooth(aes(ymin =  Place - SE, ymax =  Place + SE), data = preds,
               stat = "identity", color = colors[["orange"]])
+
+# ---- predicted-place-from-submission
+
+set.seed(821)
+
+sample_teams <- function(n = 1, min_submissions = 100, min_final_place = 100) {
+  team_ids <- leaderboards %>%
+    filter(
+      TotalSubmissions >= min_submissions,
+      Place <= min_final_place
+    ) %>%
+    sample_n(n) %>%
+    .$TeamId
+  
+  submissions %>% filter(TeamId %in% team_ids)
+}
+
+ggplot(sample_teams(100), aes(SubmissionNum, PredictedPlace)) +
+  geom_smooth(aes(group = TeamId, color = factor(TeamId)), method = "lm", se = FALSE) +
+  scale_x_continuous("submissions", breaks = c(1, seq(100, 1000, by = 100))) +
+  scale_y_reverse("place") +
+  base_theme +
+  theme(legend.position = "none") +
+  labs(title = "Progress of 100 random teams over submissions")
 
 # ---- teamsize-from-place
 ggplot(by_place, aes(Place, TeamSize)) +
