@@ -169,27 +169,44 @@ gg_place_from_submissions +
 
 # ---- predicted-place-from-submission
 
-set.seed(821)
+sample_teams <- function(n_teams = 1, min_submissions = 50, 
+                         min_final_place = 100, seed = NA) {
+  if (!is.na(seed)) set.seed(seed)
 
-sample_teams <- function(n = 1, min_submissions = 100, min_final_place = 100) {
   team_ids <- leaderboards %>%
     filter(
       TotalSubmissions >= min_submissions,
       Place <= min_final_place
     ) %>%
-    sample_n(n) %>%
+    sample_n(n_teams) %>%
     .$TeamId
   
   submissions %>% filter(TeamId %in% team_ids)
 }
 
-ggplot(sample_teams(100), aes(SubmissionNum, PredictedPlace)) +
-  geom_smooth(aes(group = TeamId, color = factor(TeamId)), method = "lm", se = FALSE) +
+submissions_sample <- sample_teams(n_teams = 200, seed = 821)
+
+team_submissions_plot <- ggplot(submissions_sample, aes(SubmissionNum, PredictedPlace)) +
+  geom_smooth(aes(group = TeamId), method = "lm", se = FALSE,
+              size = 0.4, alpha = 0.6, color = colors[["submissions"]]) +
   scale_x_continuous("submissions", breaks = c(1, seq(100, 1000, by = 100))) +
-  scale_y_reverse("place") +
+  scale_y_reverse("place", breaks = c(1, 100, 500, seq(1000, 5000, by = 1000))) +
   base_theme +
   theme(legend.position = "none") +
-  labs(title = "Progress of 100 random teams over submissions")
+  ggtitle("Place improves as teams make more submissions")
+
+team_submissions_mod <- lmer(PredictedPlace ~ SubmissionNum + 
+                               (SubmissionNum|TeamId) + (1|CompetitionId/TeamId),
+                             data = submissions_sample)
+
+team_submissions_preds <- data_frame(SubmissionNum = 1:100) %>%
+  cbind(., predictSE(team_submissions_mod, newdata = .)) %>%
+  rename(PredictedPlace = fit, SE = se.fit)
+
+team_submissions_plot +
+  geom_smooth(aes(ymin = PredictedPlace - SE, ymax = PredictedPlace + SE),
+              data = team_submissions_preds, color = colors[["orange"]],
+              size = 1.5)
 
 # ---- teamsize-from-place
 ggplot(by_place, aes(Place, TeamSize)) +
