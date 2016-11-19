@@ -8,7 +8,7 @@ output:
     toc_float: true
 ---
 
-Kaggle competitions are data-oriented challenges in which teams and individuals use statistics and machine learning to make accurate predictions about unlabeled data. Teams can use any method to generate the predictions. Some methods work better for some problems than others, but what strategies work for all problems? This report investigates the success of two possible strategies to completing Kaggle competitions: **iteration** and **team size**. Iteration as a strategy in a Kaggle competition is making multiple submissions with the goal of incrementally improving performance each time. Do teams that make more submissions have a better chance of winning? The second strategy investigated in this report is the effect of team size. How much do additional teammates improve a team's chance of success?
+Kaggle competitions are data-oriented challenges in which teams and individuals use statistics and machine learning to make accurate predictions about unlabeled data. Teams can use any number of methods to generate the predictions. Some methods work better for some problems than others, but what strategies work for all problems? This report investigates the success of two possible strategies to completing Kaggle competitions: **iteration** and **team size**. Iteration as a strategy in a Kaggle competition is making multiple submissions with the goal of incrementally improving performance each time. Do teams that make more submissions have a better chance of winning? The second strategy is the effect of team size. How much do additional teammates improve a team's chance of success?
 
 ```{r config, echo = FALSE}
 library(knitr)
@@ -44,7 +44,7 @@ Iteration as a strategy for solving a Kaggle competition is exhibited by teams m
 ```{r submissions-from-place}
 ```
 
-The analysis above averages by place across competition. A different way to plot the same data is as number of submissions relative to the number of submissions made by the first place team. This analysis is specific to each competition and better reflects the extent to which first place teams make more submissions than other teams in the same competition.
+The analysis above averages by place across different competitions. A different way to plot the same data is as the number of submissions relative to the number of submissions made by the first place team. This analysis is specific to each competition and better reflects the extent to which first place teams make more submissions than other teams in the same competition.
 
 ```{r relative-submissions-from-place}
 ```
@@ -56,7 +56,7 @@ Although this analysis makes sense as a correlation, it does not lend itself to 
 
 However, even this analysis is an inadequate test of the primary hypothesis because it does not reflect the ability of each team incrementally improving their solution over iterative solutions. If iteration is associated with an improvement in solution success, then as teams generate more and more solutions they should improve in place each time.
 
-To do this analysis across competitions with different distributions of scores, I needed to assign each (pre-final) submission a predicted place based on how that score would have placed against the final leaderboard.
+To do this analysis across competitions with different distributions of scores, I needed to assign each (pre-final) submission a predicted place based on how that score would have placed against the final leaderboard. Then the question of whether additional submissions tend to improve place can be answered.
 
 ```{r predicted-place-from-submission}
 ```
@@ -65,11 +65,17 @@ Kaggle competitors that make more submissions tend to place higher in the final 
 
 # Team size
 
+Another likely factor in determining the success of a Kaggle competitor is the size of the team. Although by far most Kaggle competition solutions are submitted by individuals, many different team sizes are possible. It turns out that top place teams are more likely to have additional teammates.
+
 ```{r teamsize-from-place}
 ```
 
+As with the analysis of submissions by place above, showing that top place teams tend to be larger is not the same as showing that adding a team member improves your likely place in the standings. A more accurate depiction is below, where place is estimated by team size.
+
 ```{r place-from-teamsize}
 ```
+
+The horizontal extent of the above chart is misleading in that the vast majority of teams are only a single individual. Zooming in on the most common team sizes reveals the expected positive relationship.
 
 ```{r place-from-teamsize-zoom}
 ```
@@ -80,3 +86,7 @@ Do teams that are bigger tend to make more submissions?
 
 ```{r correlation}
 ```
+
+# Time
+
+Do teams that make more submissions spend more time on the competition?

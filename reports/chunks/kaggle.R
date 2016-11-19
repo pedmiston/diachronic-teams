@@ -64,17 +64,15 @@ top_100 <- leaderboards %>%
   filter(Place <= 100) %>%
   mutate(FirstPlaceTeam = Place == 1)
 
-summarize_by_place <- function(frame) {
-  frame %>%
-    summarize(
-      Place = mean(Place),
-      NTeams = n()
-    ) %>%
-    mutate(
-      PercentTeams = NTeams/sum(NTeams),
-      PercentTeamsLabel = percent(PercentTeams)
-    )
-}
+summarize_by_place <- . %>%
+  summarize(
+    Place = mean(Place),
+    NTeams = n()
+  ) %>%
+  mutate(
+    PercentTeams = NTeams/sum(NTeams),
+    PercentTeamsLabel = percent(PercentTeams)
+  )
 
 by_place <- top_100 %>%
   group_by(FirstPlaceTeam, Place) %>%
