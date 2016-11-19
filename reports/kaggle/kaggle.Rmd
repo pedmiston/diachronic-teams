@@ -27,10 +27,16 @@ opts_chunk$set(
   cache.path = ".cache/"
 )
 
-read_chunk("chunks/kaggle.R")
+read_chunk("R/setup.R")
+read_chunk("R/theme.R")
+read_chunk("R/submissions.R")
+read_chunk("R/team-size.R")
 ```
 
 ```{r setup}
+```
+
+```{r theme}
 ```
 
 # What is Kaggle?
