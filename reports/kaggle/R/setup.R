@@ -44,15 +44,16 @@ leaderboards <- submissions %>%
   ungroup() %>%
   as_data_frame()
 
+# Determine team sizes
 team_sizes <- tbl(db, "TeamMemberships") %>%
   select(TeamId, UserId) %>%
   count(TeamId) %>%
   rename(TeamSize = n)
 leaderboards %<>% left_join(team_sizes, copy = TRUE)
 
-total_times <- submissions %>% time_interval()
-  group_by(TeamId) %>%
-  summarize(TotalTime = as.period(max(DateSubmitted) - min(DateSubmitted)))
+# Measure submission intervals
+total_times <- submissions %>% 
+  time_interval()
 leaderboards %<>% left_join(total_times)
 
 # Predict submission place based on final leaderboard.
@@ -78,28 +79,13 @@ by_place <- top_100 %>%
   group_by(FirstPlaceTeam, Place) %>%
   summarize(
     TotalSubmissions = mean(TotalSubmissions),
-    TeamSize = mean(TeamSize, na.rm = TRUE)
+    TeamSize = mean(TeamSize, na.rm = TRUE),
+    TotalTime = mean(TotalTime)
   )
 
 by_team_size <- top_100 %>%
   group_by(TeamSize) %>%
   summarize_by_place()
-
-label_submission_bins <- function(frame) {
-  submission_bin_width <- 10
-  breaks <- seq(1, max(frame$TotalSubmissions) + 1, by = submission_bin_width)
-  labels <- cbind(break_min = breaks, break_max = lead(breaks, n = 1) - 1) %>%
-    as_data_frame %>%
-    head(-1) %>%  # drop last row
-    mutate(break_means = rowMeans(.[, c("break_min", "break_max")])) %>%
-    .$break_means
-  
-  bins <- cut(frame$TotalSubmissions, breaks = breaks, labels = labels, right = FALSE)
-  bins <- as.numeric(as.character(bins))  # factor -> character -> numeric
-  
-  frame %>%
-    mutate(TotalSubmissionsBin = bins)
-}
 
 by_submissions <- top_100 %>%
   label_submission_bins() %>%

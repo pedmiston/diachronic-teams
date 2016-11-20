@@ -96,5 +96,3 @@ team_submissions_plot +
   geom_smooth(aes(ymin = PredictedPlace - SE, ymax = PredictedPlace + SE),
               data = team_submissions_preds, color = colors[["orange"]],
               size = 1.5)
-
-# ---- submission-time

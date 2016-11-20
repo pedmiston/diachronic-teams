@@ -47,6 +47,34 @@ time_interval <- function(submissions) {
       LastSubmissionTime = max(DateSubmitted)
     ) %>%
     mutate(
-      TotalTime = as.duration(interval(FirstSubmissionTime, LastSubmissionTime))
+      TotalTime = as.duration(interval(FirstSubmissionTime, LastSubmissionTime)),
+      TotalTimeSec = as.numeric(TotalTime)
     )
+}
+
+#' Cut total submissions into bins and label with the middle value.
+#' @import dplyr
+#' @export
+label_submission_bins <- function(frame, submission_bin_width = 10) {
+  breaks <- seq(1, max(frame$TotalSubmissions) + 1, by = submission_bin_width)
+  labels <- cbind(break_min = breaks, break_max = lead(breaks, n = 1) - 1) %>%
+    as_data_frame %>%
+    head(-1) %>%  # drop last row
+    mutate(break_means = rowMeans(.[, c("break_min", "break_max")])) %>%
+    .$break_means
+
+  bins <- cut(frame$TotalSubmissions, breaks = breaks, labels = labels, right = FALSE)
+  bins <- as.numeric(as.character(bins))  # factor -> character -> numeric
+
+  frame %>%
+    mutate(TotalSubmissionsBin = bins)
+}
+
+
+
+#' Create a ggplot2 scale object for time variable in seconds.
+#' @export
+make_time_scale <- function(name, breaks_days, ...) {
+  breaks_sec <- breaks_days * 24 * 3600
+  scale_y_continuous(name, breaks = breaks_sec, labels = breaks_days, ...)
 }

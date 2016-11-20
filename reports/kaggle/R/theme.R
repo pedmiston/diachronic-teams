@@ -5,7 +5,7 @@ base_theme <- theme_minimal() +
   theme(
     legend.position = "none",
     axis.ticks = element_blank(),
-    panel.grid.minor.x = element_blank(),
+    panel.grid.minor = element_blank(),
     plot.title = element_text(size = 12)
   )
 
@@ -29,3 +29,10 @@ scale_y_place <- scale_y_reverse("place", breaks = c(1, seq(10, 100, by = 10)))
 # coord cartesian
 top_100_submissions_ylim <- c(1, 39)
 top_100_places_xlim <- c(1, 100)
+
+# scaling time durations in seconds
+breaks_days <- seq(0, 200, by = 20)
+breaks_sec <- breaks_days * 24 * 3600
+scale_y_total_time <- scale_y_continuous("submission interval (days)",
+                                         breaks = breaks_sec,
+                                         labels = breaks_days)

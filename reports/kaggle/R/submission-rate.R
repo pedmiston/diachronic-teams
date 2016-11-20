@@ -58,65 +58,81 @@ total_time <- arrow_data %>%
 scale_x_team_label <- scale_x_discrete("")
 default_alpha <- 0.6
 
-gg_timeline <- ggplot(submission_rates, aes(SubmissionTime, TeamType, color = TeamType)) +
-  geom_segment(aes(x = Start, xend = End, y = TeamType, yend = TeamType),
+gg_base <- ggplot(submission_rates, aes(TeamType)) +
+  base_theme
+
+gg_timeline <- gg_base +
+  geom_segment(aes(x = TeamType, xend = TeamType,
+                   y = Start, yend = End,
+                   color = TeamType),
                data = arrow_data, alpha = default_alpha) +
-  geom_point(size = 3, alpha = default_alpha) +
-  geom_text(aes(label = TeamLabel), data = label_data, vjust = 2,
-            size = 3) +
-  scale_x_continuous("competition time", breaks = 1:10) +
-  scale_y_discrete("") +
+  geom_point(aes(y = SubmissionTime, color = TeamType), size = 3, alpha = default_alpha) +
+  geom_text(aes(y = SubmissionTime, label = TeamLabel, color = TeamType), data = label_data,
+            vjust = 2, size = 3) +
+  scale_x_discrete("team type", labels = rev(team_type_labels)) +
+  scale_y_continuous("competition time", breaks = 1:10) +
   scale_color_brewer(palette = "Set2") +
+  coord_flip() +
   base_theme +
-  ggtitle("Timeline")
+  theme(axis.text.y = element_blank())
 
 gg_num_submissions <- ggplot(submission_rates, aes(TeamLabel)) +
   geom_bar(aes(fill = TeamType), stat = "count", alpha = default_alpha) +
   scale_x_team_label +
-  scale_y_continuous("", breaks = 0:10) +
+  scale_y_continuous("number of submissions", breaks = 0:10) +
   scale_fill_brewer(palette = "Set2") +
-  base_theme +
-  ggtitle("Number of submissions")
+  base_theme
 
 gg_total_time <- ggplot(total_time, aes(TeamLabel, TotalTime)) +
   geom_bar(aes(fill = TeamType), stat = "identity", alpha = default_alpha) +
   scale_x_team_label +
-  scale_y_continuous("", breaks = 1:10) +
+  scale_y_continuous("total time", breaks = 1:10) +
   scale_fill_brewer(palette = "Set2") +
-  base_theme +
-  ggtitle("Total time")
+  base_theme
 
-align_ggplots <- function(x, y, z) {
-  to_gtable <- . %>% ggplot_build %>% ggplot_gtable
+team_type_points <- submission_rates %>%
+  group_by(TeamType) %>%
+  summarize(TotalSubmissions = n(),
+            TotalTime = max(SubmissionTime) - min(SubmissionTime)) %>%
+  recode_team_type()
 
-  x <- to_gtable(x)
-  y <- to_gtable(y)
-  z <- to_gtable(z)
-  
-  max_height <- unit.pmin(x$heights[2:3], y$heights[2:3], z$heights[2:3])
-  
-  x$heights[2:3] <- max_height
-  y$heights[2:3] <- max_height
-  z$heights[2:3] <- max_height
-  
-  arrangeGrob(x, y , z, nrow = 1)
-}
+gg_regions <- ggplot(team_type_points, aes(TotalSubmissions, TotalTime)) +
+  geom_point(aes(color = TeamType), size = 3, shape = 1, stroke = 1.5,
+             alpha = default_alpha) +
+  geom_text(aes(label = TeamLabel, color = TeamType), size = 3, nudge_y = -1) +
+  scale_x_continuous("number of submissions", breaks = 1:10) +
+  scale_y_continuous("total time", breaks = 1:9) +
+  scale_color_brewer(palette = "Set2") +
+  coord_cartesian(xlim = c(1, 10), ylim = c(0, 10)) +
+  base_theme
 
-grid.newpage()
-grid.draw(align_ggplots(gg_timeline, gg_num_submissions, gg_total_time))
+grid.arrange(gg_timeline, gg_regions,
+             gg_num_submissions, gg_total_time,
+             nrow = 2)
 
-# ----
-submission_rate <- top_100 %>%
-  label_submission_bins() %>%
-  group_by(TotalSubmissionsBin) %>%
-  summarize(
-    Total
-  )
+# ---- time-by-submission-density
+ggplot(top_100, aes(TotalSubmissions, TotalTimeSec)) +
+  geom_point(shape = 1, color = "gray") +
+  scale_x_total_submissions +
+  make_time_scale("submission interval (days)", seq(0, 400, by = 100)) +
+  base_theme
 
-
-
+# ---- time-by-submission-bins
 ggplot(by_submissions, aes(TotalSubmissionsBin, TotalTime)) +
   geom_point(aes(alpha = Place, size = PercentTeams)) +
-  scale_alpha_continuous(range = c(1, 0.1)) +
-  scale_y_time(breaks = days(seq(0, 150, by = 50))) +
-  guides(size = "none")
+  scale_x_total_submissions +
+  scale_y_total_time +
+  scale_alpha_continuous("final place", range = c(1, 0.2)) +
+  scale_size_continuous("proportion teams", breaks = c(0.01, 0.10, 0.50),
+                        labels = percent) +
+  base_theme +
+  theme(legend.position = "bottom")
+
+# ---- time-by-submission-top-100
+ggplot(by_place, aes(TotalSubmissions, TotalTime)) +
+  geom_point(aes(color = FirstPlaceTeam)) +
+  scale_x_continuous("total submissions", breaks = c(1, seq(5, 40, by = 5))) +
+  scale_color_manual(values = c("gray", colors[["first_place"]])) +
+  coord_cartesian(xlim = c(1, 35), ylim = c(0, 25 * 24 * 3600)) +
+  make_time_scale("submission interval (days)", seq(0, 100, by = 5)) +
+  base_theme

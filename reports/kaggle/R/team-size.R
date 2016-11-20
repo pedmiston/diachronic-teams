@@ -44,8 +44,6 @@ gg_place_from_teamsize %+% filter(by_team_size, TeamSize <= max_team_size) +
   guides(size = "none")
 
 # ---- correlation
-place_breaks <- c(100, 50, 25, 1)
-first_place <- by_place %>% filter(Place == 1) %>% as.list
 ggplot(by_place, aes(TeamSize, TotalSubmissions)) +
   geom_point(aes(color = FirstPlaceTeam), alpha = default_alpha, size = 2) +
   scale_x_continuous("team size", breaks = 1:4) +
