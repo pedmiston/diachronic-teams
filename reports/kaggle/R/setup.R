@@ -1,6 +1,7 @@
 # ---- setup
 library(dplyr)
 library(magrittr)
+library(lubridate)
 
 library(ggplot2)
 library(gridExtra)
@@ -19,47 +20,45 @@ team_competitions <- tbl(db, "Teams") %>%
   select(TeamId = Id, CompetitionId)
 
 # Get submissions
-
 submissions <- tbl(db, "Submissions") %>%
   select(TeamId, DateSubmitted, Score = PublicScore) %>%
   left_join(team_competitions) %>%
   as_data_frame() %>%  # break DBI to allow normal data_frame functions, e.g., n()
+  mutate(DateSubmitted = ymd_hms(DateSubmitted)) %>%
   group_by(TeamId) %>%
   arrange(DateSubmitted) %>%
   mutate(SubmissionNum = 1:n()) %>%
   ungroup()
 
-# Get leaderboards
-
-# Get final submissions for each team
-final_submissions <- submissions %>%
+# Get leaderboards (one observation per team)
+leaderboards <- submissions %>%
+  # Select the final submission for each team.
   group_by(TeamId) %>%
   filter(SubmissionNum == max(SubmissionNum)) %>%
   rename(TotalSubmissions = SubmissionNum) %>%
-  ungroup()
-
-# Label team size on leaderboards
-team_sizes <- tbl(db, "TeamMemberships") %>%
-  select(TeamId, UserId) %>%
-  count(TeamId) %>%
-  rename(TeamSize = n)
-
-final_submissions %<>% left_join(team_sizes, copy = TRUE)
-
-# Create leaderboards
-leaderboards <- final_submissions %>%
+  ungroup() %>%
+  # Assign places for each competition.
   group_by(CompetitionId) %>%
   arrange(desc(Score)) %>%  # assumes bigger scores are better
   mutate(Place = 1:n()) %>%
   ungroup() %>%
   as_data_frame()
 
-# Predict submission place based on final leaderboard.
+team_sizes <- tbl(db, "TeamMemberships") %>%
+  select(TeamId, UserId) %>%
+  count(TeamId) %>%
+  rename(TeamSize = n)
+leaderboards %<>% left_join(team_sizes, copy = TRUE)
 
+total_times <- submissions %>% time_interval()
+  group_by(TeamId) %>%
+  summarize(TotalTime = as.period(max(DateSubmitted) - min(DateSubmitted)))
+leaderboards %<>% left_join(total_times)
+
+# Predict submission place based on final leaderboard.
 submissions %<>% predict_place(leaderboards)
 
 # Investigate top 100 places only
-
 top_100 <- leaderboards %>%
   filter(Place <= 100) %>%
   mutate(FirstPlaceTeam = Place == 1)
@@ -67,6 +66,7 @@ top_100 <- leaderboards %>%
 summarize_by_place <- . %>%
   summarize(
     Place = mean(Place),
+    TotalTime = mean(TotalTime),
     NTeams = n()
   ) %>%
   mutate(
