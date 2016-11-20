@@ -1,4 +1,5 @@
 library(dplyr)
+library(lubridate)
 library(evoteams)
 
 context("Kaggle data")
@@ -25,4 +26,15 @@ test_that("submission scores bin by competition", {
   expected_places <- c(11, 1, 11, 1)
   result <- predict_place(submissions, leaderboards)
   expect_equal(result$PredictedPlace, expected_places)
+})
+
+test_that("time intervals are calculated correctly", {
+  submissions <- data_frame(
+    TeamId = c(1, 1),
+    DateSubmitted = ymd_hms("2000-01-01 00:00:00 UTC",
+                            "2000-01-01 01:00:00 UTC")
+  )
+
+  result <- time_interval(submissions)
+  expect_equal(result$TotalTime, duration(1, units = "hours"))
 })

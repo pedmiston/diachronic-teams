@@ -35,3 +35,18 @@ predict_place <- function(submissions, leaderboards) {
       PredictedPlace = cut(rev(Score), breaks=determine_breaks(CompetitionId[[1]]), labels=FALSE)
     )
 }
+
+
+#' Compute time interval between first and last submissions.
+#' @export
+time_interval <- function(submissions) {
+  submissions %>%
+    group_by(TeamId) %>%
+    summarize(
+      FirstSubmissionTime = min(DateSubmitted),
+      LastSubmissionTime = max(DateSubmitted)
+    ) %>%
+    mutate(
+      TotalTime = as.duration(interval(FirstSubmissionTime, LastSubmissionTime))
+    )
+}
