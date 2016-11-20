@@ -130,9 +130,10 @@ ggplot(by_submissions, aes(TotalSubmissionsBin, TotalTime)) +
 
 # ---- time-by-submission-top-100
 ggplot(by_place, aes(TotalSubmissions, TotalTime)) +
-  geom_point(aes(color = FirstPlaceTeam)) +
+  geom_point(aes(alpha = Place, color = FirstPlaceTeam)) +
   scale_x_continuous("total submissions", breaks = c(1, seq(5, 40, by = 5))) +
-  scale_color_manual(values = c("gray", colors[["first_place"]])) +
+  scale_color_manual(values = c("black", colors[["first_place"]])) +
+  scale_alpha_continuous(range = c(1.0, 0.2)) +
   coord_cartesian(xlim = c(1, 35), ylim = c(0, 25 * 24 * 3600)) +
   make_time_scale("submission interval (days)", seq(0, 100, by = 5)) +
   base_theme

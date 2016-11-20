@@ -42,12 +42,3 @@ gg_place_from_teamsize %+% filter(by_team_size, TeamSize <= max_team_size) +
   scale_x_continuous("team size", breaks = 1:max_team_size) +
   geom_text(aes(label = PercentTeamsLabel), nudge_y = 1.2, size = 3) +
   guides(size = "none")
-
-# ---- correlation
-ggplot(by_place, aes(TeamSize, TotalSubmissions)) +
-  geom_point(aes(color = FirstPlaceTeam), alpha = default_alpha, size = 2) +
-  scale_x_continuous("team size", breaks = 1:4) +
-  scale_y_continuous("submissions", breaks = c(1, seq(5, 100, by = 5))) +
-  scale_color_manual(values = c("gray", colors[["first_place"]])) +
-  coord_cartesian(xlim = c(1, 3), ylim = c(1, 39)) +
-  base_theme

@@ -47,12 +47,12 @@ read_chunk("R/submission-rate.R")
 
 Iteration as a strategy for solving a Kaggle competition is exhibited by teams making many submissions, each incrementally improving upon the previous ones. In this section I explore whether this is a worthwhile strategy for competing in a data science competition. Do teams that make more submissions tend to do better than teams who make fewer submissions? Any answer to this question that can be obtained through Kaggle competition leaderboards is correlational in nature, and cannot address the causal impact of imposing iteration as an experimental manipulation in how teams interact. However, there are a number of things that **should be true** if it were the case that iteration is a successful strategy in Kaggle competitions. First, we should expect to see that better placing teams tend to make more submissions. 
 
-```{r submissions-from-place}
+```{r submissions-per-place}
 ```
 
 The analysis above averages by place across different competitions. A different way to plot the same data is as the number of submissions relative to the number of submissions made by the first place team. This analysis is specific to each competition and better reflects the extent to which first place teams make more submissions than other teams in the same competition.
 
-```{r relative-submissions-from-place}
+```{r relative-submissions-per-place}
 ```
 
 Although this analysis makes sense as a correlation, it does not lend itself to causal predictions. For example, from this analysis alone we do not know the extent to which making more submissions is actually associated with an improvement in place. A more accurate depiction of this relationship predicts place by the number of submissions made by a particular team. Although the distribution of submission numbers is much more skewed than the distribution of final places in a competition, there still is a positive relationship such that teams that make more submissions tend to place better in the competition.

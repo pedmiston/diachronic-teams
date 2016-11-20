@@ -1,7 +1,7 @@
 source("reports/kaggle/R/setup.R")
 source("reports/kaggle/R/theme.R")
 
-# ---- submissions-from-place
+# ---- submissions-per-place
 ggplot(by_place, aes(Place, TotalSubmissions)) +
   geom_point(aes(color = FirstPlaceTeam), alpha = default_alpha) +
   scale_x_place +
@@ -11,7 +11,7 @@ ggplot(by_place, aes(Place, TotalSubmissions)) +
   base_theme +
   labs(title = "Top place teams make more submissions")
 
-# ---- relative-submissions-from-place
+# ---- relative-submissions-per-place
 submissions_relative_first_place <- top_100 %>%
   group_by(CompetitionId) %>%
   mutate(
@@ -42,11 +42,11 @@ gg_place_from_submissions <- ggplot(by_submissions, aes(TotalSubmissionsBin, Pla
   theme(legend.position = "bottom") +
   ggtitle("Making more submissions improves place")
 
-place_mod <- lm(Place ~ TotalSubmissions + TeamSize, data = top_100)
+place_mod <- lmer(Place ~ TotalSubmissions + (TotalSubmissions|CompetitionId),
+                  data = top_100)
 
-x_preds <- expand.grid(TotalSubmissions = 1:200, TeamSize = 1)
-y_preds <- predict(place_mod, x_preds, se = TRUE)
-preds <- cbind(x_preds, y_preds) %>%
+place_preds <- data_frame(TotalSubmissions = 1:200) %>%
+  cbind(., predictSE(place_mod, newdata = ., se = TRUE)) %>%
   rename(Place = fit, SE = se.fit) %>%
   mutate(TotalSubmissionsBin = TotalSubmissions)  # for consistency with summary
 
@@ -85,7 +85,7 @@ team_submissions_plot <- ggplot(submissions_sample, aes(SubmissionNum, Predicted
   labs(title = paste("Changes in performance for", n_teams, "teams"))
 
 team_submissions_mod <- lmer(PredictedPlace ~ SubmissionNum + 
-                               (SubmissionNum|TeamId) + (1|CompetitionId/TeamId),
+                               (SubmissionNum|CompetitionId/TeamId),
                              data = submissions_sample)
 
 team_submissions_preds <- data_frame(SubmissionNum = 1:100) %>%
@@ -96,3 +96,60 @@ team_submissions_plot +
   geom_smooth(aes(ymin = PredictedPlace - SE, ymax = PredictedPlace + SE),
               data = team_submissions_preds, color = colors[["orange"]],
               size = 1.5)
+
+# ---- team-size-submissions-correlation
+set.seed(431)
+ggplot(top_100, aes(TeamSize, TotalSubmissions)) +
+  geom_point(shape = 1, position = position_jitter(width = 0.55)) +
+  scale_x_continuous("team size", breaks = 1:25) +
+  scale_y_continuous("submissions", breaks = c(1, seq(50, 600, by = 50))) +
+  base_theme
+
+# ---- submissions-by-team-size-per-place
+ggplot(by_place, aes(TeamSize, TotalSubmissions)) +
+  geom_text(aes(label = Place, color = FirstPlaceTeam), size = 2,
+            check_overlap = TRUE) +
+  scale_x_continuous("team size", breaks = 1:4) +
+  scale_y_continuous("submissions", breaks = c(1, seq(5, 100, by = 5))) +
+  scale_color_manual(values = c("black", colors[["first_place"]])) +
+  scale_alpha_continuous(range = c(1, 0.2)) +
+  coord_cartesian(xlim = c(1, 3), ylim = c(1, 39)) +
+  base_theme
+
+# ---- submissions-controlling-for-team-size
+
+# ---- total-time-submissions-correlation
+gg_submissions_per_time <- ggplot(top_100, aes(TotalTimeSec, TotalSubmissions)) +
+  geom_point(alpha = 0.2) +
+  make_time_scale("submission interval (days)", seq(0, 450, by = 50),
+                  "scale_x_continuous") +
+  scale_y_total_submissions +
+  scale_alpha_continuous(range = c(1, 0.2)) +
+  base_theme
+
+top_100$TotalSubmissionsSqr <- top_100$TotalSubmissions^2
+
+submissions_per_time_mod <- lm(TotalTimeSec ~ TotalSubmissions + TotalSubmissionsSqr,
+                               data = top_100)
+submissions_per_time_preds <- data_frame(
+  TotalSubmissions = 1:200,
+  TotalSubmissionsSqr = TotalSubmissions^2
+) %>% cbind(., predict(submissions_per_time_mod, newdata = ., se = TRUE)) %>%
+  rename(TotalTimeSec = fit, SE = se.fit)
+
+gg_submissions_per_time + 
+  geom_smooth(aes(ymin = TotalTimeSec - SE, ymax = TotalTimeSec + SE),
+              data = submissions_per_time_preds, stat = "identity")
+
+# ---- submissions-by-team-size-per-place
+ggplot(by_place, aes(TeamSize, TotalSubmissions)) +
+  geom_text(aes(label = Place, color = FirstPlaceTeam), size = 2,
+            check_overlap = TRUE) +
+  scale_x_continuous("team size", breaks = 1:4) +
+  scale_y_continuous("submissions", breaks = c(1, seq(5, 100, by = 5))) +
+  scale_color_manual(values = c("black", colors[["first_place"]])) +
+  scale_alpha_continuous(range = c(1, 0.2)) +
+  coord_cartesian(xlim = c(1, 3), ylim = c(1, 39)) +
+  base_theme
+
+# ---- submissions-controlling-for-total-time

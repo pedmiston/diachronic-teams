@@ -74,7 +74,8 @@ label_submission_bins <- function(frame, submission_bin_width = 10) {
 
 #' Create a ggplot2 scale object for time variable in seconds.
 #' @export
-make_time_scale <- function(name, breaks_days, ...) {
+make_time_scale <- function(name, breaks_days,
+                            scale_obj = "scale_y_continuous", ...) {
   breaks_sec <- breaks_days * 24 * 3600
-  scale_y_continuous(name, breaks = breaks_sec, labels = breaks_days, ...)
+  get(scale_obj)(name, breaks = breaks_sec, labels = breaks_days, ...)
 }
