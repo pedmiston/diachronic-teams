@@ -1,7 +1,6 @@
 # ---- setup
 library(dplyr)
 library(magrittr)
-library(lubridate)
 
 library(ggplot2)
 library(gridExtra)
@@ -12,82 +11,25 @@ library(AICcmodavg)
 
 library(evoteams)
 
-db <- connect_kaggle()
-
-# Create map between TeamId -> CompetitionId
-
-team_competitions <- tbl(db, "Teams") %>%
-  select(TeamId = Id, CompetitionId)
-
-# Get submissions
-submissions <- tbl(db, "Submissions") %>%
-  select(TeamId, DateSubmitted, Score = PublicScore) %>%
-  left_join(team_competitions) %>%
-  as_data_frame() %>%  # break DBI to allow normal data_frame functions, e.g., n()
-  mutate(DateSubmitted = ymd_hms(DateSubmitted)) %>%
-  group_by(TeamId) %>%
-  arrange(DateSubmitted) %>%
-  mutate(SubmissionNum = 1:n()) %>%
-  ungroup()
-
-# Get leaderboards (one observation per team)
-leaderboards <- submissions %>%
-  # Select the final submission for each team.
-  group_by(TeamId) %>%
-  filter(SubmissionNum == max(SubmissionNum)) %>%
-  rename(TotalSubmissions = SubmissionNum) %>%
-  ungroup() %>%
-  # Assign places for each competition.
-  group_by(CompetitionId) %>%
-  arrange(desc(Score)) %>%  # assumes bigger scores are better
-  mutate(Place = 1:n()) %>%
-  ungroup() %>%
-  as_data_frame()
-
-# Determine team sizes
-team_sizes <- tbl(db, "TeamMemberships") %>%
-  select(TeamId, UserId) %>%
-  count(TeamId) %>%
-  rename(TeamSize = n)
-leaderboards %<>% left_join(team_sizes, copy = TRUE)
-
-# Measure submission intervals
-total_times <- submissions %>% 
-  time_interval()
-leaderboards %<>% left_join(total_times)
-
-# Predict submission place based on final leaderboard.
-submissions %<>% predict_place(leaderboards)
+kaggle_db <- connect_kaggle()
+submissions <- get_submissions(kaggle_db)
+leaderboards <- make_leaderboards(kaggle_db, submissions)
 
 # Investigate top 100 places only
 top_100 <- leaderboards %>%
   filter(Place <= 100) %>%
-  mutate(FirstPlaceTeam = Place == 1)
+  label_place_groups()
 
-summarize_by_place <- . %>%
-  summarize(
-    Place = mean(Place),
-    TotalTime = mean(TotalTime),
-    NTeams = n()
-  ) %>%
-  mutate(
-    PercentTeams = NTeams/sum(NTeams),
-    PercentTeamsLabel = percent(PercentTeams)
-  )
+# Summarize team properties in each place.
+top_100_places <- summarize_by_place(top_100)
 
-by_place <- top_100 %>%
-  group_by(FirstPlaceTeam, Place) %>%
-  summarize(
-    TotalSubmissions = mean(TotalSubmissions),
-    TeamSize = mean(TeamSize, na.rm = TRUE),
-    TotalTime = mean(TotalTime)
-  )
-
-by_team_size <- top_100 %>%
+# Summarize performance in groups:
+top_100_by_team_size <- top_100 %>%
   group_by(TeamSize) %>%
-  summarize_by_place()
+  summarize_teams_in_group()
 
-by_submissions <- top_100 %>%
+# By submission bin
+top_100_by_submission_bin <- top_100 %>%
   label_submission_bins() %>%
   group_by(TotalSubmissionsBin) %>%
-  summarize_by_place()
+  summarize_teams_in_group()

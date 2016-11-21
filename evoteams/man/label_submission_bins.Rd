@@ -4,7 +4,7 @@
 \alias{label_submission_bins}
 \title{Cut total submissions into bins and label with the middle value.}
 \usage{
-label_submission_bins(frame, submission_bin_width = 10)
+label_submission_bins(leaderboard, submission_bin_width = 10)
 }
 \description{
 Cut total submissions into bins and label with the middle value.

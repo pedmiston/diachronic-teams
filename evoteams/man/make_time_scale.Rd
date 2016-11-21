@@ -4,7 +4,7 @@
 \alias{make_time_scale}
 \title{Create a ggplot2 scale object for time variable in seconds.}
 \usage{
-make_time_scale(name, breaks_days, ...)
+make_time_scale(name, breaks_days, scale_obj = "scale_y_continuous", ...)
 }
 \description{
 Create a ggplot2 scale object for time variable in seconds.
