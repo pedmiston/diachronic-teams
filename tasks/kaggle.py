@@ -10,4 +10,4 @@ def download(ctx):
     filename = "database.sqlite.zip"
     webbrowser.open(downloads_url.format(filename))
     print("When the download completes, unzip it and move it to the R pkg:\n"
-          "\t$ unzip ~/Downloads/database.sqlite.zip -d evoteams/data-raw/kaggle")
+          "\t$ unzip ~/Downloads/database.sqlite.zip -d evoteams/inst/extdata/kaggle.sqlite")

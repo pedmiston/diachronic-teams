@@ -21,8 +21,7 @@ Here's how I set up to work on this repository.
 
       evoteams.install      Install the evoteams R pkg.
       evoteams.use_data     Compile data to .rda in evoteams R pkg.
-      kaggle.competitions   Scrape pages of Kaggle competition listings.
-      kaggle.leaderboards   Download current leaderboards from Kaggle competitions.
+      kaggle.download       Download Kaggle Meta dataset.
       reports.render        Compile RMarkdown reports to their output formats.
 
 Other requirements:
@@ -31,21 +30,12 @@ Other requirements:
 - pandoc for dynamic documents
 - graphviz for node/edge diagrams
 
-# Contents
-
-    ├── kaggle            # python module for getting Kaggle data
-    ├── evoteams          # R pkg wrapping all data in project
-    ├── reports           # dynamic documents
-    ├── experiments       # subdirs for each experiment
-    ├── tasks             # invoke tasks (CLI)
-    ├── analysis.Rproj    # root level RStudio project
-    └── requirements.txt  # python requirements
-
 ## kaggle
 
-A python module for scraping data from Kaggle competition listings and leaderboards. To download the data, run the following invoke tasks:
+To download the Kaggle data, run the following invoke task:
 
-    $ inv kaggle.competitions kaggle.leaderboards
+    $ inv kaggle.download  # opens browser to download Kaggle db
+    $ mv /path/to/kaggle.sqlite evoteams/inst/extdata/kaggle.sqlite
 
 ## evoteams
 
