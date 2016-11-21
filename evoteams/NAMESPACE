@@ -2,6 +2,7 @@
 
 export(calculate_submission_intervals)
 export(connect_kaggle)
+export(get_place_mod_preds)
 export(get_submissions)
 export(get_team_competitions)
 export(get_team_sizes)

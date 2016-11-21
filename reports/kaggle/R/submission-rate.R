@@ -118,7 +118,7 @@ ggplot(top_100, aes(TotalSubmissions, TotalTimeSec)) +
   base_theme
 
 # ---- time-by-submission-bins
-ggplot(by_submissions, aes(TotalSubmissionsBin, TotalTime)) +
+ggplot(top_100_by_submission_bin, aes(TotalSubmissionsBin, TotalTime)) +
   geom_point(aes(alpha = Place, size = PercentTeams)) +
   scale_x_total_submissions +
   scale_y_total_time +
@@ -129,7 +129,7 @@ ggplot(by_submissions, aes(TotalSubmissionsBin, TotalTime)) +
   theme(legend.position = "bottom")
 
 # ---- time-by-submission-top-100
-ggplot(by_place, aes(TotalSubmissions, TotalTime)) +
+ggplot(top_100_places, aes(TotalSubmissions, TotalTime)) +
   geom_point(aes(alpha = Place, color = FirstPlaceTeam)) +
   scale_x_continuous("total submissions", breaks = c(1, seq(5, 40, by = 5))) +
   scale_color_manual(values = c("black", colors[["first_place"]])) +

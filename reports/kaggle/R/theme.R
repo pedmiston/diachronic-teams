@@ -11,7 +11,6 @@ base_theme <- theme_minimal() +
   )
 
 # Colors
-# ------
 colors <- RColorBrewer::brewer.pal(3, "Set2")
 names(colors) <- c("green", "orange", "blue")
 colors["first_place"] <- colors[["orange"]]
@@ -21,7 +20,6 @@ colors["team_size"] <- colors[["green"]]
 default_alpha <- 0.6
 
 # Scales
-# ------
 scale_x_place <- scale_x_continuous("place", breaks = c(1, seq(10, 100, by = 10)))
 scale_y_place <- scale_y_reverse("place", breaks = c(1, seq(10, 100, by = 10)))
 
@@ -39,6 +37,5 @@ days <- seq(0, 200, by = 20)
 scale_y_total_time <- make_time_scale("submission interval (days)", days)
 
 # Limits
-# ------
 top_100_submissions_ylim <- c(1, 39)
 top_100_places_xlim <- c(1, 100)

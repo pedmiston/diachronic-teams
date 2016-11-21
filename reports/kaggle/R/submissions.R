@@ -2,7 +2,7 @@ source("reports/kaggle/R/setup.R")
 source("reports/kaggle/R/theme.R")
 
 # ---- submissions-per-place
-ggplot(by_place, aes(Place, TotalSubmissions)) +
+ggplot(top_100_places, aes(Place, TotalSubmissions)) +
   geom_point(aes(color = FirstPlaceTeam), alpha = default_alpha) +
   scale_x_place +
   scale_y_submissions +
@@ -30,8 +30,12 @@ ggplot(submissions_relative_first_place, aes(Place, SubmissionsToFirstPlace)) +
   base_theme +
   labs(title = "Top place teams make more submissions")
 
+# ---- place-from-submissions-mod
+place_mod <- glmer(Place ~ TotalSubmissions + (TotalSubmissions|CompetitionId),
+                   family = "poisson", data = top_100)
+
 # ---- place-from-submissions
-gg_place_from_submissions <- ggplot(by_submissions, aes(TotalSubmissionsBin, Place)) +
+gg_place_from_submissions <- ggplot(top_100_by_submission_bin, aes(TotalSubmissionsBin, Place)) +
   geom_point(aes(size = PercentTeams), alpha = default_alpha,
              color = colors[["submissions"]]) +
   scale_x_total_submissions +
@@ -42,20 +46,20 @@ gg_place_from_submissions <- ggplot(by_submissions, aes(TotalSubmissionsBin, Pla
   theme(legend.position = "bottom") +
   ggtitle("Making more submissions improves place")
 
-place_mod <- lmer(Place ~ TotalSubmissions + (TotalSubmissions|CompetitionId),
-                  data = top_100)
-
-place_preds <- data_frame(TotalSubmissions = 1:200) %>%
-  cbind(., predictSE(place_mod, newdata = ., se = TRUE)) %>%
-  rename(Place = fit, SE = se.fit) %>%
-  mutate(TotalSubmissionsBin = TotalSubmissions)  # for consistency with summary
+place_preds <- get_place_mod_preds(place_mod, predict_fn = predictSE)
+# The predictions for this hierarchical place mod do not align with means,
+# indicating that there are large differences between competitions.
+# The conclusions are the same, but the plot looks weird. In addition
+# to showing the hierarchical model preds, here I'm also showing
+# the predictions of a simple linear model.
+place_mod_lm <- lm(Place ~ TotalSubmissions, data = top_100)
+place_mod_lm_preds <- get_place_mod_preds(place_mod_lm)
 
 gg_place_from_submissions +
-  geom_smooth(aes(ymin =  Place - SE, ymax =  Place + SE), data = preds,
-              stat = "identity", color = colors[["orange"]])
+  geom_line(data = place_mod_lm_preds, color = colors[["orange"]]) +
+  geom_line(data = place_preds, color = colors[["green"]])
 
 # ---- predicted-place-from-submission
-
 sample_teams <- function(n_teams = 1, min_submissions = 50, 
                          min_final_place = 100, seed = NA) {
   
@@ -106,7 +110,7 @@ ggplot(top_100, aes(TeamSize, TotalSubmissions)) +
   base_theme
 
 # ---- submissions-by-team-size-per-place
-ggplot(by_place, aes(TeamSize, TotalSubmissions)) +
+ggplot(top_100_places, aes(TeamSize, TotalSubmissions)) +
   geom_text(aes(label = Place, color = FirstPlaceTeam), size = 2,
             check_overlap = TRUE) +
   scale_x_continuous("team size", breaks = 1:4) +
@@ -142,7 +146,7 @@ gg_submissions_per_time +
               data = submissions_per_time_preds, stat = "identity")
 
 # ---- submissions-by-team-size-per-place
-ggplot(by_place, aes(TeamSize, TotalSubmissions)) +
+ggplot(top_100_places, aes(TeamSize, TotalSubmissions)) +
   geom_text(aes(label = Place, color = FirstPlaceTeam), size = 2,
             check_overlap = TRUE) +
   scale_x_continuous("team size", breaks = 1:4) +

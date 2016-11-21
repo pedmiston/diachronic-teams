@@ -2,7 +2,7 @@ source("reports/kaggle/R/setup.R")
 source("reports/kaggle/R/theme.R")
 
 # ---- teamsize-from-place
-ggplot(by_place, aes(Place, TeamSize)) +
+ggplot(top_100_places, aes(Place, TeamSize)) +
   geom_point(aes(color = FirstPlaceTeam), alpha = default_alpha) +
   scale_x_place +
   scale_y_team_size +
@@ -11,7 +11,7 @@ ggplot(by_place, aes(Place, TeamSize)) +
   base_theme
 
 # ---- place-from-teamsize
-gg_place_from_teamsize <- ggplot(by_team_size, aes(TeamSize, Place)) +
+gg_place_from_teamsize <- ggplot(top_100_by_team_size, aes(TeamSize, Place)) +
   geom_point(aes(size = PercentTeams), alpha = default_alpha,
              color = colors[["team_size"]]) +
   scale_x_continuous("team size", breaks = c(1, seq(10, 40, by = 10))) +
@@ -36,7 +36,7 @@ gg_place_from_teamsize +
               stat = "identity", color = colors[["orange"]])
 
 # ---- place-from-teamsize-zoom
-gg_place_from_teamsize %+% filter(by_team_size, TeamSize <= max_team_size) +
+gg_place_from_teamsize %+% filter(top_100_by_team_size, TeamSize <= max_team_size) +
   geom_smooth(aes(ymin = Place - SE, ymax = Place + SE), data = preds,
               stat = "identity", color = colors[["orange"]]) +
   scale_x_continuous("team size", breaks = 1:max_team_size) +

@@ -33,3 +33,9 @@ top_100_by_submission_bin <- top_100 %>%
   label_submission_bins() %>%
   group_by(TotalSubmissionsBin) %>%
   summarize_teams_in_group()
+
+# By relative submission bin
+# top_100_by_rel_submission_bin <- top_100 %>%
+#   label_submission_bins() %>%
+#   group_by(RelativeSubmissionsBin) %>%
+#   summarize_teams_in_group()

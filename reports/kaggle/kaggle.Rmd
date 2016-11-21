@@ -5,6 +5,7 @@ output:
   html_document:
     theme: flatly
     toc: true
+    toc_depth: 1
 ---
 
 Kaggle competitions are data-oriented challenges in which teams and individuals use statistics and machine learning to make accurate predictions about unlabeled data. Teams can use any number of methods to generate the predictions. Some methods work better for some problems than others, but what strategies work for all problems? This report investigates the success of two possible strategies to completing Kaggle competitions: **iteration** and **team size**. Iteration as a strategy in a Kaggle competition is making multiple submissions with the goal of incrementally improving performance each time. Do teams that make more submissions have a better chance of winning? The second strategy is the effect of team size. How much do additional teammates improve a team's chance of success?
@@ -12,7 +13,7 @@ Kaggle competitions are data-oriented challenges in which teams and individuals 
 ```{r config, echo = FALSE}
 library(knitr)
 library(broom)
-library(pander)
+library(printr)
 
 opts_chunk$set(
   echo = FALSE,
@@ -45,20 +46,36 @@ read_chunk("R/submission-rate.R")
 
 # Iteration
 
-Iteration as a strategy for solving a Kaggle competition is exhibited by teams making many submissions, each incrementally improving upon the previous ones. In this section I explore whether this is a worthwhile strategy for competing in a data science competition. Do teams that make more submissions tend to do better than teams who make fewer submissions? Any answer to this question that can be obtained through Kaggle competition leaderboards is correlational in nature, and cannot address the causal impact of imposing iteration as an experimental manipulation in how teams interact. However, there are a number of things that **should be true** if it were the case that iteration is a successful strategy in Kaggle competitions. First, we should expect to see that better placing teams tend to make more submissions. 
+Iteration as a strategy for solving a Kaggle competition is exhibited by teams making many submissions, each incrementally improving upon the previous ones. In this section I explore whether this is a worthwhile strategy for competing in a data science competition.
+
+## Do teams that make more submissions tend to do better?
+
+Averaging the number of submissions made by teams finishing in each of the top 100 places reveals that top place teams make more submissions than lower place teams.
 
 ```{r submissions-per-place}
 ```
 
-The analysis above averages by place across different competitions. A different way to plot the same data is as the number of submissions relative to the number of submissions made by the first place team. This analysis is specific to each competition and better reflects the extent to which first place teams make more submissions than other teams in the same competition.
+The analysis above averages by place across competitions. A different way to summarize the data is to first transform the number of submissions to be relative to the number of submissions made by the first place team within each competition. This transformation allows for better alignment across competitions. The results revealed an even stronger relationship between place and submissions. Within each competition, top place teams make more submissions than lower place teams.
 
 ```{r relative-submissions-per-place}
 ```
 
-Although this analysis makes sense as a correlation, it does not lend itself to causal predictions. For example, from this analysis alone we do not know the extent to which making more submissions is actually associated with an improvement in place. A more accurate depiction of this relationship predicts place by the number of submissions made by a particular team. Although the distribution of submission numbers is much more skewed than the distribution of final places in a competition, there still is a positive relationship such that teams that make more submissions tend to place better in the competition.
+The descriptive analyses above revealed that top place teams made more submissions. To test the prediction that making more submissions is associated with better placement in the competition, I fit a hierarchical linear model predicting place from number of submissions with random effects for competition. The results revealed a significant relationship such that teams that make more submissions tend to place better in the competition.
+
+```{r place-from-submissions-mod, echo = 1}
+```
+
+```{r place-from-submissions-mod-results, results = 'asis'}
+tidy(place_mod, effects = "fixed") %>%
+  kable(digits = c(NA, 4, 4, 1, 5))
+```
 
 ```{r place-from-submissions}
 ```
+
+Note the left skew in the distribution of submissions. The majority of teams submit less than 10 submissions total.
+
+## Do teams that make many submissions tend to improve each time?
 
 However, even this analysis is an inadequate test of the primary hypothesis because it does not reflect the ability of each team incrementally improving their solution over iterative solutions. If iteration is associated with an improvement in solution success, then as teams generate more and more solutions they should improve in place each time.
 
@@ -86,18 +103,19 @@ The horizontal extent of the above chart is misleading in that the vast majority
 ```{r place-from-teamsize-zoom}
 ```
 
-# Correlation
+# Confounds
 
-Do teams that are bigger tend to make more submissions?
+## Do teams that are bigger tend to make more submissions?
 
-```{r correlation}
+```{r team-size-submissions-correlation}
 ```
 
-# Time
+```{r submissions-by-team-size-per-place}
+```
 
-Do teams that make more submissions spend more time on the competition?
+## Do teams that make more submissions just spend more time on the competition?
 
-```{r team-types, fig.width = 8, fig.height = 7}
+```{r team-types, fig.width = 6, fig.height = 5.25}
 ```
 
 ```{r time-by-submission-density}

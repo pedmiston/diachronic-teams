@@ -119,6 +119,8 @@ make_leaderboards <- function(kaggle_db, submissions, team_sizes,
     submission_intervals <- calculate_submission_intervals(submissions)
     leaderboards %<>% left_join(submission_intervals)
   }
+
+  leaderboards
 }
 
 
@@ -270,4 +272,19 @@ summarize_teams_in_group <- function(grouped) {
       PercentTeams = NTeams/sum(NTeams),
       PercentTeamsLabel = scales::percent(PercentTeams)
     )
+}
+
+
+#' Get model predictions for a model predicting Place from TotalSubmissions.
+#'
+#' @import dplyr
+#' @export
+get_place_mod_preds <- function(mod, predict_fn, x_preds) {
+  if (missing(x_preds)) x_preds <- data_frame(TotalSubmissions = 1:200)
+  if (missing(predict_fn)) predict_fn <- predict
+
+  x_preds %>%
+    cbind(., predict_fn(mod, ., se = TRUE)) %>%
+    rename(Place = fit, SE = se.fit) %>%
+    mutate(TotalSubmissionsBin = TotalSubmissions)  # for consistency with summary
 }
