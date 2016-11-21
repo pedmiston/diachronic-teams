@@ -118,6 +118,9 @@ The horizontal extent of the above chart is misleading in that the vast majority
 ```{r team-types, fig.width = 6, fig.height = 5.25}
 ```
 
+```{r time-per-place}
+```
+
 ```{r time-by-submission-density}
 ```
 

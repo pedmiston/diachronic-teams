@@ -110,6 +110,16 @@ grid.arrange(gg_timeline, gg_regions,
              gg_num_submissions, gg_total_time,
              nrow = 2)
 
+# ---- time-per-place
+ggplot(top_100_places, aes(Place, TotalTime)) +
+  geom_point(aes(color = FirstPlaceTeam), alpha = default_alpha) +
+  scale_x_place +
+  make_time_scale("submission interval (days)", breaks_days = seq(0, 30, by = 5)) +
+  scale_color_manual(values = c(colors[["green"]], colors[["first_place"]])) +
+  coord_cartesian(xlim = top_100_places_xlim, ylim = c(0, 30 * 24 * 3600)) +
+  base_theme +
+  labs(title = "Submission intervals are consistent across places")
+
 # ---- time-by-submission-density
 ggplot(top_100, aes(TotalSubmissions, TotalTimeSec)) +
   geom_point(shape = 1, color = "gray") +
