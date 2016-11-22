@@ -54,7 +54,9 @@ get_submissions <- function(kaggle_db, team_competitions,
   if (with_predicted_place) {
     leaderboards <- make_leaderboards(kaggle_db, submissions,
                                       with_submission_intervals = FALSE,
-                                      with_competition_intervals = FALSE)
+                                      with_relative_submissions = FALSE,
+                                      with_competition_intervals = FALSE,
+                                      label_team_types = FALSE)
     submissions %<>% predict_place(leaderboards)
   }
 
@@ -80,6 +82,9 @@ get_submissions <- function(kaggle_db, team_competitions,
 #' @param with_submission_intervals Logical. Should submission intervals
 #'    be calculated? Defaults to true. Calls
 #'    \code{\link{calculate_submission_intervals}} to create the intervals.
+#' @param label_team_types Should submissions on leaderboards be assigned
+#'    team types in one of the four quadrants of the number submissions by
+#'    total time grid. See \code{\link{determine_team_types}}.
 #'
 #' @import dplyr
 #' @import magrittr
@@ -87,7 +92,8 @@ get_submissions <- function(kaggle_db, team_competitions,
 make_leaderboards <- function(kaggle_db, submissions, team_sizes,
                               with_submission_intervals = TRUE,
                               with_competition_intervals = TRUE,
-                              with_relative_submissions = TRUE) {
+                              with_relative_submissions = TRUE,
+                              label_team_types = TRUE) {
   if (missing(kaggle_db) & any(missing(submissions), missing(team_sizes))) {
     stop("must provide kaggle db or all required data frames")
   }
@@ -125,6 +131,10 @@ make_leaderboards <- function(kaggle_db, submissions, team_sizes,
 
   if (with_relative_submissions) {
     leaderboards %<>% calculate_relative_submissions()
+  }
+
+  if (label_team_types) {
+    leaderboards %<>% divide_into_team_types()
   }
 
   leaderboards
@@ -348,13 +358,20 @@ divide_into_team_types <- function(leaderboards) {
   team_type_map <- recode_team_type() %>%
     mutate(
       TimeSplit = c(1, 0, 0, 1),
-      SubmissionSplit = c(1, 1, 0, 0)
+      SubmissionsSplit = c(1, 1, 0, 0)
     )
+
+  # Remove any team type columns already in leaderboards
+  for(map_col in colnames(team_type_map)) {
+    if(map_col %in% colnames(leaderboards)) leaderboards[map_col] <- NULL
+  }
+
+  median_split <- function(x) as.numeric(x < median(x))
 
   leaderboards %>%
     mutate(
-      TimeSplit = TotalTime < median(TotalTime),
-      SubmissionsSplit = TotalSubmissions < median(TotalSubmissions)
+      TimeSplit = median_split(TotalTime),
+      SubmissionsSplit = median_split(TotalSubmissions)
     ) %>%
     left_join(team_type_map) %>%
     select(-TimeSplit, -SubmissionsSplit)  # only needed for merge

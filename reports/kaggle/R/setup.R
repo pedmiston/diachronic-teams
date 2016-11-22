@@ -18,7 +18,8 @@ leaderboards <- make_leaderboards(kaggle_db, submissions)
 
 # Investigate top 100 places only
 top_100 <- leaderboards %>%
-  filter(Place <= 100)
+  filter(Place <= 100) %>%
+  divide_into_team_types()
 
 # Summarize team properties in each place.
 top_100_places <- summarize_by_place(top_100)

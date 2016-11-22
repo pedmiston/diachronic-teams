@@ -6,7 +6,7 @@
 \usage{
 make_leaderboards(kaggle_db, submissions, team_sizes,
   with_submission_intervals = TRUE, with_competition_intervals = TRUE,
-  with_relative_submissions = TRUE)
+  with_relative_submissions = TRUE, label_team_types = TRUE)
 }
 \arguments{
 \item{kaggle_db}{sqlite connector. Required unless submissions and team sizes
@@ -21,6 +21,10 @@ if connection to Kaggle db is not provided.}
 \item{with_submission_intervals}{Logical. Should submission intervals
 be calculated? Defaults to true. Calls
 \code{\link{calculate_submission_intervals}} to create the intervals.}
+
+\item{label_team_types}{Should submissions on leaderboards be assigned
+team types in one of the four quadrants of the number submissions by
+total time grid. See \code{\link{determine_team_types}}.}
 }
 \description{
 Provide either submissions or a connection to the Kaggle db.

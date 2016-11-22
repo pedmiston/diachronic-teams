@@ -19,3 +19,15 @@ ggplot(top_100_places, aes(Place, PropCompetitionTime)) +
   scale_color_manual(values = c(colors[["green"]], colors[["first_place"]])) +
   coord_cartesian(xlim = top_100_places_xlim, ylim = c(0, 1)) +
   base_theme
+
+# ---- place-from-submission-interval-mod
+interval_mod <- glmer(Place ~ TotalTimeSec + (TotalTimeSec|CompetitionId),
+                      family = "poisson", data = top_100)
+
+# ---- place-from-submission-interval
+gg_place_from_interval <- ggplot(top_100_by_interval_bin, aes(TotalTimeBin, Place)) +
+  geom_point(aes(size = PercentTeams), alpha = default_alpha,
+             color = colors[["submissions"]]) +
+  base_theme +
+  theme(legend.position = "bottom")
+gg_place_from_interval

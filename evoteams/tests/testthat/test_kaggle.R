@@ -1,4 +1,5 @@
 library(dplyr)
+library(magrittr)
 library(lubridate)
 library(evoteams)
 
@@ -35,6 +36,17 @@ test_that("time intervals are calculated correctly", {
                             "2000-01-01 01:00:00 UTC")
   )
 
-  result <- time_interval(submissions)
+  result <- calculate_submission_intervals(submissions)
   expect_equal(result$TotalTime, duration(1, units = "hours"))
+})
+
+context("Assigning submissions to teams")
+
+test_that("assigning team type doesn't add rows", {
+  leaderboards <- data_frame(
+    TotalTime = 1:6,
+    TotalSubmissions = 1:6
+  )
+  result <- divide_into_team_types(leaderboards)
+  expect_equal(nrow(leaderboards), nrow(result))
 })

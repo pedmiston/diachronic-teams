@@ -41,16 +41,14 @@ team_type_points <- submission_rates %>%
     NudgeX = ifelse(TotalSubmissions > 5, -1.5, 1.5)
   )
 
-scale_x_team_label <- scale_x_discrete("")
-default_alpha <- 0.6
-
 gg_base <- ggplot(submission_rates, aes(TeamType)) +
   base_theme
 
 gg_timeline <- gg_base +
   geom_segment(
     aes(x = TeamType, xend = TeamType, y = Start, yend = End, color = TeamLabel),
-    data = arrow_data, alpha = default_alpha) +
+    data = arrow_data, alpha = default_alpha
+  ) +
   geom_point(aes(y = SubmissionTime, color = TeamLabel),
              size = 1.8, alpha = default_alpha) +
   geom_text(aes(y = SubmissionTime, label = TeamLabel, color = TeamLabel),
@@ -98,6 +96,18 @@ grid.arrange(gg_timeline, gg_regions,
              gg_num_submissions, gg_total_time,
              nrow = 2)
 
+# ---- team-types-density
+ggplot(top_100, aes(TotalSubmissions, TotalTimeSec)) +
+  geom_point(aes(color = TeamLabel), alpha = 0.2) +
+  geom_hline(yintercept = median(top_100$TotalTimeSec),
+             color = "gray") +
+  geom_vline(xintercept = median(top_100$TotalSubmissions),
+             color = "gray") +
+  scale_x_total_submissions +
+  make_time_scale("submission interval (days)", seq(0, 400, by = 100)) +
+  scale_color_team_type +
+  base_theme
+
 # ---- team-types-place
 make_rev_rects <- function(frame) {
   width <- 0.9
@@ -107,28 +117,24 @@ make_rev_rects <- function(frame) {
            ymin = Place, ymax = baseline)
 }
 
-top_100_team_types <- top_100 %>%
-  divide_into_team_types()
-
-team_type_means <- top_100_team_types %>%
+team_type_means <- top_100 %>%
   group_by(TeamType) %>%
   summarize(Place = mean(Place)) %>%
   recode_team_type() %>%
   make_rev_rects()
 
-gg_team_types <- ggplot(top_100_team_types, aes(TeamNum, Place)) +
+gg_team_types <- ggplot(top_100, aes(TeamNum, Place)) +
   geom_rect(aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, fill=TeamLabel),
             data = team_type_means, alpha = default_alpha) +
   scale_x_team_num +
   scale_y_reverse("place", breaks = seq(2, 100, by = 2)) +
   scale_color_team_type +
   scale_fill_team_type +
-  coord_cartesian(ylim = c(41, 50)) +
+  coord_cartesian(ylim = c(34, 50)) +
   base_theme
 
 team_types_lm_mod <- lm(Place ~ ShortVSteady + ShortVLong + ShortVRapid,
-                        data = top_100_team_types)
-summary(team_types_lm_mod)
+                        data = top_100)
 
 team_types_preds <- recode_team_type() %>%
   cbind(., predict(team_types_lm_mod, newdata = ., se = TRUE)) %>%
@@ -137,29 +143,6 @@ team_types_preds <- recode_team_type() %>%
 gg_team_types +
   geom_linerange(aes(ymin = Place + SE, ymax = Place - SE),
                  data = team_types_preds)
-
-# ---- team-types-density
-new_density_plot <- function(leaderboards) {
-  ggplot(leaderboards, aes(TotalSubmissions, TotalTimeSec)) +
-    geom_point(aes(color = TeamLabel), alpha = 0.2) +
-    geom_hline(yintercept = median(leaderboards$TotalTimeSec),
-               color = "gray") +
-    geom_vline(xintercept = median(leaderboards$TotalSubmissions),
-               color = "gray") +
-    scale_x_total_submissions +
-    scale_color_team_type +
-    make_time_scale("submission interval (days)", seq(0, 400, by = 100)) +
-    base_theme
-}
-
-new_density_plot(top_100) +
-  labs(title = "Team type density for top 100 place finishes")
-
-top_10 <- leaderboards %>%
-  filter(Place <= 10) %>%
-  label_place_groups()
-new_density_plot(top_10) +
-  labs(title = "Team type density for top 10 place finishes")
 
 # ---- time-by-submission-top-100
 ggplot(top_100_places, aes(TotalSubmissions, TotalTime)) +
