@@ -32,6 +32,7 @@ read_chunk("R/theme.R")
 read_chunk("R/submissions.R")
 read_chunk("R/team-size.R")
 read_chunk("R/submission-rate.R")
+read_chunk("R/team-types.R")
 ```
 
 ```{r setup}

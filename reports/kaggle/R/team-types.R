@@ -64,6 +64,17 @@ total_time <- arrow_data %>%
   transmute(TeamType, TotalTime = End - Start) %>%
   recode_team_type()
 
+# Quadrant plot data
+team_type_points <- submission_rates %>%
+  group_by(TeamType) %>%
+  summarize(TotalSubmissions = n(),
+            TotalTime = max(SubmissionTime) - min(SubmissionTime)) %>%
+  recode_team_type() %>%
+  mutate(
+    NudgeY = ifelse(TotalTime > 5, -2, 2),
+    NudgeX = ifelse(TotalSubmissions > 5, -2, 2)
+  )
+
 scale_x_team_label <- scale_x_discrete("")
 default_alpha <- 0.6
 
@@ -75,7 +86,7 @@ gg_timeline <- gg_base +
     aes(x = TeamType, xend = TeamType, y = Start, yend = End, color = TeamLabel),
     data = arrow_data, alpha = default_alpha) +
   geom_point(aes(y = SubmissionTime, color = TeamLabel),
-             size = 3, alpha = default_alpha) +
+             size = 1.8, alpha = default_alpha) +
   geom_text(aes(y = SubmissionTime, label = TeamLabel, color = TeamLabel),
             data = label_data,
             vjust = 2, size = 3) +
@@ -96,22 +107,22 @@ gg_num_submissions <- ggplot(submission_rates, aes(TeamLabel)) +
 gg_total_time <- ggplot(total_time, aes(TeamLabel, TotalTime)) +
   geom_bar(aes(fill = TeamLabel), stat = "identity", alpha = default_alpha) +
   scale_x_team_label +
-  scale_y_continuous("total time", breaks = 1:10) +
+  scale_y_continuous("submission interval", breaks = 1:10) +
   scale_fill_manual(values = team_type_colors) +
   base_theme
 
-team_type_points <- submission_rates %>%
-  group_by(TeamType) %>%
-  summarize(TotalSubmissions = n(),
-            TotalTime = max(SubmissionTime) - min(SubmissionTime)) %>%
-  recode_team_type()
-
 gg_regions <- ggplot(team_type_points, aes(TotalSubmissions, TotalTime)) +
-  geom_point(aes(color = TeamLabel), size = 3, shape = 1, stroke = 1.5,
-             alpha = default_alpha) +
-  geom_text(aes(label = TeamLabel, color = TeamLabel), size = 3, nudge_y = -1) +
+  geom_point(aes(color = TeamLabel), size = 3, alpha = default_alpha) +
+  geom_text(
+    aes(x = TotalSubmissions + NudgeX, y = TotalTime + NudgeY,
+        label = TeamLabel, color = TeamLabel),
+    size = 5) +
+  geom_hline(yintercept = median(team_type_points$TotalTime),
+             color = "gray") +
+  geom_vline(xintercept = median(team_type_points$TotalSubmissions),
+             color = "gray") +
   scale_x_continuous("number of submissions", breaks = 1:10) +
-  scale_y_continuous("total time", breaks = 1:9) +
+  scale_y_continuous("submission interval", breaks = 1:9) +
   scale_color_team_type +
   coord_cartesian(xlim = c(1, 10), ylim = c(0, 10)) +
   base_theme

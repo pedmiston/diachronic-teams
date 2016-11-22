@@ -11,8 +11,8 @@ base_theme <- theme_minimal() +
   )
 
 # Colors
-colors <- RColorBrewer::brewer.pal(3, "Set2")
-names(colors) <- c("green", "orange", "blue")
+colors <- RColorBrewer::brewer.pal(4, "Set2")
+names(colors) <- c("green", "orange", "blue", "pink")
 colors["first_place"] <- colors[["orange"]]
 colors["submissions"] <- colors[["blue"]]
 colors["team_size"] <- colors[["green"]]
@@ -34,7 +34,7 @@ scale_y_submissions <- scale_y_continuous(
   "total submissions", breaks = c(1, seq(5, 100, by = 5)))
 
 days <- seq(0, 200, by = 20)
-scale_y_total_time <- make_time_scale("submission interval (days)", days)
+scale_y_total_time <- evoteams::make_time_scale("submission interval (days)", days)
 
 # Limits
 top_100_submissions_ylim <- c(1, 39)
