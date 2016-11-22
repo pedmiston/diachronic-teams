@@ -53,7 +53,8 @@ get_submissions <- function(kaggle_db, team_competitions,
 
   if (with_predicted_place) {
     leaderboards <- make_leaderboards(kaggle_db, submissions,
-                                      with_submission_intervals = FALSE)
+                                      with_submission_intervals = FALSE,
+                                      with_competition_intervals = FALSE)
     submissions %<>% predict_place(leaderboards)
   }
 
@@ -84,22 +85,15 @@ get_submissions <- function(kaggle_db, team_competitions,
 #' @import magrittr
 #' @export
 make_leaderboards <- function(kaggle_db, submissions, team_sizes,
-                              with_submission_intervals = TRUE) {
-  if (missing(submissions) & missing(kaggle_db)) {
-    stop("must provide submissions or kaggle db")
+                              with_submission_intervals = TRUE,
+                              with_competition_intervals = TRUE) {
+  if (missing(kaggle_db) & any(missing(submissions), missing(team_sizes))) {
+    stop("must provide kaggle db or all required data frames")
   }
 
-  if (missing(submissions)) {
-    submissions <- get_submissions(kaggle_db)
-  }
-
-  if (missing(team_sizes) & missing(kaggle_db)) {
-    stop("must provide team sizes or kaggle db")
-  }
-
-  if (missing(team_sizes)) {
-    team_sizes <- get_team_sizes(kaggle_db)
-  }
+  # Only create the data frames that weren't provided
+  if (missing(submissions)) submissions <- get_submissions(kaggle_db)
+  if (missing(team_sizes)) team_sizes <- get_team_sizes(kaggle_db)
 
   leaderboards <- submissions %>%
     # Select the final submission for each team
@@ -118,6 +112,14 @@ make_leaderboards <- function(kaggle_db, submissions, team_sizes,
   if (with_submission_intervals) {
     submission_intervals <- calculate_submission_intervals(submissions)
     leaderboards %<>% left_join(submission_intervals)
+  }
+
+  if (with_competition_intervals) {
+    if (missing(kaggle_db)) stop("kaggle db required to get competition intervals")
+    competition_intervals <- get_competition_intervals(kaggle_db)
+    leaderboards %<>%
+      left_join(competition_intervals) %>%
+      mutate(PropCompetitionTime = TotalTimeSec/CompetitionDurationSec)
   }
 
   leaderboards
@@ -148,6 +150,23 @@ get_team_sizes <- function(kaggle_db) {
 }
 
 
+#' Get competition start and end times.
+#' @import dplyr
+#' @export
+get_competition_intervals <- function(kaggle_db) {
+  kaggle_db %>%
+    tbl("Competitions") %>%
+    as_data_frame() %>%
+    mutate(
+      CompetitionStart = lubridate::ymd_hms(DateEnabled),
+      CompetitionEnd = lubridate::ymd_hms(Deadline),
+      CompetitionDuration = interval_duration(CompetitionStart, CompetitionEnd),
+      CompetitionDurationSec = as.numeric(CompetitionDuration)
+    ) %>%
+    select(CompetitionId = Id, CompetitionDuration, CompetitionDurationSec)
+}
+
+
 #' Label predicted place.
 #' @import dplyr
 #' @export
@@ -174,11 +193,6 @@ predict_place <- function(submissions, leaderboards) {
 #' @import dplyr
 #' @export
 calculate_submission_intervals <- function(submissions) {
-
-  interval_duration <- function(start, end) {
-    lubridate::interval(start, end) %>% lubridate::as.duration()
-  }
-
   submissions %>%
     group_by(TeamId) %>%
     summarize(
@@ -246,7 +260,8 @@ summarize_by_place <- function(leaderboards) {
     summarize(
       TotalSubmissions = mean(TotalSubmissions),
       TeamSize = mean(TeamSize, na.rm = TRUE),
-      TotalTime = mean(TotalTime)
+      TotalTime = mean(TotalTime),
+      PropCompetitionTime = mean(PropCompetitionTime, na.rm = TRUE)
     ) %>%
     label_place_groups()
 }
@@ -266,6 +281,7 @@ summarize_teams_in_group <- function(grouped) {
     summarize(
       Place = mean(Place),
       TotalTime = mean(TotalTime),
+      PropCompetitionTime = mean(PropCompetitionTime),
       NTeams = n()
     ) %>%
     mutate(
@@ -287,4 +303,9 @@ get_place_mod_preds <- function(mod, predict_fn, x_preds) {
     cbind(., predict_fn(mod, ., se = TRUE)) %>%
     rename(Place = fit, SE = se.fit) %>%
     mutate(TotalSubmissionsBin = TotalSubmissions)  # for consistency with summary
+}
+
+
+interval_duration <- function(start, end) {
+  lubridate::interval(start, end) %>% lubridate::as.duration()
 }

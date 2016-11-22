@@ -30,9 +30,9 @@ opts_chunk$set(
 read_chunk("R/setup.R")
 read_chunk("R/theme.R")
 read_chunk("R/submissions.R")
-read_chunk("R/team-size.R")
-read_chunk("R/submission-rate.R")
+read_chunk("R/submission-interval.R")
 read_chunk("R/team-types.R")
+read_chunk("R/team-size.R")
 ```
 
 ```{r setup}
@@ -87,6 +87,17 @@ To do this analysis across competitions with different distributions of scores, 
 
 Kaggle competitors that make more submissions tend to place higher in the final standings in part because solutions tend to improve iteratively over submissions.
 
+## Do teams that make more submissions simply spend more time on the problem?
+
+```{r team-types-quartet, fig.width = 6, fig.height = 5.25}
+```
+
+```{r team-types-density}
+```
+
+```{r team-types-place}
+```
+
 # Team size
 
 Another likely factor in determining the success of a Kaggle competitor is the size of the team. Although by far most Kaggle competition solutions are submitted by individuals, many different team sizes are possible. It turns out that top place teams are more likely to have additional teammates.
@@ -104,26 +115,10 @@ The horizontal extent of the above chart is misleading in that the vast majority
 ```{r place-from-teamsize-zoom}
 ```
 
-# Confounds
-
 ## Do teams that are bigger tend to make more submissions?
 
 ```{r team-size-submissions-correlation}
 ```
 
 ```{r submissions-by-team-size-per-place}
-```
-
-## Do teams that make more submissions just spend more time on the competition?
-
-```{r team-types, fig.width = 6, fig.height = 5.25}
-```
-
-```{r time-per-place}
-```
-
-```{r time-by-submission-density}
-```
-
-```{r time-by-submission-top-100}
 ```

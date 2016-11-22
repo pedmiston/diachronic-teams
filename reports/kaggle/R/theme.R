@@ -39,3 +39,21 @@ scale_y_total_time <- evoteams::make_time_scale("submission interval (days)", da
 # Limits
 top_100_submissions_ylim <- c(1, 39)
 top_100_places_xlim <- c(1, 100)
+
+# Team type colors
+team_type_levels <- c("steady", "long", "short", "rapid")
+team_type_labels <- c("steady", "long", "short", "rapid")
+team_type_colors <- unname(colors[c("green", "blue", "pink", "orange")])
+team_type_map <- data_frame(
+  TeamType = team_type_levels,
+  TeamLabel = factor(team_type_levels,
+                     levels = team_type_levels,
+                     labels = team_type_labels),
+  TeamRelShort = factor(TeamLabel)
+)
+contrasts(team_type_map$TeamRelShort) <- contr.treatment(n = 4, base = 3)
+
+recode_team_type <- . %>% left_join(team_type_map)
+
+scale_fill_team_type <- scale_fill_manual(values = team_type_colors)
+scale_color_team_type <- scale_color_manual(values = team_type_colors)
