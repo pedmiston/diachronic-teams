@@ -86,7 +86,8 @@ get_submissions <- function(kaggle_db, team_competitions,
 #' @export
 make_leaderboards <- function(kaggle_db, submissions, team_sizes,
                               with_submission_intervals = TRUE,
-                              with_competition_intervals = TRUE) {
+                              with_competition_intervals = TRUE,
+                              with_relative_submissions = TRUE) {
   if (missing(kaggle_db) & any(missing(submissions), missing(team_sizes))) {
     stop("must provide kaggle db or all required data frames")
   }
@@ -120,6 +121,10 @@ make_leaderboards <- function(kaggle_db, submissions, team_sizes,
     leaderboards %<>%
       left_join(competition_intervals) %>%
       mutate(PropCompetitionTime = TotalTimeSec/CompetitionDurationSec)
+  }
+
+  if (with_relative_submissions) {
+    leaderboards %<>% calculate_relative_submissions()
   }
 
   leaderboards

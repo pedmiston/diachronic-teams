@@ -5,7 +5,8 @@
 \title{Create Kaggle leaderboards from submissions.}
 \usage{
 make_leaderboards(kaggle_db, submissions, team_sizes,
-  with_submission_intervals = TRUE, with_competition_intervals = TRUE)
+  with_submission_intervals = TRUE, with_competition_intervals = TRUE,
+  with_relative_submissions = TRUE)
 }
 \arguments{
 \item{kaggle_db}{sqlite connector. Required unless submissions and team sizes
