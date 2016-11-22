@@ -90,6 +90,14 @@ Kaggle competitors that make more submissions tend to place higher in the final 
 
 ## Do teams that make more submissions simply spend more time on the problem?
 
+```{r submission-interval-per-place}
+```
+
+```{r prop-time-per-place}
+```
+
+## Correlation between number of submissions and submission interval
+
 ```{r team-types-quartet, fig.width = 6, fig.height = 5.25}
 ```
 

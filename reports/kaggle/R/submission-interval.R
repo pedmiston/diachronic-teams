@@ -1,7 +1,7 @@
 source("reports/kaggle/R/setup.R")
 source("reports/kaggle/R/theme.R")
 
-# ---- time-per-place
+# ---- submission-interval-per-place
 ggplot(top_100_places, aes(Place, TotalTime)) +
   geom_point(aes(color = FirstPlaceTeam), alpha = default_alpha) +
   scale_x_place +
