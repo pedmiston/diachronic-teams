@@ -125,8 +125,5 @@ The horizontal extent of the above chart is misleading in that the vast majority
 ```{r time-by-submission-density}
 ```
 
-```{r time-by-submission-bins}
-```
-
 ```{r time-by-submission-top-100}
 ```

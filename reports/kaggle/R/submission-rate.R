@@ -26,17 +26,6 @@ ggplot(top_10, aes(TotalSubmissions, TotalTimeSec)) +
   make_time_scale("submission interval (days)", seq(0, 400, by = 100)) +
   base_theme
 
-# ---- time-by-submission-bins
-ggplot(top_100_by_submission_bin, aes(TotalSubmissionsBin, TotalTime)) +
-  geom_point(aes(alpha = Place, size = PercentTeams)) +
-  scale_x_total_submissions +
-  scale_y_total_time +
-  scale_alpha_continuous("final place", range = c(1, 0.2)) +
-  scale_size_continuous("proportion teams", breaks = c(0.01, 0.10, 0.50),
-                        labels = percent) +
-  base_theme +
-  theme(legend.position = "bottom")
-
 # ---- time-by-submission-top-100
 ggplot(top_100_places, aes(TotalSubmissions, TotalTime)) +
   geom_point(aes(alpha = Place, color = FirstPlaceTeam)) +
