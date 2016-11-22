@@ -67,14 +67,16 @@ gg_num_submissions <- ggplot(submission_rates, aes(TeamLabel)) +
   scale_x_team_label +
   scale_y_continuous("number of submissions", breaks = 0:10) +
   scale_fill_team_type +
-  base_theme
+  base_theme +
+  theme(panel.grid.major.x = element_blank())
 
 gg_total_time <- ggplot(total_time, aes(TeamLabel, TotalTime)) +
   geom_bar(aes(fill = TeamLabel), stat = "identity", alpha = default_alpha) +
   scale_x_team_label +
   scale_y_continuous("submission interval", breaks = 1:10) +
   scale_fill_manual(values = team_type_colors) +
-  base_theme
+  base_theme +
+  theme(panel.grid.major.x = element_blank())
 
 gg_regions <- ggplot(team_type_points, aes(TotalSubmissions, TotalTime)) +
   geom_point(aes(color = TeamLabel), size = 3, alpha = default_alpha) +
@@ -114,32 +116,27 @@ team_type_means <- top_100_team_types %>%
   recode_team_type() %>%
   make_rev_rects()
 
-
-
-place_breaks <- c(1, seq(5, 100, by = 5))
-
 gg_team_types <- ggplot(top_100_team_types, aes(TeamNum, Place)) +
   geom_rect(aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, fill=TeamLabel),
             data = team_type_means, alpha = default_alpha) +
   scale_x_team_num +
-  scale_y_reverse("place", breaks = c(1, seq(5, 100, by = 5))) +
+  scale_y_reverse("place", breaks = seq(2, 100, by = 2)) +
   scale_color_team_type +
   scale_fill_team_type +
-  coord_cartesian(ylim = c(30, 50)) +
+  coord_cartesian(ylim = c(41, 50)) +
   base_theme
 
-team_types_mod <- lmer(Place ~ TeamRelShort + (1|CompetitionId),
-                       data = top_100_team_types)
+team_types_lm_mod <- lm(Place ~ ShortVSteady + ShortVLong + ShortVRapid,
+                        data = top_100_team_types)
+summary(team_types_lm_mod)
 
-team_types_preds <- data_frame(TeamType = c("steady", "long", "short", "rapid")) %>%
-  recode_team_type() %>%
-  cbind(., predictSE(team_types_mod, newdata = ., se = TRUE)) %>%
-  rename(Place = fit, SE = se.fit) %>%
-  reverse_place()
+team_types_preds <- recode_team_type() %>%
+  cbind(., predict(team_types_lm_mod, newdata = ., se = TRUE)) %>%
+  rename(Place = fit, SE = se.fit)
 
 gg_team_types +
-  geom_pointrange(aes(y = Place, ymin = Place + SE, ymax = Place - SE),
-                  data = team_types_preds)
+  geom_linerange(aes(ymin = Place + SE, ymax = Place - SE),
+                 data = team_types_preds)
 
 # ---- team-types-density
 new_density_plot <- function(leaderboards) {

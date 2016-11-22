@@ -43,7 +43,7 @@ top_100_places_xlim <- c(1, 100)
 
 # Team type colors
 team_types <- recode_team_type()
-scale_x_team_num <- scale_x_continuous(breaks = team_types$TeamNum,
+scale_x_team_num <- scale_x_continuous("", breaks = team_types$TeamNum,
                                        labels = team_types$TeamLabel)
 scale_fill_team_type <- scale_fill_manual(values = team_type_colors)
 scale_color_team_type <- scale_color_manual(values = team_type_colors)
