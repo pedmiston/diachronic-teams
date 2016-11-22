@@ -68,6 +68,7 @@ The descriptive analyses above revealed that top place teams made more submissio
 
 ```{r place-from-submissions-mod-results, results = 'asis'}
 tidy(place_mod, effects = "fixed") %>%
+  # cols: term, est, se, stat, pval
   kable(digits = c(NA, 4, 4, 1, 5))
 ```
 

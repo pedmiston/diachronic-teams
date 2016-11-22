@@ -12,14 +12,7 @@ ggplot(top_100_places, aes(Place, TotalSubmissions)) +
   labs(title = "Top place teams make more submissions")
 
 # ---- relative-submissions-per-place
-submissions_relative_first_place <- top_100 %>%
-  group_by(CompetitionId) %>%
-  mutate(
-    SubmissionsToFirstPlace = TotalSubmissions - TotalSubmissions[FirstPlaceTeam == TRUE]
-  ) %>%
-  ungroup()
-
-ggplot(submissions_relative_first_place, aes(Place, SubmissionsToFirstPlace)) +
+ggplot(top_100_places, aes(Place, SubmissionsToFirstPlace)) +
   geom_point(aes(color = FirstPlaceTeam), alpha = default_alpha,
              stat = "summary", fun.y = "mean") +
   scale_x_place +
@@ -56,8 +49,8 @@ place_mod_lm <- lm(Place ~ TotalSubmissions, data = top_100)
 place_mod_lm_preds <- get_place_mod_preds(place_mod_lm)
 
 gg_place_from_submissions +
-  geom_line(data = place_mod_lm_preds, color = colors[["orange"]]) +
-  geom_line(data = place_preds, color = colors[["green"]])
+  geom_line(data = place_mod_lm_preds, color = colors[["orange"]])
+  # geom_line(data = place_preds, color = colors[["green"]])
 
 # ---- predicted-place-from-submission
 sample_teams <- function(n_teams = 1, min_submissions = 50, 
