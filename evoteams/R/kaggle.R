@@ -316,6 +316,7 @@ get_place_mod_preds <- function(mod, predict_fn, x_preds) {
 #' @export
 calculate_relative_submissions <- function(leaderboards) {
   leaderboards %>%
+    label_place_groups() %>%
     group_by(CompetitionId) %>%
     mutate(
       FirstPlaceTeamSubmissions = TotalSubmissions[FirstPlaceTeam == TRUE],
