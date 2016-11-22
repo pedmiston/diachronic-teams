@@ -24,3 +24,30 @@ recode_feedback_types <- function(frame) {
   )
   left_join(frame, feedback_map)
 }
+
+
+#' Recode team type for labels and contrast coding.
+#'
+#' If no data is provided, the team type map is returned.
+#'
+#' @import dplyr
+#' @export
+recode_team_type <- function(frame) {
+  team_type_levels <- c("steady", "long", "short", "rapid")
+
+  contr_rel_short <- contr.treatment(n = length(team_type_levels), base = 3) %>%
+    as_data_frame()
+  names(contr_rel_short) <- c("ShortVSteady", "ShortVLong", "ShortVRapid")
+  contr_rel_short$TeamType <- team_type_levels
+
+  team_type_map <- data_frame(
+    TeamType = team_type_levels,
+    TeamLabel = factor(team_type_levels, levels = team_type_levels),
+    TeamNum = seq_along(team_type_levels)
+  ) %>%
+    left_join(contr_rel_short)
+
+  if (missing(frame)) return(team_type_map)
+
+  left_join(frame, team_type_map)
+}

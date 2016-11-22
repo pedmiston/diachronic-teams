@@ -2,30 +2,12 @@ source("reports/kaggle/R/setup.R")
 source("reports/kaggle/R/theme.R")
 
 # ---- team-types-quartet
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-library(magrittr)
-library(grid)
-library(gridExtra)
-
 submission_rates <- list(
-  steady = data_frame(
-    SubmissionNum = 1:10,
-    SubmissionTime = 1:10
-  ),
-  long = data_frame(
-    SubmissionNum = 1:2,
-    SubmissionTime = c(1, 10)
-  ),
-  short = data_frame(
-    SubmissionNum = 1:2,
-    SubmissionTime = c(1, 2)
-  ),
-  rapid = data_frame(
-    SubmissionNum = 1:10,
-    SubmissionTime = seq(1, 2, length.out = 10)
-  )
+  steady = data_frame(SubmissionNum = 1:10, SubmissionTime = 1:10),
+  long   = data_frame(SubmissionNum = 1:2, SubmissionTime = c(1, 10)),
+  short  = data_frame(SubmissionNum = 1:2, SubmissionTime = c(1, 2)),
+  rapid  = data_frame(SubmissionNum = 1:10,
+                      SubmissionTime = seq(1, 2, length.out = 10))
 ) %>% bind_rows(.id = "TeamType") %>% recode_team_type
 
 # Select first and last points for arrow
@@ -74,7 +56,6 @@ gg_timeline <- gg_base +
   geom_text(aes(y = SubmissionTime, label = TeamLabel, color = TeamLabel),
             data = label_data,
             vjust = 2, size = 3) +
-  scale_x_discrete("team type", labels = rev(team_type_labels)) +
   scale_y_continuous("competition time", breaks = 1:10) +
   scale_color_team_type +
   coord_flip() +
@@ -116,38 +97,33 @@ grid.arrange(gg_timeline, gg_regions,
              nrow = 2)
 
 # ---- team-types-place
-divide_into_team_types <- function(leaderboards) {
-  team_type_map <- data_frame(
-    TeamType = c("steady", "long", "short", "rapid"),
-    TimeSplit = c(1, 0, 0, 1),
-    SubmissionSplit = c(1, 1, 0, 0)
-  )
-  
-  leaderboards %>%
-    mutate(
-      TimeSplit = TotalTime < median(TotalTime),
-      SubmissionsSplit = TotalSubmissions < median(TotalSubmissions)
-    ) %>%
-    left_join(team_type_map) %>%
-    select(-TimeSplit, -SubmissionSplit)
+make_rev_rects <- function(frame) {
+  width <- 0.9
+  baseline <- 100
+  frame %>%
+    mutate(xmin = TeamNum - width/2, xmax = TeamNum + width/2,
+           ymin = Place, ymax = baseline)
 }
 
-reverse_place <- . %>% mutate(RevPlace = 100 - Place)
-
 top_100_team_types <- top_100 %>%
-  divide_into_team_types() %>%
+  divide_into_team_types()
+
+team_type_means <- top_100_team_types %>%
+  group_by(TeamType) %>%
+  summarize(Place = mean(Place)) %>%
   recode_team_type() %>%
-  reverse_place()
+  make_rev_rects()
+
+
 
 place_breaks <- c(1, seq(5, 100, by = 5))
 
-
-
-gg_team_types <- ggplot(top_100_team_types, aes(TeamLabel, Place)) +
-  geom_point(aes(fill = TeamLabel), stat = "summary", fun.y = "mean",
-             alpha = default_alpha) +
-  scale_x_team_label +
+gg_team_types <- ggplot(top_100_team_types, aes(TeamNum, Place)) +
+  geom_rect(aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, fill=TeamLabel),
+            data = team_type_means, alpha = default_alpha) +
+  scale_x_team_num +
   scale_y_reverse("place", breaks = c(1, seq(5, 100, by = 5))) +
+  scale_color_team_type +
   scale_fill_team_type +
   coord_cartesian(ylim = c(30, 50)) +
   base_theme

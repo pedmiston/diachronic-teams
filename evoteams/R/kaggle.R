@@ -334,3 +334,28 @@ calculate_relative_submissions <- function(leaderboards) {
 interval_duration <- function(start, end) {
   lubridate::interval(start, end) %>% lubridate::as.duration()
 }
+
+
+#' Assign team types by median splits on time and submissions.
+#'
+#' See also \code{\link{recode_team_type}}.
+#'
+#' @import dplyr
+#' @export
+divide_into_team_types <- function(leaderboards) {
+
+  # Augment team type map to merge based on TimeSplit and SubmissionSplit
+  team_type_map <- recode_team_type() %>%
+    mutate(
+      TimeSplit = c(1, 0, 0, 1),
+      SubmissionSplit = c(1, 1, 0, 0)
+    )
+
+  leaderboards %>%
+    mutate(
+      TimeSplit = TotalTime < median(TotalTime),
+      SubmissionsSplit = TotalSubmissions < median(TotalSubmissions)
+    ) %>%
+    left_join(team_type_map) %>%
+    select(-TimeSplit, -SubmissionsSplit)  # only needed for merge
+}

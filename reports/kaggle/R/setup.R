@@ -1,6 +1,7 @@
 # ---- setup
 library(dplyr)
 library(magrittr)
+library(tidyr)
 
 library(ggplot2)
 library(gridExtra)
