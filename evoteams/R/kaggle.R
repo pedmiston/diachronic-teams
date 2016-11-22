@@ -306,6 +306,24 @@ get_place_mod_preds <- function(mod, predict_fn, x_preds) {
 }
 
 
+#' Transform submissions to be relative to the first place team.
+#'
+#' Requires first place team to be labeled (FirstPlaceTeam columnn).
+#' See \code{\link{label_place_groups}}.
+#'
+#' @import dplyr
+#' @export
+calculate_relative_submissions <- function(leaderboards) {
+  leaderboards %>%
+    group_by(CompetitionId) %>%
+    mutate(
+      FirstPlaceTeamSubmissions = TotalSubmissions[FirstPlaceTeam == TRUE],
+      SubmissionsToFirstPlace = TotalSubmissions - FirstPlaceTeamSubmissions
+    ) %>%
+    ungroup()
+}
+
+
 interval_duration <- function(start, end) {
   lubridate::interval(start, end) %>% lubridate::as.duration()
 }
