@@ -259,6 +259,7 @@ summarize_by_place <- function(leaderboards) {
     group_by(Place) %>%
     summarize(
       TotalSubmissions = mean(TotalSubmissions),
+      SubmissionsToFirstPlace = mean(SubmissionsToFirstPlace),
       TeamSize = mean(TeamSize, na.rm = TRUE),
       TotalTime = mean(TotalTime),
       PropCompetitionTime = mean(PropCompetitionTime, na.rm = TRUE)
