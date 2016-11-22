@@ -11,7 +11,7 @@ def use_data(ctx):
 
 
 @task
-def install(ctx):
+def install(ctx, document_only=False):
     """Install the evoteams R pkg."""
     cmd = 'cd {R_pkg} && Rscript -e "{R_cmds}"'
     R_cmds = """
@@ -20,4 +20,8 @@ def install(ctx):
     document()
     install()
     """.split()
+
+    if document_only:
+        R_cmds = ["devtools::document()"]
+
     run(cmd.format(R_pkg=R_PKG, R_cmds=';'.join(R_cmds)))
