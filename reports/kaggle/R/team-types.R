@@ -63,7 +63,7 @@ gg_timeline <- gg_base +
 gg_num_submissions <- ggplot(submission_rates, aes(TeamLabel)) +
   geom_bar(aes(fill = TeamLabel), stat = "count", alpha = default_alpha) +
   scale_x_team_label +
-  scale_y_continuous("number of submissions", breaks = 0:10) +
+  scale_y_continuous("number of submissions", breaks = 1:10) +
   scale_fill_team_type +
   base_theme +
   theme(panel.grid.major.x = element_blank())
@@ -97,16 +97,22 @@ grid.arrange(gg_timeline, gg_regions,
              nrow = 2)
 
 # ---- team-types-density
-ggplot(top_100, aes(TotalSubmissions, TotalTimeSec)) +
+gg_team_types_density <- ggplot(top_100, aes(TotalSubmissions, TotalTimeSec)) +
   geom_point(aes(color = TeamLabel), alpha = 0.2) +
   geom_hline(yintercept = median(top_100$TotalTimeSec),
-             color = "gray") +
+             color = "gray", lty = 2) +
   geom_vline(xintercept = median(top_100$TotalSubmissions),
-             color = "gray") +
-  scale_x_total_submissions +
-  make_time_scale("submission interval (days)", seq(0, 400, by = 100)) +
+             color = "gray", lty = 2) +
   scale_color_team_type +
   base_theme
+
+gg_team_types_density +
+  scale_x_total_submissions +
+  make_time_scale("submission interval (days)", seq(0, 400, by = 100)) +
+  coord_cartesian(
+    xlim = c(1, 300),
+    ylim = ddays(c(0, 200))
+  )
 
 # ---- team-types-place
 make_rev_rects <- function(frame) {
@@ -144,7 +150,7 @@ gg_team_types +
   geom_linerange(aes(ymin = Place + SE, ymax = Place - SE),
                  data = team_types_preds)
 
-# ---- time-by-submission-top-100
+# ---- top-100-submissions-by-time
 ggplot(top_100_places, aes(TotalSubmissions, TotalTime)) +
   #geom_point(aes(alpha = Place, color = FirstPlaceTeam)) +
   geom_text(aes(label = Place, alpha = Place), size = 2, check_overlap = TRUE) +
@@ -154,5 +160,3 @@ ggplot(top_100_places, aes(TotalSubmissions, TotalTime)) +
   coord_cartesian(xlim = c(1, 35), ylim = c(0, 25 * 24 * 3600)) +
   make_time_scale("submission interval (days)", seq(0, 100, by = 5)) +
   base_theme
-
-# ---- prop-time-by-rel-submissions-top-100

@@ -148,5 +148,3 @@ ggplot(top_100_places, aes(TeamSize, TotalSubmissions)) +
   scale_alpha_continuous(range = c(1, 0.2)) +
   coord_cartesian(xlim = c(1, 3), ylim = c(1, 39)) +
   base_theme
-
-# ---- submissions-controlling-for-total-time

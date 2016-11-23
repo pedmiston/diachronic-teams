@@ -21,8 +21,10 @@ ggplot(top_100_places, aes(Place, PropCompetitionTime)) +
   base_theme
 
 # ---- place-from-submission-interval-mod
-interval_mod <- glmer(Place ~ TotalTimeSec + (TotalTimeSec|CompetitionId),
-                      family = "poisson", data = top_100)
+z_score <- function(x) (x - mean(x))/sd(x)
+top_100$TotalTimeSecZ <- z_score(top_100$TotalTimeSec)
+interval_mod <- lmer(Place ~ TotalTimeSecZ + (TotalTimeSecZ|CompetitionId),
+                     data = top_100)
 
 # ---- place-from-submission-interval
 gg_place_from_interval <- ggplot(top_100_by_interval_bin, aes(TotalTimeBin, Place)) +

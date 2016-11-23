@@ -107,6 +107,9 @@ Kaggle competitors that make more submissions tend to place higher in the final 
 ```{r team-types-place}
 ```
 
+```{r top-100-submissions-by-time}
+```
+
 # Team size
 
 Another likely factor in determining the success of a Kaggle competitor is the size of the team. Although by far most Kaggle competition solutions are submitted by individuals, many different team sizes are possible. It turns out that top place teams are more likely to have additional teammates.

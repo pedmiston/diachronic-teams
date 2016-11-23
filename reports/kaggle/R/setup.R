@@ -35,6 +35,12 @@ top_100_by_submission_bin <- top_100 %>%
   group_by(TotalSubmissionsBin) %>%
   summarize_teams_in_group()
 
+# By submission interval bin
+top_100_by_interval_bin <- top_100 %>%
+  label_submission_interval_bins() %>%
+  group_by(SubmissionIntervalBin) %>%
+  summarize_teams_in_group()
+
 # By relative submission bin
 # top_100_by_rel_submission_bin <- top_100 %>%
 #   label_submission_bins() %>%
