@@ -14,6 +14,7 @@ Kaggle competitions are data-oriented challenges in which teams and individuals 
 library(knitr)
 library(broom)
 library(printr)
+library(grid)
 
 opts_chunk$set(
   echo = FALSE,
@@ -47,60 +48,42 @@ read_chunk("R/team-size.R")
 
 # Iteration
 
-Iteration as a strategy for solving a Kaggle competition is exhibited by teams making many submissions, each incrementally improving upon the previous ones. In this section I explore whether this is a worthwhile strategy for competing in a data science competition.
-
-## Do teams that make more submissions tend to do better?
-
-Averaging the number of submissions made by teams finishing in each of the top 100 places reveals that top place teams make more submissions than lower place teams.
-
-```{r submissions-per-place}
+```{r submissions-per-place, results = 'hide'}
 ```
 
-The analysis above averages by place across competitions. A different way to summarize the data is to first transform the number of submissions to be relative to the number of submissions made by the first place team within each competition. This transformation allows for better alignment across competitions. The results revealed an even stronger relationship between place and submissions. Within each competition, top place teams make more submissions than lower place teams.
-
-```{r relative-submissions-per-place}
+```{r relative-submissions-per-place, results = 'hide'}
 ```
 
-The descriptive analyses above revealed that top place teams made more submissions. To test the prediction that making more submissions is associated with better placement in the competition, I fit a hierarchical linear model predicting place from number of submissions with random effects for competition. The results revealed a significant relationship such that teams that make more submissions tend to place better in the competition.
-
-```{r place-from-submissions-mod, echo = 1}
+```{r place-from-submissions-mod, results = 'hide'}
 ```
 
-```{r place-from-submissions-mod-results, results = 'asis'}
-tidy(place_mod, effects = "fixed") %>%
-  # cols: term, est, se, stat, pval
-  kable(digits = c(NA, 4, 4, 1, 5))
+```{r place-from-submissions, results = 'hide'}
 ```
 
-```{r place-from-submissions}
+```{r predicted-place-from-submission, results = 'hide'}
 ```
 
-Note the left skew in the distribution of submissions. The majority of teams submit less than 10 submissions total.
+```{r iteration, fig.width = 8, fig.height = 6}
+remove_titles <- theme(plot.title = element_blank())
+multiplot <- function(gg) gg + remove_titles
 
-## Do teams that make many submissions tend to improve each time?
-
-However, even this analysis is an inadequate test of the primary hypothesis because it does not reflect the ability of each team incrementally improving their solution over iterative solutions. If iteration is associated with an improvement in solution success, then as teams generate more and more solutions they should improve in place each time.
-
-To do this analysis across competitions with different distributions of scores, I needed to assign each (pre-final) submission a predicted place based on how that score would have placed against the final leaderboard. Then the question of whether additional submissions tend to improve place can be answered.
-
-```{r predicted-place-from-submission}
+grid.arrange(
+  multiplot(gg_submissions_per_place),
+  multiplot(gg_relative_submissions_per_place),
+  multiplot(gg_place_from_submissions),
+  multiplot(gg_predicted_place_from_submissions)
+)
 ```
 
-Kaggle competitors that make more submissions tend to place higher in the final standings in part because solutions tend to improve iteratively over submissions.
-
-## Do teams that make more submissions simply spend more time on the problem?
+# Submission interval
 
 ```{r submission-interval-per-place}
 ```
 
-One explanation for the lack of a relationship between place and submission interval is that we are observing a ceiling effect. The way submission intervals are being calculated is somewhat inclusive, so it's possible that everyone scores a high submission interval and therefore it has no relation to place. To test this, I transformed the submission interval score into a percentage relative to the total amount of time allowed for the competition. On this measure, submission intervals are converted to percentages for each individual competition, such that a score of 100% would indicate a submission interval right when the competiton opened and at the end of the competition.
-
 ```{r prop-time-per-place}
 ```
 
-This analysis reveals two things. First, teams are not using the entire submission window. In fact, far from it. Second, even by this measure that is conditionalized to particular competitions, top place teams do not tend to spend a larger percentage of time involved in the competition.
-
-## Correlation between number of submissions and submission interval
+# Team types
 
 ```{r team-types-quartet, fig.width = 6, fig.height = 5.25}
 ```
@@ -116,22 +99,14 @@ This analysis reveals two things. First, teams are not using the entire submissi
 
 # Team size
 
-Another likely factor in determining the success of a Kaggle competitor is the size of the team. Although by far most Kaggle competition solutions are submitted by individuals, many different team sizes are possible. It turns out that top place teams are more likely to have additional teammates.
-
 ```{r teamsize-from-place}
 ```
-
-As with the analysis of submissions by place above, showing that top place teams tend to be larger is not the same as showing that adding a team member improves your likely place in the standings. A more accurate depiction is below, where place is estimated by team size.
 
 ```{r place-from-teamsize}
 ```
 
-The horizontal extent of the above chart is misleading in that the vast majority of teams are only a single individual. Zooming in on the most common team sizes reveals the expected positive relationship.
-
 ```{r place-from-teamsize-zoom}
 ```
-
-## Do teams that are bigger tend to make more submissions?
 
 ```{r team-size-submissions-correlation}
 ```

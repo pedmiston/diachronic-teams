@@ -2,7 +2,7 @@ source("reports/kaggle/R/setup.R")
 source("reports/kaggle/R/theme.R")
 
 # ---- submissions-per-place
-ggplot(top_100_places, aes(Place, TotalSubmissions)) +
+gg_submissions_per_place <- ggplot(top_100_places, aes(Place, TotalSubmissions)) +
   geom_point(aes(color = FirstPlaceTeam), alpha = default_alpha) +
   scale_x_place +
   scale_y_submissions +
@@ -10,9 +10,10 @@ ggplot(top_100_places, aes(Place, TotalSubmissions)) +
   coord_cartesian(xlim = top_100_places_xlim, ylim = top_100_submissions_ylim) +
   base_theme +
   labs(title = "Top place teams make more submissions")
+gg_submissions_per_place
 
 # ---- relative-submissions-per-place
-ggplot(top_100_places, aes(Place, SubmissionsToFirstPlace)) +
+gg_relative_submissions_per_place <- ggplot(top_100_places, aes(Place, SubmissionsToFirstPlace)) +
   geom_point(aes(color = FirstPlaceTeam), alpha = default_alpha,
              stat = "summary", fun.y = "mean") +
   scale_x_place +
@@ -22,6 +23,7 @@ ggplot(top_100_places, aes(Place, SubmissionsToFirstPlace)) +
   coord_cartesian(xlim = top_100_places_xlim, ylim = top_100_submissions_ylim - 40) +
   base_theme +
   labs(title = "Top place teams make more submissions")
+gg_relative_submissions_per_place
 
 # ---- place-from-submissions-mod
 place_mod <- glmer(Place ~ TotalSubmissions + (TotalSubmissions|CompetitionId),
@@ -48,7 +50,7 @@ place_preds <- get_place_mod_preds(place_mod, predict_fn = predictSE)
 place_mod_lm <- lm(Place ~ TotalSubmissions, data = top_100)
 place_mod_lm_preds <- get_place_mod_preds(place_mod_lm)
 
-gg_place_from_submissions +
+gg_place_from_submissions <- gg_place_from_submissions +
   geom_line(data = place_mod_lm_preds, color = colors[["orange"]])
   # geom_line(data = place_preds, color = colors[["green"]])
 
@@ -72,7 +74,7 @@ sample_teams <- function(n_teams = 1, min_submissions = 50,
 n_teams <- 200
 submissions_sample <- sample_teams(n_teams = n_teams, seed = 821)
 
-team_submissions_plot <- ggplot(submissions_sample, aes(SubmissionNum, PredictedPlace)) +
+gg_predicted_place_from_submissions <- ggplot(submissions_sample, aes(SubmissionNum, PredictedPlace)) +
   geom_smooth(aes(group = TeamId), method = "lm", se = FALSE,
               size = 0.4, alpha = 0.4, color = colors[["submissions"]]) +
   scale_x_submission_number +
@@ -89,7 +91,7 @@ team_submissions_preds <- data_frame(SubmissionNum = 1:100) %>%
   cbind(., predictSE(team_submissions_mod, newdata = .)) %>%
   rename(PredictedPlace = fit, SE = se.fit)
 
-team_submissions_plot +
+gg_predicted_place_from_submissions <- gg_predicted_place_from_submissions +
   geom_smooth(aes(ymin = PredictedPlace - SE, ymax = PredictedPlace + SE),
               data = team_submissions_preds, color = colors[["orange"]],
               size = 1.5)
