@@ -27,9 +27,11 @@ interval_mod <- lmer(Place ~ TotalTimeSecZ + (TotalTimeSecZ|CompetitionId),
                      data = top_100)
 
 # ---- place-from-submission-interval
-gg_place_from_interval <- ggplot(top_100_by_interval_bin, aes(TotalTimeBin, Place)) +
+gg_place_from_interval <- ggplot(top_100_by_interval_bin, aes(SubmissionIntervalBin, Place)) +
   geom_point(aes(size = PercentTeams), alpha = default_alpha,
              color = colors[["submissions"]]) +
+  make_time_scale("submission interval (days)", c(1, seq(20, 200, by = 20)),
+                  scale_obj = "scale_x_continuous") +
   base_theme +
   theme(legend.position = "bottom")
 gg_place_from_interval

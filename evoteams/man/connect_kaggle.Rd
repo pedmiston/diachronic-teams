@@ -15,4 +15,9 @@ to be found in the "evoteams" package at "inst/extdata/kaggle.sqlite".}
 \description{
 Connect to the Kaggle SQLite database.
 }
+\examples{
+kaggle_db <- connect_kaggle("path/to/kaggle.sqlite")
+kaggle_db <- connect_kaggle()  # assumes db included in evoteams pkg
+
+}
 

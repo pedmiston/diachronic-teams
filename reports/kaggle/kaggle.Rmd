@@ -93,8 +93,12 @@ Kaggle competitors that make more submissions tend to place higher in the final 
 ```{r submission-interval-per-place}
 ```
 
+One explanation for the lack of a relationship between place and submission interval is that we are observing a ceiling effect. The way submission intervals are being calculated is somewhat inclusive, so it's possible that everyone scores a high submission interval and therefore it has no relation to place. To test this, I transformed the submission interval score into a percentage relative to the total amount of time allowed for the competition. On this measure, submission intervals are converted to percentages for each individual competition, such that a score of 100% would indicate a submission interval right when the competiton opened and at the end of the competition.
+
 ```{r prop-time-per-place}
 ```
+
+This analysis reveals two things. First, teams are not using the entire submission window. In fact, far from it. Second, even by this measure that is conditionalized to particular competitions, top place teams do not tend to spend a larger percentage of time involved in the competition.
 
 ## Correlation between number of submissions and submission interval
 
