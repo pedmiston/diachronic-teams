@@ -18,18 +18,19 @@ RETURN material.label as item_from, result.label as item_to
 """))
 
 
-viz = Digraph()
+viz = Digraph(graph_attr=dict(rankdir='BT'))
 
-for generation, cur_items in items.groupby('generation'):
-    for label in cur_items.label:
-        viz.node(label)
+for item in items.label:
+    viz.node(item)
 
-    # Loop twice so that nodes are created in groups
-    # and can be aligned in a single generation.
+for edge in edges.itertuples():
+    viz.edge(edge.item_to, edge.item_from)
 
-    for label in cur_items.label:
-        edges_ending_at_label = edges.ix[edges.item_to == label]
-        for edge in edges_ending_at_label.itertuples():
-            viz.edge(edge.item_from, edge.item_to)
+# Set rank for nodes by generation.
+# Insert { rank=same ... } calls for each generation into the dot source.
+rank_fmt = '{{ rank=same {labels} }}\n'
+for _, items_in_gen in items.groupby('generation'):
+    spaced_labels = ' '.join(items_in_gen.label.tolist())
+    viz.body.append(rank_fmt.format(labels=spaced_labels))
 
-viz.render('items.gv')
+viz.render('items.gv', view=True)
