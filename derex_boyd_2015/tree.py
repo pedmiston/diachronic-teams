@@ -12,16 +12,21 @@ MATCH (n:item)
 RETURN n.generation as generation, n.label as label
 """))
 
+item_labels = pandas.read_csv('item_labels.csv')
+item_labels['image'] = 'images/' + item_labels.image
+items = items.merge(item_labels)
+
 edges = pandas.DataFrame(graph.data("""
 MATCH (material:item) -[r:REQUIRES]-> (result:item)
 RETURN material.label as item_from, result.label as item_to
 """))
 
+viz = Digraph(graph_attr=dict(rankdir='BT'),
+              node_attr=dict(fontname='Helvetica', fontsize='12',
+                             shape='none'))
 
-viz = Digraph(graph_attr=dict(rankdir='BT'))
-
-for item in items.label:
-    viz.node(item)
+for item in items.itertuples():
+    viz.node(item.label, label='', image=item.image)
 
 for edge in edges.itertuples():
     viz.edge(edge.item_to, edge.item_from)
