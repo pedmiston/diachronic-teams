@@ -15,5 +15,5 @@ python inventions.py
 Once the items are in the database, draw the invention tree with:
 
 ```bash
-python invention_tree.py
+python tree.py  # creates items.gv.pdf and opens it for viewing
 ```
