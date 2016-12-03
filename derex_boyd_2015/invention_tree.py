@@ -20,10 +20,16 @@ RETURN material.label as item_from, result.label as item_to
 
 viz = Digraph()
 
-for n in items.label:
-    viz.node(n)
+for generation, cur_items in items.groupby('generation'):
+    for label in cur_items.label:
+        viz.node(label)
 
-for e in edges.itertuples():
-    viz.edge(e.item_from, e.item_to)
+    # Loop twice so that nodes are created in groups
+    # and can be aligned in a single generation.
 
-viz.render('items.gv', view=True)
+    for label in cur_items.label:
+        edges_ending_at_label = edges.ix[edges.item_to == label]
+        for edge in edges_ending_at_label.itertuples():
+            viz.edge(edge.item_from, edge.item_to)
+
+viz.render('items.gv')

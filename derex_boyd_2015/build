@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+dot -Tpng items.gv > items.png
