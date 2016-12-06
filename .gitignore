@@ -3,6 +3,8 @@ figs/
 *.html
 *.pdf
 *.docx
+*.gv
+!evoteams/**/*.gv
 cassettes/
 
 # python
