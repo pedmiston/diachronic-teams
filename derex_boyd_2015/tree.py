@@ -21,7 +21,7 @@ MATCH (material:item) -[r:REQUIRES]-> (result:item)
 RETURN material.label as item_from, result.label as item_to
 """))
 
-viz = Digraph(graph_attr=dict(rankdir='BT'),
+viz = Digraph(graph_attr=dict(rankdir='TB'),
               node_attr=dict(fontname='Helvetica', fontsize='12',
                              shape='none'))
 
@@ -38,4 +38,5 @@ for _, items_in_gen in items.groupby('generation'):
     spaced_labels = ' '.join(items_in_gen.label.tolist())
     viz.body.append(rank_fmt.format(labels=spaced_labels))
 
+viz.format = 'png'
 viz.render('items.gv', view=True)
