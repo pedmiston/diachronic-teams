@@ -38,4 +38,5 @@ for _, items_in_gen in items.groupby('generation'):
     spaced_labels = ' '.join(items_in_gen.label.tolist())
     viz.body.append(rank_fmt.format(labels=spaced_labels))
 
+viz.format = 'png'
 viz.render('items.gv', view=True)
