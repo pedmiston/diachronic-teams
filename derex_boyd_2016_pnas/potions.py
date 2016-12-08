@@ -4,24 +4,27 @@ from py2neo import Graph, Subgraph, Node, Relationship
 
 graph = Graph(password=environ.get('NEO4J_PASSWORD'))
 
+if 'label' not in graph.schema.get_uniqueness_constraints('Potion'):
+    graph.schema.create_uniqueness_constraint('Potion', 'label')
+
 # Fill up items and relationships before creating them in the graph
 potions = {}
 relationships = []
 
 # Make resource nodes
-labels = 'pink_beaker yellow_beaker purple_beaker red_bulb green_bulb yellow_bulb'.split()
+labels = 'pink_beaker orange_beaker purple_beaker red_bulb green_bulb yellow_bulb'.split()
 potions.update({label: Node('Potion', label=label, generation=1)
                for label in labels})
 
 recipes = """
-yellow_beaker + red_bulb + yellow_bulb = brown_jar
-brown_jar + yellow_beaker + purple_beaker = green_jar
-green_jar + purple_beaker + green_bulb = green_flask
+orange_beaker + red_bulb + yellow_bulb = purple_jar
+purple_jar + orange_beaker + purple_beaker = blue_jar
+blue_jar + purple_beaker + green_bulb = green_flask
 pink_beaker + purple_beaker + green_bulb = yellow_jar
-yellow_jar + red_bulb + yellow_bulb = red_jar
-red_jar + pink_beaker + red_bulb = blue_flask
-green_flask + blue_flask + green_jar = orange_jar
-blue_flask + green_flask + red_jar = gold_jar
+yellow_jar + red_bulb + yellow_bulb = pink_jar
+pink_jar + pink_beaker + red_bulb = black_flask
+green_flask + black_flask + blue_jar = red_jar
+black_flask + green_flask + pink_jar = rose_jar
 """.strip().split('\n')
 
 
@@ -45,4 +48,4 @@ for recipe in recipes:
     make_potion_from_recipe(recipe)
 
 data = Subgraph(nodes=potions.values(), relationships=relationships)
-graph.create(data)
+graph.merge(data)

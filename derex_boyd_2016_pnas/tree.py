@@ -21,9 +21,11 @@ MATCH (material:Potion) -[r:REQUIRES]-> (result:Potion)
 RETURN material.label as potion_from, result.label as potion_to
 """))
 
-viz = Digraph(graph_attr=dict(rankdir='BT'),
+viz = Digraph(graph_attr=dict(rankdir='BT', bgcolor='black'),
               node_attr=dict(fontname='Helvetica', fontsize='12',
-                             shape='none'))
+                             shape='none'),
+              edge_attr=dict(color='white',
+                             tailclip='false'))
 
 for potion in potions.itertuples():
     viz.node(potion.label, label = '', image = potion.image)
@@ -32,10 +34,10 @@ for edge in edges.itertuples():
     viz.edge(edge.potion_to, edge.potion_from)
 
 # Set rank for nodes by generation.
-# Insert { rank=same ... } calls for each generation into the dot source.
-rank_fmt = '{{ rank=same {labels} }}\n'
+# Insert "{ rank=same ... }" calls for each generation into the dot source.
+rank_fmt = '{{ rank=same {labels} }}'
 for _, potions_in_gen in potions.groupby('generation'):
     spaced_labels = ' '.join(potions_in_gen.label.tolist())
-    viz.body.append(rank_fmt.format(labels=spaced_labels))
+    viz.body.append(rank_fmt.format(labels=spaced_labels) + '\n')
 
 viz.render('potions.gv', view=True)
