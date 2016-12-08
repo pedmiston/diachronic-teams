@@ -8,7 +8,7 @@ from graphviz import Digraph
 graph = Graph(password=environ.get('NEO4J_PASSWORD'))
 
 items = pandas.DataFrame(graph.data("""
-MATCH (n:item)
+MATCH (n:Item)
 RETURN n.generation as generation, n.label as label
 """))
 
@@ -17,7 +17,7 @@ item_labels['image'] = 'images/' + item_labels.image
 items = items.merge(item_labels)
 
 edges = pandas.DataFrame(graph.data("""
-MATCH (material:item) -[r:REQUIRES]-> (result:item)
+MATCH (material:Item) -[r:REQUIRES]-> (result:Item)
 RETURN material.label as item_from, result.label as item_to
 """))
 

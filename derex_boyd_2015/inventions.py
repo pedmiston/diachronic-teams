@@ -10,7 +10,7 @@ relationships = []
 
 # Make resource nodes
 labels = 'fat_tree skinny_tree rock_1 red_berries blue_berries antler'.split()
-items.update({label: Node('item', label=label, generation=1)
+items.update({label: Node('Item', label=label, generation=1)
               for label in labels})
 
 recipes = """
@@ -53,7 +53,7 @@ def make_invention_from_recipe(recipe):
 
     # Create a new item for the result of the invention.
     generation = max([material['generation'] for material in materials]) + 1
-    result = Node('item', label=result_label, generation=generation)
+    result = Node('Item', label=result_label, generation=generation)
     items[result_label] = result
 
     for material in materials:
