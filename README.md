@@ -1,14 +1,14 @@
+<img src="https://github.com/pedmiston/diachronic-teams/raw/master/img/team-structures.png" align="left" width="140">
+
 # Diachronic Teams
 
 This research project investigates the role of iteration and inheritance in successful collaborations by comparing the problem solving abilities of teams arranged either diachronically or synchronically.
-
-![](/team-structures.png)
 
 # Installing
 
 Here's how I set up to work on this repository.
 
-    # Clone the EvoTeams repository
+    # Clone the repository
     $ git clone https://github.com/pedmiston/diachronic-teams.git
     $ cd diachronic-teams
 
@@ -48,7 +48,3 @@ An R package wrapping all of the data collected in this research. **After downlo
 Dynamic documents. **After installing the evoteams R pkg** build the reports with:
 
     $ inv reports.render
-
-## experiments
-
-Subdirectories for each of the experiments.
