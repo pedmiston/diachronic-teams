@@ -1,7 +1,8 @@
 ## Sript
 
 ##-------LOAD SUCESSFUL COMBINATIONS-------##
-Data<-read.table("C:/xxxxxxxxxxx/Combinations.xls", sep="\t", header = T) # That file is in the shared folder
+library(here)
+Data<-read.table(here("combinations.txt"), sep=";")
 Data <- Data[,c("Item1","Item2","Item3","Item4","Number","Code","Remaining1","Remaining2")] 
 Data$Code <- as.character(Data$Code)
 head(Data)
