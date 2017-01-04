@@ -31,4 +31,4 @@
         mysql_db:
             state: import
             name: all
-            target: /totems/setup_totem_db.sql
+            target: /totems/{{ totem_db_structure_file }}
