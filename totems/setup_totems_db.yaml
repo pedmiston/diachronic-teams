@@ -1,9 +1,0 @@
----
-
-- hosts: database
-  vars_file:
-      - config/vars.yml
-      - config/secrets.yml
-  roles:
-      - role: geerlingguy.mysql
-        become: yes
