@@ -28,5 +28,8 @@ __pycache__/
 # submissions
 !submissions/**/*
 
+# totems
 environment
 .vagrant/
+ansible_vault_pass.txt
+id_rsa_totems
