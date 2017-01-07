@@ -1,0 +1,18 @@
+---
+
+db_name: Totems
+db_structure_file: db_structure.sql
+
+# config for ansible role geerlingguy.mysql
+mysql_root_password: "{{ root_password }}"
+mysql_databases:
+    - name: "{{ db_name }}"
+mysql_users:
+    - name: experimenter
+      host: "%"
+      password: "{{ experimenter_password }}"
+      priv: "{{ db_name }}.*:ALL"
+    - name: player
+      host: "%"
+      password: "{{ player_password }}"
+      priv: "{{ db_name }}.*:ALL"
