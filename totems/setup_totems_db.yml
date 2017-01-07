@@ -1,36 +1,28 @@
 ---
 
-- hosts: all
+- hosts: lupyanlab
+  become: yes
+
   vars_files:
-      - config/secrets.yml
-      - config/vars.yml
+    - vars/main.yml
+    - vars/secrets.yml
 
   pre_tasks:
-      - name: Install required packages
-        apt:
-          name: python3
-          state: present
-          update_cache: yes
-
-      - name: Add ondrej repository for mysql-5.5
-        apt_repository: repo='ppa:ondrej/mysql-5.5' update_cache=yes
-
-      - name: Put ssh key on server for passwordless login
+    - name: Ensure aptitude is installed
+      apt: name=aptitude state=present
+    - name: Upgrade everything
+      apt: upgrade=yes update_cache=yes
 
   roles:
-      - role: geerlingguy.mysql
-        become: yes
-        mysql_packages:
-            - mysql-5.5
+    - { role: geerlingguy.mysql }
 
   tasks:
-      - name: Copy the database setup script to the remote host
-        template:
-            src: templates/{{ totem_db_structure_file }}
-            dest: /totems/{{ totem_db_structure_file }}
-
-      - name: Set up totem database
-        mysql_db:
-            state: import
-            name: all
-            target: /totems/{{ totem_db_structure_file }}
+    - name: Copy database structure script to the server
+      copy:
+        src: scripts/{{ db_structure_file }}
+        dest: /tmp/{{ db_structure_file }}
+    - name: Setup database tables
+      mysql_db:
+        name: "{{ db_name }}"
+        state: import
+        target: /tmp/{{ db_structure_file }}

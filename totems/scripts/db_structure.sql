@@ -1,5 +1,3 @@
-use  {{ totem_db_name }};
-
 DROP TABLE IF EXISTS Table_Group ;
 CREATE TABLE Table_Group (ID_Group VARCHAR(60) NOT NULL,
 Size INT,
