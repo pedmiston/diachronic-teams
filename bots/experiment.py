@@ -1,5 +1,5 @@
 def read_experiment_yaml(experiment):
-    assert path.exists(experiment), "couldn't find the experiment yaml"
+    assert Path(experiment).exists(), "couldn't find experiment yaml"
     try:
         data = yaml.load(open(experiment))
     except Exception as err:
@@ -25,3 +25,7 @@ class Experiment:
 
     def _sim_vars(self):
         pass
+
+
+class ImproperExperimentConfig(Exception):
+    """The experiment config file was not formatted properly."""
