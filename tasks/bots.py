@@ -1,13 +1,14 @@
-from invoke import task
-
+import sys
+import invoke
 import bots
 
 
-@task
-def run(ctx, experiment):
+@invoke.task
+def run(ctx, output=None):
     """Simulate robotic players playing the totems game."""
-    experiment = bots.read_experiment_yaml(experiment)
+    experiment = bots.Experiment()
+    output = output or sys.stdout
     for ix, simulation in enumerate(experiment.simulations()):
         results = simulation.run()
         results.insert(0, 'ix', ix)
-        results.to_csv(experiment.output_filename, mode='a', index=False)
+        results.to_csv(output, mode='a', index=False)

@@ -1,27 +1,30 @@
+from collections import namedtuple
+from itertools import prod
+from . import teams
+
+
+SimVars = namedtuple('SimVars', ['team', 'seed'])
+
+
 def read_experiment_yaml(experiment):
-    assert path.exists(experiment), "couldn't find the experiment yaml"
-    try:
-        data = yaml.load(open(experiment))
-    except Exception as err:
-        raise ImproperExperimentConfig('file %s not proper yaml' % experiment)
+    data = yaml.load(open(experiment))
     data['src'] = experiment
     return Experiment(data)
 
 
 class Experiment:
-    """An experiment is a bunch of simulations."""
+    """An experiment is made up of a bunch of simulations."""
     def __init__(self, data):
-        self._data = data
-
-    @property
-    def output_filename(self):
-        # 'exps/1.yaml' --> 'exps/1.csv'
-        experiment = Path(self._data['src'])
-        return Path(experiment.parent, experiment.stem+'.csv')
+        self.options = SimVars(data[k] for k in SimVars._fields)
 
     def simulations(self):
-        for sim_vars in self._sim_vars():
+        for sim_vars in prod(*self.options):
             yield Simulation(sim_vars)
 
-    def _sim_vars(self):
-        pass
+
+class Simulation:
+    def __init__(self, sim_vars):
+        self.vars = SimVars(*sim_vars)
+
+    def run(self):
+        team = teams.get(self.vars.team)
