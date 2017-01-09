@@ -1,2 +1,2 @@
-from .experiment import Experiment
-from .simulation import Simulation
+from . import paths
+from .main import run_experiment, simulate

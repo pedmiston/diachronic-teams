@@ -1,0 +1,6 @@
+---
+
+strategy: [diachronic, synchronic]
+n_players: 10
+n_guesses: 200
+n_seeds: 100
