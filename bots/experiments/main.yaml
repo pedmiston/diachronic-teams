@@ -1,6 +1,6 @@
 ---
 
-team: [diachronic, synchronic]
+strategy: [diachronic, synchronic]
 players: 10
 guesses: 200
 replicates: 100
