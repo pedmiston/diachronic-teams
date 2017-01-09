@@ -9,7 +9,15 @@ class Landscape:
         self.graph = py2neo.Graph(password=environ.get('NEO4J_PASSWORD'))
 
     def evaluate_guesses(self, guesses):
-        return [self.evaluate_guess(guess) for guess in guesses]
+        results = []
+        for guess in guesses:
+            try:
+                result = self.evaluate_guess(guess)
+            except NoInnovationFoundError:
+                pass
+            else:
+                results += result
+        return results
 
     def evaluate_guess(self, guess):
         clauses = [self.match_clause.format(label) for label in guess]
