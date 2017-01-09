@@ -1,3 +1,10 @@
+MAX_GUESS_SIZE = 4
+
+
+def create_team(n_players):
+    pass
+
+
 class Team:
     """Teams are groups of 1 or more players."""
     def __init__(self, players):
@@ -26,6 +33,4 @@ def combine_player_inventories(*players):
     inventory = dict()
     for player in players:
         inventory.update(player.inventory)
-    return Inventory(inventory)
-
-
+    return inventory.values()

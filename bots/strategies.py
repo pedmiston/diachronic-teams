@@ -21,3 +21,6 @@ def diachronic(team, n_guesses):
             team.active_players = [team.players[ix]]
             ix = (ix + 1) % len(team.players)
         yield calendar_hour
+
+
+strategies = dict(synchronic=synchronic, diachronic=diachronic)

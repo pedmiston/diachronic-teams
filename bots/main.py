@@ -1,8 +1,12 @@
+from sys import stdout
 from itertools import product
+from collections import namedtuple
 
-from . import paths
+import yaml
+import pandas
+
+from .models import create_team
 from .strategies import strategies
-from .models import Team
 from .landscapes import Landscape
 from .util import get_as_list
 
@@ -18,6 +22,7 @@ SimVars = namedtuple('SimVars', 'strategy guesses n_players seed')
 
 def simulate(strategy, n_guesses, n_players, seed):
     landscape = Landscape()
+    team = create_team(n_players)
 
     for _ in strategy(team, n_guesses):
         guesses = team.guess()
