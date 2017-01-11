@@ -9,7 +9,7 @@ PRIMARY KEY (ID_Group) ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS Table_Player ;
 CREATE TABLE Table_Player (ID_Player VARCHAR(60) NOT NULL,
-Sex CHAR,
+Sex VARCHAR(10),
 Age INT,
 ID_Number INT,
 Status_Start BOOL,
