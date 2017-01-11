@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-pandoc -o methods.pdf methods.md
+pandoc -o totems.pdf totems.md
+pandoc -o survey.pdf survey.md
