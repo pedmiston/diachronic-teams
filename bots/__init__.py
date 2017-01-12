@@ -1,2 +1,2 @@
-from .experiment import read_experiment_yaml, Experiment
-from .simulation import Simulation
+from .main import run_experiment, simulate, read_experiment_yaml
+from . import paths

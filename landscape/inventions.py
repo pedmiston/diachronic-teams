@@ -1,17 +1,8 @@
 from os import environ
 from py2neo import Graph, Subgraph, Node, Relationship
 
-
-graph = Graph(password=environ.get('NEO4J_PASSWORD'))
-
-# Fill up items and relationships before creating them in the graph
-items = {}
-relationships = []
-
-# Make resource nodes
-labels = 'fat_tree skinny_tree rock_1 red_berries blue_berries antler'.split()
-items.update({label: Node('Item', label=label, generation=1)
-              for label in labels})
+initial_resources = \
+    'fat_tree skinny_tree rock_1 red_berries blue_berries antler'.split()
 
 recipes = """
 rock_1 + rock_1 = rock_2
@@ -43,6 +34,10 @@ stick + knife = brush_handle
 brush_handle + string + fibers = paint_brush
 """.strip().split('\n')
 
+# Fill up items and relationships before creating them in the graph
+items = {}
+relationships = []
+
 
 def make_invention_from_recipe(recipe):
     materials_labels, result_label = recipe.replace(' ', '').split('=')
@@ -60,8 +55,15 @@ def make_invention_from_recipe(recipe):
         relationships.append(Relationship(result, 'REQUIRES', material))
 
 
-for recipe in recipes:
-    make_invention_from_recipe(recipe)
+if __name__ == '__main__':
+    graph = Graph(password=environ.get('NEO4J_PASSWORD'))
 
-data = Subgraph(nodes=items.values(), relationships=relationships)
-graph.create(data)
+    # Make resource nodes
+    items.update({label: Node('Item', label=label, generation=1)
+                  for label in initial_resources})
+
+    for recipe in recipes:
+        make_invention_from_recipe(recipe)
+
+    data = Subgraph(nodes=items.values(), relationships=relationships)
+    graph.merge(data)
