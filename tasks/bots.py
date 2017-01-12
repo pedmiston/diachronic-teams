@@ -25,3 +25,13 @@ def run(ctx, experiment, output_dir=None):
         output = Path(output_dir or '.', experiment.stem + '.csv')
         print('Running experiment { %s }' % experiment.stem)
         bots.run_experiment(experiment_yaml, output=output)
+
+
+@invoke.task
+def show_simulations(ctx, experiment):
+    if not Path(experiment).exists():
+        experiment = Path(bots.paths.EXPERIMENTS, experiment + '.yaml')
+        assert experiment.exists(), 'experiment %s not found' % experiment
+    experiment = bots.read_experiment_yaml(experiment)
+    simulations = experiment.expand_all()
+    simulations.to_csv(sys.stdout, index=False)
