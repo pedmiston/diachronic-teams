@@ -33,7 +33,6 @@ class Landscape:
         Raises:
             py2neo.Unauthorized: If access to the db is prevented.
             NoInnovationFoundError: If the guess didn't make anything.
-            TooManyInnovationsFoundError: If more than one answer was found.
         """
         clauses = [self.match_clause.format(label) for label in guess]
         query = '\n'.join(['MATCH (n:Item)'] + clauses + ['RETURN n;'])
@@ -47,10 +46,9 @@ class Landscape:
         for result in results:
             reqs = self.graph.data(q.format(result['n']['label']))
             req_labels = [req['g']['label'] for req in reqs]
-            if len(req_labels) == len(guess):
-                if all([req in guess for req in req_labels]):
-                    answer = result['n']['label']
-                    break
+            if set(req_labels) == set(guess):
+                answer = result['n']['label']
+                break
         if answer is None:
             raise NoInnovationFoundError
 

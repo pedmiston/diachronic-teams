@@ -31,7 +31,7 @@ def simulate(strategy, n_guesses, n_players, seed):
         guesses = team.make_guesses()
         new_items = landscape.evaluate_guesses(guesses)
         if len(new_items) > 0:
-            team.inventory.extend(new_items)
+            team.inventory.update(new_items)
 
         rounds.append(dict(
             strategy=strategy.__name__,

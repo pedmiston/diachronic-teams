@@ -14,8 +14,8 @@ class Team:
     def __init__(self, players):
         self.players = players
         self.active_players = []  # players must be activated to use
-        self.inventory = ['fat_tree', 'skinny_tree', 'rock_1',
-                          'red_berries', 'blue_berries', 'antler']
+        self.inventory = {'fat_tree', 'skinny_tree', 'rock_1',
+                          'red_berries', 'blue_berries', 'antler'}
 
     def make_guesses(self):
         return [player.guess(self.inventory) for player in self.active_players]
@@ -28,4 +28,4 @@ class Player:
 
     def guess(self, inventory):
         n_items = self.rand.choice(range(1, MAX_GUESS_SIZE+1))
-        return self.rand.choice(inventory, size=n_items, replace=False)
+        return self.rand.choice(list(inventory), size=n_items, replace=False)
