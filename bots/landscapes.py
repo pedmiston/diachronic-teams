@@ -20,7 +20,7 @@ class Landscape:
             except NoInnovationFoundError:
                 pass
             else:
-                results += result
+                results += [result]
         return results
 
     def evaluate_guess(self, guess):

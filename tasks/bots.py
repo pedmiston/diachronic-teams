@@ -22,7 +22,7 @@ def run(ctx, experiment, output_dir=None):
         experiments = [experiment]
 
     for experiment_yaml in experiments:
-        output = Path(output_dir or '.', experiment.stem + '.csv')
+        output = Path(output_dir or 'evoteams/data-raw/bots', experiment.stem + '.csv')
         print('Running experiment { %s }' % experiment.stem)
         bots.run_experiment(experiment_yaml, output=output)
 

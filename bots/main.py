@@ -44,7 +44,7 @@ def simulate(strategy, n_guesses, n_players, seed):
             inventory=team.inventory,
         ))
 
-    output_cols = SimVars._fields + ['round'] + RoundVars._fields
+    output_cols = SimVars._fields + ('round', ) + RoundVars._fields
     results = pandas.DataFrame.from_records(rounds, columns=output_cols)
     return results
 
