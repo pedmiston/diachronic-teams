@@ -41,11 +41,20 @@ class Landscape:
 
         if len(results) == 0:
             raise NoInnovationFoundError
-        elif len(results) > 1:
-            raise TooManyInnovationsFoundError
 
-        answer = results[0]['n']
-        return answer['label']
+        q = 'MATCH (r:Item {{label: "{}"}}) -[:REQUIRES]-> (g:Item) RETURN g'
+        answer = None
+        for result in results:
+            reqs = self.graph.data(q.format(result['n']['label']))
+            req_labels = [req['g']['label'] for req in reqs]
+            if len(req_labels) == len(guess):
+                if all([req in guess for req in req_labels]):
+                    answer = result['n']['label']
+                    break
+        if answer is None:
+            raise NoInnovationFoundError
+
+        return answer
 
 
 class NoInnovationFoundError(Exception):
