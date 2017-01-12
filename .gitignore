@@ -3,6 +3,8 @@ figs/
 *.html
 *.pdf
 *.docx
+*.png
+!img/*.png
 *.gv
 !evoteams/**/*.gv
 cassettes/
