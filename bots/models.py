@@ -16,9 +16,17 @@ class Team:
         self.active_players = []  # players must be activated to use
         self.inventory = {'fat_tree', 'skinny_tree', 'rock_1',
                           'red_berries', 'blue_berries', 'antler'}
+        self.history = []
 
     def make_guesses(self):
-        return [player.guess(self.inventory) for player in self.active_players]
+        return [player.guess(self.inventory, self.history)
+                for player in self.active_players]
+
+    def update_inventory(self, new_items):
+        self.inventory.update(new_items.values())
+        # Only add to history the guesses that lead to new items
+        for guess in new_items:
+            self.history.append(set(guess))
 
 
 class Player:
@@ -28,11 +36,15 @@ class Player:
         self.history = []
         self.memory = memory
 
-    def guess(self, inventory):
+    def guess(self, inventory, team_history):
+        for successful_guess in team_history:
+            if set(successful_guess) not in self.history:
+                self.history.append(set(successful_guess))
+
         while True:
             n_items = self.rand.choice(range(1, MAX_GUESS_SIZE+1))
             guess = self.rand.choice(list(inventory), size=n_items,
-                                     replace=False)
+                                     replace=False).tolist()
             if not self.memory:
                 break
             elif set(guess) not in self.history:

@@ -13,14 +13,14 @@ class Landscape:
         self.graph = py2neo.Graph(password=password)
 
     def evaluate_guesses(self, guesses):
-        results = []
+        results = {}
         for guess in guesses:
             try:
                 result = self.evaluate_guess(guess)
             except NoInnovationFoundError:
                 pass
             else:
-                results += [result]
+                results[frozenset(guess)] = result
         return results
 
     def evaluate_guess(self, guess):
