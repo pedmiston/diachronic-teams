@@ -1,6 +1,7 @@
 from sys import stdout
 from itertools import product
 from collections import namedtuple
+import json
 
 import yaml
 import pandas
@@ -11,24 +12,41 @@ from .landscapes import Landscape
 from .util import get_as_list
 
 
-"""An instance of SimVars defines the parameters for running a simulation.
+"""An instance of SimVars contains the parameters for running a simulation.
 
 The order of the fields in SimVars must match the call signature for the
 "simulate" function. Also, all SimVars fields must be available as properties
 of the Experiment class.
 """
-SimVars = namedtuple('SimVars', 'strategy guesses n_players seed')
+SimVars = namedtuple('SimVars', 'strategy n_guesses n_players seed')
+RoundVars = namedtuple('RoundVars', 'guesses new_items inventory')
 
 
 def simulate(strategy, n_guesses, n_players, seed):
     landscape = Landscape()
     team = create_team(n_players)
+    rounds = []
 
-    for _ in strategy(team, n_guesses):
-        guesses = team.guess()
+    for iteration in strategy(team, n_guesses):
+        guesses = team.make_guesses()
         new_items = landscape.evaluate_guesses(guesses)
         if len(new_items) > 0:
-            team.add_to_inventory(new_items)
+            team.inventory.extend(new_items)
+
+        rounds.append(dict(
+            strategy=strategy.__name__,
+            n_guesses=n_guesses,
+            n_players=n_players,
+            seed=seed,
+            round=iteration,
+            guesses=json.dumps(guesses),
+            new_items=json.dumps(new_items),
+            inventory=json.dumps(team.inventory),
+        ))
+
+    output_cols = SimVars._fields + ['round'] + RoundVars._fields
+    results = pandas.DataFrame.from_records(rounds, columns=output_cols)
+    return results
 
 
 def run_experiment(experiment_yaml, output=None):
