@@ -39,9 +39,9 @@ def simulate(strategy, n_guesses, n_players, seed):
             n_players=n_players,
             seed=seed,
             round=iteration,
-            guesses=json.dumps(guesses),
-            new_items=json.dumps(new_items),
-            inventory=json.dumps(team.inventory),
+            guesses=guesses,
+            new_items=new_items,
+            inventory=team.inventory,
         ))
 
     output_cols = SimVars._fields + ['round'] + RoundVars._fields
@@ -98,11 +98,11 @@ class Experiment:
     @property
     def n_guesses(self):
         """A list of guess amounts to be allotted to teams."""
-        return self.get_as_list('guesses')
+        return self.get_as_list('n_guesses')
 
     @property
     def n_players(self):
-        return self._data['n_players']
+        return self.get_as_list('n_players')
 
     @property
     def seed(self):
