@@ -18,17 +18,16 @@ opts_chunk$set(
   message = FALSE,
   warning = FALSE,
   fig.path = "figs/",
-  fig.width = 6,
+  fig.width = 3,
   fig.height = 3,
   cache.path = ".cache/"
 )
-
-read_graphviz_chunk("team-structures", "evoteams")
 ```
 
 # Team structures
 
-```{r team-structures, engine = "dot", fig.width = 3}
+```{r team-structures, fig.width = 3}
+diagram_graphviz("team-structures", "evoteams")
 ```
 
 # Modeling results
@@ -55,8 +54,10 @@ bots1_final <- bots1 %>%
 
 ggplot(bots1_final) +
   aes(strategy, inventory_size) +
-  geom_bar(aes(fill = strategy), stat = "summary", fun.y = "mean") +
-  geom_point(aes(color = strategy), position = position_jitter(0.4)) +
+  geom_bar(aes(fill = strategy), stat = "summary", fun.y = "mean",
+           alpha = 0.6) +
+  geom_point(aes(color = strategy), position = position_jitter(0.3),
+             shape = 1) +
   scale_color_strategy +
   scale_fill_strategy +
   base_theme

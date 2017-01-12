@@ -3,9 +3,9 @@ import numpy
 MAX_GUESS_SIZE = 4
 
 
-def create_team(n_players=1, seed=None):
+def create_team(n_players=1, seed=None, memory=False):
     rand = numpy.random.RandomState(seed)
-    players = [Player(rand) for _ in range(n_players)]
+    players = [Player(rand, memory=memory) for _ in range(n_players)]
     return Team(players)
 
 
@@ -23,9 +23,20 @@ class Team:
 
 class Player:
     """Players make guesses."""
-    def __init__(self, rand=None):
+    def __init__(self, rand=None, memory=False):
         self.rand = rand or numpy.random.RandomState()
+        self.history = []
+        self.memory = memory
 
     def guess(self, inventory):
-        n_items = self.rand.choice(range(1, MAX_GUESS_SIZE+1))
-        return self.rand.choice(list(inventory), size=n_items, replace=False)
+        while True:
+            n_items = self.rand.choice(range(1, MAX_GUESS_SIZE+1))
+            guess = self.rand.choice(list(inventory), size=n_items,
+                                     replace=False)
+            if not self.memory:
+                break
+            elif set(guess) not in self.history:
+                break
+
+        self.history.append(set(guess))
+        return guess

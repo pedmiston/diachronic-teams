@@ -41,6 +41,7 @@ class Landscape:
         if len(results) == 0:
             raise NoInnovationFoundError
 
+        # CODE SMELL
         q = 'MATCH (r:Item {{label: "{}"}}) -[:REQUIRES]-> (g:Item) RETURN g'
         answer = None
         for result in results:
