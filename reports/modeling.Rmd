@@ -36,9 +36,28 @@ read_graphviz_chunk("team-structures", "evoteams")
 ```{r}
 data("bots1")
 
-bots1$inventory %>%
-  map(function(inventory) {
-    items <- fromJSON(inventory)
-    
-  })
+base_theme <- theme_minimal() +
+  theme(legend.position = "none")
+
+strategy_colors <- RColorBrewer::brewer.pal(3, "Set2")[c(1, 3)]
+scale_color_strategy <- scale_color_manual(values = strategy_colors)
+scale_fill_strategy <- scale_fill_manual(values = strategy_colors)
+
+ggplot(bots1) +
+  aes(round, inventory_size, color = strategy) +
+  geom_line(stat = "summary", fun.y = "mean") +
+  scale_color_strategy +
+  base_theme
+
+bots1_final <- bots1 %>%
+  group_by(strategy, sim_id) %>%
+  filter(round == max(round))
+
+ggplot(bots1_final) +
+  aes(strategy, inventory_size) +
+  geom_bar(aes(fill = strategy), stat = "summary", fun.y = "mean") +
+  geom_point(aes(color = strategy), position = position_jitter(0.4)) +
+  scale_color_strategy +
+  scale_fill_strategy +
+  base_theme
 ```
