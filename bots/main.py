@@ -1,7 +1,6 @@
 from sys import stdout
 from itertools import product
 from collections import namedtuple
-import json
 
 import yaml
 import pandas
@@ -18,13 +17,16 @@ The order of the fields in SimVars must match the call signature for the
 "simulate" function. Also, all SimVars fields must be available as properties
 of the Experiment class.
 """
-SimVars = namedtuple('SimVars', 'strategy n_guesses n_players seed')
-RoundVars = namedtuple('RoundVars', 'guesses new_items inventory inventory_size')
+SimVars = namedtuple('SimVars',
+    'strategy n_guesses n_players seed player_memory team_memory')
+RoundVars = namedtuple('RoundVars',
+    'guesses new_items inventory inventory_size')
 
 
-def simulate(strategy, n_guesses, n_players, seed):
+def simulate(strategy, n_guesses, n_players, seed, player_memory, team_memory):
     landscape = Landscape()
-    team = create_team(n_players)
+    team = create_team(n_players, player_memory=player_memory,
+                       team_memory=team_memory)
     rounds = []
 
     for iteration in strategy(team, n_guesses):
@@ -44,6 +46,9 @@ def simulate(strategy, n_guesses, n_players, seed):
             inventory=team.inventory,
             inventory_size=len(team.inventory),
         ))
+
+        if len(team.inventory) == landscape.max_items:
+            break
 
     output_cols = SimVars._fields + ('round', ) + RoundVars._fields
     results = pandas.DataFrame.from_records(rounds, columns=output_cols)
@@ -109,3 +114,11 @@ class Experiment:
     def seed(self):
         """A list of seeds to use when initializing the teams."""
         return range(self._data['n_seeds'])
+
+    @property
+    def player_memory(self):
+        return self.get_as_list('player_memory', False)
+
+    @property
+    def team_memory(self):
+        return self.get_as_list('team_memory', False)
