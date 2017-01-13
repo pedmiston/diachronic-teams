@@ -19,7 +19,7 @@ The order of the fields in SimVars must match the call signature for the
 of the Experiment class.
 """
 SimVars = namedtuple('SimVars', 'strategy n_guesses n_players seed')
-RoundVars = namedtuple('RoundVars', 'guesses new_items inventory')
+RoundVars = namedtuple('RoundVars', 'guesses new_items inventory inventory_size')
 
 
 def simulate(strategy, n_guesses, n_players, seed):
@@ -31,7 +31,7 @@ def simulate(strategy, n_guesses, n_players, seed):
         guesses = team.make_guesses()
         new_items = landscape.evaluate_guesses(guesses)
         if len(new_items) > 0:
-            team.inventory.extend(new_items)
+            team.update_inventory(new_items)
 
         rounds.append(dict(
             strategy=strategy.__name__,
@@ -42,9 +42,10 @@ def simulate(strategy, n_guesses, n_players, seed):
             guesses=guesses,
             new_items=new_items,
             inventory=team.inventory,
+            inventory_size=len(team.inventory),
         ))
 
-    output_cols = SimVars._fields + ['round'] + RoundVars._fields
+    output_cols = SimVars._fields + ('round', ) + RoundVars._fields
     results = pandas.DataFrame.from_records(rounds, columns=output_cols)
     return results
 

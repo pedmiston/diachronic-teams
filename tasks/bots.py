@@ -22,8 +22,11 @@ def run(ctx, experiment, output_dir=None):
         experiments = [experiment]
 
     for experiment_yaml in experiments:
-        output = Path(output_dir or '.', experiment.stem + '.csv')
-        print('Running experiment { %s }' % experiment.stem)
+        output_dir = Path(output_dir or 'evoteams/data-raw/bots')
+        if not output_dir.isdir():
+            output_dir.mkdir(True)
+        output = Path(output_dir, experiment_yaml.stem + '.csv')
+        print('Running experiment { %s }' % experiment_yaml.stem)
         bots.run_experiment(experiment_yaml, output=output)
 
 

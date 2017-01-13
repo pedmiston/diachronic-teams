@@ -1,5 +1,5 @@
 ---
-title: "Models of diachronic and synchronic problem solvers"
+title: "Bots"
 author: "Pierce Edmiston"
 output:
   html_document:
@@ -8,56 +8,85 @@ output:
 
 ```{r config, echo = FALSE, message = FALSE}
 library(knitr)
+library(tidyverse)
+library(jsonlite)
+library(evoteams)
+library(crotchet)
 
 opts_chunk$set(
   echo = FALSE,
   message = FALSE,
   warning = FALSE,
   fig.path = "figs/",
-  fig.width = 6,
+  fig.width = 3,
   fig.height = 3,
   cache.path = ".cache/"
 )
 
-read_chunk("chunks/modeling.R")
-read_chunk("chunks/problem-spaces.R")
-read_chunk("chunks/time.R")
-crotchet::read_graphviz_chunk("team-structures", "evoteams")
-```
+base_theme <- theme_minimal() +
+  theme(legend.position = "none")
 
-```{r setup}
+strategy_colors <- RColorBrewer::brewer.pal(3, "Set2")[c(1, 3)]
+scale_color_strategy <- scale_color_manual(values = strategy_colors)
+scale_fill_strategy <- scale_fill_manual(values = strategy_colors)
+
+
 ```
 
 # Team structures
 
-```{r team-structures, engine = "dot", fig.width = 3}
+```{r team-structures, fig.width = 3}
+diagram_graphviz("team-structures", "evoteams")
 ```
 
-When is diachronic teamwork a more efficient use of labor hours than synchronic teamwork?
+# Results
 
-# Labor hours versus calendar hours
+## Replication
 
-The definition of "efficient" used in this research is based on the minimization of labor hours required to solve some problem. Diachronic and synchronic teams consume labor hours per calendar hour at different rates. The comparison of diachronic and synchronic teamwork proposed here requires controlling for labor hours. My prediction is that the solution to many problems depends more heavily on calendar hours than on labor hours, in which case diachronic teamwork should be a more efficient use of labor hours than synchronic teamwork.
+```{r}
+data("bots_replication")
 
-```{r time}
+ggplot(bots_replication) +
+  aes(round, inventory_size, color = strategy) +
+  geom_line(stat = "summary", fun.y = "mean") +
+  scale_color_strategy +
+  base_theme
+
+bots_replication_final <- bots_replication %>%
+  group_by(strategy, sim_id) %>%
+  filter(round == max(round))
+
+ggplot(bots_replication_final) +
+  aes(strategy, inventory_size) +
+  geom_bar(aes(fill = strategy), stat = "summary", fun.y = "mean",
+           alpha = 0.6) +
+  geom_point(aes(color = strategy), position = position_jitter(0.3),
+             shape = 1) +
+  scale_color_strategy +
+  scale_fill_strategy +
+  base_theme
 ```
 
-```{r hours-per-team, fig.width = 3, fig.height = 3}
-```
+# Modeling results
 
-# Team abilities
+```{r}
+data("bots_main")
 
-Teams vary in how much their members overlap in skills. Teams made up of identical team members are likely to be different in problem solving ability than teams of diverse problem solvers. Diachronic teamwork is expected to be most advantageous to teams with largely overlapping skill sets.
+ggplot(bots_main) +
+  aes(round, inventory_size, color = strategy) +
+  geom_line(stat = "summary", fun.y = "mean") +
+  scale_color_strategy +
+  base_theme
 
-```{r team-abilities}
-```
+bots_main_final <- bots_main %>%
+  group_by(strategy, sim_id) %>%
+  filter(round == max(round))
 
-```{r search-areas}
-```
-
-# Problem spaces
-
-The sort of problem being studied in this research is one with many possible solutions, all varying in degree of success. That there are multiple "peaks" in the space of possible solutions is critical to ensure some possibility of getting stuck with a locally maximal solution.
-
-```{r problem-spaces}
+ggplot(bots_main) +
+  aes(strategy, inventory_size) +
+  geom_bar(aes(fill = strategy), stat = "summary", fun.y = "mean",
+           alpha = 0.6) +
+  scale_color_strategy +
+  scale_fill_strategy +
+  base_theme
 ```

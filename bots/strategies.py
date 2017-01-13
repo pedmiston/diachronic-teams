@@ -23,4 +23,26 @@ def diachronic(team, n_guesses):
         yield calendar_hour
 
 
-strategies = dict(synchronic=synchronic, diachronic=diachronic)
+def full(team, n_guesses):
+    """Activate all of the team's players and give them extra time.
+
+    This strategy is used to replicate the conditions of Derex & Boyd (2015).
+    """
+    team.active_players = team.players
+    for calendar_hour in range(n_guesses):
+        yield calendar_hour
+
+
+def solo(team, n_guesses):
+    """The first player in the team plays the whole round."""
+    team.active_players = [team.players[0]]
+    for calendar_hour in range(n_guesses):
+        yield calendar_hour
+
+
+strategies = dict(
+    synchronic=synchronic,
+    diachronic=diachronic,
+    full=full,
+    solo=solo,
+)
