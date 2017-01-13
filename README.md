@@ -1,10 +1,10 @@
-# Diachronic Teams
+# diachronic teams
 
 <img src="https://github.com/pedmiston/diachronic-teams/raw/master/img/team-structures.png" align="left" width="100">
 
-This research project investigates the impact of inheritance on the problem solving ability of individuals. The simplest form of inheritance considered is one person working on a solution to a problem for a time, and then passing the solution on to a second person to continue the work. Because the solution is willingly given to the second person in the chain, I refer to this simple form of inheritance as a form of teamwork. Teamwork based around inheritance is referred to as **diachronic teamwork** which can be contrasted with **synchronic teamwork**, where teamwork is divided among the team members. The goal of this project is to understand the conditions under which diachronic teamwork is a more effective use of labor hours than synchronic teamwork.
+This research project investigates the impact of inheritance on the problem solving ability of individuals. The simplest form of inheritance considered is one person working on a solution to a problem for a time, and then passing the solution on to a second person to continue the work. Teamwork based around inheritance is referred to as **diachronic teamwork** which can be contrasted with **synchronic teamwork**, where teamwork is divided among the team members working in parallel. The goal of this project is to understand the conditions under which diachronic teamwork is a more effective use of labor hours than synchronic teamwork.
 
-# Reproducing
+# Reproducible
 
 Here's how I set up to work on this repository.
 
@@ -13,7 +13,7 @@ Here's how I set up to work on this repository.
     $ cd diachronic-teams
 
     # Setup a python virtualenv for the package
-    $ mkvirtualenv --python=python3 teams -r requirements.txt
+    $ mkvirtualenv --python=python3 teams -r requirements/teams.txt
 
     # List all available invoke tasks
     $ inv -l
