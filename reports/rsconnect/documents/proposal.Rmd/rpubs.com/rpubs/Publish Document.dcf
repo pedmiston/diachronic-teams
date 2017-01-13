@@ -1,7 +1,0 @@
-name: Publish Document
-account: rpubs
-server: rpubs.com
-appId: https://api.rpubs.com/api/v1/document/214622/7cf7513324b14bd7b3aa075d88db0a4c
-bundleId: https://api.rpubs.com/api/v1/document/214622/7cf7513324b14bd7b3aa075d88db0a4c
-url: http://rpubs.com/pedmiston/214622
-when: 1481140113.69546
