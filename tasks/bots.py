@@ -6,7 +6,7 @@ from .paths import R_PKG
 
 
 @invoke.task
-def run(ctx, experiment, output_dir=None):
+def run(ctx, experiment, output_dir=None, verbose=False):
     """Simulate robotic players playing the totems game."""
     if experiment == '?':
         print('Available experiments:')
@@ -29,7 +29,7 @@ def run(ctx, experiment, output_dir=None):
             output_dir.mkdir(True)
         output = Path(output_dir, experiment_yaml.stem + '.csv')
         print('Running experiment { %s }' % experiment_yaml.stem)
-        bots.run_experiment(experiment_yaml, output=output)
+        bots.run_experiment(experiment_yaml, output=output, verbose=verbose)
 
 
 @invoke.task

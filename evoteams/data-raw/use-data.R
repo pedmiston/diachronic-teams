@@ -12,7 +12,10 @@ for (exp in bots_files) {
 }
 
 use_data(
-  bots_main,
   bots_replication,
+  bots_strategy,
+  bots_guesses,
+  bots_players,
+  bots_memory,
   overwrite = TRUE
 )

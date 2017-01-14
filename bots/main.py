@@ -40,6 +40,8 @@ def simulate(strategy, n_guesses, n_players, seed, player_memory, team_memory):
             n_guesses=n_guesses,
             n_players=n_players,
             seed=seed,
+            player_memory=int(player_memory),
+            team_memory=int(team_memory),
             round=iteration,
             guesses=guesses,
             new_items=new_items,
@@ -55,11 +57,13 @@ def simulate(strategy, n_guesses, n_players, seed, player_memory, team_memory):
     return results
 
 
-def run_experiment(experiment_yaml, output=None):
+def run_experiment(experiment_yaml, output=None, verbose=False):
     """Run an experiment, which is a collection of simulations."""
     experiment = read_experiment_yaml(experiment_yaml)
     output = open(output, 'w') if output else stdout
     for sim_id, sim_vars in enumerate(experiment.simulations()):
+        if verbose:
+            print(' #{}: {}'.format(sim_id, SimVars(*sim_vars)))
         results = simulate(*sim_vars)
         results.insert(0, 'sim_id', sim_id)
         first_write = (sim_id == 0)
