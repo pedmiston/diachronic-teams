@@ -10,6 +10,8 @@ output:
 library(knitr)
 library(tidyverse)
 library(magrittr)
+library(grid)
+library(gridExtra)
 library(jsonlite)
 library(evoteams)
 library(crotchet)
@@ -18,8 +20,9 @@ opts_chunk$set(
   echo = FALSE,
   message = FALSE,
   warning = FALSE,
+  results = "hide",
   fig.path = "figs/",
-  fig.width = 3,
+  fig.width = 6,
   fig.height = 3,
   cache.path = ".cache/"
 )
@@ -48,7 +51,8 @@ gg_timeline <- ggplot() +
   scale_color_strategy +
   scale_y_inventory_size +
   coord_cartesian(ylim = coord_inventory_lim) +
-  base_theme
+  base_theme +
+  theme(legend.position = "top")
 
 gg_final <- ggplot() +
   aes(strategy, inventory_size) +
@@ -107,8 +111,12 @@ diagram_graphviz("team-structures", "evoteams")
 
 ```{r}
 data("bots_replication")
-gg_timeline %+% bots_replication
-gg_final %+% filter_final_round(bots_replication)
+grid.arrange(
+  read_graphviz("calendar-hours", "evoteams"),
+  gg_timeline %+% bots_replication,
+  gg_final %+% filter_final_round(bots_replication),
+  nrow = 1
+)
 ```
 
 ## Strategy
@@ -121,7 +129,7 @@ gg_final %+% filter_final_round(bots_strategy)
 
 ## Team size
 
-```{r, fig.width=6}
+```{r}
 data("bots_players")
 gg_final %+% filter_final_round(bots_players)
 gg_timeline %+% filter_final_round(bots_players) +
@@ -132,7 +140,7 @@ gg_timeline %+% filter_final_round(bots_players) +
 
 ## Number of guesses
 
-```{r, fig.width=6}
+```{r}
 data("bots_guesses")
 gg_timeline %+% filter_final_round(bots_guesses) +
   aes(n_guesses)
@@ -140,7 +148,7 @@ gg_timeline %+% filter_final_round(bots_guesses) +
 
 ## Player and team memory
 
-```{r, fig.width=6, fig.height=6}
+```{r, fig.height=6}
 data("bots_memory")
 
 bots_memory %<>%

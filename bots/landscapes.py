@@ -62,7 +62,3 @@ class Landscape:
 
 class NoInnovationFoundError(Exception):
     """A guess and a fail."""
-
-
-class TooManyInnovationsFoundError(Exception):
-    """A single guess should have a single answer."""
