@@ -16,6 +16,9 @@ cassettes/
 # reproducible data
 evoteams/data-raw/bots/
 
+# data that's too big to track
+db/dumps/
+
 # python
 __pycache__/
 

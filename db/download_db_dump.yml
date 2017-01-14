@@ -1,0 +1,33 @@
+---
+
+- hosts: lupyanlab
+  become: yes
+
+  vars:
+    dump_date: "{{ lookup('pipe', 'date +%Y%m%d-%H%M') }}"
+    remote_dump: /dumps/{{ dump_date }}.sql
+    local_dump: dumps/{{ dump_date }}.sql
+
+  vars_files:
+    - vars/main.yml
+    - vars/secrets.yml
+
+  tasks:
+    - name: Create remote dump directory
+      file:
+        path: /dumps
+        state: directory
+
+    - name: Create db dump on the server
+      mysql_db:
+        name: "{{ db_name }}"
+        state: dump
+        target: "{{ remote_dump }}"
+        login_user: experimenter
+        login_password: "{{ experimenter_password }}"
+
+    - name: Fetch dump on control computer
+      fetch:
+        src: "{{ remote_dump }}"
+        dest: "{{ local_dump }}"
+        flat: yes
