@@ -1,0 +1,74 @@
+---
+title: "Totems"
+author: "Pierce Edmiston"
+output:
+  html_document:
+    theme: flatly
+---
+
+```{r config, include=FALSE}
+library(knitr)
+library(tidyverse)
+library(magrittr)
+library(grid)
+library(gridExtra)
+library(evoteams)
+library(crotchet)
+
+opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  results = "hide",
+  fig.path = "figs/",
+  fig.width = 6,
+  fig.height = 3,
+  cache.path = ".cache/"
+)
+```
+
+```{r helpers}
+# Select only the rows containing the team's highest score.
+filter_final_score <- . %>%
+  group_by(Treatment, ID_Group) %>%
+  summarize(Score = max(Score)) %>%
+  recode_strategy()
+
+# Recode strategy variable by merging with a map of labels.
+# If no frame is provided, just the map of labels is returned.
+recode_strategy <- function(frame) {
+  strategies <- c("Synchronic", "Isolated", "Diachronic")
+  map <- data_frame(Treatment = strategies,
+                    TreatmentLabel = factor(strategies, levels = strategies))
+  if (missing(frame)) return(map)
+  left_join(frame, map)
+}
+```
+
+```{r theme, include=FALSE}
+base_theme <- theme_minimal()
+
+# Strategy
+strategy_levels <- levels(recode_strategy()$TreatmentLabel)
+strategy_colors <- RColorBrewer::brewer.pal(3, "Set2")
+scale_x_strategy <- scale_x_discrete("Strategy", labels = strategy_levels)
+scale_color_strategy <- scale_color_manual(values = strategy_colors)
+scale_fill_strategy <- scale_fill_manual(values = strategy_colors)
+```
+
+```{r}
+data("totems_player")
+
+ggplot(filter_final_score(totems_player)) +
+  aes(TreatmentLabel, Score) +
+  geom_point(aes(color = Treatment),
+             position = position_jitter(width = 0.3)) +
+  geom_bar(aes(fill = Treatment), stat = "summary", fun.y = "mean",
+           alpha = 0.6) +
+  scale_x_strategy +
+  scale_color_strategy +
+  scale_fill_strategy +
+  base_theme +
+  theme(legend.position = "none",
+        panel.grid.major.x = element_blank())
+```
