@@ -15,6 +15,10 @@ cassettes/
 
 # reproducible data
 evoteams/data-raw/bots/
+evoteams/data-raw/totems/
+
+# data that's too big to track
+db/dumps/
 
 # data that's too big to track
 db/dumps/

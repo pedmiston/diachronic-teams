@@ -12,6 +12,10 @@ class Landscape:
             raise py2neo.Unauthorized('NEO4J_PASSWORD not set')
         self.graph = py2neo.Graph(password=password)
 
+    @property
+    def max_items(self):
+        return len(self.graph.data('MATCH (n:Item) RETURN n.label'))
+
     def evaluate_guesses(self, guesses):
         results = {}
         for guess in guesses:
@@ -58,6 +62,3 @@ class Landscape:
 
 class NoInnovationFoundError(Exception):
     """A guess and a fail."""
-
-class TooManyInnovationsFoundError(Exception):
-    """A single guess should have a single answer."""

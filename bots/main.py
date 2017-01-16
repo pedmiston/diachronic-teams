@@ -1,7 +1,6 @@
 from sys import stdout
 from itertools import product
 from collections import namedtuple
-import json
 
 import yaml
 import pandas
@@ -18,13 +17,16 @@ The order of the fields in SimVars must match the call signature for the
 "simulate" function. Also, all SimVars fields must be available as properties
 of the Experiment class.
 """
-SimVars = namedtuple('SimVars', 'strategy n_guesses n_players seed')
-RoundVars = namedtuple('RoundVars', 'guesses new_items inventory inventory_size')
+SimVars = namedtuple('SimVars',
+    'strategy n_guesses n_players seed player_memory team_memory')
+RoundVars = namedtuple('RoundVars',
+    'guesses new_items inventory inventory_size')
 
 
-def simulate(strategy, n_guesses, n_players, seed):
+def simulate(strategy, n_guesses, n_players, seed, player_memory, team_memory):
     landscape = Landscape()
-    team = create_team(n_players)
+    team = create_team(n_players, player_memory=player_memory,
+                       team_memory=team_memory)
     rounds = []
 
     for iteration in strategy(team, n_guesses):
@@ -38,6 +40,8 @@ def simulate(strategy, n_guesses, n_players, seed):
             n_guesses=n_guesses,
             n_players=n_players,
             seed=seed,
+            player_memory=int(player_memory),
+            team_memory=int(team_memory),
             round=iteration,
             guesses=guesses,
             new_items=new_items,
@@ -45,16 +49,21 @@ def simulate(strategy, n_guesses, n_players, seed):
             inventory_size=len(team.inventory),
         ))
 
+        if len(team.inventory) == landscape.max_items:
+            break
+
     output_cols = SimVars._fields + ('round', ) + RoundVars._fields
     results = pandas.DataFrame.from_records(rounds, columns=output_cols)
     return results
 
 
-def run_experiment(experiment_yaml, output=None):
+def run_experiment(experiment_yaml, output=None, verbose=False):
     """Run an experiment, which is a collection of simulations."""
     experiment = read_experiment_yaml(experiment_yaml)
     output = open(output, 'w') if output else stdout
     for sim_id, sim_vars in enumerate(experiment.simulations()):
+        if verbose:
+            print(' #{}: {}'.format(sim_id, SimVars(*sim_vars)))
         results = simulate(*sim_vars)
         results.insert(0, 'sim_id', sim_id)
         first_write = (sim_id == 0)
@@ -109,3 +118,11 @@ class Experiment:
     def seed(self):
         """A list of seeds to use when initializing the teams."""
         return range(self._data['n_seeds'])
+
+    @property
+    def player_memory(self):
+        return self.get_as_list('player_memory', False)
+
+    @property
+    def team_memory(self):
+        return self.get_as_list('team_memory', False)
