@@ -11,10 +11,7 @@ items = pandas.DataFrame(graph.data("""
 MATCH (n:Item)
 RETURN n.generation as generation, n.label as label
 """))
-
-item_labels = pandas.read_csv('item_labels.csv')
-item_labels['image'] = 'images/' + item_labels.image
-items = items.merge(item_labels)
+items['image'] = 'images/' + items.label + '.jpg'
 
 edges = pandas.DataFrame(graph.data("""
 MATCH (material:Item) -[r:REQUIRES]-> (result:Item)
