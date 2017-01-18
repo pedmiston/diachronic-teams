@@ -28,6 +28,5 @@ def to_recipe(innovation, item_labels):
     return ' = '.join([required_labels, result_label])
 
 if __name__ == '__main__':
-    recipes = make()
-    for recipe in recipes:
+    for recipe in make_recipes():
         stdout.write(recipe + '\n')
