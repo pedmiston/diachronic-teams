@@ -11,12 +11,12 @@ The Totems experiment requires a MySQL database to be installed on a remote serv
 
     virtualenv --python=python2 ~/.venvs/totems
     source ~/.venvs/totems/bin/activate
-    pip install ansible
+    pip install -r requirements/totems-db.txt
 
 ## Add an entry into your ansible hosts file for the remote server
 
     # /etc/ansible/hosts
-    # ... 
+    # ...
     [totems]
     XXX.XXX.XXX.XXX
 
@@ -27,3 +27,9 @@ You can check that ansible can connect to your server with the following ad-hoc 
 ## Run the playbook
 
     ansible-playbook setup_totems_db.yml
+
+## Creating a backup
+
+Save a backup of the db on the local machine.
+
+    ansible-playbook download_db_dump.yml
