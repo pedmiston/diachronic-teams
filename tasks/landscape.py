@@ -1,10 +1,11 @@
 from invoke import task
+import landscape
 
 
 @task
-def make(ctx):
+def import_graph(ctx):
     """Make the totems landscape as a graph database."""
-    ctx.run('cd landscape && python inventions.py')
+    landscape.import_innovations()
 
 
 @task
