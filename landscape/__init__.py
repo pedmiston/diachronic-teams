@@ -1,2 +1,3 @@
 from .main import Landscape
-from .import_innovations import import_innovations
+from .load import load
+from .tree import make_graphviz

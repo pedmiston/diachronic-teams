@@ -5,6 +5,8 @@ from py2neo import Node, Relationship, Graph, Subgraph, Unauthorized
 import pandas
 import unipath
 
+from .graph_db import connect_to_graph_db
+
 
 initial_resources = {1: 'Big_Tree', 2: 'Tree', 3: 'Stone',
                      4: 'Red_Berry', 5: 'Blue_Berry', 6: 'Antler'}
@@ -13,32 +15,32 @@ answer_key_csv = unipath.Path(landscape_dir, 'answer_key.csv')
 Recipe = namedtuple('Recipe', 'requirements result')
 
 
-def Item(label, number):
-    return Node('Item', label=label, number=number)
-
-
-def connect_to_graph_db():
-    if 'NEO4J_PASSWORD' not in environ:
-        raise Unauthorized('must set NEO4J_PASSWORD env variable')
-    return Graph(password=environ['NEO4J_PASSWORD'])
-
-
-def import_innovations():
-    nodes = []
+def load():
+    nodes = [Item(label, number, generation=0)
+             for number, label in initial_resources.items()]
     relationships = []
 
     answer_key = pandas.read_csv(answer_key_csv)
     labels = make_labels(answer_key)
+    generations = {n: 0 for n in initial_resources}
     recipes = answer_key.apply(to_recipe, axis=1, labels=labels)
     for requirements, result in recipes:
+        # Calculate the generation for the result
+        # from the max generation of the requirements
+        result['generation'] = max([generations[n['number']]
+                                    for n in requirements]) + 1
+        generations[result['number']] = result['generation']
+
         nodes.append(result)
         for requirement in requirements:
             nodes.append(requirement)
             relationships.append(Relationship(result, 'REQUIRES', requirement))
 
     graph = connect_to_graph_db()
+
     for node in nodes:
         graph.merge(node)
+
     for relationship in relationships:
         graph.merge(relationship)
 
@@ -60,5 +62,12 @@ def to_recipe(innovation, labels):
     return Recipe(requirements, result)
 
 
+def Item(label, number, generation=None):
+    node = Node('Item', label=label, number=number)
+    if generation:
+        node.generation = generation
+    return node
+
+
 if __name__ == '__main__':
-    import_innovations()
+    load()
