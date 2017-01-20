@@ -5,7 +5,7 @@ from collections import namedtuple
 import yaml
 import pandas
 
-from landscape import Landscape
+from landscapes import Landscape
 
 from .models import create_team
 from .strategies import strategies
@@ -32,7 +32,7 @@ def simulate(strategy, n_guesses, n_players, seed, player_memory, team_memory):
 
     for iteration in strategy(team, n_guesses):
         guesses = team.make_guesses()
-        new_items = landscape.evaluate_guesses(guesses)
+        new_items = landscape.evaluate(guesses)
         if len(new_items) > 0:
             team.update_inventory(new_items)
 

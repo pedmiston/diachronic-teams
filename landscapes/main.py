@@ -5,3 +5,7 @@ class Landscape:
 
     def evaluate(self, guess):
         pass
+
+    @property
+    def max_items(self):
+        pass

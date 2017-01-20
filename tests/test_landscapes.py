@@ -1,10 +1,13 @@
 import pytest
-import landscape
+import landscapes
 
 
 @pytest.fixture
 def landscape():
     return landscapes.Landscape()
+
+def test_landscape_has_max_items(landscape):
+    assert landscape.max_items == 192
 
 def test_evaluate_correct_guess(landscape):
     guess = ['rock_1', 'antler']
