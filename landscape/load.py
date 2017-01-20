@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from os import environ
 from collections import namedtuple
-from py2neo import Node, Relationship, Graph, Subgraph, Unauthorized
+from py2neo import Node, Relationship, Graph, Subgraph
 import pandas
 import unipath
 
@@ -16,8 +16,7 @@ Recipe = namedtuple('Recipe', 'requirements result')
 
 
 def load():
-    nodes = [Item(label, number, generation=0)
-             for number, label in initial_resources.items()]
+    nodes = []
     relationships = []
 
     answer_key = pandas.read_csv(answer_key_csv)
@@ -25,13 +24,19 @@ def load():
     generations = {n: 0 for n in initial_resources}
     recipes = answer_key.apply(to_recipe, axis=1, labels=labels)
     for requirements, result in recipes:
+
+        # Ensure that all requirements are already assigned a generation
+        for requirement in requirements:
+            if not requirement['generation']:
+                requirement['generation'] = generations[requirement['number']]
+
         # Calculate the generation for the result
         # from the max generation of the requirements
         result['generation'] = max([generations[n['number']]
                                     for n in requirements]) + 1
         generations[result['number']] = result['generation']
-
         nodes.append(result)
+
         for requirement in requirements:
             nodes.append(requirement)
             relationships.append(Relationship(result, 'REQUIRES', requirement))

@@ -1,5 +1,5 @@
 from os import environ
-from py2neo import Graph
+from py2neo import Graph, Unauthorized
 
 
 def connect_to_graph_db():
