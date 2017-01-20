@@ -1,13 +1,16 @@
 from invoke import task
+import landscape
 
 
 @task
-def make(ctx):
+def load(ctx):
     """Make the totems landscape as a graph database."""
-    ctx.run('cd landscape && python inventions.py')
+    landscape.load()
 
 
 @task
 def tree(ctx):
     """Visualize the totems landscape in a figure."""
-    ctx.run('cd landscape && python tree.py')
+    viz = landscape.make_graphviz()
+    viz.format = 'png'
+    viz.render('landscape.gv', view=True)
