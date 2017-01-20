@@ -23,8 +23,8 @@ def load():
     labels = make_labels(answer_key)
     generations = {n: 0 for n in initial_resources}
     recipes = answer_key.apply(to_recipe, axis=1, labels=labels)
-    for requirements, result in recipes:
 
+    for requirements, result in recipes:
         # Ensure that all requirements are already assigned a generation
         for requirement in requirements:
             if not requirement['generation']:
@@ -37,9 +37,15 @@ def load():
         generations[result['number']] = result['generation']
         nodes.append(result)
 
+        # Create a node representing the entire recipe
+        recipe = Node('Recipe')
+        nodes.append(recipe)
+        relationships.append(Relationship(recipe, 'CREATES', result))
+
         for requirement in requirements:
             nodes.append(requirement)
             relationships.append(Relationship(result, 'REQUIRES', requirement))
+            relationships.append(Relationship(requirement, 'USED_IN', recipe))
 
     graph = connect_to_graph_db()
 
