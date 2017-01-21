@@ -32,7 +32,7 @@ def simulate(strategy, n_guesses, n_players, seed, player_memory, team_memory):
 
     for iteration in strategy(team, n_guesses):
         guesses = team.make_guesses()
-        new_items = landscape.evaluate(guesses)
+        new_items = landscape.evaluate_guesses(guesses)
         if len(new_items) > 0:
             team.update_inventory(new_items)
 
@@ -126,4 +126,4 @@ class Experiment:
 
     @property
     def team_memory(self):
-        return self.get_as_list('team_memory', False)
+        return self.get_as_list('team_memory', True)

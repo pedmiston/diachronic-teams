@@ -24,3 +24,11 @@ class Landscape:
 
     def evaluate(self, guess):
         return self.answer_key.get(frozenset(guess))
+
+    def evaluate_guesses(self, guesses):
+        new_items = {}
+        for guess in guesses:
+            result = self.evaluate(guess)
+            if result:
+                new_items[frozenset(guess)] = result
+        return new_items
