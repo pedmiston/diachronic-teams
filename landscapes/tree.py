@@ -1,14 +1,10 @@
 #!/usr/bin/env python
-from os import environ
-from py2neo import Graph
 import pandas
 from graphviz import Digraph
 import unipath
 
 from landscapes.graph_db import connect_to_graph_db
-
-landscape_dir = unipath.Path(__file__).parent
-images_dir = unipath.Path(landscape_dir, 'images')
+from landscapes.util import path_to_image
 
 
 def make_graphviz():
@@ -31,7 +27,7 @@ def make_graphviz():
                                  shape='none'))
 
     for item in items.itertuples():
-        viz.node(item.label, label='', image=to_image_path(item.label))
+        viz.node(item.label, label='', image=path_to_image(item.label))
 
     for edge in edges.itertuples():
         viz.edge(edge.requirement, edge.result)
@@ -44,7 +40,3 @@ def make_graphviz():
         viz.body.append(rank_fmt.format(labels=spaced_labels))
 
     return viz
-
-
-def to_image_path(stem):
-    return unipath.Path(images_dir, stem + '.jpg')

@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-from py2neo import Node, Relationship, Graph, Subgraph
 import pandas
 import unipath
 
+from landscapes.models import Item, Recipe, Creates, Requires, Inherits
 from landscapes.graph_db import connect_to_graph_db
 from landscapes.util import max_generation, MissingGeneration
 
@@ -78,25 +78,6 @@ def load(delete_first=False):
         graph.merge(recipe)
     for relationship in relationships:
         graph.merge(relationship)
-
-
-# Node and Relationship definitions
-
-def Item(number, label, generation):
-    assert isinstance(number, int), 'py2neo only likes native python ints'
-    return Node('Item', number=number, label=label, generation=generation)
-
-def Recipe(code):
-    return Node('Recipe', code=code)
-
-def Creates(recipe, result):
-    return Relationship(recipe, 'CREATES', result)
-
-def Requires(recipe, requirement):
-    return Relationship(recipe, 'REQUIRES', requirement)
-
-def Inherits(result, requirement):
-    return Relationship(result, 'INHERITS', requirement)
 
 
 class AnswerKeyOutOfOrder(Exception):
