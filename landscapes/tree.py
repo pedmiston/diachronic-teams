@@ -5,7 +5,7 @@ import pandas
 from graphviz import Digraph
 import unipath
 
-from .graph_db import connect_to_graph_db
+from landscapes.graph_db import connect_to_graph_db
 
 landscape_dir = unipath.Path(__file__).parent
 images_dir = unipath.Path(landscape_dir, 'images')
@@ -21,9 +21,9 @@ def make_graphviz():
     """))
 
     edges = pandas.DataFrame(graph.data("""
-    MATCH (material:Item) -[r:REQUIRES]-> (result:Item)
-    WHERE material.number < 100 AND result.number < 100
-    RETURN material.label as item_from, result.label as item_to
+    MATCH (result:Item) -[r:INHERITS]-> (requirement:Item)
+    WHERE result.number < 100 AND requirement.number < 100
+    RETURN result.label as result, requirement.label as requirement
     """))
 
     viz = Digraph(graph_attr=dict(rankdir='TB'),
@@ -34,7 +34,7 @@ def make_graphviz():
         viz.node(item.label, label='', image=to_image_path(item.label))
 
     for edge in edges.itertuples():
-        viz.edge(edge.item_to, edge.item_from)
+        viz.edge(edge.requirement, edge.result)
 
     # Set rank for nodes by generation.
     # Insert { rank=same ... } calls for each generation into the dot source.

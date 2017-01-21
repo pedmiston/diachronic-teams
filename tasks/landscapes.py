@@ -3,9 +3,9 @@ import landscapes
 
 
 @task
-def load(ctx):
+def load(ctx, delete_first=False):
     """Make the totems landscape as a graph database."""
-    landscapes.load()
+    landscapes.load(delete_first=delete_first)
 
 
 @task
