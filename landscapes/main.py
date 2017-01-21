@@ -23,4 +23,4 @@ class Landscape:
         """)[0]['n_items']  # graph.data always returns a list
 
     def evaluate(self, guess):
-        pass
+        return self.answer_key.get(frozenset(guess))
