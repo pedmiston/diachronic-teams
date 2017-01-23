@@ -12,17 +12,27 @@ assign_csvs_with_prefix <- function(directory, prefix) {
   }
 }
 
-assign_csvs_with_prefix("data-raw/bots", "bots_")
-assign_csvs_with_prefix("data-raw/totems", "totems_")
+try({
+  print("----- Trying to load simulation results")
+  assign_csvs_with_prefix("data-raw/bots", "bots_")
+  use_data(
+    bots_replication,
+    bots_strategy,
+    bots_guesses,
+    bots_players,
+    bots_memory,
+    overwrite = TRUE
+  )
+  print("----- Succeeded")
+})
 
-totems_player %<>% left_join(totems_group)
-
-use_data(
-  bots_replication,
-  bots_strategy,
-  bots_guesses,
-  bots_players,
-  bots_memory,
-  totems_player,
-  overwrite = TRUE
-)
+try({
+  print("----- Trying to load totems experiment results")
+  assign_csvs_with_prefix("data-raw/totems", "totems_")
+  totems_player %<>% left_join(totems_group)
+  use_data(
+    totems_player,
+    overwrite = TRUE
+  )
+  print("----- Succeeded")
+})
