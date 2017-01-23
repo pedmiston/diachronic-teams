@@ -27,7 +27,7 @@ def make_graphviz(max_generation=None, max_number=None):
     MATCH (n:Item)
     WHERE n.number <= {max_number}
     AND n.generation <= {max_generation}
-    RETURN n.generation as generation, n.label as label
+    RETURN n.generation as generation, n.label as label, n.image as image
     """.format(**query_kwargs)))
 
     edges = pandas.DataFrame(graph.data("""
@@ -42,7 +42,7 @@ def make_graphviz(max_generation=None, max_number=None):
                                  shape='none'))
 
     for item in items.itertuples():
-        viz.node(item.label, label='', image=path_to_image(item.label))
+        viz.node(item.label, label='', image=item.image)
 
     for edge in edges.itertuples():
         viz.edge(edge.requirement, edge.result)

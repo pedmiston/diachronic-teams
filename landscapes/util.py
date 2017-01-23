@@ -1,6 +1,6 @@
 import unipath
 
-from landscapes.settings import images_dir
+from landscapes.settings import IMAGES
 
 
 def max_generation(items):
@@ -17,4 +17,4 @@ class MissingGeneration(Exception):
 
 
 def path_to_image(stem):
-    return unipath.Path(images_dir, stem + '.jpg')
+    return unipath.Path(IMAGES, stem + '.jpg')

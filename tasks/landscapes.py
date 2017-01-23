@@ -1,14 +1,12 @@
-from shutil import copytree
 from invoke import task
 import landscapes
-from .paths import Path, R_PKG, TOTEMS, ITEM_IMAGE
+from .paths import Path, R_PKG, TOTEMS
 
 
 @task
 def load(ctx, delete_first=False, load_only=False):
     """Make the totems landscape as a graph database."""
     landscapes.load(delete_first=delete_first)
-    copytree(Path(TOTEMS, 'Image'), ITEM_IMAGE)
 
 
 @task
