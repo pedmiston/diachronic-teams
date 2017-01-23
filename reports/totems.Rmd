@@ -12,6 +12,7 @@ library(tidyverse)
 library(magrittr)
 library(grid)
 library(gridExtra)
+library(broom)
 
 # My packages
 library(evoteams)
@@ -32,7 +33,7 @@ opts_chunk$set(
 ```{r helpers}
 # Select only the rows containing the team's highest score.
 filter_final_score <- . %>%
-  group_by(Treatment, ID_Group) %>%
+  group_by(Strategy, ID_Group) %>%
   summarize(Score = max(Score)) %>%
   recode_strategy()
 
@@ -40,8 +41,16 @@ filter_final_score <- . %>%
 # If no frame is provided, just the map of labels is returned.
 recode_strategy <- function(frame) {
   strategies <- c("Synchronic", "Isolated", "Diachronic")
-  map <- data_frame(Treatment = strategies,
-                    TreatmentLabel = factor(strategies, levels = strategies))
+  map <- data_frame(Strategy = strategies,
+                    StrategyLabel = factor(strategies, levels = strategies))
+  
+  # Add treatment contrasts
+  treatment_contrasts <- contr.treatment(strategies, base = 3) %>%
+    as.data.frame() %>%
+    rename(Diachronic_v_Synchronic = Synchronic, Diachronic_v_Isolated = Isolated) %>%
+    mutate(Strategy = row.names(.))
+  map %<>% left_join(treatment_contrasts)
+  
   if (missing(frame)) return(map)
   left_join(frame, map)
 }
@@ -51,22 +60,29 @@ recode_strategy <- function(frame) {
 base_theme <- theme_minimal()
 
 # Strategy
-strategy_levels <- levels(recode_strategy()$TreatmentLabel)
+strategy_levels <- levels(recode_strategy()$StrategyLabel)
 strategy_colors <- RColorBrewer::brewer.pal(3, "Set2")
 scale_x_strategy <- scale_x_discrete("Strategy", labels = strategy_levels)
 scale_color_strategy <- scale_color_manual(values = strategy_colors)
 scale_fill_strategy <- scale_fill_manual(values = strategy_colors)
 ```
 
+```{r, include=FALSE}
+read_graphviz_chunk("team-structures-all", "evoteams")
+```
+
+```{r team-structures-all, engine = "dot", fig.width = 2}
+```
+
 # Methods
 
 ## Materials
 
-```{r}
+```{r, include=FALSE}
 read_graphviz_chunk("landscape-sample", "evoteams")
 ```
 
-```{r landscape-sample, engine = "dot"}
+```{r landscape-sample, engine = "dot", fig.width = 4}
 ```
 
 ## Participants
@@ -75,14 +91,26 @@ read_graphviz_chunk("landscape-sample", "evoteams")
 
 # Results
 
-```{r}
+```{r, include = FALSE}
 data("totems_player")
+```
 
+## Model
+
+```{r, echo = 1:2, eval = FALSE}
+score_mod <- lm(Score ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
+                data = filter_final_scores(totems_player))
+tidy(score_mod)
+```
+
+## Means
+
+```{r}
 ggplot(filter_final_score(totems_player)) +
-  aes(TreatmentLabel, Score) +
-  geom_point(aes(color = Treatment),
+  aes(StrategyLabel, Score) +
+  geom_point(aes(color = StrategyLabel),
              position = position_jitter(width = 0.3)) +
-  geom_bar(aes(fill = Treatment), stat = "summary", fun.y = "mean",
+  geom_bar(aes(fill = StrategyLabel), stat = "summary", fun.y = "mean",
            alpha = 0.6) +
   scale_x_strategy +
   scale_color_strategy +

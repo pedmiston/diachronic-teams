@@ -29,7 +29,11 @@ try({
 try({
   print("----- Trying to load totems experiment results")
   assign_csvs_with_prefix("data-raw/totems", "totems_")
-  totems_player %<>% left_join(totems_group)
+
+  totems_player %<>%
+    left_join(totems_group) %>%
+    rename(Strategy = Treatment)
+
   use_data(
     totems_player,
     overwrite = TRUE
