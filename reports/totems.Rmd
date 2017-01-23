@@ -63,7 +63,10 @@ scale_fill_strategy <- scale_fill_manual(values = strategy_colors)
 ## Materials
 
 ```{r}
-diagram_graphviz("landscape-sample", "evoteams")
+read_graphviz_chunk("landscape-sample", "evoteams")
+```
+
+```{r landscape-sample, engine = "dot"}
 ```
 
 ## Participants
