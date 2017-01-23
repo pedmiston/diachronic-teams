@@ -1,6 +1,5 @@
 # reproducible
 data/*.rda
-inst/extdata/kaggle.sqlite
 
 .Rproj.user
 .Rhistory

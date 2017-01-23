@@ -1,7 +1,5 @@
 import unipath
 
-from landscapes.settings import IMAGES
-
 
 def max_generation(items):
     """Get the max generation from a list of Item nodes."""
@@ -17,4 +15,4 @@ class MissingGeneration(Exception):
 
 
 def path_to_image(stem):
-    return unipath.Path(IMAGES, stem + '.jpg')
+    return unipath.Path(stem + '.jpg')

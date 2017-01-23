@@ -6,7 +6,7 @@ from landscapes.graph_db import connect_to_graph_db
 from landscapes.util import path_to_image
 
 
-def make_graphviz(max_generation=None, max_number=None):
+def make_graphviz(image_dir, max_generation=None, max_number=None):
     graph = connect_to_graph_db()
 
     if max_generation is None:
@@ -42,7 +42,7 @@ def make_graphviz(max_generation=None, max_number=None):
                                  shape='none'))
 
     for item in items.itertuples():
-        viz.node(item.label, label='', image=item.image)
+        viz.node(item.label, label='', image=unipath.Path(image_dir, item.image))
 
     for edge in edges.itertuples():
         viz.edge(edge.requirement, edge.result)

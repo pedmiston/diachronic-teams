@@ -1,1 +1,1 @@
-IMAGES = 'landscapes/images'
+IMAGES = 'images'

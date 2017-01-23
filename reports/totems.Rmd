@@ -6,7 +6,7 @@ output:
     theme: flatly
 ---
 
-```{r config, include=FALSE}
+```{r config, include = FALSE}
 library(knitr)
 opts_chunk$set(
   echo = FALSE,
