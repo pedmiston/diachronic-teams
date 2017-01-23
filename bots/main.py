@@ -5,9 +5,10 @@ from collections import namedtuple
 import yaml
 import pandas
 
+from landscapes import Landscape
+
 from .models import create_team
 from .strategies import strategies
-from .landscapes import Landscape
 from .util import get_as_list
 
 
@@ -125,4 +126,4 @@ class Experiment:
 
     @property
     def team_memory(self):
-        return self.get_as_list('team_memory', False)
+        return self.get_as_list('team_memory', True)

@@ -72,7 +72,7 @@ gg_final <- ggplot() +
 sim_vars <- c("strategy", "n_guesses", "n_players", "seed", "player_memory", "team_memory")
 
 filter_final_round <- . %>%
-  group_by_(sim_vars) %>%
+  group_by_(.dots = sim_vars) %>%
   filter(round == max(round)) %>%
   ungroup()
 
@@ -121,7 +121,7 @@ grid.arrange(
 
 ## Strategy
 
-```{r, eval = FALSE}
+```{r}
 data("bots_strategy")
 gg_timeline %+% bots_strategy
 gg_final %+% filter_final_round(bots_strategy)
@@ -132,7 +132,7 @@ gg_final %+% filter_final_round(bots_strategy)
 ```{r}
 data("bots_players")
 gg_final %+% filter_final_round(bots_players)
-gg_timeline %+% filter_final_round(bots_players) +
+(gg_timeline %+% filter_final_round(bots_players)) +
   aes(n_players, inventory_size, color = strategy) +
   scale_x_continuous("team size", breaks = unique(bots_players$n_players)) +
   theme(panel.grid.minor.x = element_blank())

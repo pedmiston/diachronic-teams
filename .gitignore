@@ -6,6 +6,9 @@ figs/
 docs/irb/methods/*.pdf
 *.docx
 
+# py package
+*egg-info/
+
 *.png
 !img/*.png
 

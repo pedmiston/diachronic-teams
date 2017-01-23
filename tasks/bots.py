@@ -8,12 +8,12 @@ from .paths import R_PKG
 @invoke.task
 def run(ctx, experiment, output_dir=None, verbose=False):
     """Simulate robotic players playing the totems game."""
-    if experiment == '?':
+    if experiment == 'list':
         print('Available experiments:')
         for experiment in bots.paths.EXPERIMENTS.listdir('*.yaml'):
             print(' - ' + experiment.stem)
         return
-    elif experiment == '*':
+    elif experiment == 'all':
         experiments = bots.paths.EXPERIMENTS.listdir('*.yaml')
     elif Path(experiment).exists():
         experiments = [Path(experiment)]
