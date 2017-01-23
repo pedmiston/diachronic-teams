@@ -12,6 +12,8 @@ library(tidyverse)
 library(magrittr)
 library(grid)
 library(gridExtra)
+
+# My packages
 library(evoteams)
 library(crotchet)
 
@@ -55,6 +57,20 @@ scale_x_strategy <- scale_x_discrete("Strategy", labels = strategy_levels)
 scale_color_strategy <- scale_color_manual(values = strategy_colors)
 scale_fill_strategy <- scale_fill_manual(values = strategy_colors)
 ```
+
+# Methods
+
+## Materials
+
+```{r}
+
+```
+
+## Participants
+
+## Procedure
+
+# Results
 
 ```{r}
 data("totems_player")
