@@ -1,6 +1,8 @@
 ---
 title: "What is the impact of inheritance on problem solving ability?"
 author: "Pierce Edmiston"
+csl: "../docs/apa.csl"
+bibliography: "../docs/diachronic-collaboration.bib"
 output:
   html_document:
     theme: flatly
@@ -16,6 +18,7 @@ opts_chunk$set(
   fig.path = "figs/",
   fig.width = 6,
   fig.height = 3,
+  cache = TRUE,
   cache.path = ".cache/"
 )
 read_chunk("setup.R")
@@ -26,9 +29,9 @@ read_chunk("setup.R")
 
 What is the impact of inheritance on the problem solving ability of individuals? Does inheriting an existing solution to a problem simply give a head start on solving it, or does it actually make for more effective problem solving? To answer this question I compare the problem solving abilities of two types of teams: teams organized around inheritance or what I will call **diachronic teams** and teams organized to work in parallel or **synchronic teams** (Fig. 1A).
 
-The key condition that is controlled in this comparison is the number of labor hours allowed to each team. When labor hours are held constant, the dimension along which diachronic and synchronic teams differ is that diachronic teams “spend” labor hours more slowly than synchronic teams (Fig. 1B). By spending labor hours more slowly, diachronic teams maximize the extent to which each team member can inherit and modify existing solutions to the problem. Although teams working in parallel are also able to share solutions among members and thus exhibit some form of inheritance, diachronic teams maximize this dimension of inheritance. If inheritance improves one’s problem solving efficiency, then diachronic teams will outperform alternative ways of allocating the same number of labor hours.
+The key condition that is controlled in this comparison is the number of labor hours allotted to each team. When labor hours are held constant, the dimension along which diachronic and synchronic teams differ is that diachronic teams “spend” labor hours more slowly than synchronic teams (Fig. 1B). By spending labor hours more slowly, diachronic teams maximize the extent to which each team member can inherit and modify existing solutions to the problem. Although teams working in parallel are also able to share solutions among members and thus exhibit some form of inheritance, diachronic teams maximize this dimension of inheritance. If inheritance improves one’s problem solving efficiency, then diachronic teams will outperform alternative ways of allocating the same number of labor hours.
 
-In addition to comparing diachronic teams to synchronic teams, a third condition considered is an isolated individual working for the same number of labor hours (Fig. 1A). Isolated individuals also “spend” labor hours more slowly than synchronic teams at exactly the rate of diachronic teams (Fig. 1B). However, isolated individuals are only maximizing the inheritance of their own solutions. To the extent that inheriting an existing solution created by someone else improves problem solving ability, diachronic teams will outperform isolated individuals.
+In addition to comparing diachronic teams to synchronic teams, a third condition considered is an isolated individual working for the same number of labor hours (Fig. 1A). Isolated individuals also “spend” labor hours more slowly than synchronic teams at exactly the rate of diachronic teams (Fig. 1B). However, isolated individuals are only maximizing the inheritance of their own past solutions. To the extent that inheriting an existing solution created by someone else improves problem solving ability, diachronic teams will outperform isolated individuals.
 
 ```{r fig1}
 diachronic <- data_frame(
@@ -70,18 +73,27 @@ grid.arrange(
 
 # Methods
 
-## Materials
-
-```{r, include = FALSE}
-read_graphviz_chunk("landscape-sample", package = "evoteams")
-```
-
-```{r landscape-sample, engine = "dot", fig.width = 4}
-```
-
 ## Participants
 
+Participants are recruited until the final sample comprises 20 teams in each of the three strategy conditions for a total of 100 participants.
+
+## Materials
+
+Participants are tasked with a tool-building competition presented in a digital environment [@Derex:2015cbb]. Individuals combine resources and build ever more complicated tools in order to build "sacred totems to appease the gods". Individuals achieve high scores by traversing the innovation landscape and developing more and more elaborate ways of cutting, carving, and decorating their totems. A sample of the problem space is presented in Fig. 2. 
+
+
+```{r, cache = FALSE, include = FALSE}
+crotchet::read_graphviz_chunk("landscape-sample", package = "evoteams")
+```
+
+```{r landscape-sample, engine = "dot", fig.width = 4, cache = FALSE}
+```
+
 ## Procedure
+
+```{r}
+grid.draw(png::readPNG("../docs/irb/methods/screenshots/gameplay.png") %>% rasterGrob())
+```
 
 # Results
 
@@ -113,3 +125,5 @@ ggplot(filter_final_score(totems_player)) +
   theme(legend.position = "none",
         panel.grid.major.x = element_blank())
 ```
+
+# References

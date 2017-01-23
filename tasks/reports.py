@@ -27,23 +27,18 @@ def render(ctx, name, clear=False, open_after=False):
     cmd = 'Rscript -e "rmarkdown::render({!r})"'
     for rmd in rmds:
         if clear:
-            _clear_report_cache(rmd)
-            _clear_report_figs(rmd)
+            cache_dir = Path(rmd.parent, '.cache')
+            if cache_dir.isdir():
+                cache_dir.rmtree()
+
+            figs_dir = Path(rmd.parent, 'figs')
+            if figs_dir.isdir():
+                figs_dir.rmtree()
+
+            ctx.run('rm -f {}/code*'.format(rmd.parent))
 
         run(cmd.format(str(rmd)))
 
         if open_after:
             output_file = Path(rmd.parent, '{}.html'.format(rmd.stem))
             run('open {}'.format(output_file))
-
-def _clear_report_cache(rmd):
-    assert rmd.exists()
-    cache_dir = Path(rmd.parent, '.cache')
-    if cache_dir.isdir():
-        cache_dir.rmtree()
-
-def _clear_report_figs(rmd):
-    assert rmd.exists()
-    figs_dir = Path(rmd.parent, 'figs')
-    if figs_dir.isdir():
-        figs_dir.rmtree()
