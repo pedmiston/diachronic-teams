@@ -4,6 +4,7 @@ from landscapes.graph_db import connect_to_graph_db
 
 class Landscape:
     def __init__(self):
+        """Copies the landscape for faster lookups."""
         graph = connect_to_graph_db()
         recipes = pandas.DataFrame(graph.data("""
         MATCH (recipe) -[:CREATES]-> (result:Item)
@@ -15,7 +16,6 @@ class Landscape:
         for result, chunk in recipes.groupby('result'):
             requirements = frozenset(chunk.requirement.tolist())
             self.answer_key[requirements] = result
-
 
         self.max_items = graph.data("""
         MATCH (n:Item)
