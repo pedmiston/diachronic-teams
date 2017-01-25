@@ -33,22 +33,31 @@ The key condition that is controlled in this comparison is the number of labor h
 
 In addition to comparing diachronic teams to synchronic teams, a third condition considered is an isolated individual working for the same number of labor hours (Fig. 1A). Isolated individuals also “spend” labor hours more slowly than synchronic teams at exactly the rate of diachronic teams (Fig. 1B). However, isolated individuals are only maximizing the inheritance of their own past solutions. To the extent that inheriting an existing solution created by someone else improves problem solving ability, diachronic teams will outperform isolated individuals.
 
-```{r fig1}
+```{r fig1, fig.width = 8}
 diachronic <- data_frame(
   Strategy = "Diachronic",
-  CalendarHours = 0:100,
-  LaborHours = CalendarHours
+  CalendarHours = 1:100,
+  LaborHours = CalendarHours,
+  Player = rep(c(1, 2), each = 50)
 )
 
-isolated <- diachronic %>% mutate(Strategy = "Isolated")
+isolated <- diachronic %>%
+  mutate(
+    Strategy = "Isolated",
+    Player = 1
+  )
 
 synchronic <- data_frame(
   Strategy = "Synchronic",
-  CalendarHours = 0:50,
-  LaborHours = CalendarHours * 2
+  CalendarHours = 1:50,
+  LaborHours = CalendarHours * 2,
+  Player = 1
 )
 
 time <- rbind(diachronic, synchronic, isolated) %>%
+  group_by(Strategy, Player) %>%
+  mutate(PlayerHours = 1:n()) %>%
+  ungroup() %>%
   recode_strategy()
 
 axis_breaks <- c(0, 50, 100)
@@ -60,14 +69,29 @@ gg_time <- ggplot(time, aes(CalendarHours, LaborHours)) +
   scale_y_continuous("Labor hours", breaks = axis_breaks, labels = axis_labels) +
   scale_color_strategy +
   scale_linetype_manual(values = c(1, 1, 2)) +
-  guides(color = guide_legend(""), linetype = "none") +
+  guides(color = guide_legend("", reverse = TRUE), linetype = "none") +
   base_theme +
-  theme(legend.position = "top")
+  theme(legend.position = c(0.75, 0.2))
+
+time %<>%
+  mutate(StrategyIsolated = factor(Strategy, levels = c("Synchronic", "Diachronic", "Isolated")))
+
+gg_player <- ggplot(time) +
+  aes(StrategyIsolated, PlayerHours) +
+  geom_bar(aes(fill = StrategyLabel), stat = "summary", fun.y = "max") +
+  scale_x_discrete("") +
+  scale_y_continuous("Player hours", breaks = axis_breaks, labels = axis_labels) +
+  scale_fill_strategy +
+  base_theme +
+  theme(legend.position = "none",
+        panel.grid.major.x = element_blank())
 
 grid.arrange(
   read_graphviz("team-structures-all", package = "evoteams"),
   gg_time,
-  nrow = 1
+  gg_player,
+  nrow = 1,
+  widths = c(0.2, 0.4, 0.4)
 )
 ```
 
