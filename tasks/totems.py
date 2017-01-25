@@ -31,26 +31,23 @@ def download(ctx):
         out_csv = Path(TOTEMS_DIR, '{}.csv'.format(table.split('_')[1]))
         frame.to_csv(out_csv, index=False)
 
+
 @task
 def subj_info(ctx):
-    credentials = ServiceAccountCredentials.from_json_keyfile_dict(
-        get_from_vault(vault_file='secrets/lupyanlab-service-account.json'),
-        scopes='https://spreadsheets.google.com/feeds')
-
-    gc = gspread.authorize(credentials)
-
-    title = 'totems-subj-info'
-    try:
-        ws = gc.open(title).sheet1
-    except gspread.SpreadsheetNotFound:
-        print('spreadsheet %s not found, is it shared with the creds email?' % title)
-
-    df = pandas.DataFrame(ws.get_all_records())
+    """Download the subject info sheet from Google Drive."""
+    df = get_worksheet('totems-subj-info')
     df.rename(columns=dict(SubjID='ID_Player',
                            Initials='Experimenter'),
               inplace=True)
     cols = 'ID_Player Strategy Date Room Experimenter Compliance'.split()
     df[cols].to_csv(Path(TOTEMS_DIR, 'SubjInfo.csv'), index=False)
+
+
+@task
+def survey(ctx):
+    """Download the survey responses from Google Drive."""
+    df = get_worksheet('totems-survey-responses')
+    df.to_csv(Path(TOTEMS_DIR, 'PostExperimentSurvey.csv'), index=False)
 
 
 def get_from_vault(key=None, vault_file='db/vars/secrets.yml'):
@@ -63,3 +60,18 @@ def get_from_vault(key=None, vault_file='db/vars/secrets.yml'):
         return data
     else:
         return data.get(key)
+
+
+def get_worksheet(title):
+    credentials = ServiceAccountCredentials.from_json_keyfile_dict(
+        get_from_vault(vault_file='secrets/lupyanlab-service-account.json'),
+        scopes='https://spreadsheets.google.com/feeds')
+
+    gc = gspread.authorize(credentials)
+
+    try:
+        ws = gc.open(title).sheet1
+    except gspread.SpreadsheetNotFound:
+        print('spreadsheet %s not found, is it shared with the creds email?' % title)
+
+    return pandas.DataFrame(ws.get_all_records())
