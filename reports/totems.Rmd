@@ -27,36 +27,34 @@ read_chunk("setup.R")
 ```{r setup}
 ```
 
-What is the impact of inheritance on the problem solving ability of individuals? Does inheriting an existing solution to a problem simply give a head start on solving it, or does it actually make for more effective problem solving? To answer this question I consider a simple form of inheritance where one person works on a solution to a problem and then passes it on to another person to continue. Because these two individuals are working on the same problem cooperatively, I refer to them as **diachronic teams** (Fig. 1A). To understand the impact of inheritance on problem solving, I compare the problem solving efficiency of diachronic teams organized around inheritance to two alternative ways of allocating the same number of labor hours: **isolated individuals** working for the same total amount of time, and **synchronic teams** working in parallel.
+What is the impact of inheritance on the problem solving ability of individuals? Does inheriting an existing solution to a problem simply give a head start on solving it, or does it actually make for more effective problem solving? To answer this question I consider a simple form of inheritance where one person works on a solution to a problem and then passes it on to another person to continue. Because these two individuals are collaborating over time, I refer to them as **diachronic teams**. To understand the impact of inheritance on problem solving, I compare the problem solving abilities of diachronic teams to two alternative strategies for allocating the same number of labor hours: **isolated individuals** working for the same total amount of time, and **synchronic teams** made of two individuals collaborating at the same time (Fig. 1A).
 
-The key condition that is controlled in this comparison is the number of labor hours allotted to each team. When labor hours are held constant, the dimension along which diachronic and synchronic teams differ is that diachronic teams “spend” labor hours more slowly than synchronic teams (Fig. 1B). By spending labor hours more slowly, diachronic teams maximize the extent to which each team member can inherit and modify existing solutions to the problem. Although teams working in parallel are also able to share solutions among members and thus exhibit some form of inheritance, diachronic teams maximize this dimension of inheritance. If inheritance improves problem solving efficiency, then diachronic teams by maximizing inheritance will outperform alternative ways of allocating the same number of labor hours.
+The key condition that enables this comparison is fixing the number of labor hours allowed to each strategy. When labor hours are held constant, diachronic and synchronic teams differ in how many calendar hours they spend on the problem, but diachronic teams do not differ from isolated individuals along this dimension (Fig. 1B). Conversely, diachronic and synchronic teams do not differ in the number of hours committed per team member, but isolated individuals do, having the most time per person (Fig. 1C). By comparing diachronic teams to both isolated individuals and synchronic teams, the effects of inheritance on problem solving ability can be teased apart from these other possible differences between the teams. If inheritance improves problem solving ability, then diachronic teams will outperform these alternative ways of allocating the same number of labor hours.
 
-In addition to comparing diachronic teams to synchronic teams, a third condition considered is an isolated individual working for the same number of labor hours (Fig. 1A). Isolated individuals also “spend” labor hours more slowly than synchronic teams at exactly the rate of diachronic teams (Fig. 1B). However, isolated individuals are only maximizing the inheritance of their own past solutions. To the extent that inheriting an existing solution created by someone else improves problem solving ability, diachronic teams will outperform isolated individuals.
-
-```{r fig1, fig.width = 8}
+```{r fig1, fig.width = 8, fig.align = "center", fig.cap = "**A** Three strategies for allocating the same number of labor hours. **B** By controlling for labor hours, diachronic and synchronic teams differ in calendar hours. **C** Although isolated individuals spend the most time per person, diachronic and synchronic teams do not differ along this dimension."}
 diachronic <- data_frame(
   Strategy = "Diachronic",
   CalendarHours = 1:100,
   LaborHours = CalendarHours,
-  Player = rep(c(1, 2), each = 50)
+  Person = rep(c(1, 2), each = 50)
 )
 
 isolated <- diachronic %>%
   mutate(
     Strategy = "Isolated",
-    Player = 1
+    Person = 1
   )
 
 synchronic <- data_frame(
   Strategy = "Synchronic",
   CalendarHours = 1:50,
   LaborHours = CalendarHours * 2,
-  Player = 1
+  Person = 1
 )
 
 time <- rbind(diachronic, synchronic, isolated) %>%
-  group_by(Strategy, Player) %>%
-  mutate(PlayerHours = 1:n()) %>%
+  group_by(Strategy, Person) %>%
+  mutate(PersonHours = 1:n()) %>%
   ungroup() %>%
   recode_strategy()
 
@@ -76,11 +74,12 @@ gg_time <- ggplot(time, aes(CalendarHours, LaborHours)) +
 time %<>%
   mutate(StrategyIsolated = factor(Strategy, levels = c("Synchronic", "Diachronic", "Isolated")))
 
-gg_player <- ggplot(time) +
-  aes(StrategyIsolated, PlayerHours) +
-  geom_bar(aes(fill = StrategyLabel), stat = "summary", fun.y = "max") +
+gg_person <- ggplot(time) +
+  aes(StrategyIsolated, PersonHours) +
+  geom_bar(aes(fill = StrategyLabel), stat = "summary", fun.y = "max",
+           alpha = 0.8) +
   scale_x_discrete("") +
-  scale_y_continuous("Player hours", breaks = axis_breaks, labels = axis_labels) +
+  scale_y_continuous("Person hours", breaks = axis_breaks, labels = axis_labels) +
   scale_fill_strategy +
   base_theme +
   theme(legend.position = "none",
@@ -89,7 +88,7 @@ gg_player <- ggplot(time) +
 grid.arrange(
   read_graphviz("team-structures-all", package = "evoteams"),
   gg_time,
-  gg_player,
+  gg_person,
   nrow = 1,
   widths = c(0.2, 0.4, 0.4)
 )
