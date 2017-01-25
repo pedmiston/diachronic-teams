@@ -27,9 +27,11 @@ def install(ctx, use_data_too=False, make_landscapes=False,
         use_data(ctx)
 
     if make_landscapes:
-        tasks.landscapes.tree(ctx)
-        tasks.landscapes.tree(ctx, max_generation=4, name='landscape-sample')
-        tasks.landscapes.tree(ctx, max_number=100, name='landscape-tools')
+        tasks.landscapes.tree(ctx, view_off=True)
+        tasks.landscapes.tree(ctx, max_generation=4, name='landscape-sample',
+                              view_off=True)
+        tasks.landscapes.tree(ctx, max_number=100, name='landscape-tools',
+                              view_off=True)
 
     if document_only:
         R_cmds = ["devtools::document()"]
