@@ -16,7 +16,7 @@ if not TOTEMS_DIR.isdir():
 
 
 @task
-def download(ctx):
+def download(ctx, all=False):
     """Download the data from the totems db."""
     url = "mysql+pymysql://{user}:{password}@{host}:{port}/{dbname}".format(
         user='experimenter',
@@ -30,6 +30,10 @@ def download(ctx):
         frame = pandas.read_sql('SELECT * FROM %s' % table, con)
         out_csv = Path(TOTEMS_DIR, '{}.csv'.format(table.split('_')[1]))
         frame.to_csv(out_csv, index=False)
+
+    if all:
+        subj_info(ctx)
+        survey(ctx)
 
 
 @task
