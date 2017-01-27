@@ -1,3 +1,4 @@
+import pandas
 from landscapes.graph_db import connect_to_graph_db
 
 
@@ -21,8 +22,8 @@ def determine_adjacent_possible(inventory):
     requirements = pandas.DataFrame(graph.data(requirements_query))
 
     adjacent_possible = []
-    for code, chunk in requirements.group_by('code'):
+    for code, chunk in requirements.groupby('code'):
         if all(chunk.requirement.isin(inventory)):
-            adjancent_possible.append(code)
+            adjacent_possible.append(code)
 
     return adjacent_possible

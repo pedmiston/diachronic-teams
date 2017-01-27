@@ -1,4 +1,6 @@
 from invoke import task
+import json
+import pandas
 import landscapes
 from .paths import Path, R_PKG, TOTEMS, ITEM_IMAGES
 
@@ -7,7 +9,7 @@ from .paths import Path, R_PKG, TOTEMS, ITEM_IMAGES
 def start(ctx):
     """Start the Neo4j server."""
     ctx.run('neo4j start')
-    print("Don't forget to `source environment` to set NEO4J_PASSWORD!")
+    print("Don't forget to `source environment` to set the NEO4J_PASSWORD!")
 
 
 @task
@@ -26,3 +28,14 @@ def tree(ctx, max_number=None, max_generation=None, name=None, view_off=False):
     name = name or 'landscape'
     output = Path(R_PKG, 'inst/extdata/', name+'.gv')
     viz.render(output, view=not view_off)
+
+
+@task
+def adjacent(ctx, inventories=None):
+    """Determine the number of adjacent items."""
+    results = pandas.read_csv(inventories)
+    results['inventory'] = results.inventory.apply(json.loads)
+    results['n_adjacent'] = (
+            results.inventory.apply(landscapes.determine_adjacent_possible)
+                             .apply(len))
+    results.to_csv(inventories, index=False)
