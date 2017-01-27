@@ -7,7 +7,7 @@ from .paths import Path, R_PKG, TOTEMS, ITEM_IMAGES
 def start(ctx):
     """Start the Neo4j server."""
     ctx.run('neo4j start')
-    print("Don't forget to `source environment` to set NEO4J_PASSWORD!")
+    print("Don't forget to `source environment` to set the NEO4J_PASSWORD!")
 
 
 @task

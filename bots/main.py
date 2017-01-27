@@ -3,13 +3,14 @@ from itertools import product
 from collections import namedtuple
 
 import yaml
+import json
 import pandas
 
 from landscapes import Landscape
 
 from .models import create_team
 from .strategies import strategies
-from .util import get_as_list
+from .util import get_as_list, jsonify_new_items
 
 
 """An instance of SimVars contains the parameters for running a simulation.
@@ -45,8 +46,8 @@ def simulate(strategy, n_guesses, n_players, seed, player_memory, team_memory):
             team_memory=int(team_memory),
             round=iteration,
             guesses=guesses,
-            new_items=new_items,
-            inventory=team.inventory,
+            new_items=jsonify_new_items(new_items),
+            inventory=json.dumps(list(team.inventory)),
             inventory_size=len(team.inventory),
         ))
 
