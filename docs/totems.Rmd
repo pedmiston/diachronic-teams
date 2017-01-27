@@ -1,8 +1,9 @@
 ---
 title: "What is the impact of inheritance on problem solving ability?"
 author: "Pierce Edmiston"
-csl: "../docs/apa.csl"
-bibliography: "../docs/diachronic-collaboration.bib"
+csl: "apa.csl"
+css: "style.css"
+bibliography: "diachronic-collaboration.bib"
 output:
   html_document:
     theme: flatly
@@ -102,7 +103,7 @@ Participants are recruited until the final sample comprises 20 teams in each of 
 
 ## Materials
 
-Participants are tasked with a tool-building competition presented in a digital environment [@Derex:2015cbb]. Individuals combine resources and build ever more complicated tools in order to build "sacred totems to appease the gods". Individuals achieve high scores by traversing the innovation landscape and developing more and more elaborate ways of cutting, carving, and decorating their totems. A sample of the problem space is presented in Fig. 2. 
+Participants are tasked with a tool-building competition presented in a digital environment [@Derex:2015cbb]. Individuals combine resources and build ever more complicated tools in order to build "sacred totems to appease the gods". Individuals achieve high scores by traversing the innovation landscape and developing more and more elaborate ways of cutting, carving, and decorating their totems. A sample of the problem space is presented in Fig. 2.
 
 
 ```{r, cache = FALSE, include = FALSE}

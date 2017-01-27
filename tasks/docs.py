@@ -7,7 +7,7 @@ from .paths import PROJ
 
 
 @task
-def render(ctx, name, clear=False, open_after=False):
+def make(ctx, name, clear=False, open_after=False):
     """Compile RMarkdown reports to their output formats."""
     available_reports = [Path(rmd) for rmd in
                          glob('{proj}/docs/*.Rmd'.format(proj=PROJ))]
