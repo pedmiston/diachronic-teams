@@ -1,4 +1,4 @@
 from invoke import Collection
-from . import evoteams, reports, docs, landscapes, bots, totems
+from . import evoteams, docs, landscapes, bots, totems
 
-namespace = Collection(evoteams, reports, docs, landscapes, bots, totems)
+namespace = Collection(evoteams, docs, landscapes, bots, totems)
