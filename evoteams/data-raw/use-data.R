@@ -30,12 +30,13 @@ try({
   print("----- Trying to load totems experiment results")
   assign_csvs_with_prefix("data-raw/totems", "totems_")
 
-  totems_player %<>%
+  totems_leaderboards <- totems_player %>%
     left_join(totems_group) %>%
-    rename(Strategy = Treatment)
+    rename(Strategy = Treatment) %>%
+    inner_join(totems_subjinfo)
 
   use_data(
-    totems_player,
+    totems_leaderboards,
     overwrite = TRUE
   )
   print("----- Succeeded")
