@@ -65,7 +65,12 @@ def run_experiment(experiment_yaml, output=None, verbose=False):
     output = open(output, 'w') if output else stdout
     for sim_id, sim_vars in enumerate(experiment.simulations()):
         if verbose:
-            print(' #{}: {}'.format(sim_id, SimVars(*sim_vars)))
+            # Replace strategy which is a function with the name of the function
+            strategy_ix = SimVars._fields.index('strategy')
+            pretty_sim_vars = sim_vars[:strategy_ix] + \
+                              (sim_vars[strategy_ix].__name__, ) + \
+                              sim_vars[strategy_ix+1:]
+            print(' #{}: {}'.format(sim_id, SimVars(*pretty_sim_vars)))
         results = simulate(*sim_vars)
         results.insert(0, 'sim_id', sim_id)
         first_write = (sim_id == 0)
