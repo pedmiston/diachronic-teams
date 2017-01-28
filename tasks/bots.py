@@ -1,8 +1,13 @@
 import sys
+import json
+
 import invoke
+import pandas
 from unipath import Path
+
 import bots
-from .paths import R_PKG
+import landscapes
+from tasks.paths import R_PKG
 
 
 @invoke.task
@@ -40,3 +45,23 @@ def show_simulations(ctx, experiment):
     experiment = bots.read_experiment_yaml(experiment)
     simulations = experiment.expand_all()
     simulations.to_csv(sys.stdout, index=False)
+
+
+@invoke.task
+def adjacent(ctx, inventories, suffix=None):
+    """Determine the number of adjacent items."""
+    landscape = landscapes.Landscape()
+
+    inventories_csv = find_bots_csv(inventories)
+    results = pandas.read_csv(inventories_csv)
+    results['inventory'] = results.inventory.apply(json.loads)
+    results['n_adjacent'] = \
+        (results.inventory.apply(landscape.determine_adjacent_possible)
+                          .apply(len))
+    if suffix:
+        inventories_csv = find_bots_csv('{}-{}'.format(inventories, suffix))
+    results.to_csv(inventories_csv, index=False)
+
+
+def find_bots_csv(inventories):
+    return Path(R_PKG, 'data-raw/bots', inventories+'.csv')
