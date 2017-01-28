@@ -7,13 +7,6 @@ from tasks.paths import Path, R_PKG, TOTEMS, ITEM_IMAGES
 
 
 @task
-def start(ctx):
-    """Start the Neo4j server."""
-    ctx.run('neo4j start')
-    print("Don't forget to `source environment` to set the NEO4J_PASSWORD!")
-
-
-@task
 def load(ctx, delete_first=False, load_only=False):
     """Make the totems landscape as a graph database."""
     landscapes.load(delete_first=delete_first)
