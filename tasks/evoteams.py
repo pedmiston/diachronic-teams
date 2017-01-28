@@ -43,4 +43,4 @@ def install(ctx, use_data_too=False, make_landscapes=False,
     if document_only:
         R_cmds = ["devtools::document()"]
 
-    run(cmd.format(R_pkg=R_PKG, R_cmds=';'.join(R_cmds)))
+    ctx.run(cmd.format(R_pkg=R_PKG, R_cmds=';'.join(R_cmds)))

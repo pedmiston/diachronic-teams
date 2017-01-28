@@ -4,8 +4,6 @@ library(readr)
 
 #' Strip the stem name off a file path.
 #'
-#' @example file_stem("path/to/my/file.ext") == "file"
-#'
 #' @import magrittr
 #' @import tools
 file_stem <- function(x) {

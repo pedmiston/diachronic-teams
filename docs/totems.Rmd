@@ -122,19 +122,19 @@ grid.draw(png::readPNG("../docs/irb/methods/screenshots/gameplay.png") %>% raste
 # Results
 
 ```{r, include = FALSE}
-data("totems_leaderboards")
+data("totems_players")
 ```
 
 ## Leaderboards
 
 ```{r, echo = 1:2, eval = FALSE}
 score_mod <- lm(Score ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
-                data = filter_final_scores(totems_leaderboards))
+                data = filter_final_scores(totems_players))
 tidy(score_mod)
 ```
 
 ```{r}
-ggplot(filter_final_score(totems_leaderboards)) +
+ggplot(filter_final_score(totems_players)) +
   aes(StrategyLabel, Score) +
   geom_point(aes(color = StrategyLabel),
              position = position_jitter(width = 0.3)) +
@@ -149,6 +149,14 @@ ggplot(filter_final_score(totems_leaderboards)) +
 ```
 
 ## Strategy
+
+```{r}
+data("totems_workshops")
+
+ggplot(totems_workshops) +
+  aes(TrialTime, NumAdjacent, group = ID_Player, color = Strategy) +
+  geom_line()
+```
 
 # Discussion
 
