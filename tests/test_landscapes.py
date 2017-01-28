@@ -61,3 +61,9 @@ def test_adjacent_possible(landscape):
 def test_adjacent_possible_doesnt_return_existing_items(landscape):
     recipes = landscape.determine_adjacent_possible(['Stone', 'Small_Stone'])
     assert len(recipes) == 1
+
+def test_starting_inventory(landscape):
+    assert 'Stone' in landscape.starting_inventory()
+
+def test_getting_label_from_number(landscape):
+    assert landscape.get_label(1) == 'Big_Tree'

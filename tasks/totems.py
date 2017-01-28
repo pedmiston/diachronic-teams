@@ -1,4 +1,5 @@
 from os import environ
+import json
 
 from invoke import task
 import sqlalchemy
@@ -8,7 +9,8 @@ import gspread
 from unipath import Path
 from oauth2client.service_account import ServiceAccountCredentials
 
-from . import paths
+import landscapes
+from tasks import paths
 
 TOTEMS_DIR = Path(paths.R_PKG, 'data-raw/totems')
 if not TOTEMS_DIR.isdir():
@@ -34,6 +36,35 @@ def download(ctx, all=False):
     if all:
         subj_info(ctx)
         survey(ctx)
+        rolling(ctx)
+
+
+@task
+def rolling(ctx, suffix=None):
+    """Keep track of rolling variables (e.g., total known inventory)."""
+    workshop_csv = Path(TOTEMS_DIR, 'Workshop.csv')
+    workshop = pandas.read_csv(workshop_csv)
+    landscape = landscapes.Landscape()
+
+    def _rolling(workshop):
+        inventory = landscape.starting_inventory()
+        rolling_inventory = []
+        for item_number in workshop.sort_values('TrialTime').WorkShopResult:
+            if item_number != 0:
+                label = landscape.get_label(item_number)
+                if label not in inventory:
+                    inventory.update({label})
+            rolling_inventory.append(json.dumps(list(inventory)))
+        workshop['Inventory'] = rolling_inventory
+        return workshop
+
+    rolling_inventories = workshop.groupby('ID_Player').apply(_rolling)
+
+    if suffix:
+        new_name = '{}-{}.csv'.format(workshop_csv.stem, suffix)
+        workshop_csv = Path(workshop_csv.parent, new_name)
+
+    rolling_inventories.to_csv(workshop_csv, index=False)
 
 
 @task
