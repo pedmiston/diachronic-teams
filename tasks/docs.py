@@ -46,6 +46,7 @@ def make(ctx, name, clear=False, open_after=False):
 
 @task(help=dict(name='If name is "list", list available names.'))
 def img(ctx, name, output=None, ext='png', dpi=300):
+    """Create an image and put it in the "img/" dir."""
     if name == 'list':
         print('\n'.join(Path('evoteams/inst/extdata/').listdir()))
         return

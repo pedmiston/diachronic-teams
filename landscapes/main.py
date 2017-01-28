@@ -24,6 +24,17 @@ class Landscape:
 
         self.adjacent_recipes = {}
 
+        self.labels = pandas.DataFrame(self.graph.data("""
+        MATCH (n:Item)
+        RETURN n.number as number, n.label as label
+        """)).set_index('number').squeeze().to_dict()
+
+    def starting_inventory(self):
+        return set('Stone Tree Big_Tree Red_Berry Blue_Berry Antler'.split())
+
+    def get_label(self, item_number):
+        return self.labels.get(item_number)
+
     def evaluate(self, guess):
         return self.answer_key.get(frozenset(guess))
 

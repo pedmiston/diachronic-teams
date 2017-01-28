@@ -1,4 +1,5 @@
 from os import environ
+import json
 
 from invoke import task
 import sqlalchemy
@@ -8,11 +9,14 @@ import gspread
 from unipath import Path
 from oauth2client.service_account import ServiceAccountCredentials
 
-from . import paths
+import landscapes
+from tasks import paths
 
 TOTEMS_DIR = Path(paths.R_PKG, 'data-raw/totems')
 if not TOTEMS_DIR.isdir():
     TOTEMS_DIR.mkdir()
+
+WORKSHOP_CSV = Path(TOTEMS_DIR, 'Workshop.csv')
 
 
 @task
@@ -34,6 +38,51 @@ def download(ctx, all=False):
     if all:
         subj_info(ctx)
         survey(ctx)
+        rolling(ctx)
+        adjacent(ctx)
+
+
+@task
+def rolling(ctx, suffix=None):
+    """Keep track of rolling variables (e.g., total known inventory)."""
+    global WORKSHOP_CSV
+    workshop = pandas.read_csv(WORKSHOP_CSV)
+    landscape = landscapes.Landscape()
+
+    def _rolling(workshop):
+        inventory = landscape.starting_inventory()
+        rolling_inventory = []
+        for item_number in workshop.sort_values('TrialTime').WorkShopResult:
+            if item_number != 0:
+                label = landscape.get_label(item_number)
+                if label not in inventory:
+                    inventory.update({label})
+            rolling_inventory.append(json.dumps(list(inventory)))
+        workshop['Inventory'] = rolling_inventory
+        return workshop
+
+    rolling_inventories = workshop.groupby('ID_Player').apply(_rolling)
+
+    if suffix:
+        new_name = '{}-{}.csv'.format(workshop_csv.stem, suffix)
+        WORKSHOP_CSV = Path(WORKSHOP_CSV.parent, new_name)
+
+    rolling_inventories.to_csv(WORKSHOP_CSV, index=False)
+
+
+@task
+def adjacent(ctx, suffix=None):
+    global WORKSHOP_CSV
+    workshop = pandas.read_csv(WORKSHOP_CSV)
+    landscape = landscapes.Landscape()
+    inventories = workshop.Inventory.apply(json.loads)
+    workshop['NumAdjacent'] = \
+        (inventories.apply(landscape.determine_adjacent_possible)
+                    .apply(len))
+    if suffix:
+        new_name = '{}-{}.csv'.format(inventories, suffix)
+        WORKSHOP_CSV = Path(WORKSHOP_CSV.parent, new_name)
+    workshop.to_csv(WORKSHOP_CSV, index=False)
 
 
 @task

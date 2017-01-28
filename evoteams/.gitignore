@@ -1,6 +1,3 @@
-# reproducible
-data/*.rda
-
 .Rproj.user
 .Rhistory
 .RData
