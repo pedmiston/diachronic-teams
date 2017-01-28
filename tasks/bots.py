@@ -37,7 +37,7 @@ def run(ctx, experiment, output_dir=None, verbose=False, post_processing=False):
         bots.run_experiment(experiment_yaml, output=output, verbose=verbose)
 
         if post_processing:
-            adjacent(ctx, output)
+            adjacent(ctx, output.stem)
 
 
 @invoke.task
