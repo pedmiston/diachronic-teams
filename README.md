@@ -27,3 +27,9 @@ Other requirements:
 - "tidyverse" of R packages
 - pandoc for dynamic documents
 - graphviz for node/edge diagrams
+
+# Data
+
+    $ inv totems.download --post-processing  # download totems data
+    $ inv bots.run all --post-processing     # run simulations
+    $ inv evoteams.install --use-data        # use data in evoteams pkg

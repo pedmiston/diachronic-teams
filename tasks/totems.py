@@ -20,7 +20,7 @@ WORKSHOP_CSV = Path(TOTEMS_DIR, 'Workshop.csv')
 
 
 @task
-def download(ctx, all=False):
+def download(ctx, post_processing=False):
     """Download the data from the totems db."""
     url = "mysql+pymysql://{user}:{password}@{host}:{port}/{dbname}".format(
         user='experimenter',
@@ -35,7 +35,7 @@ def download(ctx, all=False):
         out_csv = Path(TOTEMS_DIR, '{}.csv'.format(table.split('_')[1]))
         frame.to_csv(out_csv, index=False)
 
-    if all:
+    if post_processing:
         subj_info(ctx)
         survey(ctx)
         rolling(ctx)
@@ -52,13 +52,16 @@ def rolling(ctx, suffix=None):
     def _rolling(workshop):
         inventory = landscape.starting_inventory()
         rolling_inventory = []
+        inventory_sizes = []
         for item_number in workshop.sort_values('TrialTime').WorkShopResult:
             if item_number != 0:
                 label = landscape.get_label(item_number)
                 if label not in inventory:
                     inventory.update({label})
             rolling_inventory.append(json.dumps(list(inventory)))
+            inventory_sizes.append(len(inventory))
         workshop['Inventory'] = rolling_inventory
+        workshop['InventorySize'] = inventory_sizes
         return workshop
 
     rolling_inventories = workshop.groupby('ID_Player').apply(_rolling)
@@ -72,6 +75,7 @@ def rolling(ctx, suffix=None):
 
 @task
 def adjacent(ctx, suffix=None):
+    """Calculate the number of adjacent possibilities for each player."""
     global WORKSHOP_CSV
     workshop = pandas.read_csv(WORKSHOP_CSV)
     landscape = landscapes.Landscape()
