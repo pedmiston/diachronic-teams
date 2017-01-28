@@ -16,6 +16,8 @@ TOTEMS_DIR = Path(paths.R_PKG, 'data-raw/totems')
 if not TOTEMS_DIR.isdir():
     TOTEMS_DIR.mkdir()
 
+WORKSHOP_CSV = Path(TOTEMS_DIR, 'Workshop.csv')
+
 
 @task
 def download(ctx, all=False):
@@ -37,13 +39,14 @@ def download(ctx, all=False):
         subj_info(ctx)
         survey(ctx)
         rolling(ctx)
+        adjacent(ctx)
 
 
 @task
 def rolling(ctx, suffix=None):
     """Keep track of rolling variables (e.g., total known inventory)."""
-    workshop_csv = Path(TOTEMS_DIR, 'Workshop.csv')
-    workshop = pandas.read_csv(workshop_csv)
+    global WORKSHOP_CSV
+    workshop = pandas.read_csv(WORKSHOP_CSV)
     landscape = landscapes.Landscape()
 
     def _rolling(workshop):
@@ -62,9 +65,24 @@ def rolling(ctx, suffix=None):
 
     if suffix:
         new_name = '{}-{}.csv'.format(workshop_csv.stem, suffix)
-        workshop_csv = Path(workshop_csv.parent, new_name)
+        WORKSHOP_CSV = Path(WORKSHOP_CSV.parent, new_name)
 
-    rolling_inventories.to_csv(workshop_csv, index=False)
+    rolling_inventories.to_csv(WORKSHOP_CSV, index=False)
+
+
+@task
+def adjacent(ctx, suffix=None):
+    global WORKSHOP_CSV
+    workshop = pandas.read_csv(WORKSHOP_CSV)
+    landscape = landscapes.Landscape()
+    inventories = workshop.Inventory.apply(json.loads)
+    workshop['NumAdjacent'] = \
+        (inventories.apply(landscape.determine_adjacent_possible)
+                    .apply(len))
+    if suffix:
+        new_name = '{}-{}.csv'.format(inventories, suffix)
+        WORKSHOP_CSV = Path(WORKSHOP_CSV.parent, new_name)
+    workshop.to_csv(WORKSHOP_CSV, index=False)
 
 
 @task

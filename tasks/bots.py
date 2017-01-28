@@ -55,10 +55,10 @@ def adjacent(ctx, inventories, suffix=None):
 
     inventories_csv = find_bots_csv(inventories)
     results = pandas.read_csv(inventories_csv)
-    results['inventory'] = results.inventory.apply(json.loads)
+    inventories = results.inventory.apply(json.loads)
     results['n_adjacent'] = \
-        (results.inventory.apply(landscape.determine_adjacent_possible)
-                          .apply(len))
+        (inventories.apply(landscape.determine_adjacent_possible)
+                    .apply(len))
     if suffix:
         inventories_csv = find_bots_csv('{}-{}'.format(inventories, suffix))
     results.to_csv(inventories_csv, index=False)
