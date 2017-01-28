@@ -19,10 +19,9 @@ cassettes/
 
 # reproducible data
 evoteams/data-raw/bots/
+evoteams/data/bots*.rda
 evoteams/data-raw/totems/
-
-# data that's too big to track
-db/dumps/
+evoteams/data/totems*.rda
 
 # data that's too big to track
 db/dumps/
