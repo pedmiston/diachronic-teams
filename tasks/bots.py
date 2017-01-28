@@ -38,7 +38,8 @@ def run(ctx, experiment, output_dir=None, verbose=False):
 
 
 @invoke.task
-def show_simulations(ctx, experiment):
+def expand(ctx, experiment):
+    """Show the simulation vars used in an experiment."""
     if not Path(experiment).exists():
         experiment = Path(bots.paths.EXPERIMENTS, experiment + '.yaml')
         assert experiment.exists(), 'experiment %s not found' % experiment
