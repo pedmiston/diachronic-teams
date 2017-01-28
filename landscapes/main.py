@@ -51,10 +51,12 @@ class Landscape:
         adjacent_recipes = pandas.DataFrame(self.graph.data(adjacent_query))
 
         requirements_query = """
-        MATCH (r:Recipe) -[:REQUIRES]-> (n:Item)
-        WHERE r.code IN {codes}
-        RETURN r.code as code, n.label as requirement
-        """.format(codes=adjacent_recipes.code.tolist())
+        MATCH (r:Recipe) -[:REQUIRES]-> (required:Item)
+        MATCH (r) -[:CREATES]-> (created:Item)
+        WHERE r.code IN {codes} AND NOT created.label IN {inventory}
+        RETURN r.code as code, required.label as requirement
+        """.format(codes=adjacent_recipes.code.tolist(),
+                   inventory=list(inventory))
         requirements = pandas.DataFrame(self.graph.data(requirements_query))
 
         adjacent_possible = []
