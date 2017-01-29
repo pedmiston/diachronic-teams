@@ -175,6 +175,24 @@ ggplot(bottlenecks) +
   facet_wrap("ID_Player")
 ```
 
+```{r}
+data("bots_strategy")
+
+attempts <- bots_strategy %>%
+  group_by(sim_id, inventory_size, n_adjacent) %>%
+  summarize(attempts = n())
+
+ggplot(attempts) +
+  aes(n_adjacent, attempts) +
+  geom_point(position = position_jitter(width = 0.1)) +
+  geom_line(stat = "summary", fun.y = "mean")
+
+ggplot(attempts) +
+  aes(inventory_size, n_adjacent) +
+  geom_point(position = position_jitter(width = 0.2)) +
+  geom_line(aes(group = sim_id), stat = "summary", fun.y = "mean")
+```
+
 # Discussion
 
 # References
