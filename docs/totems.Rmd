@@ -17,7 +17,7 @@ opts_chunk$set(
   warning = FALSE,
   results = "hide",
   fig.path = "figs/",
-  fig.width = 6,
+  fig.width = 4,
   fig.height = 3,
   cache = TRUE,
   cache.path = ".cache/"
@@ -32,7 +32,7 @@ What is the impact of inheritance on the problem solving ability of individuals?
 
 The key condition that enables this comparison is fixing the number of labor hours allowed to each strategy. When labor hours are held constant, diachronic and synchronic teams differ in how many calendar hours they spend on the problem, but diachronic teams do not differ from isolated individuals along this dimension (Fig. 1B). Conversely, diachronic and synchronic teams do not differ in the number of hours committed per team member, but isolated individuals do, having the most time per person (Fig. 1C). By comparing diachronic teams to both isolated individuals and synchronic teams, the effects of inheritance on problem solving ability can be teased apart from these other possible differences between the teams. If inheritance improves problem solving ability, then diachronic teams will outperform these alternative ways of allocating the same number of labor hours.
 
-```{r fig1, fig.width = 8, fig.align = "center", fig.cap = "**A** Three strategies for allocating the same number of labor hours. **B** By controlling for labor hours, diachronic and synchronic teams differ in calendar hours. **C** Although isolated individuals spend the most time per person, diachronic and synchronic teams do not differ along this dimension."}
+```{r fig1, fig.width=8, fig.align="center", fig.cap="**A.** Three strategies for allocating the same number of labor hours. **B.** By controlling for labor hours, diachronic and synchronic teams differ in calendar hours. **C.** Although isolated individuals spend the most time per person, diachronic and synchronic teams do not differ along this dimension."}
 diachronic <- data_frame(
   Strategy = "Diachronic",
   CalendarHours = 1:100,
@@ -121,15 +121,11 @@ grid.draw(png::readPNG("../docs/irb/methods/screenshots/gameplay.png") %>% raste
 
 # Results
 
-```{r, include = FALSE}
-data("totems_players")
-```
-
 ## Leaderboards
 
-```{r, echo = 1:2, eval = FALSE}
+```{r, echo = 1:2}
 score_mod <- lm(Score ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
-                data = filter_final_scores(totems_players))
+                data = filter_final_score(totems_players))
 tidy(score_mod)
 ```
 
@@ -148,14 +144,35 @@ ggplot(filter_final_score(totems_players)) +
         panel.grid.major.x = element_blank())
 ```
 
-## Strategy
+## Attempts
 
 ```{r}
-data("totems_workshops")
+attempts <- totems_workshops %>%
+  group_by(ID_Player) %>%
+  summarize(
+    Attempts = max(GuessNumber)
+  ) %>%
+  left_join(totems_players)
 
-ggplot(totems_workshops) +
-  aes(TrialTime, NumAdjacent, group = ID_Player, color = Strategy) +
-  geom_line()
+ggplot(attempts) +
+  aes(Attempts, Score, color = Strategy) +
+  geom_point()
+```
+
+## Bottlenecks
+
+```{r, fig.width=10, fig.height=8}
+bottlenecks <- totems_workshops %>%
+  group_by(ID_Player, InventorySize, NumAdjacent) %>%
+  summarize(Guesses = n()) %>%
+  left_join(totems_players)
+
+ggplot(bottlenecks) +
+  aes(InventorySize, NumAdjacent, color = Strategy) +
+  geom_point(aes(size = Guesses)) +
+  geom_line(aes(group = ID_Player)) +
+  scale_x_continuous("Items Discovered", breaks = c(6, seq(10, 40, by = 5))) +
+  facet_wrap("ID_Player")
 ```
 
 # Discussion

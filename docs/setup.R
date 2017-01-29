@@ -7,6 +7,8 @@ library(broom)
 library(crotchet)
 
 library(evoteams)
+data("totems_players")
+data("totems_workshops")
 
 base_theme <- theme_minimal()
 

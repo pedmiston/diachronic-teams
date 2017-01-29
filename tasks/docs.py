@@ -1,3 +1,4 @@
+import sys
 from glob import glob
 
 from invoke import task
@@ -7,8 +8,38 @@ from .paths import PROJ
 
 
 @task
-def make(ctx, name, clear=False, open_after=False):
+def make(ctx, name, reset_before=False, open_after=False):
     """Compile RMarkdown reports to their output formats."""
+    reports = reports_from_name(name)
+
+    cmd = 'Rscript -e "rmarkdown::render({!r})"'
+    for rmd in reports:
+        if reset_before:
+            reset(ctx, rmd)
+
+        ctx.run(cmd.format(str(rmd)))
+
+        if open_after:
+            output_file = Path(rmd.parent, '{}.html'.format(rmd.stem))
+            ctx.run('open {}'.format(output_file))
+
+
+@task
+def reset(ctx, name):
+    reports = reports_from_name(name)
+    for report in reports:
+        cache_dir = Path(report.parent, '.cache')
+        if cache_dir.isdir():
+            cache_dir.rmtree()
+
+        figs_dir = Path(report.parent, 'figs')
+        if figs_dir.isdir():
+            figs_dir.rmtree()
+
+        ctx.run('rm -rf {}/code*'.format(report.parent))
+
+
+def reports_from_name(name):
     available_reports = [Path(rmd) for rmd in
                          glob('{proj}/docs/*.Rmd'.format(proj=PROJ))]
     if name == 'all':
@@ -17,31 +48,14 @@ def make(ctx, name, clear=False, open_after=False):
         print('Available reports:')
         for rmd in available_reports:
             print(' - %s' % rmd.stem)
-        return
+        sys.exit()
     elif Path(name).exists():
         rmds = [Path(name)]
     else:
         rmds = [Path(rmd) for rmd in
                 glob('{proj}/docs/{name}*.Rmd'.format(proj=PROJ, name=name))]
 
-    cmd = 'Rscript -e "rmarkdown::render({!r})"'
-    for rmd in rmds:
-        if clear:
-            cache_dir = Path(rmd.parent, '.cache')
-            if cache_dir.isdir():
-                cache_dir.rmtree()
-
-            figs_dir = Path(rmd.parent, 'figs')
-            if figs_dir.isdir():
-                figs_dir.rmtree()
-
-            ctx.run('rm -f {}/code*'.format(rmd.parent))
-
-        ctx.run(cmd.format(str(rmd)))
-
-        if open_after:
-            output_file = Path(rmd.parent, '{}.html'.format(rmd.stem))
-            ctx.run('open {}'.format(output_file))
+    return rmds
 
 
 @task(help=dict(name='If name is "list", list available names.'))

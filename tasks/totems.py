@@ -97,6 +97,12 @@ def subj_info(ctx):
                            Initials='Experimenter'),
               inplace=True)
     cols = 'ID_Player Strategy Date Room Experimenter Compliance'.split()
+    # Sanitize!
+    for col in cols:
+        try:
+            df[col] = df[col].str.replace('\n', '')
+        except AttributeError:
+            pass
     df[cols].to_csv(Path(TOTEMS_DIR, 'SubjInfo.csv'), index=False)
 
 
@@ -108,7 +114,10 @@ def survey(ctx):
 
 
 def get_from_vault(key=None, vault_file='db/vars/secrets.yml'):
-    ansible_vault_password_file = environ.get('ANSIBLE_VAULT_PASSWORD_FILE')
+    try:
+        ansible_vault_password_file = environ['ANSIBLE_VAULT_PASSWORD_FILE']
+    except KeyError:
+        raise AssertionError('Set the ANSIBLE_VAULT_PASSWORD_FILE environment variable')
     ansible_vault_password = open(ansible_vault_password_file).read().strip()
     vault = ansible_vault.Vault(ansible_vault_password)
     secrets_yaml = Path(paths.PROJ, vault_file)
