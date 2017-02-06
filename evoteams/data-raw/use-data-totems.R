@@ -10,13 +10,23 @@ assign_csvs_with_prefix("data-raw/totems", "totems_")
 # Player scores ----------------------------------------------------------------
 totems_players <- totems_player %>%
   left_join(totems_group) %>%
+  mutate(Generation = Ancestor + 2) %>%
   rename(Strategy = Treatment) %>%
   select(-c(ID_Number:Gain, Knowledge, Size, Open, Status)) %>%
   # Filter out any subjects that aren't reported
   # in the subject info sheet.
   inner_join(totems_subjinfo)
 
-# Deidentification.
+# Remove any incomplete diachronic teams
+incomplete_diachronic_teams <- totems_players %>%
+  filter(Strategy == "Diachronic") %>%
+  group_by(ID_Group) %>%
+  summarize(TeamSize = max(Generation)) %>%
+  filter(TeamSize != 2) %>%
+  .$ID_Group
+totems_players %<>% filter(!(ID_Group %in% incomplete_diachronic_teams))
+
+# Deidentification -------------------------------------------------------------
 # Remove datetime information and shuffle rows.
 set.seed(328)
 id_group_levels <- factor(totems_players$ID_Group) %>% levels()
@@ -25,18 +35,6 @@ totems_players %<>%
   select(-Date, -Room) %>%
   mutate(ID_Group = factor(ID_Group, levels = id_group_levels, labels = id_group_labels)) %>%
   sample_n(nrow(totems_players))
-
-diachronic_teams <- totems_players %>%
-  filter(Strategy == "Diachronic") %>%
-  # Ancestor is coded as -1 for True, meaning this player was an Ancestor
-  # and 0 for False, meaning this player inherited from an Ancestor.
-  # Convert this into generation, which will be 1 for all other Strategies.
-  mutate(Generation = Ancestor + 2) %>%
-  select(ID_Player, ID_Group, Generation)
-
-totems_players %<>%
-  left_join(diachronic_teams) %>%
-  mutate(Generation = ifelse(is.na(Generation), 1, Generation))
 
 player_key <- totems_players %>%
   select(ID_Player, ID_Group, Strategy, Generation)
