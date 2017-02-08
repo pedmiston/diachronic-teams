@@ -22,14 +22,7 @@ WORKSHOP_CSV = Path(TOTEMS_DIR, 'Workshop.csv')
 @task
 def download(ctx, post_processing=False):
     """Download the data from the totems db."""
-    url = "mysql+pymysql://{user}:{password}@{host}:{port}/{dbname}".format(
-        user='experimenter',
-        password=get_from_vault('experimenter_password'),
-        host='128.104.130.116',
-        port='3306',
-        dbname='Totems',
-    )
-    con = sqlalchemy.create_engine(url)
+    con = connect_to_db()
     for table in con.table_names():
         frame = pandas.read_sql('SELECT * FROM %s' % table, con)
         out_csv = Path(TOTEMS_DIR, '{}.csv'.format(table.split('_')[1]))
@@ -110,6 +103,7 @@ def subj_info(ctx):
         except AttributeError:
             pass
     df[cols].to_csv(Path(TOTEMS_DIR, 'SubjInfo.csv'), index=False)
+    return df[cols]
 
 
 @task
@@ -117,6 +111,35 @@ def survey(ctx):
     """Download the survey responses from Google Drive."""
     df = get_worksheet('totems-survey-responses')
     df.to_csv(Path(TOTEMS_DIR, 'PostExperimentSurvey.csv'), index=False)
+
+
+@task
+def label(ctx):
+    """Label the participants in the db."""
+    con = connect_to_db()
+    groups = pandas.read_sql('SELECT * FROM Table_Group', con)
+    players = pandas.read_sql('SELECT * FROM Table_Player', con)
+    players = players.merge(groups)
+    
+    is_valid_player = (players.ID_Player
+                              .astype(int)
+                              .isin(subj_info(ctx).ID_Player))
+    valid_groups = players.ix[is_valid_player].ID_Group
+    is_valid_group = groups.ID_Group.isin(valid_groups)
+    groups.Status.where(~is_valid_group, 'E', inplace=True)
+    groups.to_sql('Table_Group', con, if_exists='replace', index=False)
+
+
+def connect_to_db():
+    url = "mysql+pymysql://{user}:{password}@{host}:{port}/{dbname}".format(
+        user='experimenter',
+        password=get_from_vault('experimenter_password'),
+        host='128.104.130.116',
+        port='3306',
+        dbname='Totems',
+    )
+    con = sqlalchemy.create_engine(url)
+    return con
 
 
 def get_from_vault(key=None, vault_file='db/vars/secrets.yml'):
