@@ -23,9 +23,6 @@ evoteams/data/bots*.rda
 evoteams/data-raw/totems/
 evoteams/data/totems*.rda
 
-# data that's too big to track
-db/dumps/
-
 # python
 __pycache__/
 
@@ -49,4 +46,3 @@ __pycache__/
 
 # totems
 environment
-.vagrant/

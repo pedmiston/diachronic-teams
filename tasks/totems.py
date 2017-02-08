@@ -39,7 +39,7 @@ def download(ctx, post_processing=False):
 @task
 def snapshot(ctx):
     """Take a snapshot of the totems database."""
-    ctx.run('cd db && ansible-playbook download_db_dump.yml')
+    ctx.run('cd totems-experiment/database && ansible-playbook download_db_dump.yml')
 
 
 @task
@@ -63,7 +63,7 @@ def label(ctx):
 
     groups = players.ix[players.is_team_full & players.is_known_player, ['ID_Player', 'ID_Group']]
     groups.to_csv(sys.stdout, index=False)
-    
+
 
 @task
 def rolling(ctx, suffix=None):
