@@ -43,6 +43,12 @@ def download(ctx, post_processing=False):
 
 
 @task
+def snapshot(ctx):
+    """Take a snapshot of the totems database."""
+    ctx.run('cd db && ansible-playbook download_db_dump.yml')
+
+
+@task
 def rolling(ctx, suffix=None):
     """Keep track of rolling variables (e.g., total known inventory)."""
     global WORKSHOP_CSV
