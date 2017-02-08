@@ -1,4 +1,5 @@
 from os import environ
+import sys
 import json
 
 from invoke import task
@@ -22,14 +23,7 @@ WORKSHOP_CSV = Path(TOTEMS_DIR, 'Workshop.csv')
 @task
 def download(ctx, post_processing=False):
     """Download the data from the totems db."""
-    url = "mysql+pymysql://{user}:{password}@{host}:{port}/{dbname}".format(
-        user='experimenter',
-        password=get_from_vault('experimenter_password'),
-        host='128.104.130.116',
-        port='3306',
-        dbname='Totems',
-    )
-    con = sqlalchemy.create_engine(url)
+    con = connect_to_db()
     for table in con.table_names():
         frame = pandas.read_sql('SELECT * FROM %s' % table, con)
         out_csv = Path(TOTEMS_DIR, '{}.csv'.format(table.split('_')[1]))
@@ -47,6 +41,29 @@ def snapshot(ctx):
     """Take a snapshot of the totems database."""
     ctx.run('cd db && ansible-playbook download_db_dump.yml')
 
+
+@task
+def label(ctx):
+    """Label valid subjects."""
+    con = connect_to_db()
+    players = pandas.read_sql('SELECT * FROM Table_Player', con)
+    groups = pandas.read_sql('SELECT * FROM Table_Group', con)
+    players = players.merge(groups)
+
+    # Verify team sizes
+    actual_sizes = players.groupby('ID_Group').size()
+    actual_sizes.name = 'ActualSize'
+    players = players.merge(actual_sizes.reset_index())
+    players['is_team_full'] = players.Size == players.ActualSize
+
+    # Drop any players not in the subject info sheet
+    players['is_known_player'] = (players.ID_Player
+                                         .astype(int)
+                                         .isin(subj_info(ctx).ID_Player))
+
+    groups = players.ix[players.is_team_full & players.is_known_player, ['ID_Player', 'ID_Group']]
+    groups.to_csv(sys.stdout, index=False)
+    
 
 @task
 def rolling(ctx, suffix=None):
@@ -110,6 +127,7 @@ def subj_info(ctx):
         except AttributeError:
             pass
     df[cols].to_csv(Path(TOTEMS_DIR, 'SubjInfo.csv'), index=False)
+    return df[cols]
 
 
 @task
@@ -118,6 +136,17 @@ def survey(ctx):
     df = get_worksheet('totems-survey-responses')
     df.to_csv(Path(TOTEMS_DIR, 'PostExperimentSurvey.csv'), index=False)
 
+
+def connect_to_db():
+    url = "mysql+pymysql://{user}:{password}@{host}:{port}/{dbname}".format(
+        user='experimenter',
+        password=get_from_vault('experimenter_password'),
+        host='128.104.130.116',
+        port='3306',
+        dbname='Totems',
+    )
+    con = sqlalchemy.create_engine(url)
+    return con
 
 def get_from_vault(key=None, vault_file='db/vars/secrets.yml'):
     try:
