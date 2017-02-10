@@ -6,7 +6,7 @@ library(gridExtra)
 library(broom)
 library(crotchet)
 
-library(evoteams)
+library(totems)
 data("totems_players")
 data("totems_workshops")
 

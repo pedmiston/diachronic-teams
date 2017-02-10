@@ -1,4 +1,4 @@
-import bots
+import simulations
 
 
 def test_team_initial_inventory():

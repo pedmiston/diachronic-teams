@@ -3,5 +3,5 @@ from distutils.core import setup
 
 setup(
     name='diachronic_teams',
-    packages=['landscapes', 'bots'],
+    packages=['landscapes', 'simulations'],
 )

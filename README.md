@@ -31,5 +31,5 @@ Other requirements:
 # Data
 
     $ inv totems.download --post-processing  # download totems data
-    $ inv bots.run all --post-processing     # run simulations
-    $ inv evoteams.install --use-data        # use data in evoteams pkg
+    $ inv simulations.run all --post-processing     # run simulations
+    $ inv totems.install --use-data        # use data in totems pkg

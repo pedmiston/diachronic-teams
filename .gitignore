@@ -13,15 +13,15 @@ docs/irb/methods/*.pdf
 !img/*.png
 
 *.gv
-!evoteams/**/*.gv
-evoteams/**/landscape*.gv
+!totems/**/*.gv
+totems/**/landscape*.gv
 cassettes/
 
 # reproducible data
-evoteams/data-raw/bots/
-evoteams/data/bots*.rda
-evoteams/data-raw/totems/
-evoteams/data/totems*.rda
+totems/data-raw/bots/
+totems/data/bots*.rda
+totems/data-raw/totems/
+totems/data/totems*.rda
 
 # python
 __pycache__/

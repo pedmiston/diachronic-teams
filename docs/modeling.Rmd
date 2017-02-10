@@ -13,7 +13,7 @@ library(magrittr)
 library(grid)
 library(gridExtra)
 library(jsonlite)
-library(evoteams)
+library(totems)
 library(crotchet)
 
 opts_chunk$set(
@@ -102,7 +102,7 @@ recode_memory <- . %>%
 # Team structures
 
 ```{r team-structures, fig.width = 2.5}
-diagram_graphviz("team-structures", "evoteams")
+diagram_graphviz("team-structures", "totems")
 ```
 
 # Experiments
@@ -112,7 +112,7 @@ diagram_graphviz("team-structures", "evoteams")
 ```{r}
 data("bots_replication")
 grid.arrange(
-  read_graphviz("calendar-hours", "evoteams"),
+  read_graphviz("calendar-hours", "totems"),
   gg_timeline %+% bots_replication,
   gg_final %+% filter_final_round(bots_replication),
   nrow = 1

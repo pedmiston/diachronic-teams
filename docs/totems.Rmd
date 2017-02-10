@@ -92,7 +92,7 @@ gg_person <- ggplot(time) +
         panel.grid.major.x = element_blank())
 
 grid.arrange(
-  read_graphviz("team-structures-all", package = "evoteams"),
+  read_graphviz("team-structures-all", package = "totems"),
   gg_time,
   gg_person,
   nrow = 1,
@@ -112,7 +112,7 @@ Participants are tasked with a tool-building competition presented in a digital 
 
 
 ```{r, cache = FALSE, include = FALSE}
-crotchet::read_graphviz_chunk("landscape-sample", package = "evoteams")
+crotchet::read_graphviz_chunk("landscape-sample", package = "totems")
 ```
 
 ```{r landscape-sample, engine = "dot", fig.width = 4, cache = FALSE}
