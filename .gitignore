@@ -18,8 +18,8 @@ totems/**/landscape*.gv
 cassettes/
 
 # reproducible data
-totems/data-raw/bots/
-totems/data/bots*.rda
+totems/data-raw/simulations/
+totems/data/simulations*.rda
 totems/data-raw/totems/
 totems/data/totems*.rda
 

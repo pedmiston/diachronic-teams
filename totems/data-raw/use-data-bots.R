@@ -4,13 +4,13 @@ library(devtools)
 # WARNING! Don't load the package or use_data() won't work
 source("R/util.R")
 
-assign_csvs_with_prefix("data-raw/bots", "bots_")
+assign_csvs_with_prefix("data-raw/simulations", "simulations_")
 
 use_data(
-  bots_replication,
-  bots_strategy,
-  bots_guesses,
-  bots_players,
-  bots_memory,
+  simulations_replication,
+  simulations_strategy,
+  simulations_guesses,
+  simulations_players,
+  simulations_memory,
   overwrite = TRUE
 )

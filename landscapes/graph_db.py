@@ -10,6 +10,6 @@ def connect_to_graph_db():
     try:
         graph = Graph(password=environ['NEO4J_PASSWORD'])
     except SocketError:
-        raise SocketError('probably need to start Neo4j with `neo4j start`')
+        raise AssertionError('probably need to start Neo4j with `neo4j start`')
 
     return graph

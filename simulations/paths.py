@@ -1,4 +1,4 @@
 from unipath import Path
 
 SIMULATIONS = Path(__file__).parent.absolute()
-EXPERIMENTS = Path(BOTS, 'experiments')
+EXPERIMENTS = Path(SIMULATIONS, 'experiments')

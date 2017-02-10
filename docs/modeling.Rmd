@@ -110,11 +110,11 @@ diagram_graphviz("team-structures", "totems")
 ## Replication
 
 ```{r}
-data("bots_replication")
+data("simulations_replication")
 grid.arrange(
   read_graphviz("calendar-hours", "totems"),
-  gg_timeline %+% bots_replication,
-  gg_final %+% filter_final_round(bots_replication),
+  gg_timeline %+% simulations_replication,
+  gg_final %+% filter_final_round(simulations_replication),
   nrow = 1
 )
 ```
@@ -122,41 +122,41 @@ grid.arrange(
 ## Strategy
 
 ```{r}
-data("bots_strategy")
-gg_timeline %+% bots_strategy
-gg_final %+% filter_final_round(bots_strategy)
+data("simulations_strategy")
+gg_timeline %+% simulations_strategy
+gg_final %+% filter_final_round(simulations_strategy)
 ```
 
 ## Team size
 
 ```{r}
-data("bots_players")
-gg_final %+% filter_final_round(bots_players)
-(gg_timeline %+% filter_final_round(bots_players)) +
+data("simulations_players")
+gg_final %+% filter_final_round(simulations_players)
+(gg_timeline %+% filter_final_round(simulations_players)) +
   aes(n_players, inventory_size, color = strategy) +
-  scale_x_continuous("team size", breaks = unique(bots_players$n_players)) +
+  scale_x_continuous("team size", breaks = unique(simulations_players$n_players)) +
   theme(panel.grid.minor.x = element_blank())
 ```
 
 ## Number of guesses
 
 ```{r}
-data("bots_guesses")
-gg_timeline %+% filter_final_round(bots_guesses) +
+data("simulations_guesses")
+gg_timeline %+% filter_final_round(simulations_guesses) +
   aes(n_guesses)
 ```
 
 ## Player and team memory
 
 ```{r, fig.height=6}
-data("bots_memory")
+data("simulations_memory")
 
-bots_memory %<>%
+simulations_memory %<>%
   recode_memory()
 
-gg_timeline %+% bots_memory +
+gg_timeline %+% simulations_memory +
   facet_grid(team_memory_label ~ player_memory_label)
 
-gg_final %+% filter_final_round(bots_memory) +
+gg_final %+% filter_final_round(simulations_memory) +
   facet_grid(team_memory_label ~ player_memory_label)
 ```

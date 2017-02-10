@@ -181,9 +181,9 @@ ggplot(bottlenecks) +
 ```
 
 ```{r}
-data("bots_strategy")
+data("simulations_strategy")
 
-attempts <- bots_strategy %>%
+attempts <- simulations_strategy %>%
   group_by(sim_id, inventory_size, n_adjacent) %>%
   summarize(attempts = n())
 
