@@ -37,12 +37,6 @@ def download(ctx, post_processing=False):
 
 
 @task
-def snapshot(ctx):
-    """Take a snapshot of the totems database."""
-    ctx.run('cd totems-experiment/database && ansible-playbook download_db_dump.yml')
-
-
-@task
 def label(ctx):
     """Label valid subjects."""
     con = connect_to_db()
