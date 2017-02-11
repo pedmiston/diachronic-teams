@@ -18,9 +18,9 @@ def tree(ctx, max_number=None, max_generation=None, name=None, view_off=False):
 
     Examples:
 
-        $ inv tree
-        $ inv tree -n landscape-sample --max-generation 5
-        $ inv tree -n landscape-tools --max-number 100
+        $ inv landscapes.tree
+        $ inv landscapes.tree -n landscape-sample --max-generation 5
+        $ inv landscapes.tree -n landscape-tools --max-number 100
     """
     viz = landscapes.make_graphviz(image_dir=ITEM_IMAGES,
                                    max_number=max_number,
