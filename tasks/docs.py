@@ -13,20 +13,22 @@ def make(ctx, name, reset_before=False, open_after=False):
     reports = reports_from_name(name)
 
     cmd = 'Rscript -e "rmarkdown::render({!r})"'
-    for rmd in reports:
+    for report in reports:
         if reset_before:
-            reset(ctx, rmd)
+            reset(ctx, report)
 
-        ctx.run(cmd.format(str(rmd)))
+        ctx.run(cmd.format(str(report)))
 
         if open_after:
-            output_file = Path(rmd.parent, '{}.html'.format(rmd.stem))
+            output_file = Path(report.parent, '{}.html'.format(report.stem))
             ctx.run('open {}'.format(output_file))
 
 
 @task
 def reset(ctx, name):
+    """Clear the cache and outputs of RMarkdown reports."""
     reports = reports_from_name(name)
+
     for report in reports:
         cache_dir = Path(report.parent, '.cache')
         if cache_dir.isdir():
@@ -37,6 +39,17 @@ def reset(ctx, name):
             figs_dir.rmtree()
 
         ctx.run('rm -rf {}/code*'.format(report.parent))
+
+
+@task(help=dict(name='If name is "list", list available figure names.'))
+def img(ctx, name, output=None, ext='png', dpi=300):
+    """Create an image and put it in the "img/" dir."""
+    if name == 'list':
+        print('\n'.join(Path('evoteams/inst/extdata/').listdir()))
+        return
+    src = Path('evoteams/inst/extdata/{}.gv'.format(name))
+    dst = Path('img/{}.{}'.format(output or name, ext))
+    ctx.run('dot -T{} -Gdpi={} -o {} {}'.format(ext, dpi, dst, src))
 
 
 def reports_from_name(name):
@@ -56,14 +69,3 @@ def reports_from_name(name):
                 glob('{proj}/docs/{name}*.Rmd'.format(proj=PROJ, name=name))]
 
     return rmds
-
-
-@task(help=dict(name='If name is "list", list available names.'))
-def img(ctx, name, output=None, ext='png', dpi=300):
-    """Create an image and put it in the "img/" dir."""
-    if name == 'list':
-        print('\n'.join(Path('evoteams/inst/extdata/').listdir()))
-        return
-    src = Path('evoteams/inst/extdata/{}.gv'.format(name))
-    dst = Path('img/{}.{}'.format(output or name, ext))
-    ctx.run('dot -T{} -Gdpi={} -o {} {}'.format(ext, dpi, dst, src))

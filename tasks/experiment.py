@@ -21,46 +21,118 @@ WORKSHOP_CSV = Path(TOTEMS_DIR, 'Workshop.csv')
 
 
 @task
-def download(ctx, post_processing=False):
-    """Download the data from the totems db."""
+def download(ctx, name=None, post_processing=False):
+    """Download the experiment data from the totems database."""
+    available = ['tables', 'subj_info', 'survey']
+
+    if name is None:
+        names = available
+    else:
+        assert name in available
+        names = [name]
+
+    if 'tables' in names:
+        tables()
+    if 'subj_info' in names:
+        subj_info()
+    if 'survey' in names:
+        survey()
+
+    if post_processing:
+        process(ctx)
+
+
+def tables():
     con = connect_to_db()
     for table in con.table_names():
         frame = pandas.read_sql('SELECT * FROM %s' % table, con)
         out_csv = Path(TOTEMS_DIR, '{}.csv'.format(table.split('_')[1]))
         frame.to_csv(out_csv, index=False)
 
-    if post_processing:
-        subj_info(ctx)
-        survey(ctx)
-        rolling(ctx)
-        adjacent(ctx)
+
+def connect_to_db():
+    url = "mysql+pymysql://{user}:{password}@{host}:{port}/{dbname}".format(
+        user='experimenter',
+        password=get_from_vault('experimenter_password'),
+        host='128.104.130.116',
+        port='3306',
+        dbname='Totems',
+    )
+    con = sqlalchemy.create_engine(url)
+    return con
+
+
+def get_from_vault(key=None, vault_file='db/vars/secrets.yml'):
+    try:
+        ansible_vault_password_file = environ['ANSIBLE_VAULT_PASSWORD_FILE']
+    except KeyError:
+        raise AssertionError('Set the ANSIBLE_VAULT_PASSWORD_FILE environment variable')
+    ansible_vault_password = open(ansible_vault_password_file).read().strip()
+    vault = ansible_vault.Vault(ansible_vault_password)
+    secrets_yaml = Path(paths.PROJ, vault_file)
+    data = vault.load(open(secrets_yaml).read())
+    if key is None:
+        return data
+    else:
+        return data.get(key)
+
+
+def subj_info():
+    """Download the subject info sheet from Google Drive."""
+    df = get_worksheet('totems-subj-info')
+    df.rename(columns=dict(SubjID='ID_Player',
+                           Initials='Experimenter'),
+              inplace=True)
+    cols = 'ID_Player Strategy Date Room Experimenter Compliance'.split()
+    # Sanitize!
+    for col in cols:
+        try:
+            df[col] = df[col].str.replace('\n', '')
+        except AttributeError:
+            pass
+    df[cols].to_csv(Path(TOTEMS_DIR, 'SubjInfo.csv'), index=False)
+    return df[cols]
+
+
+def survey():
+    """Download the survey responses from Google Drive."""
+    df = get_worksheet('totems-survey-responses')
+    df.to_csv(Path(TOTEMS_DIR, 'PostExperimentSurvey.csv'), index=False)
+
+
+def get_worksheet(title):
+    credentials = ServiceAccountCredentials.from_json_keyfile_dict(
+        get_from_vault(vault_file='secrets/lupyanlab-service-account.json'),
+        scopes='https://spreadsheets.google.com/feeds')
+
+    gc = gspread.authorize(credentials)
+
+    try:
+        ws = gc.open(title).sheet1
+    except gspread.SpreadsheetNotFound:
+        print('spreadsheet %s not found, is it shared with the creds email?' % title)
+
+    return pandas.DataFrame(ws.get_all_records())
 
 
 @task
-def label(ctx):
-    """Label valid subjects."""
-    con = connect_to_db()
-    players = pandas.read_sql('SELECT * FROM Table_Player', con)
-    groups = pandas.read_sql('SELECT * FROM Table_Group', con)
-    players = players.merge(groups)
+def process(ctx, name=None):
+    """Process the experiment data from the totems database."""
+    available = ['rolling', 'adjacent']
+    if name is None:
+        names = available
+    else:
+        assert name in available
+        names = [name]
 
-    # Verify team sizes
-    actual_sizes = players.groupby('ID_Group').size()
-    actual_sizes.name = 'ActualSize'
-    players = players.merge(actual_sizes.reset_index())
-    players['is_team_full'] = players.Size == players.ActualSize
+    if 'rolling' in names:
+        rolling()
 
-    # Drop any players not in the subject info sheet
-    players['is_known_player'] = (players.ID_Player
-                                         .astype(int)
-                                         .isin(subj_info(ctx).ID_Player))
-
-    groups = players.ix[players.is_team_full & players.is_known_player, ['ID_Player', 'ID_Group']]
-    groups.to_csv(sys.stdout, index=False)
+    if 'adjacent' in names:
+        adjacent()
 
 
-@task
-def rolling(ctx, suffix=None):
+def rolling(suffix=None):
     """Keep track of rolling variables (e.g., total known inventory)."""
     global WORKSHOP_CSV
     workshop = pandas.read_csv(WORKSHOP_CSV)
@@ -90,8 +162,7 @@ def rolling(ctx, suffix=None):
     rolling_inventories.to_csv(WORKSHOP_CSV, index=False)
 
 
-@task
-def adjacent(ctx, suffix=None):
+def adjacent(suffix=None):
     """Calculate the number of adjacent possibilities for each player."""
     global WORKSHOP_CSV
     workshop = pandas.read_csv(WORKSHOP_CSV)
@@ -107,66 +178,23 @@ def adjacent(ctx, suffix=None):
 
 
 @task
-def subj_info(ctx):
-    """Download the subject info sheet from Google Drive."""
-    df = get_worksheet('totems-subj-info')
-    df.rename(columns=dict(SubjID='ID_Player',
-                           Initials='Experimenter'),
-              inplace=True)
-    cols = 'ID_Player Strategy Date Room Experimenter Compliance'.split()
-    # Sanitize!
-    for col in cols:
-        try:
-            df[col] = df[col].str.replace('\n', '')
-        except AttributeError:
-            pass
-    df[cols].to_csv(Path(TOTEMS_DIR, 'SubjInfo.csv'), index=False)
-    return df[cols]
+def label(ctx):
+    """Label valid subjects."""
+    con = connect_to_db()
+    players = pandas.read_sql('SELECT * FROM Table_Player', con)
+    groups = pandas.read_sql('SELECT * FROM Table_Group', con)
+    players = players.merge(groups)
 
+    # Verify team sizes
+    actual_sizes = players.groupby('ID_Group').size()
+    actual_sizes.name = 'ActualSize'
+    players = players.merge(actual_sizes.reset_index())
+    players['is_team_full'] = players.Size == players.ActualSize
 
-@task
-def survey(ctx):
-    """Download the survey responses from Google Drive."""
-    df = get_worksheet('totems-survey-responses')
-    df.to_csv(Path(TOTEMS_DIR, 'PostExperimentSurvey.csv'), index=False)
+    # Drop any players not in the subject info sheet
+    players['is_known_player'] = (players.ID_Player
+                                         .astype(int)
+                                         .isin(subj_info().ID_Player))
 
-
-def connect_to_db():
-    url = "mysql+pymysql://{user}:{password}@{host}:{port}/{dbname}".format(
-        user='experimenter',
-        password=get_from_vault('experimenter_password'),
-        host='128.104.130.116',
-        port='3306',
-        dbname='Totems',
-    )
-    con = sqlalchemy.create_engine(url)
-    return con
-
-def get_from_vault(key=None, vault_file='db/vars/secrets.yml'):
-    try:
-        ansible_vault_password_file = environ['ANSIBLE_VAULT_PASSWORD_FILE']
-    except KeyError:
-        raise AssertionError('Set the ANSIBLE_VAULT_PASSWORD_FILE environment variable')
-    ansible_vault_password = open(ansible_vault_password_file).read().strip()
-    vault = ansible_vault.Vault(ansible_vault_password)
-    secrets_yaml = Path(paths.PROJ, vault_file)
-    data = vault.load(open(secrets_yaml).read())
-    if key is None:
-        return data
-    else:
-        return data.get(key)
-
-
-def get_worksheet(title):
-    credentials = ServiceAccountCredentials.from_json_keyfile_dict(
-        get_from_vault(vault_file='secrets/lupyanlab-service-account.json'),
-        scopes='https://spreadsheets.google.com/feeds')
-
-    gc = gspread.authorize(credentials)
-
-    try:
-        ws = gc.open(title).sheet1
-    except gspread.SpreadsheetNotFound:
-        print('spreadsheet %s not found, is it shared with the creds email?' % title)
-
-    return pandas.DataFrame(ws.get_all_records())
+    groups = players.ix[players.is_team_full & players.is_known_player, ['ID_Player', 'ID_Group']]
+    groups.to_csv(sys.stdout, index=False)

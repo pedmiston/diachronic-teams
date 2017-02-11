@@ -1,7 +1,7 @@
 import sys
 import json
 
-import invoke
+from invoke import task
 import pandas
 from unipath import Path
 
@@ -10,14 +10,36 @@ import landscapes
 from tasks.paths import R_PKG
 
 
-@invoke.task
+@task
 def run(ctx, experiment, output_dir=None, verbose=False, post_processing=False):
     """Simulate robotic players playing the totems game."""
+    experiments = determine_experiments(experiment)
+    for experiment_yaml in experiments:
+        output_dir = Path(output_dir or Path(R_PKG, 'data-raw/simulations'))
+        if not output_dir.isdir():
+            output_dir.mkdir(True)
+        output = Path(output_dir, experiment_yaml.stem + '.csv')
+        print('Running experiment { %s }' % experiment_yaml.stem)
+        simulations.run_experiment(experiment_yaml, output=output, verbose=verbose)
+
+    if post_processing:
+        process(ctx, experiment)
+
+
+@task
+def process(ctx, experiment):
+    """Process the simulation results."""
+    experiments = determine_experiments(experiment)
+    for experiment_yaml in experiments:
+        adjacent(experiment_yaml.stem)
+
+
+def determine_experiments(experiment):
     if experiment == 'list':
         print('Available experiments:')
         for experiment in simulations.paths.EXPERIMENTS.listdir('*.yaml'):
             print(' - ' + experiment.stem)
-        return
+        sys.exit()
     elif experiment == 'all':
         experiments = simulations.paths.EXPERIMENTS.listdir('*.yaml')
     elif Path(experiment).exists():
@@ -28,30 +50,7 @@ def run(ctx, experiment, output_dir=None, verbose=False, post_processing=False):
         assert experiment.exists(), 'experiment %s not found' % experiment
         experiments = [experiment]
 
-    for experiment_yaml in experiments:
-        output_dir = Path(output_dir or Path(R_PKG, 'data-raw/simulations'))
-        if not output_dir.isdir():
-            output_dir.mkdir(True)
-        output = Path(output_dir, experiment_yaml.stem + '.csv')
-        print('Running experiment { %s }' % experiment_yaml.stem)
-        simulations.run_experiment(experiment_yaml, output=output, verbose=verbose)
 
-        if post_processing:
-            adjacent(ctx, output.stem)
-
-
-@invoke.task
-def expand(ctx, experiment):
-    """Show the simulation vars used in an experiment."""
-    if not Path(experiment).exists():
-        experiment = Path(simulations.paths.EXPERIMENTS, experiment + '.yaml')
-        assert experiment.exists(), 'experiment %s not found' % experiment
-    experiment = simulations.read_experiment_yaml(experiment)
-    simulations = experiment.expand_all()
-    simulations.to_csv(sys.stdout, index=False)
-
-
-@invoke.task
 def adjacent(ctx, inventories, suffix=None):
     """Determine the number of adjacent items."""
     landscape = landscapes.Landscape()
@@ -69,3 +68,14 @@ def adjacent(ctx, inventories, suffix=None):
 
 def find_simulations_csv(inventories):
     return Path(R_PKG, 'data-raw/simulations', inventories+'.csv')
+
+
+# @task
+def expand(ctx, experiment):
+    """Show the simulation vars used in an experiment."""
+    if not Path(experiment).exists():
+        experiment = Path(simulations.paths.EXPERIMENTS, experiment + '.yaml')
+        assert experiment.exists(), 'experiment %s not found' % experiment
+    experiment = simulations.read_experiment_yaml(experiment)
+    simulations = experiment.expand_all()
+    simulations.to_csv(sys.stdout, index=False)
