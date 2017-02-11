@@ -10,28 +10,52 @@ This is a research project that investigates the impact of inheritance on proble
 
 # Reproducible
 
-Here's how I set up to work on this project.
+Here's how I set up to work on this project. First clone the repo.
 
     $ git clone https://github.com/pedmiston/diachronic-teams.git
     $ cd diachronic-teams
 
-    # Setup a python virtualenv for the package
-    $ mkvirtualenv --python=python3 teams -r requirements/teams.txt
+Next, setup a python virtualenv for the package.
 
-    # List all available invoke tasks
-    $ inv -l
+    # Option 1: Using virtualenv
+    $ virtualenv --python=python3 ~/.venvs/teams
+    $ source ~/.venvs/teams
+    (teams) $ pip install -r requirements/teams.txt
+
+    # Option 2: Using mkvirtualenvwrapper
+    $ mkvirtualenv --python=python3 teams -r requirements/teams.txt
 
 Make sure you have the following programs installed:
 
 - pandoc for dynamic documents
+- neo4j for installing the landscape as a graph database
 - graphviz for node/edge diagrams
 
 On macOS I installed these programs with [homebrew](https://brew.sh).
 
-    $ brew install pandoc graphviz
+    $ brew install pandoc neo4j graphviz
+
+The last step is to set some environment variables. You need to set `NEO4J_PASSWORD` and `ANSIBLE_VAULT_PASSWORD_FILE`. I store these in an untracked file named "environment" in the project root.
+
+    #!/usr/bin/env bash
+    # environment for diachronic-teams project
+    export NEO4J_PASSWORD=my-neo4j-password
+    export ANSIBLE_VAULT_PASSWORD_FILE=path/to/password-file.txt
+
+Now I can work on this project by activating the python virtualenv and sourcing the correct environment variables. Be sure to start the neo4j server manually if necessary.
+
+    $ source ~/.venvs/teams
+    $ source environment
+    $ neo4j start
+
+Project-related operations can be run from the command line as invoke tasks. To list all available invoke tasks, type the following:
+
+    $ invoke --list  # list available tasks
+    $ inv -l         # same as above!
+    $ inv -h [task]  # get help on a particular task
 
 # Data
 
-    $ inv totems.download --post-processing  # download totems data
-    $ inv simulations.run all --post-processing     # run simulations
-    $ inv totems.install --use-data        # use data in totems pkg
+    $ inv experiment.download all --post-processing  # download totems data
+    $ inv simulations.run all --post-processing      # run simulations
+    $ inv totems.install --use-data                  # use data in totems pkg
