@@ -1,0 +1,24 @@
+---
+
+- hosts: lupyanlab
+  become: yes
+  vars_files:
+    - vars/main.yml
+    - vars/secrets.yml
+  tasks:
+    - name: Copy database dump from control computer to remote server
+      copy:
+        src: "{{ dump }}"
+        dest: /dumps/{{ dump }}
+
+    - name: Take a dump of the current database
+      mysql_db:
+        name: "{{ db_name }}"
+        state: dump
+        target: /dumps/{{ dump }}.bk
+
+    - name: Drop all tables
+      mysql_db:
+        name: "{{ db_name }}"
+        state: import
+        target: /dumps/{{ dump }}
