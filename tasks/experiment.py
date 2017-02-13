@@ -3,14 +3,15 @@ import sys
 import json
 
 from invoke import task
-import sqlalchemy
-import ansible_vault
 import pandas
 import gspread
 from unipath import Path
 from oauth2client.service_account import ServiceAccountCredentials
+from sqlalchemy import update
 
 import landscapes
+import database
+from database import Group, Player
 from tasks import paths
 
 TOTEMS_DIR = Path(paths.R_PKG, 'data-raw/totems')
@@ -43,41 +44,14 @@ def download(ctx, name=None, post_processing=False):
 
 
 def tables():
-    con = connect_to_db()
+    con = database.connect_to_db()
     for table in con.table_names():
         frame = pandas.read_sql('SELECT * FROM %s' % table, con)
         out_csv = Path(TOTEMS_DIR, '{}.csv'.format(table.split('_')[1]))
         frame.to_csv(out_csv, index=False)
 
 
-def connect_to_db():
-    url = "mysql+pymysql://{user}:{password}@{host}:{port}/{dbname}".format(
-        user='experimenter',
-        password=get_from_vault('experimenter_password'),
-        host='128.104.130.116',
-        port='3306',
-        dbname='Totems',
-    )
-    con = sqlalchemy.create_engine(url)
-    return con
-
-
-def get_from_vault(key=None, vault_file='db/vars/secrets.yml'):
-    try:
-        ansible_vault_password_file = environ['ANSIBLE_VAULT_PASSWORD_FILE']
-    except KeyError:
-        raise AssertionError('Set the ANSIBLE_VAULT_PASSWORD_FILE environment variable')
-    ansible_vault_password = open(ansible_vault_password_file).read().strip()
-    vault = ansible_vault.Vault(ansible_vault_password)
-    secrets_yaml = Path(paths.PROJ, vault_file)
-    data = vault.load(open(secrets_yaml).read())
-    if key is None:
-        return data
-    else:
-        return data.get(key)
-
-
-def subj_info():
+def subj_info(sanitize=True, save_as=True):
     """Download the subject info sheet from Google Drive."""
     df = get_worksheet('totems-subj-info')
     df.rename(columns=dict(SubjID='ID_Player',
@@ -85,12 +59,16 @@ def subj_info():
               inplace=True)
     cols = 'ID_Player Strategy Date Room Experimenter Compliance'.split()
     # Sanitize!
-    for col in cols:
-        try:
-            df[col] = df[col].str.replace('\n', '')
-        except AttributeError:
-            pass
-    df[cols].to_csv(Path(TOTEMS_DIR, 'SubjInfo.csv'), index=False)
+    if sanitize:
+        for col in cols:
+            try:
+                df[col] = df[col].str.replace('\n', '')
+            except AttributeError:
+                pass
+
+    if save_as:
+        df[cols].to_csv(Path(TOTEMS_DIR, 'SubjInfo.csv'), index=False)
+
     return df[cols]
 
 
@@ -101,9 +79,11 @@ def survey():
 
 
 def get_worksheet(title):
+    creds_dict = database.get_from_vault(
+        vault_file='secrets/lupyanlab-service-account.json'
+    )
     credentials = ServiceAccountCredentials.from_json_keyfile_dict(
-        get_from_vault(vault_file='secrets/lupyanlab-service-account.json'),
-        scopes='https://spreadsheets.google.com/feeds')
+        creds_dict, scopes='https://spreadsheets.google.com/feeds')
 
     gc = gspread.authorize(credentials)
 
@@ -180,7 +160,7 @@ def adjacent(suffix=None):
 @task
 def label(ctx):
     """Label valid subjects."""
-    con = connect_to_db()
+    con = database.connect_to_db()
     players = pandas.read_sql('SELECT * FROM Table_Player', con)
     groups = pandas.read_sql('SELECT * FROM Table_Group', con)
     players = players.merge(groups)
@@ -189,12 +169,33 @@ def label(ctx):
     actual_sizes = players.groupby('ID_Group').size()
     actual_sizes.name = 'ActualSize'
     players = players.merge(actual_sizes.reset_index())
-    players['is_team_full'] = players.Size == players.ActualSize
+    players['is_team_full'] = (players.Size == players.ActualSize)
 
     # Drop any players not in the subject info sheet
+    subj_info_sheet = subj_info(save_as=False)
     players['is_known_player'] = (players.ID_Player
                                          .astype(int)
-                                         .isin(subj_info().ID_Player))
+                                         .isin(subj_info_sheet.ID_Player))
 
-    groups = players.ix[players.is_team_full & players.is_known_player, ['ID_Player', 'ID_Group']]
-    groups.to_csv(sys.stdout, index=False)
+    # Label those groups with known players and full teams as valid.
+    group_statuses = players.groupby('ID_Group').apply(
+        lambda x: all(x.is_team_full) and all(x.is_known_player)
+    )
+    group_statuses.name = 'is_valid_group'
+    group_statuses = group_statuses.reset_index()
+    group_statuses['Status'] = None
+    group_statuses.Status.where(~group_statuses.is_valid_group, 'E',
+                                inplace=True)
+    del group_statuses['is_valid_group']
+    group_statuses = group_statuses.to_dict('records')
+    group_ids = [group['ID_Group']
+                 for group in group_statuses
+                 if group['Status'] == 'E']
+
+    # Update the database to reflect the valid groups
+    con.execute(Group.update().values(Status = None))
+    con.execute(
+        Group.update()
+             .values(Status = 'E')
+             .where(Group.c.ID_Group.in_(group_ids))
+    )
