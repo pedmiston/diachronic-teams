@@ -126,22 +126,46 @@ grid.draw(png::readPNG("../docs/irb/methods/screenshots/gameplay.png") %>% raste
 
 # Results
 
-## Leaderboards
+## Score
 
 ```{r, echo = 1:2}
 score_mod <- lm(Score ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
-                data = filter_final_score(totems_players))
+                data = summarize_team_performance(totems_players))
 tidy(score_mod)
 ```
 
 ```{r}
-ggplot(filter_final_score(totems_players)) +
+ggplot(summarize_team_performance(totems_players)) +
   aes(StrategyLabel, Score) +
   geom_point(aes(color = StrategyLabel),
              position = position_jitter(width = 0.3)) +
   geom_bar(aes(fill = StrategyLabel), stat = "summary", fun.y = "mean",
            alpha = 0.6) +
   scale_x_strategy +
+  scale_color_strategy +
+  scale_fill_strategy +
+  base_theme +
+  theme(legend.position = "none",
+        panel.grid.major.x = element_blank())
+```
+
+## Inventions
+
+```{r, echo = 1:2}
+inventory_mod <- lm(InventorySize ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
+                data = summarize_team_performance(totems_players))
+tidy(inventory_mod)
+```
+
+```{r}
+ggplot(summarize_team_performance(totems_players)) +
+  aes(StrategyLabel, InventorySize) +
+  geom_point(aes(color = StrategyLabel),
+             position = position_jitter(width = 0.3)) +
+  geom_bar(aes(fill = StrategyLabel), stat = "summary", fun.y = "mean",
+           alpha = 0.6) +
+  scale_x_strategy +
+  scale_y_continuous("Number of inventions") +
   scale_color_strategy +
   scale_fill_strategy +
   base_theme +
@@ -161,12 +185,13 @@ attempts <- totems_workshops %>%
 
 ggplot(attempts) +
   aes(Attempts, Score, color = Strategy) +
-  geom_point()
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
 ```
 
 ## Bottlenecks
 
-```{r, fig.width=10, fig.height=8}
+```{r, fig.width=10, fig.height=0.4*length(unique(totems_players$ID_Player))}
 bottlenecks <- totems_workshops %>%
   group_by(ID_Player, InventorySize, NumAdjacent) %>%
   summarize(Guesses = n()) %>%
@@ -177,10 +202,10 @@ ggplot(bottlenecks) +
   geom_point(aes(size = Guesses)) +
   geom_line(aes(group = ID_Player)) +
   scale_x_continuous("Items Discovered", breaks = c(6, seq(10, 40, by = 5))) +
-  facet_wrap("ID_Player")
+  facet_wrap("ID_Player", ncol = 5)
 ```
 
-```{r}
+```{r, eval = FALSE}
 data("simulations_strategy")
 
 attempts <- simulations_strategy %>%

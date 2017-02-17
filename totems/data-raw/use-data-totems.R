@@ -17,6 +17,12 @@ totems_players <- totems_player %>%
   # in the subject info sheet.
   inner_join(totems_subjinfo)
 
+# Add inventory size
+max_player_inventory_size <- totems_workshop %>%
+  group_by(ID_Player) %>%
+  summarize(InventorySize = max(InventorySize))
+totems_players %<>% left_join(max_player_inventory_size)
+
 # Remove any incomplete diachronic teams
 incomplete_diachronic_teams <- totems_players %>%
   filter(Strategy == "Diachronic") %>%
@@ -40,7 +46,7 @@ player_key <- totems_players %>%
   select(ID_Player, ID_Group, Strategy, Generation)
 
 totems_players %<>%
-  select(ID_Player, Strategy, Generation, ID_Group, Score)
+  select(ID_Player, Strategy, Generation, ID_Group, Score, InventorySize)
 
 # Workshops --------------------------------------------------------------------
 totems_workshops <- totems_workshop %>%

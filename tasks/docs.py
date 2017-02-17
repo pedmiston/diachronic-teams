@@ -8,24 +8,24 @@ from .paths import PROJ
 
 
 @task
-def make(ctx, name, reset_before=False, open_after=False):
+def make(ctx, name, reset_before=False, open_after=False, verbose=False):
     """Compile RMarkdown reports to their output formats."""
     reports = reports_from_name(name)
 
     cmd = 'Rscript -e "rmarkdown::render({!r})"'
     for report in reports:
         if reset_before:
-            reset(ctx, report)
+            reset(ctx, report, verbose=verbose)
 
-        ctx.run(cmd.format(str(report)))
+        ctx.run(cmd.format(str(report)), echo=verbose)
 
         if open_after:
             output_file = Path(report.parent, '{}.html'.format(report.stem))
-            ctx.run('open {}'.format(output_file))
+            ctx.run('open {}'.format(output_file), echo=verbose)
 
 
 @task
-def reset(ctx, name):
+def reset(ctx, name, verbose=False):
     """Clear the cache and outputs of RMarkdown reports."""
     reports = reports_from_name(name)
 
@@ -38,7 +38,7 @@ def reset(ctx, name):
         if figs_dir.isdir():
             figs_dir.rmtree()
 
-        ctx.run('rm -rf {}/code*'.format(report.parent))
+        ctx.run('rm -rf {}/code*'.format(report.parent), echo=verbose)
 
 
 @task(help=dict(name='If name is "list", list available figure names.'))
@@ -62,7 +62,7 @@ def reports_from_name(name):
         for rmd in available_reports:
             print(' - %s' % rmd.stem)
         sys.exit()
-    elif Path(name).exists():
+    elif Path(name).isfile():
         rmds = [Path(name)]
     else:
         rmds = [Path(rmd) for rmd in
