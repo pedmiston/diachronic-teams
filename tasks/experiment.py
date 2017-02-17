@@ -96,7 +96,7 @@ def get_worksheet(title):
 
 
 @task
-def process(ctx, name=None):
+def process(ctx, name=None, suffix=None):
     """Process the experiment data from the totems database."""
     available = ['rolling', 'adjacent']
     if name is None:
@@ -105,17 +105,26 @@ def process(ctx, name=None):
         assert name in available
         names = [name]
 
+    workshop = pandas.read_csv(WORKSHOP_CSV)
+
     if 'rolling' in names:
-        rolling()
+        workshop = rolling(workshop)
 
     if 'adjacent' in names:
-        adjacent()
+        workshop = adjacent(workshop)
+
+    if 'difficulty' in names:
+        workshop = difficulty(workshop)
+
+    if suffix:
+        new_name = '{}-{}.csv'.format(WORKSHOP_CSV.stem, suffix)
+        WORKSHOP_CSV = Path(WORKSHOP_CSV.parent, new_name)
+
+    workshop.to_csv(WORKSHOP_CSV, index=False)
 
 
-def rolling(suffix=None):
+def rolling(workshop):
     """Keep track of rolling variables (e.g., total known inventory)."""
-    global WORKSHOP_CSV
-    workshop = pandas.read_csv(WORKSHOP_CSV)
     landscape = landscapes.Landscape()
 
     def _rolling(workshop):
@@ -134,24 +143,18 @@ def rolling(suffix=None):
         return workshop
 
     rolling_inventories = workshop.groupby('ID_Player').apply(_rolling)
-
-    if suffix:
-        new_name = '{}-{}.csv'.format(workshop_csv.stem, suffix)
-        WORKSHOP_CSV = Path(WORKSHOP_CSV.parent, new_name)
-
-    rolling_inventories.to_csv(WORKSHOP_CSV, index=False)
+    return rolling_inventories
 
 
-def adjacent(suffix=None):
+def adjacent(workshop):
     """Calculate the number of adjacent possibilities for each player."""
-    global WORKSHOP_CSV
-    workshop = pandas.read_csv(WORKSHOP_CSV)
     landscape = landscapes.Landscape()
     inventories = workshop.Inventory.apply(json.loads)
     workshop['NumAdjacent'] = \
         (inventories.apply(landscape.determine_adjacent_possible)
                     .apply(len))
-    if suffix:
-        new_name = '{}-{}.csv'.format(inventories, suffix)
-        WORKSHOP_CSV = Path(WORKSHOP_CSV.parent, new_name)
-    workshop.to_csv(WORKSHOP_CSV, index=False)
+    return workshop
+
+
+def difficulty(workshop):
+    pass
