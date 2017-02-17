@@ -126,7 +126,9 @@ grid.draw(png::readPNG("../docs/irb/methods/screenshots/gameplay.png") %>% raste
 
 # Results
 
-## Score
+## Leaderboards
+
+### Score
 
 ```{r, echo = 1:2}
 score_mod <- lm(Score ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
@@ -149,7 +151,7 @@ ggplot(summarize_team_performance(totems_players)) +
         panel.grid.major.x = element_blank())
 ```
 
-## Inventions
+### Number of inventions
 
 ```{r, echo = 1:2}
 inventory_mod <- lm(InventorySize ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
@@ -166,6 +168,30 @@ ggplot(summarize_team_performance(totems_players)) +
            alpha = 0.6) +
   scale_x_strategy +
   scale_y_continuous("Number of inventions") +
+  scale_color_strategy +
+  scale_fill_strategy +
+  base_theme +
+  theme(legend.position = "none",
+        panel.grid.major.x = element_blank())
+```
+
+### Difficulty score
+
+```{r, echo = 1:2}
+difficulty_mod <- lm(DifficultyScore ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
+                data = summarize_team_performance(totems_players))
+tidy(inventory_mod)
+```
+
+```{r}
+ggplot(summarize_team_performance(totems_players)) +
+  aes(StrategyLabel, DifficultyScore) +
+  geom_point(aes(color = StrategyLabel),
+             position = position_jitter(width = 0.3)) +
+  geom_bar(aes(fill = StrategyLabel), stat = "summary", fun.y = "mean",
+           alpha = 0.6) +
+  scale_x_strategy +
+  scale_y_continuous("Difficulty score") +
   scale_color_strategy +
   scale_fill_strategy +
   base_theme +
@@ -195,7 +221,7 @@ ggplot(attempts) +
 bottlenecks <- totems_workshops %>%
   group_by(ID_Player, InventorySize, NumAdjacent) %>%
   summarize(Guesses = n()) %>%
-  left_join(totems_players)
+  left_join(totems_players %>% select(-InventorySize))
 
 ggplot(bottlenecks) +
   aes(InventorySize, NumAdjacent, color = Strategy) +

@@ -113,9 +113,6 @@ def process(ctx, name=None, suffix=None):
     if 'adjacent' in names:
         workshop = adjacent(workshop)
 
-    if 'difficulty' in names:
-        workshop = difficulty(workshop)
-
     if suffix:
         new_name = '{}-{}.csv'.format(WORKSHOP_CSV.stem, suffix)
         WORKSHOP_CSV = Path(WORKSHOP_CSV.parent, new_name)
@@ -128,6 +125,7 @@ def rolling(workshop):
     landscape = landscapes.Landscape()
 
     def _rolling(workshop):
+        # Calculate the rolling inventory for this player
         inventory = landscape.starting_inventory()
         rolling_inventory = []
         inventory_sizes = []
@@ -154,7 +152,3 @@ def adjacent(workshop):
         (inventories.apply(landscape.determine_adjacent_possible)
                     .apply(len))
     return workshop
-
-
-def difficulty(workshop):
-    pass
