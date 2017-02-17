@@ -58,7 +58,7 @@ totems_workshops %<>%
   mutate(GuessNumber = 1:n()) %>%
   ungroup()
 
-# Calculate team time.
+# Calculate team time
 # For diachronic teams, TeamTime should reflect running total.
 duration_minutes <- 25
 duration_msec <- duration_minutes * 60 * 1000
@@ -66,10 +66,27 @@ totems_workshops %<>%
   left_join(player_key) %>%
   mutate(TeamTime = TrialTime + (Generation - 1) * duration_msec)
 
+# Calculate difficulty and accumulated difficulty score
+workshop_difficulties <- totems_workshops %>%
+  group_by(ID_Player, InventorySize, NumAdjacent) %>%
+  summarize(Difficulty = InventorySize[[1]]/NumAdjacent[[1]]) %>%
+  ungroup() %>%
+  group_by(ID_Player) %>%
+  mutate(DifficultyScore = cumsum(Difficulty)) %>%
+  ungroup()
+totems_workshops %<>% left_join(workshop_difficulties)
+
+# Add final difficulty score to leaderboards data.frame
+player_difficulty_scores <- workshop_difficulties %>%
+  group_by(ID_Player) %>%
+  summarize(DifficultyScore = max(DifficultyScore))
+totems_players %<>% left_join(player_difficulty_scores)
+
 totems_workshops %<>%
   select(ID_Player, Strategy, Generation, ID_Group,
          TeamTime, GuessNumber, GuessString = WorkShopString, GuessResult = WorkShopResult,
-         Inventory, InventorySize, NumAdjacent)
+         Inventory, InventorySize, NumAdjacent,
+         Difficulty, DifficultyScore)
 
 # Use data in package ----------------------------------------------------------
 use_data(
