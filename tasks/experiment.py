@@ -98,7 +98,8 @@ def get_worksheet(title):
 @task
 def process(ctx, name=None, suffix=None):
     """Process the experiment data from the totems database."""
-    available = ['rolling', 'adjacent']
+    global WORKSHOP_CSV
+    available = ['rolling', 'adjacent', 'difficulty']
     if name is None:
         names = available
     else:
@@ -112,6 +113,9 @@ def process(ctx, name=None, suffix=None):
 
     if 'adjacent' in names:
         workshop = adjacent(workshop)
+
+    if 'difficulty' in names:
+        workshop = difficulty(workshop)
 
     if suffix:
         new_name = '{}-{}.csv'.format(WORKSHOP_CSV.stem, suffix)
@@ -151,4 +155,10 @@ def adjacent(workshop):
     workshop['NumAdjacent'] = \
         (inventories.apply(landscape.determine_adjacent_possible)
                     .apply(len))
+    return workshop
+
+
+def difficulty(workshop):
+    """Calculate the difficulty of a particular stage in the totems game."""
+    workshop['Difficulty'] = workshop.InventorySize/workshop.NumAdjacent
     return workshop

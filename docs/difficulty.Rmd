@@ -1,0 +1,27 @@
+---
+title: "Understanding difficulty in the totems landscape"
+author: "Pierce Edmiston"
+output:
+  html_document:
+    theme: flatly
+---
+
+```{r, include=FALSE}
+library(knitr)
+opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+read_chunk("setup.R")
+```
+
+```{r setup}
+```
+
+```{r}
+data("simulations_strategy")
+
+ggplot(simulations_strategy, aes(inventory_size, difficulty)) +
+  geom_point(aes(color = strategy))
+```

@@ -66,11 +66,11 @@ totems_workshops %<>%
   left_join(player_key) %>%
   mutate(TeamTime = TrialTime + (Generation - 1) * duration_msec)
 
-# Calculate difficulty and accumulated difficulty score
+# Calculate accumulated difficulty score
 workshop_difficulties <- totems_workshops %>%
-  group_by(ID_Player, InventorySize, NumAdjacent) %>%
-  summarize(Difficulty = InventorySize[[1]]/NumAdjacent[[1]]) %>%
-  ungroup() %>%
+  arrange(ID_Player, GuessNumber) %>%
+  select(ID_Player, InventorySize, Difficulty) %>%
+  unique() %>%
   group_by(ID_Player) %>%
   mutate(DifficultyScore = cumsum(Difficulty)) %>%
   ungroup()
