@@ -12,5 +12,6 @@ use_data(
   simulations_guesses,
   simulations_players,
   simulations_memory,
+  simulations_difficulty,
   overwrite = TRUE
 )

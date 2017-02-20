@@ -44,7 +44,6 @@ The last step is to set some environment variables. You need to set `NEO4J_PASSW
 
 Now I can work on this project by activating the python virtualenv and sourcing the correct environment variables. Be sure to start the neo4j server manually if necessary.
 
-    $ source ~/.venvs/teams
     $ source environment
     $ neo4j start
 

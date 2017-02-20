@@ -19,9 +19,49 @@ read_chunk("setup.R")
 ```{r setup}
 ```
 
-```{r}
-data("simulations_strategy")
+Difficulty is a factor of inventory size--the number of items available for recombination--and the number of adjacent items that could be discovered. If difficulty were only a factor of inventory size, the game would get exponentially more difficult as you went on. However, that doesn't seem to be the case. What matters more than the total number of combinations that could be made is the number of adjacent items that could be discovered.
 
-ggplot(simulations_strategy, aes(inventory_size, difficulty)) +
-  geom_point(aes(color = strategy))
+```{r}
+calculate_num_guesses <- function(step_info) {
+  n <- step_info$inventory_size
+  r <- step_info$guess_size
+  factorial(n)/(factorial(r) * factorial(n-r))
+}
+
+possible_guesses <- expand.grid(inventory_size = 6:30,
+                                guess_size = 1:4) %>%
+  by_row(calculate_num_guesses, .to = "n_combinations",
+         .collate = "rows") %>%
+  group_by(inventory_size) %>%
+  summarize(n_combinations = sum(n_combinations))
+
+ggplot(possible_guesses) +
+  aes(inventory_size, n_combinations) +
+  geom_line(aes(group = 1))
+```
+
+```{r}
+data("simulations_difficulty")
+
+difficulties <- simulations_difficulty %>%
+  select(inventory_size, n_adjacent, difficulty) %>%
+  unique()
+
+ggplot(difficulties) +
+  aes(inventory_size, difficulty, color = factor(n_adjacent)) +
+  geom_line(aes(group = n_adjacent)) +
+  geom_point()
+```
+
+```{r}
+data("totems_workshops")
+
+difficulties <- totems_workshops %>%
+  select(InventorySize, NumAdjacent, Difficulty) %>%
+  unique()
+
+ggplot(difficulties) +
+  aes(InventorySize, Difficulty, color = factor(NumAdjacent)) +
+  geom_line(aes(group = NumAdjacent)) +
+  geom_point()
 ```
