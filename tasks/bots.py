@@ -11,7 +11,7 @@ from tasks.paths import R_PKG
 
 
 @task
-def run(ctx, experiment, output_dir=None, verbose=False, post_processing=False):
+def run(ctx, experiment, output_dir=None, verbose=False, analyze_after=False):
     """Simulate robotic players playing the totems game."""
     experiments = determine_experiments(experiment)
     for experiment_yaml in experiments:
@@ -22,13 +22,13 @@ def run(ctx, experiment, output_dir=None, verbose=False, post_processing=False):
         print('Running experiment { %s }' % experiment_yaml.stem)
         simulations.run_experiment(experiment_yaml, output=output, verbose=verbose)
 
-    if post_processing:
-        process(ctx, experiment)
+    if analyze_after:
+        analyze(ctx, experiment)
 
 
 @task
-def process(ctx, experiment):
-    """Process the simulation results."""
+def analyze(ctx, experiment):
+    """Analyze the results of the simulation."""
     experiments = determine_experiments(experiment)
     for experiment_yaml in experiments:
         adjacent(experiment_yaml.stem)

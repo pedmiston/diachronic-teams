@@ -55,6 +55,6 @@ Project-related operations can be run from the command line as invoke tasks. To 
 
 # Data
 
-    $ inv experiment.download all --post-processing  # download totems data
-    $ inv simulations.run all --post-processing      # run simulations
-    $ inv totems.install --use-data                  # use data in totems pkg
+    $ inv experiment.download all --analyze-after    # download totems data
+    $ inv simulations.run all --analyze-after        # run simulations
+    $ inv totems.install --use-data                  # install data in totems pkg

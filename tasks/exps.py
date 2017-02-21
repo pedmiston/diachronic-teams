@@ -22,7 +22,7 @@ WORKSHOP_CSV = Path(TOTEMS_DIR, 'Workshop.csv')
 
 
 @task
-def download(ctx, name=None, post_processing=False):
+def download(ctx, name=None, analyze_after=False):
     """Download the experiment data from the totems database."""
     available = ['tables', 'subj_info', 'survey']
 
@@ -39,8 +39,8 @@ def download(ctx, name=None, post_processing=False):
     if 'survey' in names:
         survey()
 
-    if post_processing:
-        process(ctx)
+    if analyze_after:
+        analyze(ctx)
 
 
 def tables():
@@ -96,8 +96,8 @@ def get_worksheet(title):
 
 
 @task
-def process(ctx, name=None, suffix=None):
-    """Process the experiment data from the totems database."""
+def analyze(ctx, name=None, suffix=None):
+    """Analyze the totems experiment data."""
     global WORKSHOP_CSV
     available = ['rolling', 'adjacent', 'difficulty']
     if name is None:
