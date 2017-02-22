@@ -2,14 +2,14 @@ from invoke import task
 import json
 import pandas
 
-import landscapes
+import graph
 from tasks.paths import Path, R_PKG, TOTEMS, ITEM_IMAGES
 
 
 @task
 def load(ctx, delete_first=False, load_only=False):
     """Make the totems landscape as a graph database."""
-    landscapes.load(delete_first=delete_first)
+    graph.load(delete_first=delete_first)
 
 
 @task
@@ -18,11 +18,11 @@ def tree(ctx, max_number=None, max_generation=None, name=None, view_off=False):
 
     Examples:
 
-        $ inv landscapes.tree
-        $ inv landscapes.tree -n landscape-sample --max-generation 5
-        $ inv landscapes.tree -n landscape-tools --max-number 100
+        $ inv graph.tree
+        $ inv graph.tree -n landscape-sample --max-generation 5
+        $ inv graph.tree -n landscape-tools --max-number 100
     """
-    viz = landscapes.make_graphviz(image_dir=ITEM_IMAGES,
+    viz = graph.make_graphviz(image_dir=ITEM_IMAGES,
                                    max_number=max_number,
                                    max_generation=max_generation)
     viz.format = 'png'

@@ -2,7 +2,7 @@ import pytest
 import pandas
 from py2neo import Node
 
-import landscapes
+import graph
 
 
 @pytest.fixture
@@ -10,23 +10,23 @@ def items():
     return [Node('Item', generation=x) for x in range(5)]
 
 def test_max_generation(items):
-    assert landscapes.max_generation(items) == 4
+    assert graph.max_generation(items) == 4
 
 def test_node_from_max_generation(items):
-    Node('Item', generation=landscapes.max_generation(items))
+    Node('Item', generation=graph.max_generation(items))
 
 def test_missing_generation_raises_exception():
     items = [Node('Item', generation=x) for x in [0, None]]
     try:
-        landscapes.max_generation(items)
-    except landscapes.MissingGeneration:
+        graph.max_generation(items)
+    except graph.MissingGeneration:
         pass
     else:
         raise AssertionError('expecting a MissingGeneration exception')
 
 def test_int64_raises_exception():
     try:
-        landscapes.models.Item(number=pandas.np.int64(1), label='test',
+        graph.models.Item(number=pandas.np.int64(1), label='test',
                                generation=0)
     except AssertionError:
         pass
@@ -37,7 +37,7 @@ def test_int64_raises_exception():
 
 @pytest.fixture
 def landscape():
-    return landscapes.Landscape()
+    return graph.Landscape()
 
 def test_landscape_has_max_items(landscape):
     assert landscape.max_items == 192

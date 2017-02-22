@@ -1,4 +1,4 @@
 from invoke import Collection
-from . import totems, docs, landscapes, bots, exps, database
+from . import r_pkg, docs, graph, bots, exps, db
 
-namespace = Collection(totems, docs, landscapes, bots, exps, database)
+namespace = Collection(r_pkg, docs, graph, bots, exps, db)

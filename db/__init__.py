@@ -22,7 +22,7 @@ def connect_to_db():
     return con
 
 
-def get_from_vault(key=None, vault_file='database/vars/secrets.yml'):
+def get_from_vault(key=None, vault_file='db/vars/secrets.yml'):
     try:
         ansible_vault_password_file = environ['ANSIBLE_VAULT_PASSWORD_FILE']
     except KeyError:

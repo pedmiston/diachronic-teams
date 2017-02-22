@@ -1,33 +1,33 @@
 from invoke import task
 import pandas
-import database
-from database import Group, Player
+import db
+from db import Group, Player
 
 from .paths import *
 
 @task
 def install(ctx):
     """Install the totems database on a remote server."""
-    ctx.run('cd database && ansible-playbook install.yml')
+    ctx.run('cd db && ansible-playbook install.yml')
 
 
 @task
 def snapshot(ctx):
     """Take a snapshot of the totems database."""
-    ctx.run('cd database && ansible-playbook snapshot.yml')
+    ctx.run('cd db && ansible-playbook snapshot.yml')
 
 
 @task
 def restore(ctx, dump):
     """Restore the totems database from a snapshot."""
-    cmd = 'cd database && ansible-playbook restore.yml -e dump={dump}'
+    cmd = 'cd db && ansible-playbook restore.yml -e dump={dump}'
     ctx.run(cmd.format(dump=dump))
 
 
 @task
 def label(ctx, subj_info=None):
     """Label valid subjects (modifies Table_Group)."""
-    con = database.connect_to_db()
+    con = db.connect_to_db()
     players = pandas.read_sql('SELECT * FROM Table_Player', con)
     groups = pandas.read_sql('SELECT * FROM Table_Group', con)
     players = players.merge(groups)

@@ -6,7 +6,7 @@ import pandas
 from unipath import Path
 
 import simulations
-import landscapes
+import graph
 from tasks.paths import R_PKG
 
 
@@ -60,7 +60,7 @@ def adjacent(inventories):
     results = pandas.read_csv(inventories_csv)
     inventories = results.inventory.apply(json.loads)
 
-    landscape = landscapes.Landscape()
+    landscape = graph.Landscape()
     results['n_adjacent'] = \
         (inventories.apply(landscape.determine_adjacent_possible)
                     .apply(len))

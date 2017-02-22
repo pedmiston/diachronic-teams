@@ -9,9 +9,9 @@ from unipath import Path
 from oauth2client.service_account import ServiceAccountCredentials
 from sqlalchemy import update
 
-import landscapes
-import database
-from database import Group, Player
+import graph
+import db
+from db import Group, Player
 from tasks import paths
 
 TOTEMS_DIR = Path(paths.R_PKG, 'data-raw/totems')
@@ -44,7 +44,7 @@ def download(ctx, name=None, analyze_after=False):
 
 
 def tables():
-    con = database.connect_to_db()
+    con = db.connect_to_db()
     for table in con.table_names():
         frame = pandas.read_sql('SELECT * FROM %s' % table, con)
         out_csv = Path(TOTEMS_DIR, '{}.csv'.format(table.split('_')[1]))
@@ -79,7 +79,7 @@ def survey():
 
 
 def get_worksheet(title):
-    creds_dict = database.get_from_vault(
+    creds_dict = db.get_from_vault(
         vault_file='secrets/lupyanlab-service-account.json'
     )
     credentials = ServiceAccountCredentials.from_json_keyfile_dict(
@@ -126,7 +126,7 @@ def analyze(ctx, name=None, suffix=None):
 
 def rolling(workshop):
     """Keep track of rolling variables (e.g., total known inventory)."""
-    landscape = landscapes.Landscape()
+    landscape = graph.Landscape()
 
     def _rolling(workshop):
         # Calculate the rolling inventory for this player
@@ -150,7 +150,7 @@ def rolling(workshop):
 
 def adjacent(workshop):
     """Calculate the number of adjacent possibilities for each player."""
-    landscape = landscapes.Landscape()
+    landscape = graph.Landscape()
     inventories = workshop.Inventory.apply(json.loads)
     workshop['NumAdjacent'] = \
         (inventories.apply(landscape.determine_adjacent_possible)

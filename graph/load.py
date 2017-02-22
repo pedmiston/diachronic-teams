@@ -2,9 +2,9 @@
 import pandas
 import unipath
 
-from landscapes.models import Item, Recipe, Creates, Requires, Inherits
-from landscapes.graph_db import connect_to_graph_db
-from landscapes.util import max_generation, MissingGeneration
+from graph.models import Item, Recipe, Creates, Requires, Inherits
+from graph.graph_db import connect_to_graph_db
+from graph.util import max_generation, MissingGeneration
 
 
 # Where to get the answer key
