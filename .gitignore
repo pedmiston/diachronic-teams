@@ -21,7 +21,6 @@ cassettes/
 totems/data-raw/simulations/
 totems/data/simulations*.rda
 totems/data-raw/totems/
-totems/data/totems*.rda
 
 # python
 __pycache__/

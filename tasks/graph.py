@@ -23,8 +23,8 @@ def tree(ctx, max_number=None, max_generation=None, name=None, view_off=False):
         $ inv graph.tree -n landscape-tools --max-number 100
     """
     viz = graph.make_graphviz(image_dir=ITEM_IMAGES,
-                                   max_number=max_number,
-                                   max_generation=max_generation)
+                              max_number=max_number,
+                              max_generation=max_generation)
     viz.format = 'png'
     name = name or 'landscape'
     output = Path(R_PKG, 'inst/extdata/', name+'.gv')

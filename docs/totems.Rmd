@@ -23,6 +23,7 @@ opts_chunk$set(
   cache.path = ".cache/"
 )
 read_chunk("setup.R")
+read_chunk("R/types-of-time.R")
 ```
 
 ```{r setup}
@@ -32,72 +33,7 @@ What is the impact of inheritance on the problem solving ability of individuals?
 
 The key condition that enables this comparison is fixing the number of labor hours allowed to each strategy. When labor hours are held constant, diachronic and synchronic teams differ in how many calendar hours they spend on the problem, but diachronic teams do not differ from isolated individuals along this dimension (Fig. 1B). Conversely, diachronic and synchronic teams do not differ in the number of hours committed per team member, but isolated individuals do, having the most time per person (Fig. 1C). By comparing diachronic teams to both isolated individuals and synchronic teams, the effects of inheritance on problem solving ability can be teased apart from these other possible differences between the teams. If inheritance improves problem solving ability, then diachronic teams will outperform these alternative ways of allocating the same number of labor hours.
 
-```{r fig1, fig.width=8, fig.align="center", fig.cap="**A.** Three strategies for allocating the same number of labor hours. **B.** By controlling for labor hours, diachronic and synchronic teams differ in calendar hours. **C.** Although isolated individuals spend the most time per person, diachronic and synchronic teams do not differ along this dimension."}
-diachronic <- data_frame(
-  Strategy = "Diachronic",
-  CalendarHours = 1:100,
-  LaborHours = CalendarHours,
-  Person = rep(c(1, 2), each = 50)
-)
-
-isolated <- diachronic %>%
-  mutate(
-    Strategy = "Isolated",
-    Person = 1
-  )
-
-synchronic <- data_frame(
-  Strategy = "Synchronic",
-  CalendarHours = 1:50,
-  LaborHours = CalendarHours * 2,
-  Person = 1
-)
-
-time <- rbind(diachronic, synchronic, isolated) %>%
-  group_by(Strategy, Person) %>%
-  mutate(PersonHours = 1:n()) %>%
-  ungroup() %>%
-  recode_strategy() %>%
-  mutate(
-    # Separate Diachronic and Isolated lines
-    LaborHours = ifelse(Strategy == "Synchronic", LaborHours,
-                        ifelse(Strategy == "Diachronic", LaborHours + 0.8, LaborHours - 0.8))
-  )
-
-axis_breaks <- c(0, 50, 100)
-axis_labels <- c(0, expression(1/2), 1)
-
-gg_time <- ggplot(time, aes(CalendarHours, LaborHours)) +
-  geom_line(aes(color = StrategyLabel), size = 1.2) +
-  scale_x_continuous("Calendar hours", breaks = axis_breaks, labels = axis_labels) +
-  scale_y_continuous("Labor hours", breaks = axis_breaks, labels = axis_labels) +
-  scale_color_strategy +
-  scale_linetype_manual(values = c(1, 1, 2)) +
-  guides(color = guide_legend("", reverse = TRUE), linetype = "none") +
-  base_theme +
-  theme(legend.position = c(0.75, 0.2))
-
-time %<>%
-  mutate(StrategyIsolated = factor(Strategy, levels = c("Synchronic", "Diachronic", "Isolated")))
-
-gg_person <- ggplot(time) +
-  aes(StrategyIsolated, PersonHours) +
-  geom_bar(aes(fill = StrategyLabel), stat = "summary", fun.y = "max",
-           alpha = 0.8) +
-  scale_x_discrete("") +
-  scale_y_continuous("Person hours", breaks = axis_breaks, labels = axis_labels) +
-  scale_fill_strategy +
-  base_theme +
-  theme(legend.position = "none",
-        panel.grid.major.x = element_blank())
-
-grid.arrange(
-  read_graphviz("team-structures-all", package = "totems"),
-  gg_time,
-  gg_person,
-  nrow = 1,
-  widths = c(0.2, 0.4, 0.4)
-)
+```{r types-of-time, fig.width=8, fig.align="center", fig.cap="**A.** Three strategies for allocating the same number of labor hours. **B.** By controlling for labor hours, diachronic and synchronic teams differ in calendar hours. **C.** Although isolated individuals spend the most time per person, diachronic and synchronic teams do not differ along this dimension."}
 ```
 
 # Methods
@@ -126,127 +62,170 @@ grid.draw(png::readPNG("../docs/irb/methods/screenshots/gameplay.png") %>% raste
 
 # Results
 
+```{r, echo = 1:3}
+library(totems)
+data("totems_players")
+data("totems_workshops")
+
+totems_players %<>%
+  recode_strategy()
+
+totems_theme <- load_totems_theme()
+```
+
 ## Leaderboards
+
+```{r, echo = 1:2}
+leaderboards <- totems_players %>%
+  summarize_team_performance()
+```
 
 ### Score
 
-```{r, echo = 1:2}
+```{r score-mod, echo = 1:2, results = "markup"}
 score_mod <- lm(Score ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
-                data = summarize_team_performance(totems_players))
+                data = leaderboards)
 tidy(score_mod)
 ```
 
-```{r}
-ggplot(summarize_team_performance(totems_players)) +
+```{r score-plot}
+score_plot <- ggplot(leaderboards) +
   aes(StrategyLabel, Score) +
   geom_point(aes(color = StrategyLabel),
              position = position_jitter(width = 0.3)) +
-  geom_bar(aes(fill = StrategyLabel), stat = "summary", fun.y = "mean",
-           alpha = 0.6) +
-  scale_x_strategy +
-  scale_color_strategy +
-  scale_fill_strategy +
-  base_theme +
+  geom_bar(aes(fill = StrategyLabel),
+           stat = "summary", fun.y = "mean", alpha = 0.6) +
+  totems_theme["scale_x_strategy"] +
+  totems_theme["scale_color_strategy"] +
+  totems_theme["scale_fill_strategy"] +
+  totems_theme["base_theme"] +
   theme(legend.position = "none",
         panel.grid.major.x = element_blank())
+score_plot
 ```
 
 ### Number of inventions
 
-```{r, echo = 1:2}
+```{r inventory-mod, echo = 1:2, results = "markup"}
 inventory_mod <- lm(InventorySize ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
-                data = summarize_team_performance(totems_players))
+                    data = leaderboards)
 tidy(inventory_mod)
 ```
 
-```{r}
-ggplot(summarize_team_performance(totems_players)) +
-  aes(StrategyLabel, InventorySize) +
-  geom_point(aes(color = StrategyLabel),
-             position = position_jitter(width = 0.3)) +
-  geom_bar(aes(fill = StrategyLabel), stat = "summary", fun.y = "mean",
-           alpha = 0.6) +
-  scale_x_strategy +
-  scale_y_continuous("Number of inventions") +
-  scale_color_strategy +
-  scale_fill_strategy +
-  base_theme +
-  theme(legend.position = "none",
-        panel.grid.major.x = element_blank())
+```{r inventory-plot}
+inventory_plot <- score_plot +
+  aes(y = InventorySize) +
+  scale_y_continuous("Number of inventions")
+inventory_plot
 ```
 
 ### Difficulty score
 
-```{r, echo = 1:2}
+```{r difficulty-mod, echo = 1:2, results = "markup"}
 difficulty_mod <- lm(DifficultyScore ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
-                data = summarize_team_performance(totems_players))
-tidy(inventory_mod)
+                     data = leaderboards)
+tidy(difficulty_mod)
 ```
 
-```{r}
-ggplot(summarize_team_performance(totems_players)) +
-  aes(StrategyLabel, DifficultyScore) +
-  geom_point(aes(color = StrategyLabel),
-             position = position_jitter(width = 0.3)) +
-  geom_bar(aes(fill = StrategyLabel), stat = "summary", fun.y = "mean",
-           alpha = 0.6) +
-  scale_x_strategy +
-  scale_y_continuous("Difficulty score") +
-  scale_color_strategy +
-  scale_fill_strategy +
-  base_theme +
-  theme(legend.position = "none",
-        panel.grid.major.x = element_blank())
+```{r difficulty-plot}
+difficulty_plot <- score_plot +
+  aes(y = DifficultyScore) +
+  scale_y_continuous("Difficulty score")
+difficulty_plot
 ```
 
 ## Attempts
 
 ```{r}
-attempts <- totems_workshops %>%
-  group_by(ID_Player) %>%
-  summarize(
-    Attempts = max(GuessNumber)
-  ) %>%
-  left_join(totems_players)
-
-ggplot(attempts) +
-  aes(Attempts, Score, color = Strategy) +
-  geom_point() +
-  geom_smooth(method = "lm", se = FALSE)
+(score_plot %+% totems_players) +
+  aes(y = Attempts)
 ```
 
-## Bottlenecks
+```{r ratchets-plot, fig.width=8}
+attempts_plot <- ggplot(totems_players) +
+  aes(Attempts, Score, color = StrategyLabel) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  totems_theme["scale_color_strategy"] +
+  totems_theme["base_theme"] +
+  theme(
+    legend.position = "none"
+  )
 
-```{r, fig.width=10, fig.height=0.4*length(unique(totems_players$ID_Player))}
-bottlenecks <- totems_workshops %>%
+grid.arrange(
+  attempts_plot,
+  attempts_plot +
+    aes(y = InventorySize) +
+    ylab("Inventory size") +
+    theme(
+      legend.position = c(0.5, 1),
+      legend.direction = "horizontal"
+    ),
+  attempts_plot +
+    aes(y = DifficultyScore) +
+    ylab("Difficulty score"),
+  nrow = 1
+)
+```
+
+## Trajectories
+
+```{r}
+player_trajectories <- totems_workshops %>%
   group_by(ID_Player, InventorySize, NumAdjacent) %>%
   summarize(Guesses = n()) %>%
   left_join(totems_players %>% select(-InventorySize))
 
-ggplot(bottlenecks) +
-  aes(InventorySize, NumAdjacent, color = Strategy) +
-  geom_point(aes(size = Guesses)) +
-  geom_line(aes(group = ID_Player)) +
-  scale_x_continuous("Items Discovered", breaks = c(6, seq(10, 40, by = 5))) +
-  facet_wrap("ID_Player", ncol = 5)
+player_ixs <- totems_players %>%
+  group_by(ID_Group) %>%
+  transmute(IX_Player = 1:n()) %>%
+  ungroup()
+player_trajectories %<>% left_join(player_ixs)
+
+trajectories <- totems_workshops %>%
+  select(InventorySize, NumAdjacent) %>%
+  unique()
+
+trajectory_plot <- ggplot() +
+  aes(InventorySize, NumAdjacent) +
+  geom_point(data = trajectories, color = "gray", alpha = 0.6) +
+  geom_point(aes(size = Guesses, color = StrategyLabel)) +
+  geom_line(aes(color = StrategyLabel, group = ID_Player)) +
+  scale_x_continuous("Inventory size", breaks = c(6, seq(10, 40, by = 5))) +
+  totems_theme["scale_color_strategy"] +
+  totems_theme["base_theme"] +
+  theme(legend.position = "top")
+
+count_teams <- . %>% .$ID_Group %>% unique() %>% length()
+n_diachronic_teams <- totems_players %>%
+  filter(Strategy == "Diachronic") %>%
+  count_teams()
+n_synchronic_teams <- totems_players %>%
+  filter(Strategy == "Synchronic") %>%
+  count_teams()
+
+facet_row_height <- 2
 ```
 
-```{r, eval = FALSE}
-data("simulations_strategy")
+```{r trajectories-individual}
+trajectory_plot %+% filter(player_trajectories, ID_Player == 12)
+```
 
-attempts <- simulations_strategy %>%
-  group_by(sim_id, inventory_size, n_adjacent) %>%
-  summarize(attempts = n())
+```{r trajectories-isolated}
+(trajectory_plot %+% filter(player_trajectories, Strategy == "Isolated")) +
+  scale_color_manual("Strategy", values = totems_theme[["isolated_color"]])
+```
 
-ggplot(attempts) +
-  aes(n_adjacent, attempts) +
-  geom_point(position = position_jitter(width = 0.1)) +
-  geom_line(stat = "summary", fun.y = "mean")
+```{r trajectories-diachronic, fig.width=6, fig.height=facet_row_height*n_diachronic_teams}
+(trajectory_plot %+% filter(player_trajectories, Strategy == "Diachronic")) +
+  facet_grid(ID_Group ~ Generation) +
+  scale_color_manual("Strategy", values = totems_theme[["diachronic_color"]])
+```
 
-ggplot(attempts) +
-  aes(inventory_size, n_adjacent) +
-  geom_point(position = position_jitter(width = 0.2)) +
-  geom_line(aes(group = sim_id), stat = "summary", fun.y = "mean")
+```{r trajectories-synchronic, fig.width=6, fig.height=facet_row_height*n_synchronic_teams}
+(trajectory_plot %+% filter(player_trajectories, Strategy == "Synchronic")) +
+  facet_grid(ID_Group ~ IX_Player) +
+  scale_color_manual("Strategy", values = totems_theme[["synchronic_color"]])
 ```
 
 # Discussion

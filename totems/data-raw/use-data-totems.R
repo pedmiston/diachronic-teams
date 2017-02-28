@@ -1,10 +1,12 @@
 library(devtools)
 library(tidyverse)
 
-# Load functions from the package.
-# WARNING! Don't load the package or use_data() won't work
+# Source functions from the package without loading the whole thing.
+# WARNING! Don't load the whole "totems" package
+# or use_data() might not work properly.
 source("R/util.R")
 
+# Reads in all csvs in data-raw/totems and saves them with a "totems_" prefix
 assign_csvs_with_prefix("data-raw/totems", "totems_")
 
 # Player scores ----------------------------------------------------------------
@@ -17,11 +19,14 @@ totems_players <- totems_player %>%
   # in the subject info sheet.
   inner_join(totems_subjinfo)
 
-# Add inventory size
-max_player_inventory_size <- totems_workshop %>%
+# Add summary of workshop variables
+player_workshop_summaries <- totems_workshop %>%
   group_by(ID_Player) %>%
-  summarize(InventorySize = max(InventorySize))
-totems_players %<>% left_join(max_player_inventory_size)
+  summarize(
+    InventorySize = max(InventorySize),
+    Attempts = n()
+  )
+totems_players %<>% left_join(player_workshop_summaries)
 
 # Remove any incomplete diachronic teams
 incomplete_diachronic_teams <- totems_players %>%
@@ -44,9 +49,6 @@ totems_players %<>%
 
 player_key <- totems_players %>%
   select(ID_Player, ID_Group, Strategy, Generation)
-
-totems_players %<>%
-  select(ID_Player, Strategy, Generation, ID_Group, Score, InventorySize)
 
 # Workshops --------------------------------------------------------------------
 totems_workshops <- totems_workshop %>%
@@ -82,13 +84,16 @@ player_difficulty_scores <- workshop_difficulties %>%
   summarize(DifficultyScore = max(DifficultyScore))
 totems_players %<>% left_join(player_difficulty_scores)
 
+# Use data in package ----------------------------------------------------------
+totems_players %<>%
+  select(ID_Player, Strategy, Generation, ID_Group, Score, InventorySize, DifficultyScore, Attempts)
+
 totems_workshops %<>%
   select(ID_Player, Strategy, Generation, ID_Group,
          TeamTime, GuessNumber, GuessString = WorkShopString, GuessResult = WorkShopResult,
          Inventory, InventorySize, NumAdjacent,
          Difficulty, DifficultyScore)
 
-# Use data in package ----------------------------------------------------------
 use_data(
   totems_players,
   totems_workshops,
