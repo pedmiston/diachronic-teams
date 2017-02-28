@@ -11,6 +11,7 @@ output:
 
 ```{r config, include = FALSE}
 library(knitr)
+library(printr)
 opts_chunk$set(
   echo = FALSE,
   message = FALSE,
@@ -71,18 +72,25 @@ totems_players %<>%
   recode_strategy()
 
 totems_theme <- load_totems_theme()
+
+get_lm_mod_preds <- function(lm_mod) {
+  mod_data <- lm_mod$model
+  params <- attr(lm_mod$terms, "term.labels")
+  x_preds <- unique(mod_data[, params])
+  cbind(x_preds, predict(lm_mod, x_preds, se = TRUE))
+}
 ```
 
 ## Leaderboards
 
-```{r, echo = 1:2}
+```{r, echo = 1}
 leaderboards <- totems_players %>%
   summarize_team_performance()
 ```
 
 ### Score
 
-```{r score-mod, echo = 1:2, results = "markup"}
+```{r score-mod, echo = 1, results = "markup"}
 score_mod <- lm(Score ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
                 data = leaderboards)
 tidy(score_mod)
@@ -101,12 +109,19 @@ score_plot <- ggplot(leaderboards) +
   totems_theme["base_theme"] +
   theme(legend.position = "none",
         panel.grid.major.x = element_blank())
-score_plot
+
+score_preds <- get_lm_mod_preds(score_mod) %>%
+  rename(Score = fit, SE = se.fit) %>%
+  recode_strategy()
+
+score_plot +
+    geom_linerange(aes(ymin = Score - SE, ymax = Score + SE),
+                   data = score_preds)
 ```
 
 ### Number of inventions
 
-```{r inventory-mod, echo = 1:2, results = "markup"}
+```{r inventory-mod, echo = 1, results = "markup"}
 inventory_mod <- lm(InventorySize ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
                     data = leaderboards)
 tidy(inventory_mod)
@@ -116,12 +131,19 @@ tidy(inventory_mod)
 inventory_plot <- score_plot +
   aes(y = InventorySize) +
   scale_y_continuous("Number of inventions")
-inventory_plot
+
+inventory_preds <- get_lm_mod_preds(inventory_mod) %>%
+  rename(InventorySize = fit, SE = se.fit) %>%
+  recode_strategy()
+
+inventory_plot +
+  geom_linerange(aes(ymin = InventorySize - SE, ymax = InventorySize + SE),
+                 data = inventory_preds)
 ```
 
 ### Difficulty score
 
-```{r difficulty-mod, echo = 1:2, results = "markup"}
+```{r difficulty-mod, echo = 1, results = "markup"}
 difficulty_mod <- lm(DifficultyScore ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
                      data = leaderboards)
 tidy(difficulty_mod)
@@ -131,7 +153,14 @@ tidy(difficulty_mod)
 difficulty_plot <- score_plot +
   aes(y = DifficultyScore) +
   scale_y_continuous("Difficulty score")
-difficulty_plot
+
+difficulty_preds <- get_lm_mod_preds(difficulty_mod) %>%
+  rename(DifficultyScore = fit, SE = se.fit) %>%
+  recode_strategy()
+
+difficulty_plot +
+  geom_linerange(aes(ymin = DifficultyScore - SE, ymax = DifficultyScore + SE),
+                 data = difficulty_preds)
 ```
 
 ## Attempts
