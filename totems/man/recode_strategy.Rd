@@ -9,4 +9,3 @@ recode_strategy(frame)
 \description{
 If no frame is provided, just the map of labels is returned.
 }
-
