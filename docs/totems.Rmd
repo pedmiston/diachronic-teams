@@ -12,6 +12,8 @@ output:
 ```{r config, include = FALSE}
 library(knitr)
 library(printr)
+library(magrittr)
+
 opts_chunk$set(
   echo = FALSE,
   message = FALSE,
@@ -23,8 +25,8 @@ opts_chunk$set(
   cache = TRUE,
   cache.path = ".cache/"
 )
-read_chunk("setup.R")
-read_chunk("R/types-of-time.R")
+
+list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
 ```
 
 ```{r setup}
@@ -47,7 +49,6 @@ Participants are recruited until the final sample comprises 20 teams in each of 
 
 Participants are tasked with a tool-building competition presented in a digital environment [@Derex:2015cbb]. Individuals combine resources and build ever more complicated tools in order to build "sacred totems to appease the gods". Individuals achieve high scores by traversing the innovation landscape and developing more and more elaborate ways of cutting, carving, and decorating their totems. A sample of the problem space is presented in Fig. 2.
 
-
 ```{r, cache = FALSE, include = FALSE}
 crotchet::read_graphviz_chunk("landscape-sample", package = "totems")
 ```
@@ -63,138 +64,56 @@ grid.draw(png::readPNG("../docs/irb/methods/screenshots/gameplay.png") %>% raste
 
 # Results
 
-```{r, echo = 1:3}
-library(totems)
-data("totems_players")
-data("totems_workshops")
-
-totems_players %<>%
-  recode_strategy()
-
-totems_theme <- load_totems_theme()
-
-get_lm_mod_preds <- function(lm_mod) {
-  mod_data <- lm_mod$model
-  params <- attr(lm_mod$terms, "term.labels")
-  x_preds <- unique(mod_data[, params])
-  cbind(x_preds, predict(lm_mod, x_preds, se = TRUE))
-}
+```{r data, echo = 1:4}
 ```
 
-## Leaderboards
+## Performance
 
-```{r, echo = 1}
-leaderboards <- totems_players %>%
-  summarize_team_performance()
+```{r performance, fig.width=8}
 ```
 
-### Score
-
-```{r score-mod, echo = 1, results = "markup"}
-score_mod <- lm(Score ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
-                data = leaderboards)
-tidy(score_mod)
-```
-
-```{r score-plot}
-score_plot <- ggplot(leaderboards) +
-  aes(StrategyLabel, Score) +
-  geom_point(aes(color = StrategyLabel),
-             position = position_jitter(width = 0.3)) +
-  geom_bar(aes(fill = StrategyLabel),
-           stat = "summary", fun.y = "mean", alpha = 0.6) +
-  totems_theme["scale_x_strategy"] +
-  totems_theme["scale_color_strategy"] +
-  totems_theme["scale_fill_strategy"] +
-  totems_theme["base_theme"] +
-  theme(legend.position = "none",
-        panel.grid.major.x = element_blank())
-
-score_preds <- get_lm_mod_preds(score_mod) %>%
-  rename(Score = fit, SE = se.fit) %>%
-  recode_strategy()
-
-score_plot +
-    geom_linerange(aes(ymin = Score - SE, ymax = Score + SE),
-                   data = score_preds)
-```
-
-### Number of inventions
-
-```{r inventory-mod, echo = 1, results = "markup"}
-inventory_mod <- lm(InventorySize ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
-                    data = leaderboards)
-tidy(inventory_mod)
-```
-
-```{r inventory-plot}
-inventory_plot <- score_plot +
-  aes(y = InventorySize) +
-  scale_y_continuous("Number of inventions")
-
-inventory_preds <- get_lm_mod_preds(inventory_mod) %>%
-  rename(InventorySize = fit, SE = se.fit) %>%
-  recode_strategy()
-
-inventory_plot +
-  geom_linerange(aes(ymin = InventorySize - SE, ymax = InventorySize + SE),
-                 data = inventory_preds)
-```
-
-### Difficulty score
-
-```{r difficulty-mod, echo = 1, results = "markup"}
-difficulty_mod <- lm(DifficultyScore ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
-                     data = leaderboards)
-tidy(difficulty_mod)
-```
-
-```{r difficulty-plot}
-difficulty_plot <- score_plot +
-  aes(y = DifficultyScore) +
-  scale_y_continuous("Difficulty score")
-
-difficulty_preds <- get_lm_mod_preds(difficulty_mod) %>%
-  rename(DifficultyScore = fit, SE = se.fit) %>%
-  recode_strategy()
-
-difficulty_plot +
-  geom_linerange(aes(ymin = DifficultyScore - SE, ymax = DifficultyScore + SE),
-                 data = difficulty_preds)
+```{r performance-mods, results = "asis"}
+list(Score = tidy(score_mod),
+     InventorySize = tidy(inventory_mod),
+     DifficultyScore = tidy(difficulty_mod)) %>%
+  bind_rows(.id = "model") %>%
+  filter(term != "(Intercept)")
 ```
 
 ## Attempts
 
-```{r}
-(score_plot %+% totems_players) +
-  aes(y = Attempts)
+```{r attempts-plot, fig.width=8}
+attempts_plot <- ggplot(filter(player_ratchets, Measure == "Score")) +
+  aes(StrategyLabel, Attempts) +
+  geom_point(aes(color = StrategyLabel),
+             position = position_jitter(width = 0.3)) +
+  geom_bar(aes(fill = StrategyLabel),
+           stat = "summary", fun.y = "mean", alpha = 0.6) +
+  facet_wrap("AttemptMeasureLabel") +
+  totems_theme["scale_x_strategy"] +
+  totems_theme["scale_color_strategy"] +
+  totems_theme["scale_fill_strategy"] +
+  totems_theme["base_theme"] +
+  theme(
+    legend.position = "none",
+    panel.grid.major.x = element_blank()
+  )
+attempts_plot
 ```
 
-```{r ratchets-plot, fig.width=8}
-attempts_plot <- ggplot(totems_players) +
-  aes(Attempts, Score, color = StrategyLabel) +
+```{r ratchets-plot, fig.width=8, fig.height=12}
+ggplot(player_ratchets) +
+  aes(Attempts, Value, color = StrategyLabel) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
+  ylab("") +
   totems_theme["scale_color_strategy"] +
   totems_theme["base_theme"] +
   theme(
-    legend.position = "none"
-  )
-
-grid.arrange(
-  attempts_plot,
-  attempts_plot +
-    aes(y = InventorySize) +
-    ylab("Inventory size") +
-    theme(
-      legend.position = c(0.5, 1),
-      legend.direction = "horizontal"
-    ),
-  attempts_plot +
-    aes(y = DifficultyScore) +
-    ylab("Difficulty score"),
-  nrow = 1
-)
+    legend.position = "none",
+    strip.placement = "outside"
+  ) +
+  facet_grid(MeasureLabel ~ AttemptMeasureLabel, scales = "free_y", switch = "y")
 ```
 
 ## Trajectories

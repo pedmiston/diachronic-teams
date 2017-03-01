@@ -31,6 +31,7 @@ def reset(ctx, name, verbose=False):
 
     for report in reports:
         cache_dir = Path(report.parent, '.cache')
+        print(cache_dir)
         if cache_dir.isdir():
             cache_dir.rmtree()
 

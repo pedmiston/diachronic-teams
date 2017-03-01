@@ -20,3 +20,33 @@ recode_strategy <- function(frame) {
   if (missing(frame)) return(map)
   left_join(frame, map)
 }
+
+
+#' Recode the labels of the type of scoring metric.
+#' @import dplyr
+#' @export
+recode_score_value <- function(frame) {
+  measures <- c("Score", "InventorySize", "DifficultyScore")
+  labels <- c("Totem score", "Inventory size", "Difficulty score")
+  score_value_map <- data_frame(
+    Measure = measures,
+    MeasureLabel = factor(measures, levels = measures, labels = labels)
+  )
+  if (missing(frame)) return(score_value_map)
+  left_join(frame, score_value_map)
+}
+
+
+#' Recode the labels of the type of attempt measure.
+#' @import dplyr
+#' @export
+recode_attempt_measures <- function(frame) {
+  attempt_measures <- c("Attempts", "TeamAttempts")
+  labels <- c("Individual attempts", "Team attempts")
+  attempt_measures_map <- data_frame(
+    AttemptMeasure = attempt_measures,
+    AttemptMeasureLabel = factor(attempt_measures, levels = attempt_measures, labels = labels)
+  )
+  if (missing(frame)) return(attempt_measures_map)
+  left_join(frame, attempt_measures_map)
+}
