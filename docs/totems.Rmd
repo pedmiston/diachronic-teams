@@ -20,8 +20,8 @@ opts_chunk$set(
   warning = FALSE,
   results = "hide",
   fig.path = "figs/",
-  fig.width = 4,
-  fig.height = 3,
+  fig.width = 6,
+  fig.height = 6,
   cache = TRUE,
   cache.path = ".cache/"
 )
@@ -32,18 +32,24 @@ list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
 ```{r setup}
 ```
 
-What is the impact of inheritance on the problem solving ability of individuals? Does inheriting an existing solution to a problem simply give a head start on solving it, or does it actually make for more effective problem solving? To answer this question I consider a simple form of inheritance where one person works on a solution to a problem and then passes it on to another person to continue. Because these two individuals are collaborating over time, I refer to them as **diachronic teams**. To understand the impact of inheritance on problem solving, I compare the problem solving abilities of diachronic teams to two alternative ways of allocating the same number of labor hours: **isolated individuals** working for the same total amount of time, and **synchronic teams** made of two individuals collaborating at the same time (Fig. 1A).
+What is the impact of inheritance on the problem solving ability of individuals? Does inheriting an existing solution to a problem simply give a head start on solving it, or does it actually make for more effective problem solving? To answer this question I consider a simple form of inheritance where one person works on a solution to a problem and then passes it on to another person to continue. Because these two individuals are collaborating over time, I refer to them as **diachronic teams**. To understand the impact of inheritance on problem solving, I compare the problem solving abilities of diachronic teams to two alternative ways of allocating the same number of labor hours: **isolated individuals** working for the same total amount of time, and **synchronic teams** made of two individuals collaborating at the same time (Fig. 1).
 
-The key condition that enables this comparison is fixing the number of labor hours allowed to each strategy. When labor hours are held constant, diachronic and synchronic teams differ in how many calendar hours they spend on the problem, but diachronic teams do not differ from isolated individuals along this dimension (Fig. 1B). Conversely, diachronic and synchronic teams do not differ in the number of hours committed per team member, but isolated individuals do, having the most time per person (Fig. 1C). By comparing diachronic teams to both isolated individuals and synchronic teams, the effects of inheritance on problem solving ability can be teased apart from these other possible differences between the teams. If inheritance improves problem solving ability, then diachronic teams will outperform these alternative ways of allocating the same number of labor hours.
-
-```{r types-of-time, fig.width=8, fig.align="center", fig.cap="**A.** Three strategies for allocating the same number of labor hours. **B.** By controlling for labor hours, diachronic and synchronic teams differ in calendar hours. **C.** Although isolated individuals spend the most time per person, diachronic and synchronic teams do not differ along this dimension."}
+```{r types-of-time, fig.width=8, fig.align="center", fig.cap="**A.** Three strategies for allocating the same number of labor hours. Panels B and C describe the ways the strategies differ along different dimensions of time. **B.** By controlling for labor hours, diachronic and synchronic teams differ in calendar hours. Diachronic teams spend labor hours at the same rate as isolated individuals. **C.** Isolated individuals have the most time to learn."}
 ```
+
+## Problem solving ability and problem solutions
+
+In this research I measure problem solving ability as efficiency in completing a problem in a specific amount of time. In other research, problem solving is described as the set of cognitive abilities that enable the generation of problem solutions. Here I'm interested less in whether solutions can be generated and more in how efficiently those solutions are reached. The goal of this research is to understand the impact of inheritance on problem solving ability.
+
+\begin{equation}
+problem\ solution = ability \cdot time\ +\\\times inheritance\\
+\end{equation}
 
 # Methods
 
 ## Participants
 
-Participants are recruited until the final sample comprises 20 teams in each of the three strategy conditions for a total of 100 participants.
+Participants are recruited until the final sample comprises 40 teams in each of the three strategy conditions for a total of 200 participants.
 
 ## Materials
 
@@ -116,64 +122,24 @@ ggplot(player_ratchets) +
   facet_grid(MeasureLabel ~ AttemptMeasureLabel, scales = "free_y", switch = "y")
 ```
 
-## Trajectories
+## Timeline
 
 ```{r}
-player_trajectories <- totems_workshops %>%
-  group_by(ID_Player, InventorySize, NumAdjacent) %>%
-  summarize(Guesses = n()) %>%
-  left_join(totems_players %>% select(-InventorySize))
+totems_workshops %<>%
+  mutate(
+    TeamTime = milliseconds(totems_workshops$TeamTime),
+    ID_Group_Time = ifelse(Strategy == "Diachronic", paste(ID_Group, Generation, sep = "-"), ID_Group),
+    Strategy_Group_Time = ifelse(Strategy == "Diachronic", paste0(Strategy, Generation), Strategy)
+  )
 
-player_ixs <- totems_players %>%
-  group_by(ID_Group) %>%
-  transmute(IX_Player = 1:n()) %>%
-  ungroup()
-player_trajectories %<>% left_join(player_ixs)
-
-trajectories <- totems_workshops %>%
-  select(InventorySize, NumAdjacent) %>%
-  unique()
-
-trajectory_plot <- ggplot() +
-  aes(InventorySize, NumAdjacent) +
-  geom_point(data = trajectories, color = "gray", alpha = 0.6) +
-  geom_point(aes(size = Guesses, color = StrategyLabel)) +
-  geom_line(aes(color = StrategyLabel, group = ID_Player)) +
-  scale_x_continuous("Inventory size", breaks = c(6, seq(10, 40, by = 5))) +
+ggplot(totems_workshops) +
+  aes(TeamTime, InventorySize, group = ID_Group_Time, color = StrategyLabel) +
+  geom_line(alpha = 0.4) +
+  geom_smooth(aes(group = Strategy_Group_Time), method = "loess", se = FALSE) +
+  scale_x_time("Team time", breaks = minutes(seq(0, 50, by = 25))) +
   totems_theme["scale_color_strategy"] +
   totems_theme["base_theme"] +
   theme(legend.position = "top")
-
-count_teams <- . %>% .$ID_Group %>% unique() %>% length()
-n_diachronic_teams <- totems_players %>%
-  filter(Strategy == "Diachronic") %>%
-  count_teams()
-n_synchronic_teams <- totems_players %>%
-  filter(Strategy == "Synchronic") %>%
-  count_teams()
-
-facet_row_height <- 2
-```
-
-```{r trajectories-individual}
-trajectory_plot %+% filter(player_trajectories, ID_Player == 12)
-```
-
-```{r trajectories-isolated}
-(trajectory_plot %+% filter(player_trajectories, Strategy == "Isolated")) +
-  scale_color_manual("Strategy", values = totems_theme[["isolated_color"]])
-```
-
-```{r trajectories-diachronic, fig.width=6, fig.height=facet_row_height*n_diachronic_teams}
-(trajectory_plot %+% filter(player_trajectories, Strategy == "Diachronic")) +
-  facet_grid(ID_Group ~ Generation) +
-  scale_color_manual("Strategy", values = totems_theme[["diachronic_color"]])
-```
-
-```{r trajectories-synchronic, fig.width=6, fig.height=facet_row_height*n_synchronic_teams}
-(trajectory_plot %+% filter(player_trajectories, Strategy == "Synchronic")) +
-  facet_grid(ID_Group ~ IX_Player) +
-  scale_color_manual("Strategy", values = totems_theme[["synchronic_color"]])
 ```
 
 # Discussion

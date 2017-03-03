@@ -1,0 +1,97 @@
+---
+title: "Trajectories through the totems landscape"
+css: "style.css"
+bibliography: "diachronic-collaboration.bib"
+output:
+  html_document:
+    theme: flatly
+---
+
+```{r config, include = FALSE}
+library(knitr)
+library(printr)
+library(magrittr)
+
+opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  results = "hide",
+  fig.path = "figs/",
+  fig.width = 4,
+  fig.height = 3,
+  cache = TRUE,
+  cache.path = ".cache/"
+)
+
+list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
+```
+
+```{r setup}
+```
+
+```{r}
+player_trajectories <- totems_workshops %>%
+  group_by(ID_Player, InventorySize, NumAdjacent) %>%
+  summarize(Guesses = n()) %>%
+  left_join(totems_players %>% select(-InventorySize))
+
+player_ixs <- totems_players %>%
+  group_by(ID_Group) %>%
+  transmute(IX_Player = 1:n()) %>%
+  ungroup()
+player_trajectories %<>% left_join(player_ixs)
+
+trajectories <- totems_workshops %>%
+  select(InventorySize, NumAdjacent) %>%
+  unique()
+
+trajectory_plot <- ggplot() +
+  aes(InventorySize, NumAdjacent) +
+  geom_point(data = trajectories, color = "gray", alpha = 0.6) +
+  geom_point(aes(size = Guesses, color = StrategyLabel)) +
+  geom_line(aes(color = StrategyLabel, group = ID_Player)) +
+  scale_x_continuous("Inventory size", breaks = c(6, seq(10, 40, by = 5))) +
+  totems_theme["scale_color_strategy"] +
+  totems_theme["base_theme"] +
+  theme(legend.position = "top")
+
+count_teams <- . %>% .$ID_Group %>% unique() %>% length()
+n_diachronic_teams <- totems_players %>%
+  filter(Strategy == "Diachronic") %>%
+  count_teams()
+n_synchronic_teams <- totems_players %>%
+  filter(Strategy == "Synchronic") %>%
+  count_teams()
+
+facet_row_height <- 2
+```
+
+## Example trajectory plot
+
+```{r trajectories-individual}
+trajectory_plot %+% filter(player_trajectories, ID_Player == 12)
+```
+
+## Isolated individuals
+
+```{r trajectories-isolated}
+(trajectory_plot %+% filter(player_trajectories, Strategy == "Isolated")) +
+  scale_color_manual("Strategy", values = totems_theme[["isolated_color"]])
+```
+
+## Diachronic teams
+
+```{r trajectories-diachronic, fig.width=6, fig.height=facet_row_height*n_diachronic_teams}
+(trajectory_plot %+% filter(player_trajectories, Strategy == "Diachronic")) +
+  facet_grid(ID_Group ~ Generation) +
+  scale_color_manual("Strategy", values = totems_theme[["diachronic_color"]])
+```
+
+## Synchronic teams
+
+```{r trajectories-synchronic, fig.width=6, fig.height=facet_row_height*n_synchronic_teams}
+(trajectory_plot %+% filter(player_trajectories, Strategy == "Synchronic")) +
+  facet_grid(ID_Group ~ IX_Player) +
+  scale_color_manual("Strategy", values = totems_theme[["synchronic_color"]])
+```

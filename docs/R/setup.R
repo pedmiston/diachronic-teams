@@ -1,5 +1,6 @@
 # ---- setup
 library(tidyverse)
+library(lubridate)
 library(magrittr)
 library(grid)
 library(gridExtra)
@@ -17,6 +18,9 @@ totems_teams %<>%
   recode_strategy()
 
 totems_players %<>%
+  recode_strategy()
+
+totems_workshops %<>%
   recode_strategy()
 
 team_key <- select(totems_teams, ID_Group, Strategy)

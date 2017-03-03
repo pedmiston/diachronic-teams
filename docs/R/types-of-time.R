@@ -57,7 +57,7 @@ gg_person <- ggplot(time) +
   geom_bar(aes(fill = StrategyLabel), stat = "summary", fun.y = "max",
            alpha = 0.8) +
   scale_x_discrete("") +
-  scale_y_continuous("Person hours", breaks = axis_breaks, labels = axis_labels) +
+  scale_y_continuous("Learning hours", breaks = axis_breaks, labels = axis_labels) +
   totems_theme["scale_fill_strategy"] +
   totems_theme["base_theme"] +
   theme(legend.position = "none",

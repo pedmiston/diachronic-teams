@@ -1,5 +1,6 @@
 library(devtools)
 library(tidyverse)
+library(lubridate)
 
 # Source functions from the package without loading the whole thing.
 # WARNING! Don't load the whole "totems" package
@@ -15,7 +16,7 @@ read_csvs("data-raw/totems", prefix = "totems_")
 # Player scores ----------------------------------------------------------------
 totems_players <- totems_player %>%
   left_join(totems_group) %>%
-  mutate(Generation = Ancestor + 2) %>%
+  mutate(Generation = ifelse(Treatment == "Diachronic", Ancestor + 2, 1)) %>%
   rename(Strategy = Treatment) %>%
   select(-c(ID_Number:Gain, Knowledge, Size, Open, Status)) %>%
   # Filter out any subjects that aren't reported
@@ -75,7 +76,8 @@ duration_minutes <- 25
 duration_msec <- duration_minutes * 60 * 1000
 totems_workshops %<>%
   left_join(player_key) %>%
-  mutate(TeamTime = TrialTime + (Generation - 1) * duration_msec)
+  mutate(TeamTime = TrialTime + (Generation - 1) * duration_msec,
+         TeamTime = milliseconds(TeamTime))
 
 # Calculate accumulated difficulty score
 workshop_difficulties <- totems_workshops %>%
