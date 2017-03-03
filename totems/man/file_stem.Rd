@@ -9,3 +9,4 @@ file_stem(x)
 \description{
 Strip the stem name off a file path.
 }
+

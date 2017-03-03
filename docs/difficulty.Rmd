@@ -11,9 +11,11 @@ library(knitr)
 opts_chunk$set(
   echo = FALSE,
   message = FALSE,
-  warning = FALSE
+  warning = FALSE,
+  cache = TRUE,
+  cache.path = ".cache.difficulty/"
 )
-read_chunk("setup.R")
+read_chunk("R/setup.R")
 ```
 
 ```{r setup}

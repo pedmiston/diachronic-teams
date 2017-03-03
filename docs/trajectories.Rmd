@@ -21,13 +21,16 @@ opts_chunk$set(
   fig.width = 4,
   fig.height = 3,
   cache = TRUE,
-  cache.path = ".cache/"
+  cache.path = ".cache.trajectories/"
 )
 
 list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
 ```
 
 ```{r setup}
+```
+
+```{r data}
 ```
 
 ```{r}

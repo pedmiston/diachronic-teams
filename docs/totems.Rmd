@@ -21,9 +21,9 @@ opts_chunk$set(
   results = "hide",
   fig.path = "figs/",
   fig.width = 6,
-  fig.height = 6,
+  fig.height = 3,
   cache = TRUE,
-  cache.path = ".cache/"
+  cache.path = ".cache.totems/"
 )
 
 list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
