@@ -39,11 +39,19 @@ What is the impact of inheritance on the problem solving ability of individuals?
 
 ## Problem solving ability and problem solutions
 
-In this research I measure problem solving ability as efficiency in completing a problem in a specific amount of time. In other research, problem solving is described as the set of cognitive abilities that enable the generation of problem solutions. Here I'm interested less in whether solutions can be generated and more in how efficiently those solutions are reached. The goal of this research is to understand the impact of inheritance on problem solving ability.
+I measure problem solving ability as efficiency in completing a problem in a specific amount of time. In other research, problem solving is described as the set of cognitive abilities that enable the generation of problem solutions. Here I'm interested less in whether solutions can be generated and more in how efficiently progress is achieved. The goal of this research is to understand the impact of inheritance on problem solving efficiency.
 
 \begin{equation}
-problem\ solution = ability \cdot time\ +\\\times inheritance\\
+problem\ solution = ability \cdot time \cdot inheritance\\
 \end{equation}
+
+## How might inheritance impact problem solving ability?
+
+Inheritance is hypothesized to impact problem solving ability by putting the problem solver in a part of the problem space they otherwise might not have been likely to reach on their own. Whether or not this is helpful depends on the type of problem being solved. 
+
+The type of problem that should benefit from inheritance is a problem where progress is incrementally achieved. For problems with binary or stochastic solutions, inheritance is more difficult to measure, because it's hard to know what can be gained from inheriting an incorrect solution that may not be any closer to the correct solution. Problems with incremental progress are open-ended problems where there are many possible solutions, all varying in degree of success. Solutions to open-ended problems can be inherited and modified, but they can also be created by individuals working alone.
+
+The other requirement for the type of problem solving investigated in this research is that the problem space is multi-modal. This is required in order to observe the hypothesized benefit from inheritance. The idea is that inheritance is always a cost until the current generation gets stuck or loses steam.
 
 # Methods
 
@@ -75,7 +83,7 @@ grid.draw(png::readPNG("../docs/irb/methods/screenshots/gameplay.png") %>% raste
 
 ## Performance
 
-```{r performance, fig.width=8}
+```{r performance, fig.height=3, fig.width=8}
 ```
 
 ```{r performance-mods, results = "asis"}
@@ -88,7 +96,7 @@ list(Score = tidy(score_mod),
 
 ## Attempts
 
-```{r attempts-plot, fig.width=8}
+```{r attempts-plot, fig.height=3, fig.width=8}
 attempts_plot <- ggplot(filter(player_ratchets, Measure == "Score")) +
   aes(StrategyLabel, Attempts) +
   geom_point(aes(color = StrategyLabel),
@@ -140,6 +148,31 @@ ggplot(totems_workshops) +
   totems_theme["scale_color_strategy"] +
   totems_theme["base_theme"] +
   theme(legend.position = "top")
+```
+
+## Efficiency
+
+```{r}
+guesses_in_steps <- totems_workshops %>%
+  group_by(ID_Group, Inventory) %>%
+  summarize(
+    GuessesInStep = n(),
+    UniqueGuessesInStep = length(unique(GuessString)),
+    Efficiency = UniqueGuessesInStep/GuessesInStep
+  ) %>%
+  ungroup()
+
+efficiencies <- totems_workshops %>%
+  select(ID_Group, Strategy, Inventory, InventorySize) %>%
+  left_join(guesses_in_steps) %>%
+  recode_strategy()
+
+ggplot(efficiencies) +
+  aes(InventorySize, Efficiency, color = Strategy) +
+  geom_point(aes(group = ID_Group), alpha = 0.1,
+             position = position_jitter(width = 0.4, height = 0.04)) +
+  geom_smooth(method = "lm", se = FALSE, size = 1.4) +
+  totems_theme["scale_color_strategy"]
 ```
 
 # Discussion
