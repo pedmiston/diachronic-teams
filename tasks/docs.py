@@ -30,16 +30,17 @@ def reset(ctx, name, verbose=False):
     reports = reports_from_name(name)
 
     for report in reports:
-        cache_dir = Path(report.parent, '.cache')
-        print(cache_dir)
+        cache_dir = Path(report.parent, '.cache.{}/'.format(report.stem))
         if cache_dir.isdir():
             cache_dir.rmtree()
 
-        figs_dir = Path(report.parent, 'figs')
+        figs_dir = Path(report.parent, '{}-figs'.format(report.stem))
         if figs_dir.isdir():
             figs_dir.rmtree()
 
-        ctx.run('rm -rf {}/code*'.format(report.parent), echo=verbose)
+        code_str = Path(report.parent, 'code*')
+        ctx.run('rm -rf {} {} {}'.format(cache_dir, figs_dir, code_str),
+                echo=verbose)
 
 
 @task(help=dict(name='If name is "list", list available figure names.'))

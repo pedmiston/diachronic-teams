@@ -9,4 +9,3 @@ get_lm_mod_preds(lm_mod)
 \description{
 Get the predictions from a linear model.
 }
-

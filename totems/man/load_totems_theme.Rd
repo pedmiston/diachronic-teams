@@ -9,4 +9,3 @@ load_totems_theme()
 \description{
 Return a list containing theme elements to be used across visualizations.
 }
-

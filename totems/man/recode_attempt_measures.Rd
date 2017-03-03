@@ -9,4 +9,3 @@ recode_attempt_measures(frame)
 \description{
 Recode the labels of the type of attempt measure.
 }
-

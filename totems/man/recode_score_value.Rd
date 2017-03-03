@@ -9,4 +9,3 @@ recode_score_value(frame)
 \description{
 Recode the labels of the type of scoring metric.
 }
-

@@ -19,7 +19,7 @@ opts_chunk$set(
   message = FALSE,
   warning = FALSE,
   results = "hide",
-  fig.path = "figs/",
+  fig.path = "totems-figs/",
   fig.width = 6,
   fig.height = 3,
   cache = TRUE,
@@ -47,7 +47,7 @@ problem\ solution = ability \cdot time \cdot inheritance\\
 
 ## How might inheritance impact problem solving ability?
 
-Inheritance is hypothesized to impact problem solving ability by putting the problem solver in a part of the problem space they otherwise might not have been likely to reach on their own. Whether or not this is helpful depends on the type of problem being solved. 
+Inheritance is hypothesized to impact problem solving ability by putting the problem solver in a part of the problem space they otherwise might not have been likely to reach on their own. Whether or not this is helpful depends on the type of problem being solved.
 
 The type of problem that should benefit from inheritance is a problem where progress is incrementally achieved. For problems with binary or stochastic solutions, inheritance is more difficult to measure, because it's hard to know what can be gained from inheriting an incorrect solution that may not be any closer to the correct solution. Problems with incremental progress are open-ended problems where there are many possible solutions, all varying in degree of success. Solutions to open-ended problems can be inherited and modified, but they can also be created by individuals working alone.
 

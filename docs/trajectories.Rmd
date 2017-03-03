@@ -17,7 +17,7 @@ opts_chunk$set(
   message = FALSE,
   warning = FALSE,
   results = "hide",
-  fig.path = "figs/",
+  fig.path = "trajectories-figs/",
   fig.width = 4,
   fig.height = 3,
   cache = TRUE,

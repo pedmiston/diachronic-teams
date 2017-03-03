@@ -21,7 +21,7 @@ opts_chunk$set(
   message = FALSE,
   warning = FALSE,
   results = "hide",
-  fig.path = "figs/",
+  fig.path = "modeling-figs/",
   fig.width = 6,
   fig.height = 3,
   cache.path = ".cache.modeling/"
@@ -96,7 +96,7 @@ recode_player_memory <- function(frame) {
 
 recode_memory <- . %>%
   recode_team_memory() %>%
-  recode_player_memory() 
+  recode_player_memory()
 ```
 
 # Team structures
