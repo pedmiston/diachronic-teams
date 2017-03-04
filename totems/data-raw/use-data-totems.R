@@ -55,6 +55,9 @@ team_key <- player_key %>%
 
 # Workshops --------------------------------------------------------------------
 totems_workshops <- totems_workshop %>%
+  # Remove ID_Group column because it's been renamed for anonymity
+  # in the player_key
+  select(-ID_Group) %>%
   inner_join(player_key)
 
 # Enumerate each player's guesses
@@ -69,15 +72,6 @@ totems_workshops %<>%
   arrange(TrialTime) %>%
   mutate(TeamGuessNumber = 1:n()) %>%
   ungroup()
-
-# Calculate team time
-# For diachronic teams, TeamTime should reflect running total.
-duration_minutes <- 25
-duration_msec <- duration_minutes * 60 * 1000
-totems_workshops %<>%
-  left_join(player_key) %>%
-  mutate(TeamTime = TrialTime + (Generation - 1) * duration_msec,
-         TeamTime = milliseconds(TeamTime))
 
 # Calculate accumulated difficulty score
 workshop_difficulties <- totems_workshops %>%
@@ -96,7 +90,9 @@ player_workshop_summaries <- totems_workshops %>%
     InventorySize = max(InventorySize),
     DifficultyScore = max(DifficultyScore),
     Attempts = max(GuessNumber),
-    TeamAttempts = max(TeamGuessNumber)
+    TeamAttempts = max(TeamGuessNumber),
+    UniqueGuesses = max(NumUniqueGuesses),
+    TeamUniqueGuesses = max(TeamNumUniqueGuesses)
   )
 totems_players %<>% left_join(player_workshop_summaries)
 
@@ -108,21 +104,30 @@ totems_teams <- totems_players %>%
     InventorySize = max(InventorySize),
     DifficultyScore = max(DifficultyScore),
     Attempts = max(Attempts),
-    TeamAttempts = max(TeamAttempts)
+    TeamAttempts = max(TeamAttempts),
+    TeamUniqueGuesses = max(TeamUniqueGuesses)
   ) %>%
   left_join(team_key)
 
 # Use data in package ----------------------------------------------------------
 totems_teams %<>%
-  select(ID_Group, Strategy, Score, InventorySize, DifficultyScore, TeamAttempts)
+  select(ID_Group, Strategy,
+         Score, InventorySize, DifficultyScore,
+         TeamAttempts,
+         TeamUniqueGuesses)
 
 totems_players %<>%
-  select(ID_Player, Strategy, Generation, ID_Group, Score, InventorySize, DifficultyScore, Attempts, TeamAttempts)
+  select(ID_Player, Strategy, Generation, ID_Group,
+         Score, InventorySize, DifficultyScore,
+         Attempts, TeamAttempts,
+         UniqueGuesses, TeamUniqueGuesses)
 
 totems_workshops %<>%
   select(ID_Player, Strategy, Generation, ID_Group,
          TeamTime, GuessNumber, TeamGuessNumber,
          GuessString = WorkShopString, GuessResult = WorkShopResult,
+         UniqueGuess, TeamUniqueGuess,
+         NumUniqueGuesses, TeamNumUniqueGuesses,
          Inventory, InventorySize, NumAdjacent,
          Difficulty, DifficultyScore)
 
