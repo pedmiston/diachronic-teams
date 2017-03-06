@@ -2,8 +2,8 @@ import pandas
 from graphviz import Digraph
 import unipath
 
-from landscapes.graph_db import connect_to_graph_db
-from landscapes.util import path_to_image
+from graph.graph_db import connect_to_graph_db
+from graph.util import path_to_image
 
 
 def make_graphviz(image_dir, max_generation=None, max_number=None):

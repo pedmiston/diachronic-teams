@@ -1,6 +1,6 @@
 # data analysis for:
 # Acerbi, Tennie & Mesoudi
-# “Social learning solves the problem of narrow-peaked search landscapes: 
+# “Social learning solves the problem of narrow-peaked search graph: 
 # experimental evidence in humans”
 #
 # LOAD LIBRARIES ---------------------------------------------------------------

@@ -1,8 +1,9 @@
 import pandas
 
-from landscapes.graph_db import connect_to_graph_db
+from graph.graph_db import connect_to_graph_db
 
 class Landscape:
+    """Provide an interface to the Neo4J database containing the landscape."""
     def __init__(self):
         """Copies the landscape for faster lookups."""
         self.graph = connect_to_graph_db()

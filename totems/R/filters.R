@@ -1,10 +1,12 @@
-#' Select only the rows containing the team's highest score.
+#' Summarize the team's final performance.
 #'
 #' @import dplyr
 #' @export
-filter_final_score <- function(frame) {
+summarize_team_performance <- function(frame) {
   frame %>%
     group_by(Strategy, ID_Group) %>%
-    summarize(Score = max(Score)) %>%
+    summarize(Score = max(Score),
+              InventorySize = max(InventorySize),
+              DifficultyScore = max(DifficultyScore)) %>%
     recode_strategy()
 }

@@ -19,8 +19,8 @@ def use_data(ctx, use_data_script=None):
 
 
 @task
-def install(ctx, use_data_too=False, make_landscapes=False,
-            document_only=False):
+def install(ctx, use_data_too=False, make_graph=False,
+            use_data_script=None, document_only=False):
     """Install the totems R pkg."""
     cmd = 'cd {R_pkg} && Rscript -e "{R_cmds}"'
     R_cmds = """
@@ -30,15 +30,15 @@ def install(ctx, use_data_too=False, make_landscapes=False,
     install()
     """.split()
 
-    if use_data_too:
-        use_data(ctx)
+    if use_data_too or use_data_script:
+        use_data(ctx, use_data_script=use_data_script)
 
-    if make_landscapes:
-        tasks.landscapes.tree(ctx, view_off=True)
-        tasks.landscapes.tree(ctx, max_generation=4, name='landscape-sample',
-                              view_off=True)
-        tasks.landscapes.tree(ctx, max_number=100, name='landscape-tools',
-                              view_off=True)
+    if make_graph:
+        tasks.graph.tree(ctx, view_off=True)
+        tasks.graph.tree(ctx, max_generation=4, name='landscape-sample',
+                         view_off=True)
+        tasks.graph.tree(ctx, max_number=100, name='landscape-tools',
+                         view_off=True)
 
     if document_only:
         R_cmds = ["devtools::document()"]

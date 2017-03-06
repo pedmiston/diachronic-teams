@@ -44,7 +44,6 @@ The last step is to set some environment variables. You need to set `NEO4J_PASSW
 
 Now I can work on this project by activating the python virtualenv and sourcing the correct environment variables. Be sure to start the neo4j server manually if necessary.
 
-    $ source ~/.venvs/teams
     $ source environment
     $ neo4j start
 
@@ -56,6 +55,6 @@ Project-related operations can be run from the command line as invoke tasks. To 
 
 # Data
 
-    $ inv experiment.download all --post-processing  # download totems data
-    $ inv simulations.run all --post-processing      # run simulations
-    $ inv totems.install --use-data                  # use data in totems pkg
+    $ inv experiment.download all --analyze-after    # download totems data
+    $ inv simulations.run all --analyze-after        # run simulations
+    $ inv totems.install --use-data                  # install data in totems pkg

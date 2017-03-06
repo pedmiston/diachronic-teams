@@ -6,12 +6,12 @@ import pandas
 from unipath import Path
 
 import simulations
-import landscapes
+import graph
 from tasks.paths import R_PKG
 
 
 @task
-def run(ctx, experiment, output_dir=None, verbose=False, post_processing=False):
+def run(ctx, experiment, output_dir=None, verbose=False, analyze_after=False):
     """Simulate robotic players playing the totems game."""
     experiments = determine_experiments(experiment)
     for experiment_yaml in experiments:
@@ -22,16 +22,17 @@ def run(ctx, experiment, output_dir=None, verbose=False, post_processing=False):
         print('Running experiment { %s }' % experiment_yaml.stem)
         simulations.run_experiment(experiment_yaml, output=output, verbose=verbose)
 
-    if post_processing:
-        process(ctx, experiment)
+    if analyze_after:
+        analyze(ctx, experiment)
 
 
 @task
-def process(ctx, experiment):
-    """Process the simulation results."""
+def analyze(ctx, experiment):
+    """Analyze the results of the simulation."""
     experiments = determine_experiments(experiment)
     for experiment_yaml in experiments:
         adjacent(experiment_yaml.stem)
+        difficulty(experiment_yaml.stem)
 
 
 def determine_experiments(experiment):
@@ -50,19 +51,26 @@ def determine_experiments(experiment):
         assert experiment.exists(), 'experiment %s not found' % experiment
         experiments = [experiment]
 
+    return experiments
 
-def adjacent(ctx, inventories, suffix=None):
+
+def adjacent(inventories):
     """Determine the number of adjacent items."""
-    landscape = landscapes.Landscape()
-
     inventories_csv = find_simulations_csv(inventories)
     results = pandas.read_csv(inventories_csv)
     inventories = results.inventory.apply(json.loads)
+
+    landscape = graph.Landscape()
     results['n_adjacent'] = \
         (inventories.apply(landscape.determine_adjacent_possible)
                     .apply(len))
-    if suffix:
-        inventories_csv = find_simulations_csv('{}-{}'.format(inventories, suffix))
+    results.to_csv(inventories_csv, index=False)
+
+
+def difficulty(inventories):
+    inventories_csv = find_simulations_csv(inventories)
+    results = pandas.read_csv(inventories_csv)
+    results['difficulty'] = results.inventory_size/results.n_adjacent
     results.to_csv(inventories_csv, index=False)
 
 

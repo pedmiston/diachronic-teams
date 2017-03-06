@@ -1,6 +1,5 @@
-library(magrittr)
-library(tools)
-library(readr)
+#' @export
+z_score <- function(x) (x - mean(x))/sd(x)
 
 #' Strip the stem name off a file path.
 #'
@@ -17,7 +16,7 @@ file_stem <- function(x) {
 #' prefixed names.
 #'
 #' @import readr
-assign_csvs_with_prefix <- function(directory, prefix) {
+read_csvs <- function(directory, prefix = "") {
   for (csv in list.files(directory, pattern = "*.csv", full.name = TRUE)) {
     stem <- file_stem(csv)
     assign(paste0(prefix, stem), read_csv(csv), envir = globalenv())

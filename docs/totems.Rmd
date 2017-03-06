@@ -11,105 +11,57 @@ output:
 
 ```{r config, include = FALSE}
 library(knitr)
+library(printr)
+library(magrittr)
+
 opts_chunk$set(
   echo = FALSE,
   message = FALSE,
   warning = FALSE,
   results = "hide",
-  fig.path = "figs/",
-  fig.width = 4,
+  fig.path = "totems-figs/",
+  fig.width = 6,
   fig.height = 3,
   cache = TRUE,
-  cache.path = ".cache/"
+  cache.path = ".cache.totems/"
 )
-read_chunk("setup.R")
+
+list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
 ```
 
 ```{r setup}
 ```
 
-What is the impact of inheritance on the problem solving ability of individuals? Does inheriting an existing solution to a problem simply give a head start on solving it, or does it actually make for more effective problem solving? To answer this question I consider a simple form of inheritance where one person works on a solution to a problem and then passes it on to another person to continue. Because these two individuals are collaborating over time, I refer to them as **diachronic teams**. To understand the impact of inheritance on problem solving, I compare the problem solving abilities of diachronic teams to two alternative ways of allocating the same number of labor hours: **isolated individuals** working for the same total amount of time, and **synchronic teams** made of two individuals collaborating at the same time (Fig. 1A).
+What is the impact of inheritance on the problem solving ability of individuals? Does inheriting an existing solution to a problem simply give a head start on solving it, or does it actually make for more effective problem solving? To answer this question I consider a simple form of inheritance where one person works on a solution to a problem and then passes it on to another person to continue. Because these two individuals are collaborating over time, I refer to them as **diachronic teams**. To understand the impact of inheritance on problem solving, I compare the problem solving abilities of diachronic teams to two alternative ways of allocating the same number of labor hours: **isolated individuals** working for the same total amount of time, and **synchronic teams** made of two individuals collaborating at the same time (Fig. 1).
 
-The key condition that enables this comparison is fixing the number of labor hours allowed to each strategy. When labor hours are held constant, diachronic and synchronic teams differ in how many calendar hours they spend on the problem, but diachronic teams do not differ from isolated individuals along this dimension (Fig. 1B). Conversely, diachronic and synchronic teams do not differ in the number of hours committed per team member, but isolated individuals do, having the most time per person (Fig. 1C). By comparing diachronic teams to both isolated individuals and synchronic teams, the effects of inheritance on problem solving ability can be teased apart from these other possible differences between the teams. If inheritance improves problem solving ability, then diachronic teams will outperform these alternative ways of allocating the same number of labor hours.
-
-```{r fig1, fig.width=8, fig.align="center", fig.cap="**A.** Three strategies for allocating the same number of labor hours. **B.** By controlling for labor hours, diachronic and synchronic teams differ in calendar hours. **C.** Although isolated individuals spend the most time per person, diachronic and synchronic teams do not differ along this dimension."}
-diachronic <- data_frame(
-  Strategy = "Diachronic",
-  CalendarHours = 1:100,
-  LaborHours = CalendarHours,
-  Person = rep(c(1, 2), each = 50)
-)
-
-isolated <- diachronic %>%
-  mutate(
-    Strategy = "Isolated",
-    Person = 1
-  )
-
-synchronic <- data_frame(
-  Strategy = "Synchronic",
-  CalendarHours = 1:50,
-  LaborHours = CalendarHours * 2,
-  Person = 1
-)
-
-time <- rbind(diachronic, synchronic, isolated) %>%
-  group_by(Strategy, Person) %>%
-  mutate(PersonHours = 1:n()) %>%
-  ungroup() %>%
-  recode_strategy() %>%
-  mutate(
-    # Separate Diachronic and Isolated lines
-    LaborHours = ifelse(Strategy == "Synchronic", LaborHours,
-                        ifelse(Strategy == "Diachronic", LaborHours + 0.8, LaborHours - 0.8))
-  )
-
-axis_breaks <- c(0, 50, 100)
-axis_labels <- c(0, expression(1/2), 1)
-
-gg_time <- ggplot(time, aes(CalendarHours, LaborHours)) +
-  geom_line(aes(color = StrategyLabel), size = 1.2) +
-  scale_x_continuous("Calendar hours", breaks = axis_breaks, labels = axis_labels) +
-  scale_y_continuous("Labor hours", breaks = axis_breaks, labels = axis_labels) +
-  scale_color_strategy +
-  scale_linetype_manual(values = c(1, 1, 2)) +
-  guides(color = guide_legend("", reverse = TRUE), linetype = "none") +
-  base_theme +
-  theme(legend.position = c(0.75, 0.2))
-
-time %<>%
-  mutate(StrategyIsolated = factor(Strategy, levels = c("Synchronic", "Diachronic", "Isolated")))
-
-gg_person <- ggplot(time) +
-  aes(StrategyIsolated, PersonHours) +
-  geom_bar(aes(fill = StrategyLabel), stat = "summary", fun.y = "max",
-           alpha = 0.8) +
-  scale_x_discrete("") +
-  scale_y_continuous("Person hours", breaks = axis_breaks, labels = axis_labels) +
-  scale_fill_strategy +
-  base_theme +
-  theme(legend.position = "none",
-        panel.grid.major.x = element_blank())
-
-grid.arrange(
-  read_graphviz("team-structures-all", package = "totems"),
-  gg_time,
-  gg_person,
-  nrow = 1,
-  widths = c(0.2, 0.4, 0.4)
-)
+```{r types-of-time, fig.width=8, fig.align="center", fig.cap="**A.** Three strategies for allocating the same number of labor hours. Panels B and C describe the ways the strategies differ along different dimensions of time. **B.** By controlling for labor hours, diachronic and synchronic teams differ in calendar hours. Diachronic teams spend labor hours at the same rate as isolated individuals. **C.** Isolated individuals have the most time to learn."}
 ```
+
+## Problem solving ability and problem solutions
+
+I measure problem solving ability as efficiency in completing a problem in a specific amount of time. In other research, problem solving is described as the set of cognitive abilities that enable the generation of problem solutions. Here I'm interested less in whether solutions can be generated and more in how efficiently progress is achieved. The goal of this research is to understand the impact of inheritance on problem solving efficiency.
+
+\begin{equation}
+problem\ solution = ability \cdot time \cdot inheritance\\
+\end{equation}
+
+## How might inheritance impact problem solving ability?
+
+Inheritance is hypothesized to impact problem solving ability by putting the problem solver in a part of the problem space they otherwise might not have been likely to reach on their own. Whether or not this is helpful depends on the type of problem being solved.
+
+The type of problem that should benefit from inheritance is a problem where progress is incrementally achieved. For problems with binary or stochastic solutions, inheritance is more difficult to measure, because it's hard to know what can be gained from inheriting an incorrect solution that may not be any closer to the correct solution. Problems with incremental progress are open-ended problems where there are many possible solutions, all varying in degree of success. Solutions to open-ended problems can be inherited and modified, but they can also be created by individuals working alone.
+
+The other requirement for the type of problem solving investigated in this research is that the problem space is multi-modal. This is required in order to observe the hypothesized benefit from inheritance. The idea is that inheritance is always a cost until the current generation gets stuck or loses steam.
 
 # Methods
 
 ## Participants
 
-Participants are recruited until the final sample comprises 20 teams in each of the three strategy conditions for a total of 100 participants.
+Participants are recruited until the final sample comprises 40 teams in each of the three strategy conditions for a total of 200 participants.
 
 ## Materials
 
 Participants are tasked with a tool-building competition presented in a digital environment [@Derex:2015cbb]. Individuals combine resources and build ever more complicated tools in order to build "sacred totems to appease the gods". Individuals achieve high scores by traversing the innovation landscape and developing more and more elaborate ways of cutting, carving, and decorating their totems. A sample of the problem space is presented in Fig. 2.
-
 
 ```{r, cache = FALSE, include = FALSE}
 crotchet::read_graphviz_chunk("landscape-sample", package = "totems")
@@ -126,76 +78,101 @@ grid.draw(png::readPNG("../docs/irb/methods/screenshots/gameplay.png") %>% raste
 
 # Results
 
-## Leaderboards
-
-```{r, echo = 1:2}
-score_mod <- lm(Score ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
-                data = filter_final_score(totems_players))
-tidy(score_mod)
+```{r data, echo = 1:4}
 ```
 
-```{r}
-ggplot(filter_final_score(totems_players)) +
-  aes(StrategyLabel, Score) +
-  geom_point(aes(color = StrategyLabel),
-             position = position_jitter(width = 0.3)) +
-  geom_bar(aes(fill = StrategyLabel), stat = "summary", fun.y = "mean",
-           alpha = 0.6) +
-  scale_x_strategy +
-  scale_color_strategy +
-  scale_fill_strategy +
-  base_theme +
-  theme(legend.position = "none",
-        panel.grid.major.x = element_blank())
+## Performance
+
+```{r performance, fig.height=3, fig.width=8}
+```
+
+```{r performance-mods, results = "asis"}
+list(Score = tidy(score_mod),
+     InventorySize = tidy(inventory_mod),
+     DifficultyScore = tidy(difficulty_mod)) %>%
+  bind_rows(.id = "model") %>%
+  filter(term != "(Intercept)")
 ```
 
 ## Attempts
 
+```{r attempts-plot, fig.height=3, fig.width=8}
+attempts_plot <- ggplot(filter(player_ratchets, Measure == "Score")) +
+  aes(StrategyLabel, Attempts) +
+  geom_point(aes(color = StrategyLabel),
+             position = position_jitter(width = 0.3)) +
+  geom_bar(aes(fill = StrategyLabel),
+           stat = "summary", fun.y = "mean", alpha = 0.6) +
+  facet_wrap("AttemptMeasureLabel") +
+  totems_theme["scale_x_strategy"] +
+  totems_theme["scale_color_strategy"] +
+  totems_theme["scale_fill_strategy"] +
+  totems_theme["base_theme"] +
+  theme(
+    legend.position = "none",
+    panel.grid.major.x = element_blank()
+  )
+attempts_plot
+```
+
+```{r ratchets-plot, fig.width=8, fig.height=12}
+ggplot(player_ratchets) +
+  aes(Attempts, Value, color = StrategyLabel) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  ylab("") +
+  totems_theme["scale_color_strategy"] +
+  totems_theme["base_theme"] +
+  theme(
+    legend.position = "none",
+    strip.placement = "outside"
+  ) +
+  facet_grid(MeasureLabel ~ AttemptMeasureLabel, scales = "free_y", switch = "y")
+```
+
+## Timeline
+
 ```{r}
-attempts <- totems_workshops %>%
-  group_by(ID_Player) %>%
+totems_workshops %<>%
+  mutate(
+    TeamTime = milliseconds(totems_workshops$TeamTime),
+    ID_Group_Time = ifelse(Strategy == "Diachronic", paste(ID_Group, Generation, sep = "-"), ID_Group),
+    Strategy_Group_Time = ifelse(Strategy == "Diachronic", paste0(Strategy, Generation), Strategy)
+  )
+
+ggplot(totems_workshops) +
+  aes(TeamTime, InventorySize, group = ID_Group_Time, color = StrategyLabel) +
+  geom_line(alpha = 0.4) +
+  geom_smooth(aes(group = Strategy_Group_Time), method = "loess", se = FALSE) +
+  scale_x_time("Team time", breaks = minutes(seq(0, 50, by = 25))) +
+  totems_theme["scale_color_strategy"] +
+  totems_theme["base_theme"] +
+  theme(legend.position = "top")
+```
+
+## Efficiency
+
+```{r}
+guesses_in_steps <- totems_workshops %>%
+  group_by(ID_Group, Inventory) %>%
   summarize(
-    Attempts = max(GuessNumber)
+    GuessesInStep = n(),
+    UniqueGuessesInStep = length(unique(GuessString)),
+    Efficiency = UniqueGuessesInStep/GuessesInStep
   ) %>%
-  left_join(totems_players)
+  ungroup()
 
-ggplot(attempts) +
-  aes(Attempts, Score, color = Strategy) +
-  geom_point()
-```
+efficiencies <- totems_workshops %>%
+  select(ID_Group, Strategy, Inventory, InventorySize) %>%
+  left_join(guesses_in_steps) %>%
+  recode_strategy()
 
-## Bottlenecks
-
-```{r, fig.width=10, fig.height=8}
-bottlenecks <- totems_workshops %>%
-  group_by(ID_Player, InventorySize, NumAdjacent) %>%
-  summarize(Guesses = n()) %>%
-  left_join(totems_players)
-
-ggplot(bottlenecks) +
-  aes(InventorySize, NumAdjacent, color = Strategy) +
-  geom_point(aes(size = Guesses)) +
-  geom_line(aes(group = ID_Player)) +
-  scale_x_continuous("Items Discovered", breaks = c(6, seq(10, 40, by = 5))) +
-  facet_wrap("ID_Player")
-```
-
-```{r}
-data("simulations_strategy")
-
-attempts <- simulations_strategy %>%
-  group_by(sim_id, inventory_size, n_adjacent) %>%
-  summarize(attempts = n())
-
-ggplot(attempts) +
-  aes(n_adjacent, attempts) +
-  geom_point(position = position_jitter(width = 0.1)) +
-  geom_line(stat = "summary", fun.y = "mean")
-
-ggplot(attempts) +
-  aes(inventory_size, n_adjacent) +
-  geom_point(position = position_jitter(width = 0.2)) +
-  geom_line(aes(group = sim_id), stat = "summary", fun.y = "mean")
+ggplot(efficiencies) +
+  aes(InventorySize, Efficiency, color = Strategy) +
+  geom_point(aes(group = ID_Group), alpha = 0.1,
+             position = position_jitter(width = 0.4, height = 0.04)) +
+  geom_smooth(method = "lm", se = FALSE, size = 1.4) +
+  totems_theme["scale_color_strategy"]
 ```
 
 # Discussion
