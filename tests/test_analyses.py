@@ -24,5 +24,6 @@ def test_rolling_inventory(workshop):
 
 def test_calculate_team_time(workshop):
     result = tasks.exps.calculate_team_time(workshop)
-    duration_milliseconds = 25 * 60
-    assert result.TeamTime.tolist() == (result.PlayerTime + duration_milliseconds).tolist()
+    duration_minutes = 25
+    duration_seconds = duration_minutes * 60
+    assert result.TeamTime.tolist() == (result.PlayerTime + duration_seconds).tolist()

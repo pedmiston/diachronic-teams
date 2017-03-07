@@ -54,7 +54,7 @@ team_key <- player_key %>%
   unique()
 
 # Workshops --------------------------------------------------------------------
-totems_workshops <- totems_workshop %>%
+totems_workshops <- totems_workshopanalyzed %>%
   # Remove ID_Group column because it's been renamed for anonymity
   # in the player_key
   select(-ID_Group) %>%

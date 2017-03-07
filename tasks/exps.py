@@ -18,7 +18,8 @@ TOTEMS_DIR = Path(paths.R_PKG, 'data-raw/totems')
 if not TOTEMS_DIR.isdir():
     TOTEMS_DIR.mkdir()
 
-WORKSHOP_CSV = Path(TOTEMS_DIR, 'Workshop.csv')
+WORKSHOP_IN_CSV = Path(TOTEMS_DIR, 'Workshop.csv')
+WORKSHOP_OUT_CSV = Path(TOTEMS_DIR, 'WorkshopAnalyzed.csv')
 
 
 @task
@@ -98,13 +99,13 @@ def get_worksheet(title):
 @task
 def analyze(ctx):
     """Analyze the totems experiment data."""
-    workshop = pandas.read_csv(WORKSHOP_CSV)
+    workshop = pandas.read_csv(WORKSHOP_IN_CSV)
     workshop = label_player_groups_and_strategies(workshop)
     workshop = calculate_team_time(workshop)
     workshop = rolling(workshop)
     workshop = adjacent(workshop)
     workshop = difficulty(workshop)
-    workshop.to_csv(WORKSHOP_CSV, index=False)
+    workshop.to_csv(WORKSHOP_OUT_CSV, index=False)
 
 
 def rolling(workshop):
@@ -192,7 +193,7 @@ def calculate_team_time(workshop):
     workshop = workshop.copy()
     session_duration_sec = 25 * 60
     # Convert milliseconds to seconds
-    workshop['PlayerTime'] = workshop.TrialTime * 1000
+    workshop['PlayerTime'] = workshop.TrialTime/1000
     workshop['TeamTime'] = workshop.PlayerTime.where(
         workshop.Treatment != 'Diachronic',
         workshop.PlayerTime + ((workshop.Generation - 1) * session_duration_sec),
