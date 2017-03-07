@@ -133,18 +133,11 @@ ggplot(player_ratchets) +
 ## Timeline
 
 ```{r}
-totems_workshops %<>%
-  mutate(
-    TeamTime = milliseconds(totems_workshops$TeamTime),
-    ID_Group_Time = ifelse(Strategy == "Diachronic", paste(ID_Group, Generation, sep = "-"), ID_Group),
-    Strategy_Group_Time = ifelse(Strategy == "Diachronic", paste0(Strategy, Generation), Strategy)
-  )
-
 ggplot(totems_workshops) +
   aes(TeamTime, InventorySize, group = ID_Group_Time, color = StrategyLabel) +
   geom_line(alpha = 0.4) +
   geom_smooth(aes(group = Strategy_Group_Time), method = "loess", se = FALSE) +
-  scale_x_time("Team time", breaks = minutes(seq(0, 50, by = 25))) +
+  scale_x_time("Team time", breaks = (seq(0, 50, by = 25))) +
   totems_theme["scale_color_strategy"] +
   totems_theme["base_theme"] +
   theme(legend.position = "top")

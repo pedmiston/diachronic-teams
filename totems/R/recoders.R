@@ -22,6 +22,23 @@ recode_strategy <- function(frame) {
 }
 
 
+#' Recode strategy and group by generation.
+#'
+#' Only matters for Diachronic teams. Aides in plotting over time.
+#'
+#' @import dplyr
+#' @export
+recode_groups_by_generation <- function(frame) {
+  frame %>%
+    mutate(
+      ID_Group_Time = ifelse(Strategy == "Diachronic",
+          paste(ID_Group, Generation, sep = "-"), ID_Group),
+      Strategy_Group_Time = ifelse(Strategy == "Diachronic",
+          paste(Strategy, Generation, sep = "-"), Strategy)
+    )
+}
+
+
 #' Recode the labels of the type of scoring metric.
 #' @import dplyr
 #' @export

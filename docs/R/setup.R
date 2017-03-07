@@ -21,7 +21,8 @@ totems_players %<>%
   recode_strategy()
 
 totems_workshops %<>%
-  recode_strategy()
+  recode_strategy() %>%
+  recode_groups_by_generation()
 
 team_key <- select(totems_teams, ID_Group, Strategy)
 player_key <- select(totems_players, ID_Player, ID_Group, Strategy, Generation)

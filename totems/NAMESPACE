@@ -3,6 +3,7 @@
 export(get_lm_mod_preds)
 export(load_totems_theme)
 export(recode_attempt_measures)
+export(recode_groups_by_generation)
 export(recode_score_value)
 export(recode_strategy)
 export(summarize_team_performance)
