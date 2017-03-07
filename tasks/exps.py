@@ -128,8 +128,10 @@ def rolling(workshop):
 
         for trial in workshop.sort_values('TeamTime').itertuples():
             # Record the guess
-            guess_history.update({trial.WorkShopString})
-            guess_uniqueness.append(int(trial.WorkShopString not in guess_history))
+            is_unique_guess = trial.WorkShopString not in guess_history
+            if is_unique_guess:
+                guess_history.update({trial.WorkShopString})
+            guess_uniqueness.append(int(is_unique_guess))
             guess_history_sizes.append(len(guess_history))
 
             # Record the result
