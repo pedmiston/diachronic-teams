@@ -94,6 +94,18 @@ list(Score = tidy(score_mod),
   filter(term != "(Intercept)")
 ```
 
+```{r performance-over-time, fig.height=6, fig.width=8}
+ggplot(totems_workshops) +
+  aes(TeamTime, InventorySize, group = ID_Group_Time, color = StrategyLabel) +
+  geom_line(alpha = 0.2) +
+  geom_smooth(aes(group = Strategy_Group_Time), method = "loess", se = FALSE) +
+  scale_x_time("Team time", breaks = seconds(c(0, 25 * 60, 50 * 60))) +
+  ylab("Inventory size") +
+  totems_theme["scale_color_strategy"] +
+  totems_theme["base_theme"] +
+  theme(legend.position = "top")
+```
+
 ## Attempts
 
 ```{r attempts-plot, fig.height=3, fig.width=8}
@@ -130,14 +142,19 @@ ggplot(player_ratchets) +
   facet_grid(MeasureLabel ~ AttemptMeasureLabel, scales = "free_y", switch = "y")
 ```
 
-## Timeline
+## Unique guesses
 
-```{r}
+```{r unique-guesses}
+
+```
+
+```{r unique-guesses-over-time}
 ggplot(totems_workshops) +
-  aes(TeamTime, InventorySize, group = ID_Group_Time, color = StrategyLabel) +
-  geom_line(alpha = 0.4) +
+  aes(TeamTime, TeamNumUniqueGuesses, group = ID_Group_Time, color = StrategyLabel) +
+  geom_line(alpha = 0.2) +
   geom_smooth(aes(group = Strategy_Group_Time), method = "loess", se = FALSE) +
-  scale_x_time("Team time", breaks = (seq(0, 50, by = 25))) +
+  scale_x_time("Team time", breaks = seconds(c(0, 25 * 60, 50 * 60))) +
+  ylab("Unique guesses") +
   totems_theme["scale_color_strategy"] +
   totems_theme["base_theme"] +
   theme(legend.position = "top")

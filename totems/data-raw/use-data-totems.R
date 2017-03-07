@@ -96,6 +96,13 @@ player_workshop_summaries <- totems_workshops %>%
   )
 totems_players %<>% left_join(player_workshop_summaries)
 
+# Convert seconds to R native time objects
+totems_workshops %<>%
+  mutate(
+    PlayerTime = dseconds(PlayerTime),
+    TeamTime = dseconds(TeamTime)
+  )
+
 # Teams ------------------------------------------------------------------------
 totems_teams <- totems_players %>%
   group_by(ID_Group) %>%
@@ -124,12 +131,12 @@ totems_players %<>%
 
 totems_workshops %<>%
   select(ID_Player, Strategy, Generation, ID_Group,
-         TeamTime, GuessNumber, TeamGuessNumber,
          GuessString = WorkShopString, GuessResult = WorkShopResult,
-         UniqueGuess, TeamUniqueGuess,
-         NumUniqueGuesses, TeamNumUniqueGuesses,
-         Inventory, InventorySize, NumAdjacent,
-         Difficulty, DifficultyScore)
+         NumAdjacent, Difficulty, DifficultyScore,
+         PlayerTime, GuessNumber, UniqueGuess, NumUniqueGuesses,
+         Inventory, InventorySize,
+         TeamTime, TeamGuessNumber, TeamUniqueGuess, TeamNumUniqueGuesses,
+         TeamInventory, TeamInventorySize)
 
 use_data(
   totems_teams,
