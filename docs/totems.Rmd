@@ -78,7 +78,7 @@ grid.draw(png::readPNG("../docs/irb/methods/screenshots/gameplay.png") %>% raste
 
 # Results
 
-```{r data, echo = 1:4}
+```{r data, echo = 1:3}
 ```
 
 ## Performance
@@ -91,10 +91,10 @@ tidy(inventory_mod) %>%
   filter(term != "(Intercept)")
 ```
 
-```{r performance-over-time, fig.height=6, fig.width=8}
-ggplot(player_trials) +
-  aes(TeamTime, InventorySize, group = PlayerID, color = StrategyLabel) +
-  geom_line(alpha = 0.2) +
+```{r performance-over-time, fig.height=4, fig.width=6}
+ggplot(team_trials) +
+  aes(TeamTime, InventorySize, group = TeamID, color = StrategyLabel) +
+  geom_line(alpha = 0.3) +
   geom_smooth(aes(group = GenerationStrategy), method = "loess", se = FALSE) +
   scale_x_time("Team time", breaks = seconds(c(0, 25 * 60, 50 * 60))) +
   ylab("Number of inventions") +
@@ -103,20 +103,22 @@ ggplot(player_trials) +
   theme(legend.position = "top")
 ```
 
-```{r, include=FALSE}
-opts_chunk$set(eval = FALSE)
-```
-
 ## Attempts
 
 ```{r attempts-plot, fig.height=3, fig.width=8}
-attempts_plot <- ggplot(filter(player_ratchets, Measure == "Score")) +
-  aes(StrategyLabel, Attempts) +
+attempts <- bind_rows(
+  `Individual attempts` = player_performance,
+  `Team attempts` = team_performance,
+  .id = "AttemptMeasure"
+)
+
+attempts_plot <- ggplot(attempts) +
+  aes(StrategyLabel, UniqueGuesses) +
   geom_point(aes(color = StrategyLabel),
              position = position_jitter(width = 0.3)) +
   geom_bar(aes(fill = StrategyLabel),
            stat = "summary", fun.y = "mean", alpha = 0.6) +
-  facet_wrap("AttemptMeasureLabel") +
+  facet_wrap("AttemptMeasure") +
   totems_theme["scale_x_strategy"] +
   totems_theme["scale_color_strategy"] +
   totems_theme["scale_fill_strategy"] +
@@ -126,64 +128,6 @@ attempts_plot <- ggplot(filter(player_ratchets, Measure == "Score")) +
     panel.grid.major.x = element_blank()
   )
 attempts_plot
-```
-
-```{r ratchets-plot, fig.width=8, fig.height=12}
-ggplot(player_ratchets) +
-  aes(Attempts, Value, color = StrategyLabel) +
-  geom_point() +
-  geom_smooth(method = "lm", se = FALSE) +
-  ylab("") +
-  totems_theme["scale_color_strategy"] +
-  totems_theme["base_theme"] +
-  theme(
-    legend.position = "none",
-    strip.placement = "outside"
-  ) +
-  facet_grid(MeasureLabel ~ AttemptMeasureLabel, scales = "free_y", switch = "y")
-```
-
-## Unique guesses
-
-```{r unique-guesses}
-
-```
-
-```{r unique-guesses-over-time}
-ggplot(totems_workshops) +
-  aes(TeamTime, TeamNumUniqueGuesses, group = ID_Group_Time, color = StrategyLabel) +
-  geom_line(alpha = 0.2) +
-  geom_smooth(aes(group = Strategy_Group_Time), method = "loess", se = FALSE) +
-  scale_x_time("Team time", breaks = seconds(c(0, 25 * 60, 50 * 60))) +
-  ylab("Unique guesses") +
-  totems_theme["scale_color_strategy"] +
-  totems_theme["base_theme"] +
-  theme(legend.position = "top")
-```
-
-## Efficiency
-
-```{r}
-guesses_in_steps <- totems_workshops %>%
-  group_by(ID_Group, Inventory) %>%
-  summarize(
-    GuessesInStep = n(),
-    UniqueGuessesInStep = length(unique(GuessString)),
-    Efficiency = UniqueGuessesInStep/GuessesInStep
-  ) %>%
-  ungroup()
-
-efficiencies <- totems_workshops %>%
-  select(ID_Group, Strategy, Inventory, InventorySize) %>%
-  left_join(guesses_in_steps) %>%
-  recode_strategy()
-
-ggplot(efficiencies) +
-  aes(InventorySize, Efficiency, color = Strategy) +
-  geom_point(aes(group = ID_Group), alpha = 0.1,
-             position = position_jitter(width = 0.4, height = 0.04)) +
-  geom_smooth(method = "lm", se = FALSE, size = 1.4) +
-  totems_theme["scale_color_strategy"]
 ```
 
 # Discussion
