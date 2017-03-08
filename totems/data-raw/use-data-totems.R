@@ -1,22 +1,22 @@
+# Save the data from the totems experiment
 library(devtools)
 library(tidyverse)
 library(lubridate)
 
-# Source functions from the package without loading the whole thing.
-# WARNING! Don't load the whole "totems" package
-# or use_data() might not work properly.
 library(magrittr)
 library(tools)
 library(readr)
-source("R/util.R")
+source("R/util.R")  # Don't load "totems" or use_data() might not work properly
 
-# Read raw data ----------------------------------------------------------------
+# Start here
 read_csvs("data-raw/totems", prefix = "totems_")
 
 # Deidentification -------------------------------------------------------------
+
 # Remove datetime information from survey data
 totems_subjinfo %<>% select(-Date, -Room)
 totems_postexperimentsurvey %<>% select(-Timestamp)
+
 # Remove datetime information from group identifier
 deidentify_group_id <- function(frame) {
   id_group_levels <- factor(frame$ID_Group) %>% levels()
@@ -28,21 +28,28 @@ deidentify_group_id <- function(frame) {
 }
 totems_player %<>% deidentify_group_id()
 totems_group %<>% deidentify_group_id()
-totems_workshopanalyzed %<>% deidentify_group_id()
+totems_playertrials %<>% deidentify_group_id()
+totems_teamtrials %<>% deidentify_group_id()
 
 # Select valid participants ----------------------------------------------------
 valid_participant_ids <- totems_subjinfo$ID_Player
 filter_valid_participants <- . %>% filter(ID_Player %in% valid_participant_ids)
 
 # Trials -----------------------------------------------------------------------
-# Player trials
-totems_workshops <- totems_workshopanalyzed %>%
-  filter_valid_participants()
 
-# Enumerate each player's guesses
-totems_workshops %<>%
+# Player trials
+totems_playertrials %<>%
+  filter_valid_participants() %>%
   group_by(ID_Player) %>%
-  mutate(GuessNumber = 1:n()) %>%
+  arrange(PlayerTime) %>%
+  mutate(
+    GuessNumber = 1:n(),
+    NumUniqueGuesses = cumsum(UniqueGuess),
+    NumUniqueItems = cumsum(UniqueItem),
+    DifficultyScore = cumsum(Difficulty),
+    Score = NA,
+
+  ) %>%
   ungroup()
 
 # Enumerate each team's guesses
