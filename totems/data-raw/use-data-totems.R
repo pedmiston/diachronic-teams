@@ -1,151 +1,124 @@
 # Save the data from the totems experiment
 library(devtools)
 library(tidyverse)
-library(lubridate)
-
 library(magrittr)
-library(tools)
-library(readr)
+library(lubridate)
 source("R/util.R")  # Don't load "totems" or use_data() might not work properly
 
 # Start here
 read_csvs("data-raw/totems", prefix = "totems_")
 
 # Deidentification -------------------------------------------------------------
-
 # Remove datetime information from survey data
 totems_subjinfo %<>% select(-Date, -Room)
 totems_postexperimentsurvey %<>% select(-Timestamp)
 
 # Remove datetime information from group identifier
-deidentify_group_id <- function(frame) {
-  id_group_levels <- factor(frame$ID_Group) %>% levels()
-  id_group_labels <- paste0("G", seq_along(id_group_levels))
-  frame %>%
-    mutate(ID_Group = factor(ID_Group,
-                             levels = id_group_levels,
-                             labels = id_group_labels))
-}
-totems_player %<>% deidentify_group_id()
-totems_group %<>% deidentify_group_id()
+team_id_levels <- factor(totems_group$ID_Group) %>% levels()
+team_id_labels <- paste0("G", seq_along(team_id_levels))
+team_id_map <- data_frame(
+  ID_Group = team_id_levels,
+  TeamID = team_id_labels
+)
+
+deidentify_group_id <- . %>% left_join(team_id_map) %>% select(-ID_Group)
+totems_group        %<>% deidentify_group_id()
+totems_player       %<>% deidentify_group_id()
 totems_playertrials %<>% deidentify_group_id()
-totems_teamtrials %<>% deidentify_group_id()
+totems_teamtrials   %<>% deidentify_group_id()
+
+# Recode player id -------------------------------------------------------------
+# Create a new PlayerID variable that is a character instead of a number
+player_id_levels <- unique(totems_player$ID_Player)
+player_id_labels <- paste0("P", seq_along(player_id_levels))
+player_id_map <- data_frame(
+  ID_Player = player_id_levels,
+  PlayerID = player_id_labels
+)
+
+recode_player_id <- . %>% left_join(player_id_map) %>% select(-ID_Player)
+totems_subjinfo     %<>% recode_player_id()
+totems_player       %<>% recode_player_id()
+totems_playertrials %<>% recode_player_id()
+totems_teamtrials   %<>% recode_player_id()
 
 # Select valid participants ----------------------------------------------------
-valid_participant_ids <- totems_subjinfo$ID_Player
-filter_valid_participants <- . %>% filter(ID_Player %in% valid_participant_ids)
+# Valid participants are those recorded in the subject info sheet
+valid_participant_ids <- totems_subjinfo$PlayerID
+filter_valid_participants <- . %>% filter(PlayerID %in% valid_participant_ids)
+totems_player       %<>% filter_valid_participants()
+totems_playertrials %<>% filter_valid_participants()
+totems_teamtrials   %<>% filter_valid_participants()
 
-# Trials -----------------------------------------------------------------------
+# Rename treatment to strategy -------------------------------------------------
+totems_group %<>% rename(Strategy = Treatment)
 
-# Player trials
-totems_playertrials %<>%
-  filter_valid_participants() %>%
-  group_by(ID_Player) %>%
-  arrange(PlayerTime) %>%
-  mutate(
-    GuessNumber = 1:n(),
-    NumUniqueGuesses = cumsum(UniqueGuess),
-    NumUniqueItems = cumsum(UniqueItem),
-    DifficultyScore = cumsum(Difficulty),
-    Score = NA,
-
-  ) %>%
-  ungroup()
-
-# Enumerate each team's guesses
-totems_workshops %<>%
-  group_by(ID_Group) %>%
-  arrange(TrialTime) %>%
-  mutate(TeamGuessNumber = 1:n()) %>%
-  ungroup()
-
-# Calculate accumulated difficulty score
-workshop_difficulties <- totems_workshops %>%
-  arrange(ID_Player, GuessNumber) %>%
-  select(ID_Player, InventorySize, Difficulty) %>%
-  unique() %>%
-  group_by(ID_Player) %>%
-  mutate(DifficultyScore = cumsum(Difficulty)) %>%
-  ungroup()
-totems_workshops %<>% left_join(workshop_difficulties)
-
-# Players ----------------------------------------------------------------------
-totems_players <- totems_player %>%
-  left_join(totems_group) %>%
-  mutate(Generation = ifelse(Treatment == "Diachronic", Ancestor + 2, 1)) %>%
-  rename(Strategy = Treatment) %>%
-  select(-c(ID_Number:Gain, Knowledge, Size, Open, Status)) %>%
-  # Filter out any subjects that aren't reported
-  # in the subject info sheet.
-  inner_join(totems_subjinfo)
-
-# Remove any incomplete diachronic teams
-incomplete_diachronic_teams <- totems_players %>%
+# Select valid teams -----------------------------------------------------------
+# Remove incomplete diachronic teams
+incomplete_diachronic_teams <- totems_player %>%
+  left_join(totems_group %>% rename(ExpectedSize = Size)) %>%
   filter(Strategy == "Diachronic") %>%
-  group_by(ID_Group) %>%
-  summarize(TeamSize = max(Generation)) %>%
-  filter(TeamSize != 2) %>%
-  .$ID_Group
-totems_players %<>% filter(!(ID_Group %in% incomplete_diachronic_teams))
+  group_by(TeamID, ExpectedSize) %>%
+  summarize(TeamSize = n()) %>%
+  ungroup() %>%
+  filter(TeamSize != ExpectedSize) %>%
+  .$TeamID
 
-# Add vars derived from workshop data to leaderboards
-player_workshop_summaries <- totems_workshops %>%
-  group_by(ID_Player) %>%
-  summarize(
-    InventorySize = max(InventorySize),
-    DifficultyScore = max(DifficultyScore),
-    Attempts = max(GuessNumber),
-    TeamAttempts = max(TeamGuessNumber),
-    UniqueGuesses = max(NumUniqueGuesses),
-    TeamUniqueGuesses = max(TeamNumUniqueGuesses)
-  )
-totems_players %<>% left_join(player_workshop_summaries)
+filter_valid_teams <- . %>% filter(!(TeamID %in% incomplete_diachronic_teams))
+totems_group        %<>% filter_valid_teams()
+totems_player       %<>% filter_valid_teams()
+totems_playertrials %<>% filter_valid_teams()
+totems_teamtrials   %<>% filter_valid_teams()
 
-# Convert seconds to R native time objects
-totems_workshops %<>%
+# Identify players within teams and generations --------------------------------
+player_generations <- totems_player %>%
+  left_join(totems_group) %>%
+  mutate(Generation = ifelse(Strategy == "Diachronic", Ancestor + 2, 1)) %>%
+  select(PlayerID, Generation)
+
+player_ixs <- totems_player %>%
+  group_by(TeamID) %>%
+  transmute(PlayerID, PlayerIX = 1:n()) %>%
+  ungroup()
+
+identify_players_in_teams <- . %>%
+  left_join(player_generations) %>%
+  left_join(player_ixs)
+
+totems_player       %<>% identify_players_in_teams()
+totems_playertrials %<>% identify_players_in_teams()
+totems_teamtrials   %<>% identify_players_in_teams()
+
+# Convert trial times in seconds to R native time objects ----------------------
+convert_times <- . %>%
   mutate(
     PlayerTime = dseconds(PlayerTime),
-    TeamTime = dseconds(TeamTime)
+    TeamTime   = dseconds(TeamTime)
   )
+totems_playertrials %<>% convert_times()
+totems_teamtrials   %<>% convert_times()
 
-# Teams ------------------------------------------------------------------------
-totems_teams <- totems_players %>%
-  group_by(ID_Group) %>%
-  summarize(
-    Score = max(Score),
-    InventorySize = max(InventorySize),
-    DifficultyScore = max(DifficultyScore),
-    Attempts = max(Attempts),
-    TeamAttempts = max(TeamAttempts),
-    TeamUniqueGuesses = max(TeamUniqueGuesses)
-  ) %>%
-  left_join(team_key)
+# Record guesses ---------------------------------------------------------------
+count_guesses <- . %>%
+  arrange(TeamTime) %>%
+  mutate(GuessNum = 1:n())
+totems_playertrials %<>% group_by(PlayerID) %>% count_guesses() %>% ungroup()
+totems_teamtrials   %<>% group_by(TeamID)   %>% count_guesses() %>% ungroup()
 
 # Save data to package ---------------------------------------------------------
-totems_teams %<>%
-  select(ID_Group, Strategy,
-         Score, InventorySize, DifficultyScore,
-         TeamAttempts,
-         TeamUniqueGuesses)
+select_trials_data <- . %>%
+  left_join(totems_group) %>%
+  select(PlayerID, TeamID, Strategy, Generation,
+         TeamTime, PlayerTime, GuessNum,
+         Guess = WorkShopString, Result = WorkShopResult,
+         UniqueGuess, UniqueItem,
+         Inventory, NumAdjacent)
 
-totems_players %<>%
-  select(ID_Player, Strategy, Generation, ID_Group,
-         Score, InventorySize, DifficultyScore,
-         Attempts, TeamAttempts,
-         UniqueGuesses, TeamUniqueGuesses)
-
-totems_workshops %<>%
-  select(ID_Player, Strategy, Generation, ID_Group,
-         GuessString = WorkShopString, GuessResult = WorkShopResult,
-         NumAdjacent, Difficulty, DifficultyScore,
-         PlayerTime, GuessNumber, UniqueGuess, NumUniqueGuesses,
-         Inventory, InventorySize,
-         TeamTime, TeamGuessNumber, TeamUniqueGuess, TeamNumUniqueGuesses,
-         TeamInventory, TeamInventorySize)
+player_trials <- totems_playertrials %>% select_trials_data()
+team_trials   <- totems_teamtrials   %>% select_trials_data()
 
 use_data(
-  totems_teams,
-  totems_players,
-  totems_workshops,
+  player_trials,
+  team_trials,
   overwrite = TRUE
 )

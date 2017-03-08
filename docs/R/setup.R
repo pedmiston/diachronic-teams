@@ -10,9 +10,20 @@ library(totems)
 
 # ---- data
 library(totems)
-data("totems_teams")
-data("totems_players")
-data("totems_workshops")
+data("player_trials")
+data("team_trials")
+
+team_info <- team_trials %>%
+  select(TeamID, Strategy) %>%
+  unique()
+
+team_performance <- team_trials %>%
+  group_by(TeamID) %>%
+  summarize(
+    InventorySize = sum(UniqueItem)
+  ) %>%
+  left_join(team_info) %>%
+  recode_strategy()
 
 totems_teams %<>%
   recode_strategy()
