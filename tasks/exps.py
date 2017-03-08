@@ -117,8 +117,9 @@ def analyze(ctx):
     player_trials = determine_adjacent_possible(player_trials)
     team_trials   = determine_adjacent_possible(team_trials)
 
-    player_trials.to_csv(Path(TOTEMS_DIR, 'PlayerTrials.csv'), index=False)
-    team_trials.to_csv(Path(TOTEMS_DIR, 'TeamTrials.csv'), index=False)
+    player_trials = write_trials_to_csv(player_trials, 'PlayerTrials.csv')
+    team_trials   = write_trials_to_csv(team_trials, 'TeamTrials.csv')
+
 
 def rolling_history(trials):
     """Keep track of rolling variables, like total known inventory."""
@@ -147,7 +148,7 @@ def rolling_history(trials):
                 rolling_inventory.update({label})
         unique_item.append(int(is_unique_item))
 
-        # Store
+        # Store the current rolling inventory
         inventories.append(list(rolling_inventory))
 
     trials['Inventory'] = inventories
@@ -195,3 +196,18 @@ def calculate_team_time(trials):
         trials.PlayerTime + ((trials.Generation - 1) * session_duration_sec),
     )
     return trials
+
+
+def write_trials_to_csv(trials, csv_name):
+    trials = freeze_inventories(trials)
+    trials.to_csv(Path(TOTEMS_DIR, csv_name), index=False)
+
+
+def freeze_inventories(trials):
+    trials = trials.copy()
+    trials['Inventory'] = trials.Inventory.apply(freeze_inventory)
+    return trials
+
+
+def freeze_inventory(inventory):
+    return json.dumps(sorted(inventory))
