@@ -62,7 +62,7 @@ def adjacent(inventories):
 
     landscape = graph.Landscape()
     results['n_adjacent'] = \
-        (inventories.apply(landscape.determine_adjacent_possible)
+        (inventories.apply(landscape.adjacent_possible)
                     .apply(len))
     results.to_csv(inventories_csv, index=False)
 

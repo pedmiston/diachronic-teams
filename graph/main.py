@@ -47,7 +47,7 @@ class Landscape:
                 new_items[frozenset(guess)] = result
         return new_items
 
-    def determine_adjacent_possible(self, inventory):
+    def adjacent_possible(self, inventory):
         """Return a set of recipes obtainable with the given inventory."""
         inv = frozenset(inventory)
         if inv not in self.adjacent_recipes:

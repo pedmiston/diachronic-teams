@@ -18,12 +18,11 @@ TOTEMS_DIR = Path(paths.R_PKG, 'data-raw/totems')
 if not TOTEMS_DIR.isdir():
     TOTEMS_DIR.mkdir()
 
-WORKSHOP_IN_CSV = Path(TOTEMS_DIR, 'Workshop.csv')
-WORKSHOP_OUT_CSV = Path(TOTEMS_DIR, 'WorkshopAnalyzed.csv')
+landscape = graph.Landscape()
 
 
 @task
-def download(ctx, name=None, analyze_after=False):
+def download(ctx, name=None, clear_before=False, analyze_after=False):
     """Download the experiment data from the totems database."""
     available = ['tables', 'subj_info', 'survey']
 
@@ -32,6 +31,10 @@ def download(ctx, name=None, analyze_after=False):
     else:
         assert name in available
         names = [name]
+
+    if clear_before:
+        TOTEMS_DIR.rmtree()
+        TOTEMS_DIR.mkdir()
 
     if 'tables' in names:
         tables()
@@ -98,79 +101,72 @@ def get_worksheet(title):
 
 @task
 def analyze(ctx):
-    """Analyze the totems experiment data."""
-    workshop = pandas.read_csv(WORKSHOP_IN_CSV)
-    workshop = label_player_groups_and_strategies(workshop)
-    workshop = calculate_team_time(workshop)
-    workshop = rolling(workshop)
-    workshop = adjacent(workshop)
-    workshop = difficulty(workshop)
-    workshop.to_csv(WORKSHOP_OUT_CSV, index=False)
+    """Analyze the totems experiment data.
 
-
-def rolling(workshop):
-    """Keep track of rolling variables (e.g., total known inventory).
-
-    Args:
-        workshop: DataFrame with columns TrialTime, WorkshopString,
-                  and WorkShopResult.
+    Splits trials in a Workshop into trials organized by player and
+    trials organized by team. This way we can track team performance
+    and individual performance separately for measures of efficiency.
     """
-    landscape = graph.Landscape()
+    workshop = pandas.read_csv(Path(TOTEMS_DIR, 'Workshop.csv'))
+    workshop = label_teams_and_strategies(workshop)
+    workshop = calculate_team_time(workshop)
 
-    def _rolling(workshop, prefix=''):
-        """Calculate rolling variables for this player or this group."""
-        guess_history = set()
-        guess_history_sizes = []
-        guess_uniqueness = []
+    player_trials = workshop.groupby('ID_Player').apply(rolling_history)
+    team_trials   = workshop.groupby('ID_Group').apply(rolling_history)
 
-        inventory = landscape.starting_inventory()
-        rolling_inventory = []
-        inventory_sizes = []
+    player_trials = determine_adjacent_possible(player_trials)
+    team_trials   = determine_adjacent_possible(team_trials)
 
-        for trial in workshop.sort_values('TeamTime').itertuples():
-            # Record the guess
-            is_unique_guess = trial.WorkShopString not in guess_history
-            if is_unique_guess:
-                guess_history.update({trial.WorkShopString})
-            guess_uniqueness.append(int(is_unique_guess))
-            guess_history_sizes.append(len(guess_history))
+    player_trials.to_csv(Path(TOTEMS_DIR, 'PlayerTrials.csv'), index=False)
+    team_trials.to_csv(Path(TOTEMS_DIR, 'TeamTrials.csv'), index=False)
 
-            # Record the result
-            if trial.WorkShopResult != 0:
-                label = landscape.get_label(trial.WorkShopResult)
-                inventory.update({label})
-            rolling_inventory.append(json.dumps(list(inventory)))
-            inventory_sizes.append(len(inventory))
+def rolling_history(trials):
+    """Keep track of rolling variables, like total known inventory."""
+    trials = trials.copy()
+    rolling_inventory = landscape.starting_inventory()
+    rolling_guesses = set()
 
-        workshop[prefix + 'UniqueGuess'] = guess_uniqueness
-        workshop[prefix + 'NumUniqueGuesses'] = guess_history_sizes
-        workshop[prefix + 'Inventory'] = rolling_inventory
-        workshop[prefix + 'InventorySize'] = inventory_sizes
-        return workshop
+    inventories = []
+    unique_item = []
+    unique_guess = []
 
-    rolling_inventories = (workshop.groupby('ID_Player').apply(_rolling)
-                                   .groupby('ID_Group').apply(_rolling,
-                                                              prefix='Team'))
-    return rolling_inventories
+    for trial in trials.sort_values('TeamTime').itertuples():
+        # Record the guess
+        is_unique_guess = trial.WorkShopString not in rolling_guesses
+        if is_unique_guess:
+            rolling_guesses.update({trial.WorkShopString})
+        unique_guess.append(int(is_unique_guess))
+
+        # Record the result of the guess
+        is_guess_successful = trial.WorkShopResult != 0
+        is_unique_item = 0  # default
+        if is_guess_successful:
+            label = landscape.get_label(trial.WorkShopResult)
+            is_unique_item = label not in rolling_inventory
+            if is_unique_item:
+                rolling_inventory.update({label})
+        unique_item.append(int(is_unique_item))
+
+        # Store
+        inventories.append(list(rolling_inventory))
+
+    trials['Inventory'] = inventories
+    trials['UniqueItem'] = unique_item
+    trials['UniqueGuess'] = unique_guess
+    return trials
 
 
-def adjacent(workshop):
+def determine_adjacent_possible(trials):
     """Calculate the number of adjacent possibilities for each player."""
-    landscape = graph.Landscape()
-    inventories = workshop.Inventory.apply(json.loads)
-    workshop['NumAdjacent'] = \
-        (inventories.apply(landscape.determine_adjacent_possible)
-                    .apply(len))
-    return workshop
+    trials = trials.copy()
+    inventories = trials.Inventory
+    trials['NumAdjacent'] = (trials.Inventory
+                                   .apply(landscape.adjacent_possible)
+                                   .apply(len))
+    return trials
 
 
-def difficulty(workshop):
-    """Calculate the difficulty of a particular stage in the totems game."""
-    workshop['Difficulty'] = workshop.InventorySize/workshop.NumAdjacent
-    return workshop
-
-
-def label_player_groups_and_strategies(frame):
+def label_teams_and_strategies(frame):
     con = db.connect_to_db()
     labels = pandas.read_sql("""
     SELECT ID_Player, Treatment, Table_Player.ID_Group as ID_Group, Ancestor
@@ -189,13 +185,13 @@ def label_player_groups_and_strategies(frame):
     return frame.merge(labels)
 
 
-def calculate_team_time(workshop):
-    workshop = workshop.copy()
+def calculate_team_time(trials):
+    trials = trials.copy()
     session_duration_sec = 25 * 60
     # Convert milliseconds to seconds
-    workshop['PlayerTime'] = workshop.TrialTime/1000
-    workshop['TeamTime'] = workshop.PlayerTime.where(
-        workshop.Treatment != 'Diachronic',
-        workshop.PlayerTime + ((workshop.Generation - 1) * session_duration_sec),
+    trials['PlayerTime'] = trials.TrialTime/1000
+    trials['TeamTime'] = trials.PlayerTime.where(
+        trials.Treatment != 'Diachronic',
+        trials.PlayerTime + ((trials.Generation - 1) * session_duration_sec),
     )
-    return workshop
+    return trials

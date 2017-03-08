@@ -56,10 +56,10 @@ def test_guess_must_match_proportion(landscape):
     assert landscape.evaluate(['Stone', 'Stone']) == 'Small_Stone'
 
 def test_adjacent_possible(landscape):
-    assert len(landscape.determine_adjacent_possible(['Stone'])) == 1
+    assert len(landscape.adjacent_possible(['Stone'])) == 1
 
 def test_adjacent_possible_doesnt_return_existing_items(landscape):
-    recipes = landscape.determine_adjacent_possible(['Stone', 'Small_Stone'])
+    recipes = landscape.adjacent_possible(['Stone', 'Small_Stone'])
     assert len(recipes) == 1
 
 def test_starting_inventory(landscape):
