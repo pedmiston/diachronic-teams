@@ -2,10 +2,10 @@
 % Please edit documentation in R/recoders.R
 \name{recode_groups_by_generation}
 \alias{recode_groups_by_generation}
-\title{Recode strategy and group by generation.}
+\title{Recode strategy and team by generation.}
 \usage{
 recode_groups_by_generation(frame)
 }
 \description{
-Only matters for Diachronic teams. Aides in plotting over time.
+Only matters for Diachronic teams. Aids in plotting over time.
 }

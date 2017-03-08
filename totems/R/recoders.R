@@ -22,18 +22,18 @@ recode_strategy <- function(frame) {
 }
 
 
-#' Recode strategy and group by generation.
+#' Recode strategy and team by generation.
 #'
-#' Only matters for Diachronic teams. Aides in plotting over time.
+#' Only matters for Diachronic teams. Aids in plotting over time.
 #'
 #' @import dplyr
 #' @export
 recode_groups_by_generation <- function(frame) {
   frame %>%
     mutate(
-      ID_Group_Time = ifelse(Strategy == "Diachronic",
-          paste(ID_Group, Generation, sep = "-"), ID_Group),
-      Strategy_Group_Time = ifelse(Strategy == "Diachronic",
+      GenerationTeamID = ifelse(Strategy == "Diachronic",
+          paste(TeamID, Generation, sep = "-"), TeamID),
+      GenerationStrategy = ifelse(Strategy == "Diachronic",
           paste(Strategy, Generation, sep = "-"), Strategy)
     )
 }

@@ -83,27 +83,28 @@ grid.draw(png::readPNG("../docs/irb/methods/screenshots/gameplay.png") %>% raste
 
 ## Performance
 
-```{r performance, fig.height=3, fig.width=8}
+```{r performance, fig.height=4, fig.width=4}
 ```
 
-```{r performance-mods, results = "asis"}
-list(Score = tidy(score_mod),
-     InventorySize = tidy(inventory_mod),
-     DifficultyScore = tidy(difficulty_mod)) %>%
-  bind_rows(.id = "model") %>%
+```{r performance-mods, results="asis"}
+tidy(inventory_mod) %>%
   filter(term != "(Intercept)")
 ```
 
 ```{r performance-over-time, fig.height=6, fig.width=8}
-ggplot(totems_workshops) +
-  aes(TeamTime, InventorySize, group = ID_Group_Time, color = StrategyLabel) +
+ggplot(player_trials) +
+  aes(TeamTime, InventorySize, group = PlayerID, color = StrategyLabel) +
   geom_line(alpha = 0.2) +
-  geom_smooth(aes(group = Strategy_Group_Time), method = "loess", se = FALSE) +
+  geom_smooth(aes(group = GenerationStrategy), method = "loess", se = FALSE) +
   scale_x_time("Team time", breaks = seconds(c(0, 25 * 60, 50 * 60))) +
-  ylab("Inventory size") +
+  ylab("Number of inventions") +
   totems_theme["scale_color_strategy"] +
   totems_theme["base_theme"] +
   theme(legend.position = "top")
+```
+
+```{r, include=FALSE}
+opts_chunk$set(eval = FALSE)
 ```
 
 ## Attempts
