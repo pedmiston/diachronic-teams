@@ -7,8 +7,7 @@ z_score <- function(x) (x - mean(x))/sd(x)
 #' @import tools
 file_stem <- function(x) {
   basename(x) %>%
-    tools::file_path_sans_ext() %>%
-    tolower()
+    tools::file_path_sans_ext()
 }
 
 #' Util function for loading a directory of csvs

@@ -79,7 +79,7 @@ def subj_info(sanitize=True, save_as=True):
 def survey():
     """Download the survey responses from Google Drive."""
     df = get_worksheet('totems-survey-responses')
-    df.to_csv(Path(TOTEMS_DIR, 'PostExperimentSurvey.csv'), index=False)
+    df.to_csv(Path(TOTEMS_DIR, 'Survey.csv'), index=False)
 
 
 def get_worksheet(title):
@@ -101,27 +101,20 @@ def get_worksheet(title):
 
 @task
 def analyze(ctx):
-    """Analyze the totems experiment data.
-
-    Splits trials in a Workshop into trials organized by player and
-    trials organized by team. This way we can track team performance
-    and individual performance separately for measures of efficiency.
-    """
+    """Analyze the totems experiment data."""
     workshop = pandas.read_csv(Path(TOTEMS_DIR, 'Workshop.csv'))
     workshop = label_teams_and_strategies(workshop)
     workshop = calculate_team_time(workshop)
 
-    player_trials = workshop.groupby('ID_Player').apply(rolling_history)
-    team_trials   = workshop.groupby('ID_Group').apply(rolling_history)
+    workshop = workshop.groupby('ID_Player').apply(rolling_history)
+    workshop = workshop.groupby('ID_Group').apply(rolling_history, prefix='Team')
 
-    player_trials = determine_adjacent_possible(player_trials)
-    team_trials   = determine_adjacent_possible(team_trials)
+    workshop = determine_adjacent_possible(workshop)
 
-    player_trials = write_trials_to_csv(player_trials, 'PlayerTrials.csv')
-    team_trials   = write_trials_to_csv(team_trials, 'TeamTrials.csv')
+    write_trials_to_csv(workshop, 'WorkshopAnalyzed.csv')
 
 
-def rolling_history(trials):
+def rolling_history(trials, prefix=''):
     """Keep track of rolling variables, like total known inventory."""
     trials = trials.copy()
     rolling_inventory = landscape.starting_inventory()
@@ -151,9 +144,9 @@ def rolling_history(trials):
         # Store the current rolling inventory
         inventories.append(list(rolling_inventory))
 
-    trials['Inventory'] = inventories
-    trials['UniqueItem'] = unique_item
-    trials['UniqueGuess'] = unique_guess
+    trials[prefix+'Inventory'] = inventories
+    trials[prefix+'UniqueItem'] = unique_item
+    trials[prefix+'UniqueGuess'] = unique_guess
     return trials
 
 
