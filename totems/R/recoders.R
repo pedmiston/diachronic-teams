@@ -29,13 +29,11 @@ recode_strategy <- function(frame) {
 #' @import dplyr
 #' @export
 recode_groups_by_generation <- function(frame) {
-  frame %>%
-    mutate(
-      GenerationTeamID = ifelse(Strategy == "Diachronic",
-          paste(TeamID, Generation, sep = "-"), TeamID),
-      GenerationStrategy = ifelse(Strategy == "Diachronic",
-          paste(Strategy, Generation, sep = "-"), Strategy)
-    )
+  frame %<>% mutate(GenerationStrategy = paste(Strategy, Generation, sep = "-"))
+  if("TeamID" %in% colnames(frame)) {
+    frame %<>% mutate(GenerationTeamID = paste(TeamID, Generation, sep = "-"))
+  }
+  frame
 }
 
 

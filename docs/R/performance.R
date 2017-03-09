@@ -28,22 +28,20 @@ performance_plot <- ggplot(TotemsTeams) +
     axis.title.x = element_blank()
   )
 
-times <- seq(0, 50 * 60, by = 30)
-TotemsTrials %>%
+sampled_inventories <- TotemsTrials %>%
   group_by(TeamID) %>%
-  
+  do({ get_closest_trials_to_times(., times = seq(0, 50 * 60, by = 60)) })
 
-
-time_bin_means <- TotemsTrials %>%
-  group_by(Strategy, TeamTimeBin) %>%
+time_bin_means <- sampled_inventories %>%
+  group_by(Strategy, SampledTime) %>%
   summarize(NumInnovations = mean(NumInnovations)) %>%
   ungroup() %>%
-  recode_strategy()
+  recode_strategy() %>%
+  recode_groups_by_generation()
 
 performance_over_time_plot <- ggplot(TotemsTrials) +
   aes(TeamTime, NumInnovations, color = StrategyLabel) +
-  geom_point(aes(TeamTimeBin), data = time_bin_means, alpha = 0.4) +
-  geom_smooth(aes(group = GenerationStrategy), method = "loess", se = FALSE) +
+  geom_line(aes(SampledTime, group = GenerationStrategy), data = time_bin_means, alpha = 0.4) +
   scale_x_time("Team time", breaks = seconds(c(0, 25 * 60, 50 * 60))) +
   ylab("Number of inventions") +
   totems_theme["scale_color_strategy"] +
