@@ -28,8 +28,11 @@ performance_plot <- ggplot(TotemsTeams) +
     axis.title.x = element_blank()
   )
 
-TotemsTrials %<>%
-  create_time_bins(bin_duration = 30)
+times <- seq(0, 50 * 60, by = 30)
+TotemsTrials %>%
+  group_by(TeamID) %>%
+  
+
 
 time_bin_means <- TotemsTrials %>%
   group_by(Strategy, TeamTimeBin) %>%

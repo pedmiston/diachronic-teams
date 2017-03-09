@@ -17,3 +17,17 @@ test_that("time column can be cut into time bins", {
 test_that("cut times accepts lubridate durations", {
   expect_equal(cut_times(dseconds(c(0.1, 5))), c(0, 1))
 })
+
+context("Get closest trial to a particular time")
+
+test_that("correct trial is selected", {
+  trials <- data_frame(TrialID = c(0, 1), TeamTime = c(0.5, 1.1))
+  trial <- get_closest_trial_to_time(1, trials)
+  expect_equal(trial$TrialID, 0)
+})
+
+test_that("missing trial returns without blowing up", {
+  trials <- data_frame(TrialID = c(0, 1), TeamTime = c(0.5, 1.1))
+  trial <- get_closest_trial_to_time(0.4, trials)
+  expect_equal(trial$TrialID, numeric(0))
+})
