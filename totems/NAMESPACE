@@ -3,6 +3,7 @@
 export(get_closest_trial_to_time)
 export(get_closest_trials_to_times)
 export(get_lm_mod_preds)
+export(guess_generation)
 export(load_totems_theme)
 export(recode_attempt_measures)
 export(recode_groups_by_generation)

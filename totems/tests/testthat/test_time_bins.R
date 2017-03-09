@@ -1,5 +1,6 @@
 library(tidyverse)
 library(lubridate)
+library(magrittr)
 
 context("Get closest trial to a particular time")
 

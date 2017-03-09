@@ -34,7 +34,7 @@ list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
 
 What is the impact of inheritance on the problem solving ability of individuals? Does inheriting an existing solution to a problem simply give a head start on solving it, or does it actually make for more effective problem solving? To answer this question I consider a simple form of inheritance where one person works on a solution to a problem and then passes it on to another person to continue. Because these two individuals are collaborating over time, I refer to them as **diachronic teams**. To understand the impact of inheritance on problem solving, I compare the problem solving abilities of diachronic teams to two alternative ways of allocating the same number of labor hours: **isolated individuals** working for the same total amount of time, and **synchronic teams** made of two individuals collaborating at the same time (Fig. 1).
 
-```{r types-of-time, fig.width=8, fig.align="center", fig.cap="**A.** Three strategies for allocating the same number of labor hours. Panels B and C describe the ways the strategies differ along different dimensions of time. **B.** By controlling for labor hours, diachronic and synchronic teams differ in calendar hours. Diachronic teams spend labor hours at the same rate as isolated individuals. **C.** Isolated individuals have the most time to learn."}
+```{r types-of-time, fig.width=8, fig.align="center", fig.cap="**A.** Three strategies for allocating the same number of labor hours between two people. Panels **B** and **C** quantify the differences between these strategies along different time dimensions. **B.** Labor hours are controlled across the strategies, which forces diachronic and synchronic teams to differ in calendar hours. The rate at which labor hours are spent (per calendar hour) is the same for diachronic teams and isolated individuals. **C.** The difference between isolated individuals and the others is that isolated individuals have the most time for individual learning."}
 ```
 
 ## Problem solving ability and problem solutions
@@ -87,40 +87,21 @@ grid.draw(png::readPNG("../docs/irb/methods/screenshots/gameplay.png") %>% raste
 ```
 
 ```{r performance-plot, fig.height=4, fig.width=8}
-grid.arrange(performance_plot, performance_over_time_plot,
-             widths = c(0.3, 0.7))
+grid.arrange(
+  performance_over_time_plot,
+  performance_plot,
+  widths = c(0.6, 0.4)
+)
 ```
 
-```{r performance-mods, results="asis"}
+```{r inventory-mod, echo = 1}
+inventory_mod <- lm(NumInnovations ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
+                    data = TotemsTeams)
+```
+
+```{r inventory-results, results="asis"}
 tidy(inventory_mod) %>%
   filter(term != "(Intercept)")
-```
-
-## Attempts
-
-```{r attempts-plot, fig.height=3, fig.width=8}
-attempts <- bind_rows(
-  `Individual attempts` = player_performance,
-  `Team attempts` = team_performance,
-  .id = "AttemptMeasure"
-)
-
-attempts_plot <- ggplot(attempts) +
-  aes(StrategyLabel, UniqueGuesses) +
-  geom_point(aes(color = StrategyLabel),
-             position = position_jitter(width = 0.3)) +
-  geom_bar(aes(fill = StrategyLabel),
-           stat = "summary", fun.y = "mean", alpha = 0.6) +
-  facet_wrap("AttemptMeasure") +
-  totems_theme["scale_x_strategy"] +
-  totems_theme["scale_color_strategy"] +
-  totems_theme["scale_fill_strategy"] +
-  totems_theme["base_theme"] +
-  theme(
-    legend.position = "none",
-    panel.grid.major.x = element_blank()
-  )
-attempts_plot
 ```
 
 # Discussion

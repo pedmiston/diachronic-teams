@@ -30,20 +30,23 @@ performance_plot <- ggplot(TotemsTeams) +
 
 sampled_inventories <- TotemsTrials %>%
   group_by(TeamID) %>%
-  do({ get_closest_trials_to_times(., times = seq(0, 50 * 60, by = 60)) })
+  do({ get_closest_trials_to_times(., times = seq(0, 50 * 60, by = 60)) }) %>%
+  filter(!(Strategy == "Synchronic" & SampledTime > 25*60))
 
 time_bin_means <- sampled_inventories %>%
   group_by(Strategy, SampledTime) %>%
   summarize(NumInnovations = mean(NumInnovations)) %>%
   ungroup() %>%
   recode_strategy() %>%
+  guess_generation("SampledTime") %>%
   recode_groups_by_generation()
 
 performance_over_time_plot <- ggplot(TotemsTrials) +
   aes(TeamTime, NumInnovations, color = StrategyLabel) +
-  geom_line(aes(SampledTime, group = GenerationStrategy), data = time_bin_means, alpha = 0.4) +
+  geom_line(aes(SampledTime, group = GenerationStrategy),
+            data = time_bin_means, size = 1.2) +
   scale_x_time("Team time", breaks = seconds(c(0, 25 * 60, 50 * 60))) +
-  ylab("Number of inventions") +
+  scale_y_continuous("Number of inventions", breaks = seq(0, 20, by = 2)) +
   totems_theme["scale_color_strategy"] +
   totems_theme["base_theme"] +
   theme(legend.position = "top")
