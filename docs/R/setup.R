@@ -51,4 +51,15 @@ TeamInventoryGuesses <- TotemsTrials %>%
   left_join(select(TotemsTrials, TeamID, TeamInventory, Strategy, NumTeamInnovations)) %>%
   recode_strategy()
 
+IndividualInventoryGuesses <- TotemsTrials %>%
+  filter(Result == 0) %>%
+  group_by(PlayerID, TeamInventory) %>%
+  summarize(
+    Guesses = n(),
+    Redundancy = 1 - (sum(UniqueGuess)/n())
+  ) %>%
+  ungroup() %>%
+  left_join(select(TotemsTrials, PlayerID, TeamID, TeamInventory, Strategy, NumInnovations)) %>%
+  recode_strategy()
+
 totems_theme <- load_totems_theme()

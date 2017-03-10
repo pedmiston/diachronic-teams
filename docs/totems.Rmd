@@ -94,7 +94,7 @@ grid.arrange(
 )
 ```
 
-```{r inventory-mod, echo = 1}
+```{r inventory-mod, echo=1}
 inventory_mod <- lm(NumInnovations ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
                     data = TotemsTeams)
 ```
@@ -142,12 +142,20 @@ performance_by_attempts_plot
 ```{r efficiency, include=FALSE}
 ```
 
-```{r efficiency-plot}
+```{r efficiency-plot, fig.width=6}
 efficiency_plot
 ```
 
-```{r efficiency-mod, echo=1}
-efficiency_mod <- lmer(
+```{r efficiency-mods, echo=1}
+individual_efficiency_mod <- lmer(
+  Guesses ~
+    Diachronic_v_Synchronic + Diachronic_v_Isolated +
+    (Diachronic_v_Synchronic + Diachronic_v_Isolated|TeamInventory) +
+    NumInnovations +
+    (1|TeamID/PlayerID),
+  data = IndividualInventoryGuesses 
+)
+team_efficiency_mod <- lmer(
   Guesses ~
     Diachronic_v_Synchronic + Diachronic_v_Isolated +
     (Diachronic_v_Synchronic + Diachronic_v_Isolated|TeamInventory) +
@@ -158,7 +166,12 @@ efficiency_mod <- lmer(
 ```
 
 ```{r efficiency-results, results="asis"}
-tidy(efficiency_mod, effects = "fixed")
+bind_rows(
+  `Individual efficiency` = tidy(individual_efficiency_mod, effects = "fixed"),
+  `Team efficiency` = tidy(team_efficiency_mod, effects = "fixed"),
+  .id = "model"
+) %>%
+  filter(term != "(Intercept)")
 ```
 
 ## Redundant guesses
@@ -166,19 +179,28 @@ tidy(efficiency_mod, effects = "fixed")
 ```{r redundancy, include=FALSE}
 ```
 
-```{r redundancy-plot}
+```{r redundancy-plot, fig.width=6}
 redundancy_plot
 ```
 
-```{r redundant-mod, echo=1}
-redundancy_mod <- lmer(
+```{r redundant-mods, echo=1:2}
+individual_redundancy_mod <- lmer(
+  Redundancy ~ Diachronic_v_Synchronic + Diachronic_v_Isolated + (1|PlayerID),
+  data = IndividualInventoryGuesses
+)
+team_redundancy_mod <- lmer(
   Redundancy ~ Diachronic_v_Synchronic + Diachronic_v_Isolated + (1|TeamID),
   data = TeamInventoryGuesses
 )
 ```
 
 ```{r redundant-results, results="asis"}
-tidy(redundancy_mod, effects = "fixed")
+bind_rows(
+  `Individual redundancy` = tidy(team_redundancy_mod, effects = "fixed"),
+  `Team redundancy` = tidy(individual_redundancy_mod, effects = "fixed"),
+  .id = "model"
+) %>%
+  filter(term != "(Intercept)")
 ```
 
 # Discussion
