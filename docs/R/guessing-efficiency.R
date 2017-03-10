@@ -1,35 +1,52 @@
 source("docs/R/setup.R")
 
 # ---- guessing-efficiency
-GuessEfficiencies <- TotemsTrials %>%
-  group_by(TeamID, NumInnovations) %>%
-  summarize(GuessEfficiency = 1/n()) %>%
-  left_join(select(TotemsTeams, TeamID, Strategy)) %>%
+TeamInventoryGuesses <- TotemsTrials %>%
+  group_by(TeamID, TeamInventory) %>%
+  summarize(Guesses = n()) %>%
   ungroup() %>%
+  left_join(select(TotemsTrials, TeamID, TeamInventory, Strategy, NumTeamInnovations)) %>%
   recode_strategy()
 
-data("simulations_difficulty")
+efficiency_mod <- lmer(
+  Guesses ~
+    Diachronic_v_Synchronic + Diachronic_v_Isolated +
+    (Diachronic_v_Synchronic + Diachronic_v_Isolated|TeamInventory) +
+    NumTeamInnovations +
+    (1|TeamID),
+  data = TeamInventoryGuesses
+)
+summary(efficiency_mod)
 
-Simulations <- simulations_difficulty %>%
-  mutate(
-    NumInnovations = inventory_size - 6  # subtract starting items
-  ) %>%
-  select(
-    SimID = sim_id,
-    NumInnovations
-  ) %>%
-  group_by(SimID, NumInnovations) %>%
-  summarize(GuessEfficiency = 1/n()) %>%
-  ungroup() %>%
-  group_by(NumInnovations) %>%
-  summarize(GuessEfficiency = mean(GuessEfficiency))
+mean_inventory_size <- mean(TeamInventoryGuesses$NumTeamInnovations)
+sd_inventory_size <- sd(TeamInventoryGuesses$NumTeamInnovations)
 
-ggplot(GuessEfficiencies) +
-  aes(NumInnovations, GuessEfficiency) +
-  geom_line(aes(color = StrategyLabel), stat = "summary", fun.y = "mean") +
-  geom_line(data = Simulations, color = "black") +
-  scale_x_continuous("Number of inventions") +
-  ylab(expression(paste("Guessing rate (number of ", guesses^{-1}, ")"))) +
-  totems_theme["scale_color_strategy"] +
+mean_sd <- function(x) {
+  mean_x <- mean(x)
+  sd_x <- sd(x)
+  c(mean_x - sd_x, mean_x, mean_x + sd_x)
+}
+
+efficiency_preds <- expand.grid(
+    Strategy = recode_strategy()$Strategy,
+    NumTeamInnovations = mean(TeamInventoryGuesses$NumTeamInnovations),
+    stringsAsFactors = FALSE
+  ) %>%
+  recode_strategy() %>%
+  cbind(., AICcmodavg::predictSE(efficiency_mod, newdata = ., se = TRUE)) %>%
+  rename(Guesses = fit, SE = se.fit)
+
+ggplot(efficiency_preds) +
+  aes(StrategyLabel, Guesses) +
+  geom_bar(aes(fill = StrategyLabel), stat = "identity",
+           alpha = 0.6) +
+  geom_errorbar(aes(ymin = Guesses - SE, ymax = Guesses + SE),
+                width = 0.3) +
+  totems_theme["scale_x_strategy"] +
+  ylab("Guesses per invention") +
+  totems_theme["scale_fill_strategy"] +
   totems_theme["base_theme"] +
-  theme(legend.position = "top")
+  theme(
+    legend.position = "none",
+    panel.grid.major.x = element_blank()
+  )
