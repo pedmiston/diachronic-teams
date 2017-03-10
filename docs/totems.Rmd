@@ -2,7 +2,6 @@
 title: "What is the impact of inheritance on problem solving ability?"
 author: "Pierce Edmiston"
 csl: "apa.csl"
-css: "style.css"
 bibliography: "diachronic-collaboration.bib"
 output:
   html_document:
@@ -34,12 +33,12 @@ list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
 
 What is the impact of inheritance on the problem solving ability of individuals? Does inheriting an existing solution to a problem simply give a head start on solving it, or does it actually make for more effective problem solving? To answer this question I consider a simple form of inheritance where one person works on a solution to a problem and then passes it on to another person to continue. Because these two individuals are collaborating over time, I refer to them as **diachronic teams**. To understand the impact of inheritance on problem solving, I compare the problem solving abilities of diachronic teams to two alternative ways of allocating the same number of labor hours: **isolated individuals** working for the same total amount of time, and **synchronic teams** made of two individuals collaborating at the same time (Fig. 1).
 
-```{r types-of-time, fig.width=8, fig.height=3, fig.align="center", fig.cap="**A.** Three strategies for allocating the same number of labor hours between two people. Panels **B** and **C** quantify the differences between these strategies along different time dimensions. **B.** Labor hours are controlled across the strategies, which forces diachronic and synchronic teams to differ in calendar hours. The rate at which labor hours are spent (per calendar hour) is the same for diachronic teams and isolated individuals. **C.** The difference between isolated individuals and the others is that isolated individuals have the most time for individual learning."}
+```{r types-of-time, fig.width=8, fig.height=3, fig.cap="**A.** Three strategies for allocating the same number of labor hours. Panels **B** and **C** quantify the differences between these strategies along different time dimensions. **B.** Labor hours are controlled across the strategies, which forces diachronic and synchronic teams to differ in calendar hours. The rate at which labor hours are spent (per calendar hour) is the same for diachronic teams and isolated individuals. **C.** The difference between isolated individuals and the others is that isolated individuals have the most time for individual learning."}
 ```
 
 ## Problem solving ability and problem solutions
 
-I measure problem solving ability as efficiency in completing a problem in a specific amount of time. In other research, problem solving is described as the set of cognitive abilities that enable the generation of problem solutions. Here I'm interested less in whether solutions can be generated and more in how efficiently progress is achieved. The goal of this research is to understand the impact of inheritance on problem solving efficiency.
+I measure problem solving ability as efficiency in completing a problem in a specific amount of time. Problem solving research is often described as the set of cognitive abilities that enable the generation of problem solutions. Here I'm interested less in whether solutions can be generated and more in how efficiently progress is achieved. The goal of this research is to understand the impact of inheritance on problem solving efficiency.
 
 \begin{equation}
 problem\ solution = ability \cdot time \cdot inheritance\\
@@ -47,13 +46,22 @@ problem\ solution = ability \cdot time \cdot inheritance\\
 
 ## How might inheritance impact problem solving ability?
 
-Inheritance is hypothesized to impact problem solving ability by putting the problem solver in a part of the problem space they otherwise might not have been likely to reach on their own. Whether or not this is helpful depends on the type of problem being solved.
+Inheritance is hypothesized to impact problem solving ability by starting the problem solver in a part of the problem space they otherwise might not have been likely to reach on their own. Whether or not this is helpful depends on the type of problem being solved.
 
-The type of problem that should benefit from inheritance is a problem where progress is incrementally achieved. For problems with binary or stochastic solutions, inheritance is more difficult to measure, because it's hard to know what can be gained from inheriting an incorrect solution that may not be any closer to the correct solution. Problems with incremental progress are open-ended problems where there are many possible solutions, all varying in degree of success. Solutions to open-ended problems can be inherited and modified, but they can also be created by individuals working alone.
+The type of problem that should benefit from inheritance is a problem where progress is incrementally achieved. For problems that can't be solved incrementally such as problems with binary or stochastic problem spaces the impact of inheritance is more difficult to measure, because it's hard to know what can be gained from inheriting an incorrect solution that may not be any closer to the correct solution. Problems that can be solved incrementally are often open-ended, allowing many possible solutions, all varying in degree of success. Solutions to open-ended problems can be inherited and modified, but they can also be created by individuals working alone.
 
-The other requirement for the type of problem solving investigated in this research is that the problem space is multi-modal. This is required in order to observe the hypothesized benefit from inheritance. The idea is that inheritance is always a cost until the current generation gets stuck or loses steam.
+```{r, cache = FALSE, include = FALSE}
+# Until DiagrammeR supports graphviz images, this figure
+# must be rendered using the dot engine directly.
+crotchet::read_graphviz_chunk("landscape-sample", package = "totems")
+```
+
+```{r landscape-sample, engine = "dot", fig.width = 4, cache = FALSE}
+```
 
 # Methods
+
+Participants solve an invention problem. Participants play a computer game where they are given initial resources and tasked with combining the resources to generate new items (inventions). These inventions can then be combined to yield further inventions in pursuit of building a "sacred totem to appease the gods". More advanced inventions produce more intricate totems, and higher performance scores. For example, to build a totem participants first needed to construct an axe out of three independently invented items: a refined stick used as a handle, a sharpened rock, and string wound from bark fibers (Fig. 2).
 
 ## Participants
 
@@ -62,13 +70,6 @@ Participants are recruited until the final sample comprises 40 teams in each of 
 ## Materials
 
 Participants are tasked with a tool-building competition presented in a digital environment [@Derex:2015cbb]. Individuals combine resources and build ever more complicated tools in order to build "sacred totems to appease the gods". Individuals achieve high scores by traversing the innovation landscape and developing more and more elaborate ways of cutting, carving, and decorating their totems. A sample of the problem space is presented in Fig. 2.
-
-```{r, cache = FALSE, include = FALSE}
-crotchet::read_graphviz_chunk("landscape-sample", package = "totems")
-```
-
-```{r landscape-sample, engine = "dot", fig.width = 4, cache = FALSE}
-```
 
 ## Procedure
 
@@ -86,13 +87,17 @@ grid.draw(png::readPNG("../docs/irb/methods/screenshots/gameplay.png") %>% raste
 ```{r performance, include=FALSE}
 ```
 
-```{r performance-plot, fig.height=4, fig.width=8}
+There are multiple ways to assess performance. The performance measure shown here is the final number of inventions discovered by each team. Fig. 4 shows the accumulation of inventions over time in the three strategies. Results are similar for alternative performance metrics. My prediction was that inheritance in the diachronic teams would result in more efficient problem solving than the other strategies. Instead it appears there were not clear differences between the strategies. If anything, synchronic collaboration appears to be the most efficient way to solve this particular problem.
+
+```{r fig4, fig.height=4, fig.width=8, fig.cap="**Problem solving performance by strategy**. The accumulation of inventions over time is shown on the left. On the right is final team performance. Synchronic teams may have a slight advantage in terms of final performance."}
 grid.arrange(
   performance_over_time_plot,
   performance_plot,
   widths = c(0.6, 0.4)
 )
 ```
+
+### Model
 
 ```{r inventory-mod, echo=1}
 inventory_mod <- lm(NumInnovations ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
@@ -106,12 +111,16 @@ tidy(inventory_mod) %>%
 
 ## Attempts
 
+One of the simplest ways to measure the influence of strategy on performance is to look at the total number of guesses made by participants and teams. If adopting a particular strategy for some reason spurs participants to guess at a faster rate, that strategy might improve final performance even if problem solving ability is unaffected.
+
 ```{r attempts, include=FALSE}
 ```
 
-```{r attempts-plot, fig.width=6}
+```{r fig5, fig.width=6, fig.cap="**Individual and team attempts.** Isolated individuals make the most attempts, but they are given twice the amount of time. If attempts are totaled for all members of a team, synchronic collaboration results in the fastest guessing rate."}
 attempts_plot
 ```
+
+### Models
 
 ```{r attempts-mods, echo=1:2}
 individual_attempts_mod <- lm(
@@ -133,7 +142,7 @@ bind_rows(
   filter(term != "(Intercept)")
 ```
 
-```{r performance-by-attempts-plot, fig.width=6}
+```{r fig6, fig.width=6, fig.cap="**Team attempts predict number of inventions.** Teams that make more attempts tend to discover more inventions. Since synchronic teams make more attempts, they in turn discover more inventions."}
 performance_by_attempts_plot
 ```
 
@@ -142,9 +151,11 @@ performance_by_attempts_plot
 ```{r efficiency, include=FALSE}
 ```
 
-```{r efficiency-plot, fig.width=6}
+```{r fig7, fig.width=6, fig.cap="**Individuals are as inefficient as teams.** Although synchronic teamwork reduces the number of guesses per invention for individuals, the overall number of guesses per invention is about the same across the three strategies."}
 efficiency_plot
 ```
+
+### Models
 
 ```{r efficiency-mods, echo=1}
 individual_efficiency_mod <- lmer(
@@ -179,9 +190,11 @@ bind_rows(
 ```{r redundancy, include=FALSE}
 ```
 
-```{r redundancy-plot, fig.width=6}
+```{r fig8, fig.width=6, fig.cap="**Diachronic teams are the least redundant guessers.** Diachronic teams are less likely to repeat themselves than isolated individuals, and also less likely to repeat their teammate than synchronic teams. Synchronic teams are less likely to repeat an incorrect guess they guessed previously, but more likely to repeat a guess made by their partner."}
 redundancy_plot
 ```
+
+### Models
 
 ```{r redundant-mods, echo=1:2}
 individual_redundancy_mod <- lmer(
