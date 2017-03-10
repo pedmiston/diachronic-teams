@@ -104,6 +104,11 @@ tidy(inventory_mod) %>%
   filter(term != "(Intercept)")
 ```
 
+## Guessing efficiency
+
+```{r guessing-efficiency}
+```
+
 # Discussion
 
 # References
