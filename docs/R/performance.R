@@ -15,8 +15,8 @@ performance_plot <- ggplot(TotemsTeams) +
              alpha = 0.8) +
   geom_bar(aes(fill = StrategyLabel),
            stat = "summary", fun.y = "mean", alpha = 0.6) +
-  geom_errorbar(aes(ymin = NumInnovations - SE, ymax = NumInnovations + SE, color = StrategyLabel),
-                width = 0.2, size = 1.2, data = inventory_preds) +
+  geom_errorbar(aes(ymin = NumInnovations - SE, ymax = NumInnovations + SE),
+                width = 0.2, data = inventory_preds) +
   ylab("Number of inventions") +
   totems_theme["scale_x_strategy"] +
   totems_theme["scale_color_strategy"] +

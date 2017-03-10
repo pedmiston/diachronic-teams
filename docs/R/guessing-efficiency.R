@@ -2,8 +2,12 @@ source("docs/R/setup.R")
 
 # ---- guessing-efficiency
 TeamInventoryGuesses <- TotemsTrials %>%
+  filter(Result == 0) %>%
   group_by(TeamID, TeamInventory) %>%
-  summarize(Guesses = n()) %>%
+  summarize(
+    Guesses = n(),
+    Redundancy = 1 - (sum(TeamUniqueGuess)/n())
+  ) %>%
   ungroup() %>%
   left_join(select(TotemsTrials, TeamID, TeamInventory, Strategy, NumTeamInnovations)) %>%
   recode_strategy()
@@ -16,16 +20,6 @@ efficiency_mod <- lmer(
     (1|TeamID),
   data = TeamInventoryGuesses
 )
-summary(efficiency_mod)
-
-mean_inventory_size <- mean(TeamInventoryGuesses$NumTeamInnovations)
-sd_inventory_size <- sd(TeamInventoryGuesses$NumTeamInnovations)
-
-mean_sd <- function(x) {
-  mean_x <- mean(x)
-  sd_x <- sd(x)
-  c(mean_x - sd_x, mean_x, mean_x + sd_x)
-}
 
 efficiency_preds <- expand.grid(
     Strategy = recode_strategy()$Strategy,
@@ -44,6 +38,31 @@ ggplot(efficiency_preds) +
                 width = 0.3) +
   totems_theme["scale_x_strategy"] +
   ylab("Guesses per invention") +
+  totems_theme["scale_fill_strategy"] +
+  totems_theme["base_theme"] +
+  theme(
+    legend.position = "none",
+    panel.grid.major.x = element_blank()
+  )
+
+# ---- redundant-guesses
+redundancy_mod <- lmer(
+  Redundancy ~ Diachronic_v_Synchronic + Diachronic_v_Isolated + (1|TeamID),
+  data = TeamInventoryGuesses
+)
+
+redundancy_preds <- recode_strategy() %>%
+  cbind(., AICcmodavg::predictSE(redundancy_mod, newdata = ., se = TRUE)) %>%
+  rename(Redundancy = fit, SE = se.fit)
+
+ggplot(redundancy_preds) +
+  aes(StrategyLabel, Redundancy) +
+  geom_bar(aes(fill = StrategyLabel), stat = "identity", alpha = 0.6) +
+  geom_errorbar(aes(ymin = Redundancy - SE, ymax = Redundancy + SE),
+                width = 0.2) +
+  coord_cartesian(ylim = c(0, 1)) +
+  totems_theme["scale_x_strategy"] +
+  scale_y_continuous("Redundancy", labels = scales::percent) +
   totems_theme["scale_fill_strategy"] +
   totems_theme["base_theme"] +
   theme(

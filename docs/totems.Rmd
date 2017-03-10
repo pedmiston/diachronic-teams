@@ -20,8 +20,8 @@ opts_chunk$set(
   warning = FALSE,
   results = "hide",
   fig.path = "totems-figs/",
-  fig.width = 6,
-  fig.height = 3,
+  fig.width = 4,
+  fig.height = 4,
   cache = TRUE,
   cache.path = ".cache.totems/"
 )
@@ -29,12 +29,12 @@ opts_chunk$set(
 list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
 ```
 
-```{r setup}
+```{r setup, cache = FALSE}
 ```
 
 What is the impact of inheritance on the problem solving ability of individuals? Does inheriting an existing solution to a problem simply give a head start on solving it, or does it actually make for more effective problem solving? To answer this question I consider a simple form of inheritance where one person works on a solution to a problem and then passes it on to another person to continue. Because these two individuals are collaborating over time, I refer to them as **diachronic teams**. To understand the impact of inheritance on problem solving, I compare the problem solving abilities of diachronic teams to two alternative ways of allocating the same number of labor hours: **isolated individuals** working for the same total amount of time, and **synchronic teams** made of two individuals collaborating at the same time (Fig. 1).
 
-```{r types-of-time, fig.width=8, fig.align="center", fig.cap="**A.** Three strategies for allocating the same number of labor hours between two people. Panels **B** and **C** quantify the differences between these strategies along different time dimensions. **B.** Labor hours are controlled across the strategies, which forces diachronic and synchronic teams to differ in calendar hours. The rate at which labor hours are spent (per calendar hour) is the same for diachronic teams and isolated individuals. **C.** The difference between isolated individuals and the others is that isolated individuals have the most time for individual learning."}
+```{r types-of-time, fig.width=8, fig.height=3, fig.align="center", fig.cap="**A.** Three strategies for allocating the same number of labor hours between two people. Panels **B** and **C** quantify the differences between these strategies along different time dimensions. **B.** Labor hours are controlled across the strategies, which forces diachronic and synchronic teams to differ in calendar hours. The rate at which labor hours are spent (per calendar hour) is the same for diachronic teams and isolated individuals. **C.** The difference between isolated individuals and the others is that isolated individuals have the most time for individual learning."}
 ```
 
 ## Problem solving ability and problem solutions
@@ -72,7 +72,7 @@ crotchet::read_graphviz_chunk("landscape-sample", package = "totems")
 
 ## Procedure
 
-```{r}
+```{r gameplay}
 grid.draw(png::readPNG("../docs/irb/methods/screenshots/gameplay.png") %>% rasterGrob())
 ```
 
@@ -107,6 +107,37 @@ tidy(inventory_mod) %>%
 ## Guessing efficiency
 
 ```{r guessing-efficiency}
+```
+
+```{r efficiency-mod, echo=1}
+efficiency_mod <- lmer(
+  Guesses ~
+    Diachronic_v_Synchronic + Diachronic_v_Isolated +
+    (Diachronic_v_Synchronic + Diachronic_v_Isolated|TeamInventory) +
+    NumTeamInnovations +
+    (1|TeamID),
+  data = TeamInventoryGuesses
+)
+```
+
+```{r efficiency-results, results="asis"}
+tidy(efficiency_mod, effects = "fixed")
+```
+
+## Redundant guesses
+
+```{r redundant-guesses}
+```
+
+```{r redundant-mod, echo=1}
+redundancy_mod <- lmer(
+  Redundancy ~ Diachronic_v_Synchronic + Diachronic_v_Isolated + (1|TeamID),
+  data = TeamInventoryGuesses
+)
+```
+
+```{r redundant-results, results="asis"}
+tidy(redundancy_mod, effects = "fixed")
 ```
 
 # Discussion
