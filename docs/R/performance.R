@@ -28,19 +28,6 @@ performance_plot <- ggplot(TotemsTeams) +
     axis.title.x = element_blank()
   )
 
-TotemsSampled <- TotemsTrials %>%
-  group_by(TeamID) %>%
-  do({ get_closest_trials_to_times(., times = seq(0, 50 * 60, by = 60)) }) %>%
-  filter(!(Strategy == "Synchronic" & SampledTime > 25*60))
-
-TotemsSampledMeans <- TotemsSampled %>%
-  group_by(Strategy, SampledTime) %>%
-  summarize(NumInnovations = mean(NumInnovations)) %>%
-  ungroup() %>%
-  recode_strategy() %>%
-  guess_generation("SampledTime") %>%
-  recode_groups_by_generation()
-
 performance_over_time_plot <- ggplot(TotemsSampledMeans) +
   aes(TeamTime, NumInnovations, color = StrategyLabel) +
   geom_line(aes(SampledTime, group = GenerationStrategy), size = 1.2) +
@@ -49,4 +36,3 @@ performance_over_time_plot <- ggplot(TotemsSampledMeans) +
   totems_theme["scale_color_strategy"] +
   totems_theme["base_theme"] +
   theme(legend.position = "top")
-performance_over_time_plot

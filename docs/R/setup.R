@@ -25,4 +25,30 @@ TotemsPlayers %<>%
 TotemsTeams %<>%
   recode_strategy()
 
+# Get team inventories at particular time points
+TotemsSampled <- TotemsTrials %>%
+  group_by(TeamID) %>%
+  do({ get_closest_trials_to_times(., times = seq(0, 50 * 60, by = 60)) }) %>%
+  filter(!(Strategy == "Synchronic" & SampledTime > 25*60))
+
+TotemsSampledMeans <- TotemsSampled %>%
+  group_by(Strategy, SampledTime) %>%
+  summarize(NumInnovations = mean(NumInnovations)) %>%
+  ungroup() %>%
+  recode_strategy() %>%
+  guess_generation("SampledTime") %>%
+  recode_groups_by_generation()
+
+# Summarize guesses at each stage (each inventory)
+TeamInventoryGuesses <- TotemsTrials %>%
+  filter(Result == 0) %>%
+  group_by(TeamID, TeamInventory) %>%
+  summarize(
+    Guesses = n(),
+    Redundancy = 1 - (sum(TeamUniqueGuess)/n())
+  ) %>%
+  ungroup() %>%
+  left_join(select(TotemsTrials, TeamID, TeamInventory, Strategy, NumTeamInnovations)) %>%
+  recode_strategy()
+
 totems_theme <- load_totems_theme()

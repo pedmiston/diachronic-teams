@@ -104,9 +104,46 @@ tidy(inventory_mod) %>%
   filter(term != "(Intercept)")
 ```
 
+## Attempts
+
+```{r attempts, include=FALSE}
+```
+
+```{r attempts-plot, fig.width=6}
+attempts_plot
+```
+
+```{r attempts-mods, echo=1:2}
+individual_attempts_mod <- lm(
+  NumGuesses ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
+  data = TotemsPlayers
+)
+team_attempts_mod <- lm(
+  NumGuesses ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
+  data = TotemsTeams
+)
+```
+
+```{r attempts-results, results="asis"}
+bind_rows(
+  `Individual attempts` = tidy(individual_attempts_mod),
+  `Team attempts` = tidy(team_attempts_mod),
+  .id = "model"
+) %>%
+  filter(term != "(Intercept)")
+```
+
+```{r performance-by-attempts-plot, fig.width=6}
+performance_by_attempts_plot
+```
+
 ## Guessing efficiency
 
-```{r guessing-efficiency}
+```{r efficiency, include=FALSE}
+```
+
+```{r efficiency-plot}
+efficiency_plot
 ```
 
 ```{r efficiency-mod, echo=1}
@@ -126,7 +163,11 @@ tidy(efficiency_mod, effects = "fixed")
 
 ## Redundant guesses
 
-```{r redundant-guesses}
+```{r redundancy, include=FALSE}
+```
+
+```{r redundancy-plot}
+redundancy_plot
 ```
 
 ```{r redundant-mod, echo=1}
