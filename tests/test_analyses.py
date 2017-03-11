@@ -18,8 +18,8 @@ def workshop():
 
 
 def test_rolling_inventory(workshop):
-    result = tasks.exps.rolling(workshop)
-    assert result.NumUniqueGuesses.tolist() == [1, 1, 2]
+    result = tasks.exps.rolling_history(workshop)
+    assert result.UniqueGuess.tolist() == [1, 0, 1]
 
 
 def test_calculate_team_time(workshop):
