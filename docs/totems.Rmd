@@ -216,6 +216,15 @@ bind_rows(
   filter(term != "(Intercept)")
 ```
 
+## Trajectories
+
+```{r trajectories, includ=FALSE}
+```
+
+```{r fig9}
+trajectory_count_plot
+```
+
 # Discussion
 
 # References
