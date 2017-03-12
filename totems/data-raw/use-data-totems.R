@@ -29,6 +29,7 @@ deidentify_group_id <- . %>% left_join(team_id_map) %>% select(-ID_Group)
 Group    %<>% deidentify_group_id()
 Player   %<>% deidentify_group_id()
 Workshop %<>% deidentify_group_id()
+Trajectories %<>% deidentify_group_id()
 
 # Recode player id -------------------------------------------------------------
 # Create a new PlayerID variable that is a character instead of a number.
@@ -43,6 +44,7 @@ recode_player_id <- . %>% left_join(player_id_map) %>% select(-ID_Player)
 SubjInfo %<>% recode_player_id()
 Player   %<>% recode_player_id()
 Workshop %<>% recode_player_id()
+Trajectories %<>% recode_player_id()
 Survey %<>% rename(ID_Player = `Participant ID`) %>% recode_player_id()
 
 # Select valid participants ----------------------------------------------------
@@ -53,6 +55,7 @@ filter_valid_participants <- . %>% filter(PlayerID %in% valid_participant_ids)
 Player   %<>% filter_valid_participants()
 Workshop %<>% filter_valid_participants()
 Survey   %<>% filter_valid_participants()
+Trajectories %<>% filter_valid_participants()
 
 # Rename treatment to strategy -------------------------------------------------
 Group %<>% rename(Strategy = Treatment)
@@ -72,6 +75,7 @@ filter_valid_teams <- . %>% filter(!(TeamID %in% incomplete_diachronic_teams))
 Group    %<>% filter_valid_teams()
 Player   %<>% filter_valid_teams()
 Workshop %<>% filter_valid_teams()
+Trajectories %<>% filter_valid_teams()
 
 # Identify players within teams and generations --------------------------------
 player_generations <- Player %>%
@@ -84,6 +88,7 @@ identify_players_in_teams <- . %>% left_join(player_generations)
 
 Player   %<>% identify_players_in_teams()
 Workshop %<>% identify_players_in_teams()
+Trajectories %<>% identify_players_in_teams()
 
 # Convert trial times in seconds to R native time objects ----------------------
 convert_times <- . %>%
@@ -155,5 +160,6 @@ use_data(
   TotemsTrials,
   TotemsPlayers,
   TotemsTeams,
+  Trajectories,
   overwrite = TRUE
 )

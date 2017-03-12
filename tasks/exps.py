@@ -113,6 +113,9 @@ def analyze(ctx):
 
     write_trials_to_csv(workshop, 'WorkshopAnalyzed.csv')
 
+    trajectories = extract_trajectories(workshop)
+    trajectories.to_csv(Path(TOTEMS_DIR, 'Trajectories.csv'), index=False)
+
 
 def rolling_history(trials, prefix=''):
     """Keep track of rolling variables, like total known inventory."""
@@ -204,3 +207,25 @@ def freeze_inventories(trials):
 
 def freeze_inventory(inventory):
     return json.dumps(sorted(inventory))
+
+
+def extract_trajectories(workshop):
+    workshop = workshop.copy()
+    player_trajectories = (workshop.groupby('ID_Player')
+                                   .apply(convert_to_trajectory)
+                                   .reset_index(level=0))
+    unique_trajectories = player_trajectories.Trajectory.unique()
+    trajectory_labels = {trajectory: ix
+                         for ix, trajectory in enumerate(unique_trajectories)}
+    player_trajectories['TrajectoryID'] = \
+        player_trajectories.Trajectory.map(trajectory_labels)
+    return label_teams_and_strategies(player_trajectories)
+
+
+def convert_to_trajectory(player_workshop):
+    ordered_inventions = (player_workshop.ix[player_workshop.UniqueItem == 1]
+                                         .sort_values('TrialTime')
+                                         .WorkShopResult
+                                         .tolist())
+    trajectory_str = '-'.join(map(str, ordered_inventions))
+    return pandas.DataFrame({'Trajectory': trajectory_str}, index=[0])

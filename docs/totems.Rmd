@@ -50,6 +50,10 @@ Inheritance is hypothesized to impact problem solving ability by starting the pr
 
 The type of problem that should benefit from inheritance is a problem where progress is incrementally achieved. For problems that can't be solved incrementally such as problems with binary or stochastic problem spaces the impact of inheritance is more difficult to measure, because it's hard to know what can be gained from inheriting an incorrect solution that may not be any closer to the correct solution. Problems that can be solved incrementally are often open-ended, allowing many possible solutions, all varying in degree of success. Solutions to open-ended problems can be inherited and modified, but they can also be created by individuals working alone.
 
+# Methods
+
+The problem being solved is an invention problem. Participants play a computer game where they are given initial resources and tasked with combining the resources to generate new items (inventions). These inventions can then be combined to yield further inventions in pursuit of building a "sacred totem to appease the gods". More advanced inventions produce more intricate totems, and higher performance scores. For example, to build a totem participants first needed to construct an axe out of three independently invented items: a refined stick used as a handle, a sharpened rock, and string wound from bark fibers (Fig. 2).
+
 ```{r, cache = FALSE, include = FALSE}
 # Until DiagrammeR supports graphviz images, this figure
 # must be rendered using the dot engine directly.
@@ -58,10 +62,6 @@ crotchet::read_graphviz_chunk("landscape-sample", package = "totems")
 
 ```{r landscape-sample, engine = "dot", fig.width = 4, cache = FALSE}
 ```
-
-# Methods
-
-Participants solve an invention problem. Participants play a computer game where they are given initial resources and tasked with combining the resources to generate new items (inventions). These inventions can then be combined to yield further inventions in pursuit of building a "sacred totem to appease the gods". More advanced inventions produce more intricate totems, and higher performance scores. For example, to build a totem participants first needed to construct an axe out of three independently invented items: a refined stick used as a handle, a sharpened rock, and string wound from bark fibers (Fig. 2).
 
 ## Participants
 
@@ -111,10 +111,10 @@ tidy(inventory_mod) %>%
 
 ## Attempts
 
-One of the simplest ways to measure the influence of strategy on performance is to look at the total number of guesses made by participants and teams. If adopting a particular strategy for some reason spurs participants to guess at a faster rate, that strategy might improve final performance even if problem solving ability is unaffected.
-
 ```{r attempts, include=FALSE}
 ```
+
+One of the simplest ways to measure the influence of strategy on performance is to look at the total number of guesses made by participants and teams. If adopting a particular strategy for some reason spurs participants to guess at a faster rate, that strategy might improve final performance even if problem solving ability is unaffected.
 
 ```{r fig5, fig.width=6, fig.cap="**Individual and team attempts.** Isolated individuals make the most attempts, but they are given twice the amount of time. If attempts are totaled for all members of a team, synchronic collaboration results in the fastest guessing rate."}
 attempts_plot
@@ -214,6 +214,15 @@ bind_rows(
   .id = "model"
 ) %>%
   filter(term != "(Intercept)")
+```
+
+## Trajectories
+
+```{r trajectories, includ=FALSE}
+```
+
+```{r fig9}
+trajectory_count_plot
 ```
 
 # Discussion
