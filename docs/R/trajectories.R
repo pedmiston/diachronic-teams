@@ -8,14 +8,22 @@ Trajectories %<>%
 
 TrajectoryCounts <- Trajectories %>%
   group_by(Strategy) %>%
-  summarize(NumUniqueTrajectories = length(unique(TrajectoryID))) %>%
+  summarize(
+    NumUniqueTrajectories = length(unique(TrajectoryID)),
+    NumTeams = length(unique(TeamID)),
+    UniqueTrajectoriesPerTeam = NumUniqueTrajectories/NumTeams
+  ) %>%
   recode_strategy()
 
 trajectory_count_plot <- ggplot(TrajectoryCounts) +
-  aes(StrategyLabel, NumUniqueTrajectories) +
-  geom_bar(aes(fill = StrategyLabel), stat = "identity") +
-  ylab("Number of unique trajectories") +
+  aes(StrategyLabel, UniqueTrajectoriesPerTeam) +
+  geom_bar(aes(fill = StrategyLabel), stat = "identity", alpha = 0.6) +
+  ylab("Unique trajectories discovered per team") +
   totems_theme["scale_x_strategy"] +
   totems_theme["scale_fill_strategy"] +
   totems_theme["base_theme"] +
-  theme(legend.position = "none")
+  theme(
+    legend.position = "none",
+    panel.grid.major.x = element_blank()
+  )
+        

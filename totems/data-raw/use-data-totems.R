@@ -61,7 +61,7 @@ Trajectories %<>% filter_valid_participants()
 Group %<>% rename(Strategy = Treatment)
 
 # Select valid teams -----------------------------------------------------------
-# Remove incomplete diachronic teams
+# Create a list of incomplete diachronic teams
 incomplete_diachronic_teams <- Player %>%
   left_join(rename(Group, ExpectedSize = Size)) %>%
   filter(Strategy == "Diachronic") %>%
@@ -71,8 +71,20 @@ incomplete_diachronic_teams <- Player %>%
   filter(TeamSize != ExpectedSize) %>%
   .$TeamID
 
-filter_valid_teams <- . %>% filter(!(TeamID %in% incomplete_diachronic_teams))
-Group    %<>% filter_valid_teams()
+# Label diachronic teams with invalid generation
+invalid_diachronic_teams <- read_csv("data-raw/verified-diachronic-teams.csv") %>%
+  deidentify_group_id() %>%
+  # Count as "invalid" teams that are not valid
+  # and teams whose validity is unknown.
+  filter(ValidTeam == "n" | ValidTeam == "u") %>%
+  .$TeamID %>%
+  unique()
+
+filter_valid_teams <- . %>%
+  filter(!(TeamID %in% incomplete_diachronic_teams),
+         !(TeamID %in% invalid_diachronic_teams))
+
+Group    %>% filter_valid_teams()
 Player   %<>% filter_valid_teams()
 Workshop %<>% filter_valid_teams()
 Trajectories %<>% filter_valid_teams()
