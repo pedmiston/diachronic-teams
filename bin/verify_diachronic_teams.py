@@ -31,5 +31,5 @@ diachronic_times['GroupTime'] = pandas.to_datetime(diachronic_times.ID_Group,
 diachronic_times['PlayerEndTime'] = \
     pandas.to_datetime(diachronic_times.SurveySubmit)
 
-diachronic_times = diachronic_times[['ID_Player', 'GroupTime', 'PlayerEndTime']]
+diachronic_times = diachronic_times[['ID_Player', 'ID_Group', 'GroupTime', 'PlayerEndTime']]
 diachronic_times.to_csv('diachronic_times.csv', index=False)
