@@ -224,7 +224,7 @@ bind_rows(
 
 ## Trajectories
 
-```{r trajectories, includ=FALSE}
+```{r trajectories, include=FALSE}
 ```
 
 ```{r fig9}
