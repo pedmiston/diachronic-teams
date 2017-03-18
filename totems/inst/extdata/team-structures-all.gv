@@ -5,40 +5,64 @@ digraph {
   fontname=helvetica;
   // bgcolor=transparent;
 
-  node[fontname=helvetica; label=""; style=filled];
+  node[fontname=helvetica; label=""; style=filled; shape=circle];
 
   // Set cluster order (top to bottom) by initializing
   // nodes in each cluster starting from bottom to top
   s1, solo, d1;
 
-  // Shapes are projects
-  d1, d2, solo, s1, s2[shape=circle];
-
   // Colors are people
-  s1[fillcolor="#66C2A5"];
-  s2[fillcolor="#b3e2cd"];
-  d1[fillcolor="#8DA0CB"];
-  d2[fillcolor="#cbd5e8"];
-  solo[fillcolor="#FC8D62"];
+  d1[fillcolor="#2171b5"];
+  d2[fillcolor="#6baed6"];
+  d3[fillcolor="#bdd7e7"];
+  d4[fillcolor="#eff3ff"];
+  s1[fillcolor="#238b45"];
+  s2[fillcolor="#74c476"];
+  s4_1[fillcolor="#238b45"];
+  s4_2[fillcolor="#74c476"];
+  s4_3[fillcolor="#bae4b3"];
+  s4_4[fillcolor="#edf8e9"];
+  solo, solo_s1[fillcolor="#FC8D62"];
 
   // Invisible last nodes
-  dinv1, soloinv1, sinv1, sinv2[style=invis, width=0];
-
+  dinv1, soloinv1, soloinv2, sinv1, sinv2, s4inv1, s4inv2, s4inv3, s4inv4[style=invis, width=0];
 
   subgraph cluster1 {
     label="Diachronic";
-    d1 -> d2 -> dinv1;
+    d1 -> d2 -> d3 -> d4 -> dinv1;
   }
 
   subgraph cluster2 {
     label="Isolated";
     solo -> soloinv1[minlen=2];
+    solo_s1 -> solo_s2 -> solo_s3 -> solo_s4 -> soloinv2;
+
+    solo_s2, solo_s3, solo_s4[style=invis, width=0.2];
   }
 
   subgraph cluster3 {
     label="Synchronic";
-    s1 -> sinv1;
-    s2 -> sinv2;
+    rankdir=TB;
+
+    subgraph cluster3a {
+      label="";
+      s1 -> sinv1;
+      s2 -> sinv2;
+    }
+
+    subgraph cluster3b {
+      label="";
+      s4_1 -> s4inv1;
+      s4_2 -> s4inv2;
+      s4_3 -> s4inv3;
+      s4_4 -> s4inv4;
+    }
+
+    {edge[style=invis]
+      {sinv1 sinv2} -> {s4_1 s4_2}
+    }
+
+
   }
 
 }
