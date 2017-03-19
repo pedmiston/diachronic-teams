@@ -1,0 +1,39 @@
+---
+title: "Proposal"
+author: "Pierce Edmiston"
+csl: "apa.csl"
+bibliography: "diachronic-collaboration.bib"
+output:
+  html_document:
+    theme: flatly
+---
+
+```{r, include=FALSE}
+library(knitr)
+opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  fig.path = "proposal-figs/"
+)
+
+library(crotchet)
+read_all_graphviz_chunks("totems")
+```
+
+# General Methods
+
+```{r team-structures-all, fig.width=3, engine="dot"}
+```
+
+# Experiment 1
+
+```{r team-structures, fig.width=1.5, engine="dot"}
+```
+
+# Experiment 2
+
+```{r team-structures-exp2, fig.width=2, engine="dot"}
+```
+
+# General Discussion

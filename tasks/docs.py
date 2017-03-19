@@ -4,7 +4,7 @@ from glob import glob
 from invoke import task
 from unipath import Path
 
-from .paths import PROJ
+from .paths import PROJ, R_PKG
 
 
 @task
@@ -46,10 +46,11 @@ def reset(ctx, name, verbose=False):
 @task(help=dict(name='If name is "list", list available figure names.'))
 def img(ctx, name, output=None, ext='png', dpi=300):
     """Create an image and put it in the "img/" dir."""
+    EXTDATA = Path(R_PKG, 'inst/extdata/')
     if name == 'list':
-        print('\n'.join(Path('evoteams/inst/extdata/').listdir()))
+        print('\n'.join(EXTDATA.listdir('*.gv', names_only=True)))
         return
-    src = Path('evoteams/inst/extdata/{}.gv'.format(name))
+    src = Path(EXTDATA, '{}.gv'.format(name))
     dst = Path('img/{}.{}'.format(output or name, ext))
     ctx.run('dot -T{} -Gdpi={} -o {} {}'.format(ext, dpi, dst, src))
 
