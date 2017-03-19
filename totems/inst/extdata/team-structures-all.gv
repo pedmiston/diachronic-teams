@@ -22,7 +22,8 @@ digraph {
   s4_2[fillcolor="#8DA0CB"];
   s4_3[fillcolor="#A1B1D4"];
   s4_4[fillcolor="#B6C2DD"];
-  solo, solo_s1[fillcolor="#FC8D62"];
+  solo[fillcolor="#FC8D62"];
+  solo_s1[fillcolor="#FCA17E"];
 
   // Invisible last nodes
   dinv1, soloinv1, soloinv2, sinv1, sinv2, s4inv1, s4inv2, s4inv3, s4inv4[style=invis, width=0];
