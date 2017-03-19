@@ -12,16 +12,16 @@ digraph {
   s1, solo, d1;
 
   // Colors are people
-  d1[fillcolor="#2171b5"];
-  d2[fillcolor="#6baed6"];
-  d3[fillcolor="#bdd7e7"];
-  d4[fillcolor="#eff3ff"];
-  s1[fillcolor="#238b45"];
-  s2[fillcolor="#74c476"];
-  s4_1[fillcolor="#238b45"];
-  s4_2[fillcolor="#74c476"];
-  s4_3[fillcolor="#bae4b3"];
-  s4_4[fillcolor="#edf8e9"];
+  d1[fillcolor="#549F88"];
+  d2[fillcolor="#66C2A5"];
+  d3[fillcolor="#81CDB5"];
+  d4[fillcolor="#9DD8C5"];
+  s1[fillcolor="#7483A7"];
+  s2[fillcolor="#8DA0CB"];
+  s4_1[fillcolor="#7483A7"];
+  s4_2[fillcolor="#8DA0CB"];
+  s4_3[fillcolor="#A1B1D4"];
+  s4_4[fillcolor="#B6C2DD"];
   solo, solo_s1[fillcolor="#FC8D62"];
 
   // Invisible last nodes
