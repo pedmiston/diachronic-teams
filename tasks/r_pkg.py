@@ -40,7 +40,7 @@ def install(ctx, use_data_too=False, make_graph=False,
 
     if make_graph:
         tasks.graph.tree(ctx, view_off=True)
-        tasks.graph.tree(ctx, max_generation=4, name='landscape-sample',
+        tasks.graph.tree(ctx, max_generation=6, name='landscape-sample',
                          view_off=True)
         tasks.graph.tree(ctx, max_number=100, name='landscape-tools',
                          view_off=True)

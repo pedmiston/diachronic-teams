@@ -19,7 +19,7 @@ def tree(ctx, max_number=None, max_generation=None, name=None, view_off=False):
     Examples:
 
         $ inv graph.tree
-        $ inv graph.tree -n landscape-sample --max-generation 5
+        $ inv graph.tree -n landscape-sample --max-generation 6
         $ inv graph.tree -n landscape-tools --max-number 100
     """
     viz = graph.make_graphviz(image_dir=ITEM_IMAGES,

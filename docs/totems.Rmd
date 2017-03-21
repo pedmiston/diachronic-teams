@@ -53,7 +53,6 @@ But there is also a sense in which new perspectives on a problem might be necess
 ## Problem solving efficiency
 
 I measure problem solving ability as efficiency in completing a problem in a specific amount of time. Problem solving research is often described as the set of cognitive abilities that enable the generation of problem solutions. Here I'm interested less in whether solutions can be generated and more in how efficiently progress is achieved. The goal of this research is to understand the impact of inheritance on problem solving efficiency.
-
 \begin{equation}
 problem\ solution = ability \times time = inheritance\\
 problem\ solution_{additive} = inheritance + ability \times time\\
@@ -67,6 +66,8 @@ Inheritance is hypothesized to impact problem solving ability by starting the pr
 The type of problem that should benefit from inheritance is a problem where progress is incrementally achieved. For problems that can't be solved incrementally such as problems with binary or stochastic problem spaces the impact of inheritance is more difficult to measure, because it's hard to know what can be gained from inheriting an incorrect solution that may not be any closer to the correct solution. Problems that can be solved incrementally are often open-ended, allowing many possible solutions, all varying in degree of success. Solutions to open-ended problems can be inherited and modified, but they can also be created by individuals working alone.
 
 # Methods
+
+<!-- Describe the problem space. -->
 
 Participants play a computer game where they are given initial resources and tasked with combining the resources to generate new items (inventions). These inventions can then be combined to yield further inventions in pursuit of building a "sacred totem to appease the gods". More advanced inventions produce more intricate totems, and higher performance scores. For example, to build a totem, participants first needed to construct an axe out of three independently invented items: a refined stick used as a handle, a sharpened rock, and string wound from bark fibers (Fig. 2).
 
@@ -89,7 +90,7 @@ Participants are tasked with a tool-building competition presented in a digital 
 
 ## Procedure
 
-```{r gameplay}
+```{r gameplay, fig.width=8, fig.height=6}
 grid.draw(png::readPNG("../docs/irb/methods/screenshots/gameplay.png") %>% rasterGrob())
 ```
 
