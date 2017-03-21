@@ -71,13 +71,7 @@ The type of problem that should benefit from inheritance is a problem where prog
 
 Participants play a computer game where they are given initial resources and tasked with combining the resources to generate new items (inventions). These inventions can then be combined to yield further inventions in pursuit of building a "sacred totem to appease the gods". More advanced inventions produce more intricate totems, and higher performance scores. For example, to build a totem, participants first needed to construct an axe out of three independently invented items: a refined stick used as a handle, a sharpened rock, and string wound from bark fibers (Fig. 2).
 
-```{r, cache = FALSE, include = FALSE}
-# Until DiagrammeR supports graphviz images, this figure
-# must be rendered using the dot engine directly.
-crotchet::read_graphviz_chunk("landscape-sample", package = "totems")
-```
-
-```{r landscape-sample, engine = "dot", fig.width = 4, cache = FALSE}
+```{r sample-landscape}
 ```
 
 ## Participants
