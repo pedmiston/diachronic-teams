@@ -1,11 +1,14 @@
 ---
 title: "What is the impact of inheritance on problem solving ability?"
 author: "Pierce Edmiston"
+abstract: |
+  Does inheriting an existing but incomplete solution to a problem simply give a head start on solving it or does it actually change the way the problem is solved? In the inheritance condition, a person works on a solution to a problem before passing it on to be inherited by someone else to continue. Because the two people in this exchange are working together, I refer to them as **diachronic teams**. This research compares the problem solving abilities of Diachronic teams organized around inheritance to other ways of allocating the same number of labor hours, namely Synchronic teams working in parallel and Isolated individuals working for the same total amount of time. Comparing the relative efficiencies of these three strategies will reveal the influence of inheritance on problem solving.
 csl: "apa.csl"
 bibliography: "diachronic-collaboration.bib"
 output:
   html_document:
     theme: flatly
+    css: style.css
     toc: true
     toc_depth: 2
     toc_float: true
@@ -36,18 +39,25 @@ list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
 
 # Introduction
 
-What is the impact of inheritance on the problem solving ability of individuals? Does inheriting an existing solution to a problem simply give a head start on solving it, or does it actually make for more effective problem solving? To answer this question I consider a simple form of inheritance where one person works on a solution to a problem and then passes it on to another person to continue. Because these two individuals are collaborating over time, I refer to them as **diachronic teams**. To understand the impact of inheritance on problem solving, I compare the problem solving abilities of diachronic teams to two alternative ways of allocating the same number of labor hours: **isolated individuals** working for the same total amount of time, and **synchronic teams** made of two individuals collaborating at the same time (Fig. 1).
+What is the impact of inheritance on the problem solving ability of individuals? Does inheriting an existing but partial solution to a problem simply give a head start on solving it, or does it actually make for more effective problem solving? To answer this question I consider a simple form of inheritance where one person works on a solution to a problem and then passes it on to another person to continue. Because these two individuals are collaborating over time to solve the same problem, I refer to them as **diachronic teams**. To understand the impact of inheritance on problem solving, I compare the problem solving abilities of diachronic teams to two alternative ways of allocating the same number of labor hours: **isolated individuals** working for the same total amount of time, and **synchronic teams** made of two individuals collaborating at the same time (Fig. 1).
 
-```{r types-of-time, fig.width=8, fig.height=3, fig.cap="**Left panel.** Three strategies for allocating the same number of labor hours. The other panels show the differences between these strategies along different time dimensions. **Middle.** Relationship between labor hours and calendar hours. Labor hours are being controlled across the strategies, which forces diachronic and synchronic teams to differ in calendar hours. The rate at which labor hours are spent (per calendar hour) is the same for diachronic teams and isolated individuals. **Right.** Differences between teams in terms of time for individual learning. Isolated individuals have the most time for individual learning."}
+```{r types-of-time, fig.width=8, fig.height=3, fig.cap="**Left panel.** Three strategies for allocating the same number of labor hours. The experimental condition is the **diachronic strategy** where members of a team work one at a time and pass the results on to the next generation. The other strategies are control conditions, comprising isolated individuals working alone and synchronic teams working in parallel. The other panels show the differences between these strategies along continuous dimensions of time. **Middle.** Relationship between labor hours and calendar hours. Labor hours are being controlled across the strategies, which forces diachronic and synchronic teams to differ in calendar hours. The rate at which labor hours are spent (per calendar hour) is the same for diachronic teams and isolated individuals. **Right.** Differences between teams in terms of time for individual learning. Isolated individuals have the most time for individual learning."}
 ```
+
+The reason it's important to understand the impact of inheritance on problem solving is because inheritance is hypothesized to be one of the most important mechanisms of human cultural evolution, and yet we don't know it's impact on problem solving. The ability to propagate innovations across generations is foundational to the evolution of technology. Indeed, human cultures exhibit a ratcheting effect such that innovations are rarely lost, allowing improvements to accumulate even gradually and even without prior direction. By calling this process evolutionary, it is intended to imply that ordered i.e. non-random change may accumulate even through a random generation process. Human cultures are more equipped to capitalize on a lucky mutation than any form of biological evolution through sexual reproduction. However, this raises the question of whether human cultures succeed because they are able to retain even rare innovations or because they have the cognitive capacity to generate the innovations in the first place.
+
+Many researchers in cultural evolution prioritize the role of cultural inheritance in explaining the survivability of individuals over individual intelligences. The basic idea is that cultures can retain generations of discovery such that without the influence of culture, many individuals simply wouldn't be able to survive, regardless of how intelligent they are by today's standards. This perspective puts individual intelligence on a historical timescale: even if an individual was smart enough to rediscover on their own many of the things that might have been passed on from an ancestor, there simply wouldn't be enough time to do everything in a single lifetime. On this view the benefit to cumulative culture is that it gives people a head start on solving a problem without necessarily affecting underlying problem solving ability.
+
+But there is also a sense in which new perspectives on a problem might be necessary in order to generate novel innovations. Inevitably an individual working alone might get stuck and be unable to generate the necessary solution to a problem. In many cases, problem solvers can get fixated on particular ways of (incorrectly) solving a problem, and have difficulty seeing the problem with fresh eyes. In these cases, a new generation of problem solvers, might actually solve a problem differently than one who had come to the same point through a different learning trajectory. This research is designed to elicit different trajectories through the same problem space, some achieved individually and some inherited from others. The critical test is whether inheritance can be a more efficient method for discovering problem solutions than alternative ways of allocating the same number of labor hours.
 
 ## Problem solving efficiency
 
 I measure problem solving ability as efficiency in completing a problem in a specific amount of time. Problem solving research is often described as the set of cognitive abilities that enable the generation of problem solutions. Here I'm interested less in whether solutions can be generated and more in how efficiently progress is achieved. The goal of this research is to understand the impact of inheritance on problem solving efficiency.
 
 \begin{equation}
-problem\ solution = inheritance + ability \cdot time\\
-problem\ solution = inheritance \cdot ability \cdot time\\
+problem\ solution = ability \times time = inheritance\\
+problem\ solution_{additive} = inheritance + ability \times time\\
+problem\ solution_{interactive} = inheritance \times ability \times time\\
 \end{equation}
 
 ## Proposed mechanism
@@ -170,7 +180,7 @@ individual_efficiency_mod <- lmer(
     (Diachronic_v_Synchronic + Diachronic_v_Isolated|TeamInventory) +
     NumInnovations +
     (1|TeamID/PlayerID),
-  data = IndividualInventoryGuesses 
+  data = IndividualInventoryGuesses
 )
 team_efficiency_mod <- lmer(
   Guesses ~

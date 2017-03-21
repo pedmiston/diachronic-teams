@@ -64,7 +64,7 @@ gg_person <- ggplot(time) +
         panel.grid.major.x = element_blank())
 
 gridExtra::grid.arrange(
-  read_graphviz("team-structures-all", package = "totems"),
+  read_graphviz("team-structures", package = "totems"),
   gg_time,
   gg_person,
   nrow = 1,
