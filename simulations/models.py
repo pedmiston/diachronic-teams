@@ -21,8 +21,9 @@ class Team:
         self.active_players = []  # Players must be activated to use
 
         # Set the initial inventory for the team
-        self.inventory = {'Big_Tree', 'Tree', 'Stone',
-                          'Red_Berry', 'Blue_Berry', 'Antler'}
+        starting_inventory = [1, 2, 3, 4, 5, 6]
+        self.trajectory = '-'.join(map(str, starting_inventory))
+        self.inventory = set(starting_inventory)
 
         # Control team memory
         self.is_memory_on = memory
@@ -34,6 +35,8 @@ class Team:
 
     def update_inventory(self, new_items):
         self.inventory.update(set(new_items.values()))
+        self.trajectory = '-'.join([self.trajectory] +
+                                    list(map(str, sorted(new_items.values()))))
         if self.is_memory_on:
             self.add_guesses_to_memory(new_items.keys())
 

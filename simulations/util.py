@@ -1,5 +1,7 @@
 import json
 
+import numpy
+
 
 def get_as_list(data, key, default=None):
     result = data.get(key, default)
@@ -17,6 +19,12 @@ def jsonify_new_items(new_items):
             {'guess': ['item'], 'result': 'item'}
         ]
     """
-    results = [{'guess': list(guess), 'result': result}
-               for guess, result in new_items.items()]
+    results = []
+    for guess, result in new_items.items():
+        guess = list(guess)
+        if isinstance(guess[0], numpy.int64):
+            guess = list(map(int, guess))
+            result = int(result)
+
+        results.append({'guess': guess, 'result': result})
     return json.dumps(results)

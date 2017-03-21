@@ -7,14 +7,11 @@ library(tools)
 library(readr)
 source("R/util.R")
 
-read_csvs("data-raw/simulations", "simulations_")
+read_csvs("data-raw/simulations")
+
+BotsExplore <- difficulty
 
 use_data(
-  simulations_replication,
-  simulations_strategy,
-  simulations_guesses,
-  simulations_players,
-  simulations_memory,
-  simulations_difficulty,
+  BotsExplore,
   overwrite = TRUE
 )

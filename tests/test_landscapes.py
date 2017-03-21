@@ -46,6 +46,9 @@ def test_evaluate_correct_guess(landscape):
     assert landscape.evaluate(['Stone', 'Antler']) == 'Antler_Refined'
     assert landscape.evaluate(['Tree']) == 'Bough'
 
+def test_evaluate_correct_numeric_guess(landscape):
+    assert landscape.evaluate([2]) == 13
+
 def test_evaluate_incorrect_guess(landscape):
     assert landscape.evaluate(['Stone', 'Tree']) is None
     assert landscape.evaluate(['Red_Berry']) is None
@@ -63,7 +66,7 @@ def test_adjacent_possible_doesnt_return_existing_items(landscape):
     assert len(recipes) == 1
 
 def test_starting_inventory(landscape):
-    assert 'Stone' in landscape.starting_inventory()
+    assert 1 in landscape.starting_inventory()
 
 def test_getting_label_from_number(landscape):
     assert landscape.get_label(1) == 'Big_Tree'

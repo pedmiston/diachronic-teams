@@ -22,7 +22,7 @@ of the Experiment class.
 SimVars = namedtuple('SimVars',
     'strategy n_guesses n_players seed player_memory team_memory')
 RoundVars = namedtuple('RoundVars',
-    'guesses new_items inventory inventory_size')
+    'guesses new_items inventory inventory_size trajectory')
 
 
 def simulate(strategy, n_guesses, n_players, seed, player_memory, team_memory):
@@ -49,6 +49,7 @@ def simulate(strategy, n_guesses, n_players, seed, player_memory, team_memory):
             new_items=jsonify_new_items(new_items),
             inventory=json.dumps(list(team.inventory)),
             inventory_size=len(team.inventory),
+            trajectory=team.trajectory
         ))
 
         if len(team.inventory) == landscape.max_items:

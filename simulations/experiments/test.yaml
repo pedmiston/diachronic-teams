@@ -1,0 +1,6 @@
+---
+
+strategy: diachronic
+n_players: 1
+n_guesses: 1000
+n_seeds: 1

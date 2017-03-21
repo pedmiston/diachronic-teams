@@ -10,13 +10,26 @@ class Landscape:
         recipes = pandas.DataFrame(self.graph.data("""
         MATCH (recipe) -[:CREATES]-> (result:Item)
         MATCH (result) -[:INHERITS]-> (requirement:Item)
-        RETURN result.label as result,
-               requirement.label as requirement;
+        RETURN result.label as result_label,
+               result.number as result_number,
+               requirement.label as requirement_label,
+               requirement.number as requirement_number;
         """))
-        self.answer_key = {}
-        for result, chunk in recipes.groupby('result'):
-            requirements = frozenset(chunk.requirement.tolist())
-            self.answer_key[requirements] = result
+
+        # Convert int64 to int
+        for numeric_col in ['result_number', 'requirement_number']:
+            recipes[numeric_col] = recipes[numeric_col].astype(int)
+
+        result_vars = ['result_label', 'result_number']
+        self.answer_key_labels = {}
+        self.answer_key_numbers = {}
+        for (label, number), chunk in recipes.groupby(result_vars):
+            requirement_labels = frozenset(chunk.requirement_label.tolist())
+            requirement_numbers = frozenset(
+                [int(r) for r in chunk.requirement_number.tolist()]
+            )
+            self.answer_key_labels[requirement_labels] = label
+            self.answer_key_numbers[requirement_numbers] = int(number)
 
         self.max_items = self.graph.data("""
         MATCH (n:Item)
@@ -30,14 +43,25 @@ class Landscape:
         RETURN n.number as number, n.label as label
         """)).set_index('number').squeeze().to_dict()
 
+        # self.item_numbers = {label: number for number, label in self.labels}
+
     def starting_inventory(self):
-        return set('Stone Tree Big_Tree Red_Berry Blue_Berry Antler'.split())
+        return set([1, 2, 3, 4, 5, 6])
 
     def get_label(self, item_number):
         return self.labels.get(item_number)
 
+    # def get_number(self, label):
+    #     return self.item_numbers[label]
+
     def evaluate(self, guess):
-        return self.answer_key.get(frozenset(guess))
+        return self.evaluate_labels(guess) or self.evaluate_numbers(guess)
+
+    def evaluate_labels(self, guess_labels):
+        return self.answer_key_labels.get(frozenset(guess_labels))
+
+    def evaluate_numbers(self, guess_numbers):
+        return self.answer_key_numbers.get(frozenset(guess_numbers))
 
     def evaluate_guesses(self, guesses):
         new_items = {}
