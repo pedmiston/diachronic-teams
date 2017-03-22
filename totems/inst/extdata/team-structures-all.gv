@@ -12,16 +12,16 @@ digraph {
   s1, solo, d1;
 
   // Colors are people
-  d1[fillcolor="#549F88"];
-  d2[fillcolor="#66C2A5"];
-  d3[fillcolor="#81CDB5"];
-  d4[fillcolor="#9DD8C5"];
-  s1[fillcolor="#7483A7"];
-  s2[fillcolor="#8DA0CB"];
-  s4_1[fillcolor="#7483A7"];
-  s4_2[fillcolor="#8DA0CB"];
-  s4_3[fillcolor="#A1B1D4"];
-  s4_4[fillcolor="#B6C2DD"];
+  s4_1[fillcolor="#549F88"];
+  s4_2[fillcolor="#66C2A5"];
+  s4_3[fillcolor="#81CDB5"];
+  s4_4[fillcolor="#9DD8C5"];
+  s1[fillcolor="#66C2A5"];
+  s2[fillcolor="#81CDB5"];
+  d1[fillcolor="#7483A7"];
+  d2[fillcolor="#8DA0CB"];
+  d3[fillcolor="#A1B1D4"];
+  d4[fillcolor="#B6C2DD"];
   solo[fillcolor="#FC8D62"];
   solo_s1[fillcolor="#FCA17E"];
 
