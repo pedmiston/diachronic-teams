@@ -14,26 +14,29 @@ opts_chunk$set(
   echo = FALSE,
   message = FALSE,
   warning = FALSE,
+  results = "hide",
   fig.path = "proposal-figs/"
 )
 
 library(crotchet)
-read_all_graphviz_chunks("totems")
+library(gridExtra)
 ```
 
-# General Methods
+# Diachronic teamwork
 
-```{r team-structures-all, fig.width=3, engine="dot"}
+```{r team-structures-all, fig.width=5}
+grid.arrange(
+  read_graphviz("team-structures-all", "totems"),
+  arrangeGrob(
+    read_graphviz("team-structures-exp1", "totems"),
+    read_graphviz("team-structures-exp2", "totems"),
+    ncol = 1
+  ),
+  nrow = 1,
+  widths = c(0.6, 0.4)
+)
 ```
 
-# Experiment 1
+# Wikipedia edits
 
-```{r team-structures, fig.width=1.5, engine="dot"}
-```
-
-# Experiment 2
-
-```{r team-structures-exp2, fig.width=2, engine="dot"}
-```
-
-# General Discussion
+# Kaggle competitions
