@@ -79,20 +79,25 @@ class Landscape:
         return self.adjacent_recipes[inv]
 
     def _adjacent_possible(self, inventory):
+        inventory_type = "label"
+        if isinstance(list(inventory)[0], int):
+            inventory_type = "number"
+
         adjacent_query = """
         MATCH (n:Item) <-[:REQUIRES]- (r:Recipe)
-        WHERE n.label IN {inventory}
+        WHERE n.{type} IN {inventory}
         RETURN r.code as code
-        """.format(inventory=list(inventory))
+        """.format(inventory=list(inventory), type=inventory_type)
         adjacent_recipes = pandas.DataFrame(self.graph.data(adjacent_query))
 
         requirements_query = """
         MATCH (r:Recipe) -[:REQUIRES]-> (required:Item)
         MATCH (r) -[:CREATES]-> (created:Item)
-        WHERE r.code IN {codes} AND NOT created.label IN {inventory}
-        RETURN r.code as code, required.label as requirement
+        WHERE r.code IN {codes} AND NOT created.{type} IN {inventory}
+        RETURN r.code as code, required.{type} as requirement
         """.format(codes=adjacent_recipes.code.tolist(),
-                   inventory=list(inventory))
+                   inventory=list(inventory),
+                   type=inventory_type)
         requirements = pandas.DataFrame(self.graph.data(requirements_query))
 
         adjacent_possible = []
