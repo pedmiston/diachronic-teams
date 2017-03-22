@@ -24,15 +24,18 @@ def use_data(ctx, use_data_script=None, clear_data_dir=False):
 @task
 def install(ctx, use_data_too=False, make_graph=False,
             use_data_script=None, document_only=False,
-            clear_data_dir=False):
+            clear_data_dir=False, ignore_prereqs=False):
     """Install the totems R pkg."""
     cmd = 'cd {R_pkg} && Rscript -e "{R_cmds}"'
     R_cmds = """
     library(devtools)
-    install_github('pedmiston/crotchet')
     document()
     install()
     """.split()
+
+    if not ignore_prereqs:
+        crotchet_prereq = "devtools::install_github('pedmiston/crotchet')"
+        ctx.run(cmd.format(R_pkg=R_PKG, R_cmds=crotchet_prereq))
 
     if use_data_too or use_data_script or clear_data_dir:
         use_data(ctx, use_data_script=use_data_script,
