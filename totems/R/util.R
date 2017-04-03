@@ -15,9 +15,9 @@ file_stem <- function(x) {
 #' prefixed names.
 #'
 #' @import readr
-read_csvs <- function(directory, prefix = "") {
+read_csvs <- function(directory, prefix = "", stem_func = function(x) x) {
   for (csv in list.files(directory, pattern = "*.csv", full.name = TRUE)) {
-    stem <- file_stem(csv)
+    stem <- file_stem(csv) %>% stem_func()
     assign(paste0(prefix, stem), readr::read_csv(csv), envir = globalenv())
   }
 }

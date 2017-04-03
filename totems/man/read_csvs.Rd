@@ -6,7 +6,7 @@
 and assigning the resulting data frames with
 prefixed names.}
 \usage{
-read_csvs(directory, prefix = "")
+read_csvs(directory, prefix = "", stem_func = function(x) x)
 }
 \description{
 Util function for loading a directory of csvs

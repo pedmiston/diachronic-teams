@@ -7,11 +7,15 @@ library(tools)
 library(readr)
 source("R/util.R")
 
-read_csvs("data-raw/simulations")
-
-BotsExplore <- difficulty
+read_csvs("data-raw/simulations", prefix = "Bots",
+          stem_func = stringr::str_to_title)
 
 use_data(
   BotsExplore,
+  BotsReplication,
+  BotsStrategy,
+  BotsPlayers,
+  BotsMemory,
+  BotsGuesses,
   overwrite = TRUE
 )
