@@ -73,3 +73,18 @@ def label(ctx, subj_info=None):
              .values(Status = 'E')
              .where(Group.c.ID_Group.in_(group_ids))
     )
+
+
+@task
+def close(ctx, group_id):
+    """Close an open group."""
+    con = db.connect_to_db()
+
+    groups = pandas.read_sql('SELECT * FROM Table_Group', con)
+    assert group_id in groups.ID_Group.tolist()
+
+    con.execute(
+        Group.update()
+             .values(Open = 0)
+             .where(Group.c.ID_Group == group_id)
+    )
