@@ -9,3 +9,4 @@ oauth2client==4.0.0
 graphviz==0.5.2
 PyYAML==3.12
 ansible-vault==1.0.4
+fire==0.1.0
