@@ -18,6 +18,7 @@ output:
 library(knitr)
 library(printr)
 library(magrittr)
+library(crotchet)
 
 opts_chunk$set(
   echo = FALSE,
@@ -63,9 +64,7 @@ problem\ solution_{additive} = inheritance + ability \times time\\
 problem\ solution_{interactive} = inheritance \times ability \times time\\
 \end{equation}
 
-
-
-# Methods
+# General methods
 
 <!-- Describe the problem space. -->
 
@@ -85,10 +84,14 @@ Participants are tasked with a tool-building competition presented in a digital 
 ## Procedure
 
 ```{r gameplay, fig.width=8, fig.height=6}
-grid.draw(png::readPNG("../docs/irb/methods/screenshots/gameplay.png") %>% rasterGrob())
+draw_image("gameplay", "totems")
 ```
 
-# Results
+# Experiment 1
+
+```{r team-structures-exp1}
+draw_graphviz("team-structures-exp1", "totems")
+```
 
 ```{r data, echo = 1:4}
 ```
@@ -234,6 +237,12 @@ bind_rows(
 
 ```{r fig9}
 trajectory_count_plot
+```
+
+# Experiment 2
+
+```{r team-structures-exp2}
+draw_graphviz("team-structures-exp2", "totems")
 ```
 
 # Discussion
