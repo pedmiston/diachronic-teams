@@ -18,7 +18,10 @@ TOTEMS_DIR = Path(paths.R_PKG, 'data-raw/totems')
 if not TOTEMS_DIR.isdir():
     TOTEMS_DIR.mkdir()
 
-landscape = graph.Landscape()
+try:
+    landscape = graph.Landscape()
+except graph.main.LandscapeNotInitialized:
+    print('WARNING! Landscape not initialized. Run "inv graph.load"')
 
 
 @task
@@ -138,7 +141,7 @@ def rolling_history(trials, prefix=''):
         is_guess_successful = trial.WorkShopResult != 0
         is_unique_item = 0  # default
         if is_guess_successful:
-            label = landscape.get_label(trial.WorkShopResult)
+            label = int(trial.WorkShopResult)
             is_unique_item = label not in rolling_inventory
             if is_unique_item:
                 rolling_inventory.update({label})

@@ -1,6 +1,13 @@
 source("docs/R/setup.R")
 
 # ---- efficiency
+player_generations <- TotemsPlayers %>%
+  select(PlayerID, Generation)
+
+remove_first_gen_diachronic <- . %>%
+  left_join(player_generations) %>%
+  filter(!(Strategy == "Diachronic" & Generation == 1))
+
 team_efficiency_mod <- lmer(
   Guesses ~
     Diachronic_v_Synchronic + Diachronic_v_Isolated +
@@ -16,7 +23,7 @@ individual_efficiency_mod <- lmer(
     (Diachronic_v_Synchronic + Diachronic_v_Isolated|TeamInventory) +
     NumInnovations +
     (1|PlayerID),
-  data = IndividualInventoryGuesses 
+  data = IndividualInventoryGuesses #%>% remove_first_gen_diachronic()
 )
 
 team_efficiency_preds <- expand.grid(

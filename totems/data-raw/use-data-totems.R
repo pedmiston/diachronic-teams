@@ -93,7 +93,7 @@ Trajectories %<>% filter_valid_teams()
 player_generations <- Player %>%
   left_join(Group) %>%
   # Ancestor is coded as -1 for first generation, and +1 for everyone else
-  mutate(Generation = ifelse(Strategy == "Diachronic", Ancestor + 2, 1)) %>%
+  mutate(Generation = Ancestor) %>%
   select(PlayerID, Generation)
 
 identify_players_in_teams <- . %>% left_join(player_generations)

@@ -16,6 +16,9 @@ class Landscape:
                requirement.number as requirement_number;
         """))
 
+        if len(recipes) == 0:
+            raise LandscapeNotInitialized
+
         # Convert int64 to int
         for numeric_col in ['result_number', 'requirement_number']:
             recipes[numeric_col] = recipes[numeric_col].astype(int)
@@ -106,3 +109,7 @@ class Landscape:
                 adjacent_possible.append(code)
 
         return adjacent_possible
+
+
+class LandscapeNotInitialized(Exception):
+    """Nothing in the landscape yet."""
