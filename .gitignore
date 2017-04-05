@@ -16,6 +16,7 @@ docs/irb/methods/*.pdf
 *.gv
 !totems/**/*.gv
 totems/**/landscape*.gv
+totems/**/inventory*.gv
 cassettes/
 
 # reproducible data
