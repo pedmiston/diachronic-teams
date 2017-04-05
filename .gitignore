@@ -11,6 +11,7 @@ docs/irb/methods/*.pdf
 
 *.png
 !img/*.png
+!totems/inst/extdata/*.png
 
 *.gv
 !totems/**/*.gv
