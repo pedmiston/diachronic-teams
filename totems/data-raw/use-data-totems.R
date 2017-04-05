@@ -4,9 +4,12 @@ library(tidyverse)
 library(lazyeval)
 library(magrittr)
 library(lubridate)
-source("R/util.R")  # Don't load "totems" or use_data() might not work properly
 
-# Start here
+# Don't load "totems" or use_data() might not work properly
+source("R/util.R")
+source("R/time-bins.R")
+
+# Start here!
 read_csvs("data-raw/totems")
 
 # Replace workshop with analyzed version
@@ -57,43 +60,26 @@ Workshop %<>% filter_valid_participants()
 Survey   %<>% filter_valid_participants()
 Trajectories %<>% filter_valid_participants()
 
-# Rename treatment to strategy -------------------------------------------------
-Group %<>% rename(Strategy = Treatment)
-
 # Select valid teams -----------------------------------------------------------
-# Create a list of incomplete diachronic teams
-incomplete_diachronic_teams <- Player %>%
-  left_join(rename(Group, ExpectedSize = Size)) %>%
-  filter(Strategy == "Diachronic") %>%
-  group_by(TeamID, ExpectedSize) %>%
-  summarize(TeamSize = n()) %>%
-  ungroup() %>%
-  filter(TeamSize != ExpectedSize) %>%
-  .$TeamID
-
-# Label diachronic teams with invalid generation
-invalid_diachronic_teams <- read_csv("data-raw/verified-diachronic-teams.csv") %>%
-  deidentify_group_id() %>%
-  # Count as "invalid" teams that are not valid
-  # and teams whose validity is unknown.
-  filter(ValidTeam == "n" | ValidTeam == "u") %>%
-  .$TeamID %>%
-  unique()
-
+verified_teams <- Group %>% filter(Status == "E") %>% .$TeamID
 filter_valid_teams <- . %>%
-  filter(!(TeamID %in% incomplete_diachronic_teams),
-         !(TeamID %in% invalid_diachronic_teams))
+  filter(TeamID %in% verified_teams)
 
 Group    %>% filter_valid_teams()
 Player   %<>% filter_valid_teams()
 Workshop %<>% filter_valid_teams()
 Trajectories %<>% filter_valid_teams()
 
+# Rename treatment to strategy -------------------------------------------------
+# The Group table is the only one that contains Treatment information
+Group %<>% rename(Strategy = Treatment)
+
 # Identify players within teams and generations --------------------------------
 player_generations <- Player %>%
   left_join(Group) %>%
-  # Ancestor is coded as -1 for first generation, and +1 for everyone else
-  mutate(Generation = Ancestor) %>%
+  # Ancestor is coded as 0 for non-Diachronic teams,
+  # Ancestor is coded as 1 for first generation, n+1 for future generations.
+  mutate(Generation = ifelse(Strategy != "Diachronic", 1, Ancestor)) %>%
   select(PlayerID, Generation)
 
 identify_players_in_teams <- . %>% left_join(player_generations)
@@ -122,7 +108,7 @@ count_guesses <- function(frame, grouping_var, prefix="") {
 }
 Workshop %<>%
   count_guesses("PlayerID") %>%
-  count_guesses("TeamID", "Team")
+  count_guesses("TeamID", prefix = "Team")
 
 # Calculate cumulative performance variables -----------------------------------
 Workshop %<>%
@@ -138,6 +124,15 @@ Workshop %<>%
   ) %>%
   ungroup()
 
+# Sample team inventories at particular time points ----------------------------
+TotemsSampled <- Workshop %>%
+  left_join(Group) %>%
+  group_by(TeamID) %>%
+  do({ get_closest_trials_to_times(., times = seq(0, 50 * 60, by = 60)) }) %>%
+  ungroup() %>%
+  # Prevent Synchronic teams from being sampled outside their range.
+  filter(!(Strategy == "Synchronic" & SampledTime > 25*60))
+
 # Save data to package ---------------------------------------------------------
 TotemsTrials <- Workshop %>%
   left_join(Group) %>%
@@ -148,6 +143,14 @@ TotemsTrials <- Workshop %>%
          Inventory, TeamInventory, NumAdjacent,
          NumInnovations, NumTeamInnovations,
          NumUniqueGuesses, NumTeamUniqueGuesses)
+
+TotemsSampled %<>% select(PlayerID, TeamID, Strategy, Generation,
+                          SampledTime, GuessNum, TeamGuessNum,
+                          Guess = WorkShopString, Result = WorkShopResult,
+                          UniqueGuess, TeamUniqueGuess, UniqueItem, TeamUniqueItem,
+                          Inventory, TeamInventory, NumAdjacent,
+                          NumInnovations, NumTeamInnovations,
+                          NumUniqueGuesses, NumTeamUniqueGuesses)
 
 TotemsPlayers <- Workshop %>%
   left_join(Group) %>%
@@ -170,6 +173,7 @@ TotemsTeams <- Workshop %>%
 
 use_data(
   TotemsTrials,
+  TotemsSampled,
   TotemsPlayers,
   TotemsTeams,
   Trajectories,

@@ -178,7 +178,7 @@ def label_teams_and_strategies(frame):
     labels['Generation'] = 1
     labels['Generation'] = (labels.Generation
                                   .where(labels.Treatment != 'Diachronic',
-                                         labels.Ancestor + 2))
+                                         labels.Ancestor))
     labels.drop('Ancestor', axis=1, inplace=True)
 
     labels['ID_Player'] = labels.ID_Player.astype(int)
