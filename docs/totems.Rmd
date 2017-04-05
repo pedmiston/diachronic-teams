@@ -64,7 +64,7 @@ problem\ solution_{additive} = inheritance + ability \times time\\
 problem\ solution_{interactive} = inheritance \times ability \times time\\
 \end{equation}
 
-# General methods
+# Methods
 
 <!-- Describe the problem space. -->
 
@@ -87,7 +87,7 @@ Participants are tasked with a tool-building competition presented in a digital 
 draw_image("gameplay", "totems")
 ```
 
-# Experiment 1
+# Two-person teams
 
 ```{r team-structures-exp1}
 draw_graphviz("team-structures-exp1", "totems")
@@ -239,7 +239,7 @@ bind_rows(
 trajectory_count_plot
 ```
 
-# Experiment 2
+# Four-person teams
 
 ```{r team-structures-exp2}
 draw_graphviz("team-structures-exp2", "totems")
