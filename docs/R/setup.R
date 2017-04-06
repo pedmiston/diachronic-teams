@@ -38,6 +38,18 @@ TotemsSampledMeans <- TotemsSampled %>%
   guess_generation("SampledTime") %>%
   recode_groups_by_generation()
 
+trial0 <- data_frame(
+    Strategy = c("Diachronic", "Diachronic", "Synchronic", "Isolated"),
+    Generation = c(1, 2, 1, 1),
+    SampledTime = c(0, 60*25, 0, 0),
+    NumInnovations = 0
+  ) %>%
+  recode_strategy() %>%
+  recode_groups_by_generation()
+
+TotemsSampledMeans %<>%
+  bind_rows(trial0)
+
 TeamInventoryGuesses <- TotemsTrials %>%
   filter(Result == 0) %>%
   group_by(TeamID, TeamInventory) %>%
