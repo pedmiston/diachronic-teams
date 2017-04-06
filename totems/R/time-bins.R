@@ -14,6 +14,14 @@ get_closest_trial_to_time <- function(time, trials, time_col = "TeamTime",
   trial <- trials[trials_that_have_happened, ] %>% tail(1)
   if (nrow(trial) == 1) {
     trial[, sample_time_col] <- time
+  } else if (time == 0) {
+    first_trial <- trials %>%
+      head(1) %>%
+      select(PlayerID, TeamID, Strategy) %>%
+      mutate(
+        NumInnovations = 0
+      )
+    trial %<>% bind_rows(first_trial)
   }
   trial
 }
