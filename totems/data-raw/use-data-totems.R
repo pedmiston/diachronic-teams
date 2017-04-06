@@ -65,7 +65,7 @@ verified_teams <- Group %>% filter(Status == "E") %>% .$TeamID
 filter_valid_teams <- . %>%
   filter(TeamID %in% verified_teams)
 
-Group    %>% filter_valid_teams()
+Group    %<>% filter_valid_teams()
 Player   %<>% filter_valid_teams()
 Workshop %<>% filter_valid_teams()
 Trajectories %<>% filter_valid_teams()
