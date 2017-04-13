@@ -133,6 +133,17 @@ TotemsSampled <- Workshop %>%
   # Prevent Synchronic teams from being sampled outside their range.
   filter(!(Strategy == "Synchronic" & SampledTime > 25*60))
 
+TotemsSampledPlayers <- Workshop %>%
+  left_join(Group) %>%
+  group_by(PlayerID) %>%
+  do({
+    get_closest_trials_to_times(., times = seq(0, 50 * 60, by = 60),
+                                time_col = "PlayerTime")
+  }) %>%
+  ungroup() %>%
+  # Prevent Synchronic and Diachronic teams from being sampled outside their range.
+  filter(!(Strategy %in% c("Synchronic", "Diachronic") & SampledTime > 25*60))
+
 # Save data to package ---------------------------------------------------------
 TotemsTrials <- Workshop %>%
   left_join(Group) %>%
@@ -145,6 +156,14 @@ TotemsTrials <- Workshop %>%
          NumUniqueGuesses, NumTeamUniqueGuesses)
 
 TotemsSampled %<>% select(PlayerID, TeamID, Strategy, Generation,
+                          SampledTime, GuessNum, TeamGuessNum,
+                          Guess = WorkShopString, Result = WorkShopResult,
+                          UniqueGuess, TeamUniqueGuess, UniqueItem, TeamUniqueItem,
+                          Inventory, TeamInventory, NumAdjacent,
+                          NumInnovations, NumTeamInnovations,
+                          NumUniqueGuesses, NumTeamUniqueGuesses)
+
+TotemsSampledPlayers %<>% select(PlayerID, TeamID, Strategy, Generation,
                           SampledTime, GuessNum, TeamGuessNum,
                           Guess = WorkShopString, Result = WorkShopResult,
                           UniqueGuess, TeamUniqueGuess, UniqueItem, TeamUniqueItem,
@@ -174,6 +193,7 @@ TotemsTeams <- Workshop %>%
 use_data(
   TotemsTrials,
   TotemsSampled,
+  TotemsSampledPlayers,
   TotemsPlayers,
   TotemsTeams,
   Trajectories,

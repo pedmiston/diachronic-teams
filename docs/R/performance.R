@@ -1,3 +1,5 @@
+source("docs/R/setup.R")
+
 # ---- performance
 inventory_mod <- lm(
   NumInnovations ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
@@ -29,10 +31,36 @@ performance_plot <- ggplot(TotemsTeams) +
   )
 
 performance_over_time_plot <- ggplot(TotemsSampledMeans) +
-  aes(TeamTime, NumInnovations, color = StrategyLabel) +
-  geom_line(aes(SampledTime, group = GenerationStrategy), size = 1.2) +
+  aes(SampledTime, NumInnovations, color = StrategyLabel, group = GenerationStrategy) +
+  geom_line(size = 1.2) +
   scale_x_time("Team time", breaks = seconds(c(0, 25 * 60, 50 * 60))) +
   scale_y_continuous("Number of inventions", breaks = seq(0, 20, by = 2)) +
   totems_theme["scale_color_strategy"] +
   totems_theme["base_theme"] +
   theme(legend.position = "top")
+
+# ---- performance-stacked
+diachronic_generation_labels <- TotemsSampledPlayersMeans %>%
+  filter(Strategy == "Diachronic") %>%
+  group_by(Strategy, Generation) %>%
+  summarize(
+    MaxInnovations = max(NumInnovations),
+    SampledTime = max(SampledTime, na.rm = TRUE)
+  ) %>%
+  ungroup() %>%
+  mutate(Label = paste0("G", Generation)) %>%
+  recode_strategy() %>%
+  recode_groups_by_generation()
+  
+performance_stacked_plot <- ggplot(TotemsSampledPlayersMeans) +
+  aes(SampledTime, y = NumInnovations, color = StrategyLabel) +
+  geom_line(aes(group = GenerationStrategy), size = 1.2) +
+  geom_text(aes(y = MaxInnovations, label = Label),
+            data = diachronic_generation_labels,
+            nudge_x = 2 * 60, show.legend = FALSE) +
+  scale_x_time("Player time", breaks = seconds(c(0, 25 * 60, 50 * 60))) +
+  scale_y_continuous("Number of inventions", breaks = seq(0, 20, by = 2)) +
+  totems_theme["scale_color_strategy"] +
+  totems_theme["base_theme"] +
+  theme(legend.position = "top")
+performance_stacked_plot

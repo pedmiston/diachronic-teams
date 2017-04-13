@@ -13,6 +13,7 @@ library(totems)
 library(totems)
 data("TotemsTrials")
 data("TotemsSampled")
+data("TotemsSampledPlayers")
 data("TotemsPlayers")
 data("TotemsTeams")
 
@@ -21,7 +22,12 @@ TotemsTrials %<>%
   recode_groups_by_generation()
 
 TotemsSampled %<>%
-  recode_strategy()
+  recode_strategy() %>%
+  recode_groups_by_generation()
+
+TotemsSampledPlayers %<>%
+  recode_strategy() %>%
+  recode_groups_by_generation()
 
 TotemsPlayers %<>%
   recode_strategy()
@@ -38,6 +44,13 @@ TotemsSampledMeans <- TotemsSampled %>%
   guess_generation("SampledTime") %>%
   recode_groups_by_generation()
 
+TotemsSampledPlayersMeans <- TotemsSampledPlayers %>%
+  group_by(Strategy, Generation, SampledTime) %>%
+  summarize(NumInnovations = mean(NumInnovations)) %>%
+  ungroup() %>%
+  recode_strategy() %>%
+  recode_groups_by_generation()
+
 trial0 <- data_frame(
     Strategy = c("Diachronic", "Diachronic", "Synchronic", "Isolated"),
     Generation = c(1, 2, 1, 1),
@@ -49,6 +62,10 @@ trial0 <- data_frame(
 
 TotemsSampledMeans %<>%
   bind_rows(trial0)
+
+TotemsSampledPlayersMeans %<>%
+  bind_rows(trial0) %>%
+  filter(!(GenerationStrategy == "Diachronic-2" & SampledTime == 1500 & NumInnovations == 0))
 
 TeamInventoryGuesses <- TotemsTrials %>%
   filter(Result == 0) %>%
