@@ -39,7 +39,6 @@ performance_over_time_plot <- ggplot(TotemsSampledMeans) +
   totems_theme["base_theme"] +
   theme(legend.position = "top")
 
-# ---- performance-stacked
 diachronic_generation_labels <- TotemsSampledPlayersMeans %>%
   filter(Strategy == "Diachronic") %>%
   group_by(Strategy, Generation) %>%
@@ -63,4 +62,35 @@ performance_stacked_plot <- ggplot(TotemsSampledPlayersMeans) +
   totems_theme["scale_color_strategy"] +
   totems_theme["base_theme"] +
   theme(legend.position = "top")
-performance_stacked_plot
+
+TotemsSampledPlayersMeansDuplicated <- TotemsSampledPlayersMeans %>%
+  filter(GenerationStrategy == "Diachronic-2") %>%
+  mutate(
+    SampledTime = SampledTime + 25 * 60,
+    GenerationStrategy = "Diachronic-2a"
+  ) %>%
+  bind_rows(
+    trial0 %>%
+      filter(GenerationStrategy == "Diachronic-2") %>%
+      mutate(GenerationStrategy = "Diachronic-2a")
+  ) %>%
+  bind_rows(TotemsSampledPlayersMeans)
+
+diachronic_generation_labels %<>%
+  filter(Generation == 2) %>%
+  mutate(SampledTime = SampledTime + 25 * 60) %>%
+  bind_rows(diachronic_generation_labels)
+
+performance_duplicated_plot <- ggplot(TotemsSampledPlayersMeansDuplicated) +
+  aes(SampledTime, y = NumInnovations, color = StrategyLabel) +
+  geom_line(aes(group = GenerationStrategy), size = 1.2) +
+  geom_text(aes(y = MaxInnovations, label = Label),
+            data = diachronic_generation_labels,
+            nudge_x = 2 * 60, show.legend = FALSE) +
+  scale_x_time("Time", breaks = seconds(c(0, 25 * 60, 50 * 60))) +
+  scale_y_continuous("Number of inventions", breaks = seq(0, 20, by = 2)) +
+  guides(linetype = "none") +
+  totems_theme["scale_color_strategy"] +
+  totems_theme["base_theme"] +
+  theme(legend.position = "top")
+performance_duplicated_plot
