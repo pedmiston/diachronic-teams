@@ -93,4 +93,3 @@ performance_duplicated_plot <- ggplot(TotemsSampledPlayersMeansDuplicated) +
   totems_theme["scale_color_strategy"] +
   totems_theme["base_theme"] +
   theme(legend.position = "top")
-performance_duplicated_plot
