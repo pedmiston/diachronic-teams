@@ -11,32 +11,35 @@ library(totems)
 
 # ---- data
 library(totems)
-data("TotemsTrials")
-data("TotemsSampled")
-data("TotemsSampledPlayers")
-data("TotemsPlayers")
-data("TotemsTeams")
+data("TeamPerformance")
 
-TotemsTrials %<>%
+data("TeamTrials")
+data("SampledTeamTrials")
+
+data("PlayerTrials")
+data("SampledPlayerTrials")
+
+
+TeamTrials %<>%
   recode_strategy() %>%
   recode_groups_by_generation()
 
-TotemsSampled %<>%
+SampledTeamTrials %<>%
   recode_strategy() %>%
   recode_groups_by_generation()
 
-TotemsSampledPlayers %<>%
+SampledPlayerTrials %<>%
   recode_strategy() %>%
   recode_groups_by_generation()
 
-TotemsPlayers %<>%
+PlayerTrials %<>%
   recode_strategy()
 
-TotemsTeams %<>%
+TeamPerformance %<>%
   recode_strategy()
 
 # Get team inventories at particular time points
-TotemsSampledMeans <- TotemsSampled %>%
+SampledTeamTrialsMeans <- SampledTeamTrials %>%
   group_by(Strategy, SampledTime) %>%
   summarize(NumInnovations = mean(NumInnovations)) %>%
   ungroup() %>%
@@ -44,7 +47,7 @@ TotemsSampledMeans <- TotemsSampled %>%
   guess_generation("SampledTime") %>%
   recode_groups_by_generation()
 
-TotemsSampledPlayersMeans <- TotemsSampledPlayers %>%
+SampledPlayerTrialsMeans <- SampledPlayerTrials %>%
   group_by(Strategy, Generation, SampledTime) %>%
   summarize(NumInnovations = mean(NumInnovations)) %>%
   ungroup() %>%
@@ -60,14 +63,14 @@ trial0 <- data_frame(
   recode_strategy() %>%
   recode_groups_by_generation()
 
-TotemsSampledMeans %<>%
+SampledTeamTrialsMeans %<>%
   bind_rows(trial0)
 
-TotemsSampledPlayersMeans %<>%
+SampledPlayerTrialsMeans %<>%
   bind_rows(trial0) %>%
   filter(!(GenerationStrategy == "Diachronic-2" & SampledTime == 1500 & NumInnovations == 0))
 
-TeamInventoryGuesses <- TotemsTrials %>%
+TeamInventoryGuesses <- TeamTrials %>%
   filter(Result == 0) %>%
   group_by(TeamID, TeamInventory) %>%
   summarize(
@@ -75,10 +78,10 @@ TeamInventoryGuesses <- TotemsTrials %>%
     Redundancy = 1 - (sum(TeamUniqueGuess)/n())
   ) %>%
   ungroup() %>%
-  left_join(select(TotemsTrials, TeamID, TeamInventory, Strategy, NumTeamInnovations)) %>%
+  left_join(select(TeamTrials, TeamID, TeamInventory, Strategy, NumTeamInnovations)) %>%
   recode_strategy()
 
-IndividualInventoryGuesses <- TotemsTrials %>%
+IndividualInventoryGuesses <- TeamTrials %>%
   filter(Result == 0) %>%
   group_by(PlayerID, TeamInventory) %>%
   summarize(
@@ -86,7 +89,7 @@ IndividualInventoryGuesses <- TotemsTrials %>%
     Redundancy = 1 - (sum(UniqueGuess)/n())
   ) %>%
   ungroup() %>%
-  left_join(select(TotemsTrials, PlayerID, TeamID, TeamInventory, Strategy, NumInnovations)) %>%
+  left_join(select(TeamTrials, PlayerID, TeamID, TeamInventory, Strategy, NumInnovations)) %>%
   recode_strategy()
 
 totems_theme <- load_totems_theme()

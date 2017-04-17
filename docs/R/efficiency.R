@@ -1,7 +1,7 @@
 source("docs/R/setup.R")
 
 # ---- efficiency
-player_generations <- TotemsPlayers %>%
+player_generations <- PlayerTrials %>%
   select(PlayerID, Generation)
 
 remove_first_gen_diachronic <- . %>%

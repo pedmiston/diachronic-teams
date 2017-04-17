@@ -119,7 +119,7 @@ grid.arrange(
 
 ```{r inventory-mod, echo=1}
 inventory_mod <- lm(NumInnovations ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
-                    data = TotemsTeams)
+                    data = TeamPerformance)
 ```
 
 ```{r inventory-results, results="asis"}
@@ -223,7 +223,7 @@ grid.arrange(
 ```{r attempts-mods, echo=1:2}
 team_attempts_mod <- lm(
   NumGuesses ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
-  data = TotemsTeams
+  data = TeamPerformance
 )
 ```
 

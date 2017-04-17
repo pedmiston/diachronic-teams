@@ -125,7 +125,7 @@ Workshop %<>%
   ungroup()
 
 # Sample team inventories at particular time points ----------------------------
-TotemsSampled <- Workshop %>%
+SampledTeamTrials <- Workshop %>%
   left_join(Group) %>%
   group_by(TeamID) %>%
   do({ get_closest_trials_to_times(., times = seq(0, 50 * 60, by = 60)) }) %>%
@@ -133,7 +133,7 @@ TotemsSampled <- Workshop %>%
   # Prevent Synchronic teams from being sampled outside their range.
   filter(!(Strategy == "Synchronic" & SampledTime > 25*60))
 
-TotemsSampledPlayers <- Workshop %>%
+SampledPlayerTrials <- Workshop %>%
   left_join(Group) %>%
   group_by(PlayerID) %>%
   do({
@@ -145,7 +145,7 @@ TotemsSampledPlayers <- Workshop %>%
   filter(!(Strategy %in% c("Synchronic", "Diachronic") & SampledTime > 25*60))
 
 # Save data to package ---------------------------------------------------------
-TotemsTrials <- Workshop %>%
+TeamTrials <- Workshop %>%
   left_join(Group) %>%
   select(PlayerID, TeamID, Strategy, Generation,
          TeamTime, PlayerTime, GuessNum, TeamGuessNum,
@@ -155,7 +155,7 @@ TotemsTrials <- Workshop %>%
          NumInnovations, NumTeamInnovations,
          NumUniqueGuesses, NumTeamUniqueGuesses)
 
-TotemsSampled %<>% select(PlayerID, TeamID, Strategy, Generation,
+SampledTeamTrials %<>% select(PlayerID, TeamID, Strategy, Generation,
                           SampledTime, GuessNum, TeamGuessNum,
                           Guess = WorkShopString, Result = WorkShopResult,
                           UniqueGuess, TeamUniqueGuess, UniqueItem, TeamUniqueItem,
@@ -163,7 +163,7 @@ TotemsSampled %<>% select(PlayerID, TeamID, Strategy, Generation,
                           NumInnovations, NumTeamInnovations,
                           NumUniqueGuesses, NumTeamUniqueGuesses)
 
-TotemsSampledPlayers %<>% select(PlayerID, TeamID, Strategy, Generation,
+SampledPlayerTrials %<>% select(PlayerID, TeamID, Strategy, Generation,
                           SampledTime, GuessNum, TeamGuessNum,
                           Guess = WorkShopString, Result = WorkShopResult,
                           UniqueGuess, TeamUniqueGuess, UniqueItem, TeamUniqueItem,
@@ -171,7 +171,7 @@ TotemsSampledPlayers %<>% select(PlayerID, TeamID, Strategy, Generation,
                           NumInnovations, NumTeamInnovations,
                           NumUniqueGuesses, NumTeamUniqueGuesses)
 
-TotemsPlayers <- Workshop %>%
+PlayerTrials <- Workshop %>%
   left_join(Group) %>%
   group_by(PlayerID, TeamID, Strategy, Generation) %>%
   summarize(
@@ -181,7 +181,7 @@ TotemsPlayers <- Workshop %>%
   ) %>%
   ungroup()
 
-TotemsTeams <- Workshop %>%
+TeamPerformance <- Workshop %>%
   left_join(Group) %>%
   group_by(TeamID, Strategy) %>%
   summarize(
@@ -191,11 +191,11 @@ TotemsTeams <- Workshop %>%
   )
 
 use_data(
-  TotemsTrials,
-  TotemsSampled,
-  TotemsSampledPlayers,
-  TotemsPlayers,
-  TotemsTeams,
+  TeamTrials,
+  SampledTeamTrials,
+  SampledPlayerTrials,
+  PlayerTrials,
+  TeamPerformance,
   Trajectories,
   overwrite = TRUE
 )
