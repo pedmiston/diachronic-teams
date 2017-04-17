@@ -14,7 +14,7 @@ team_efficiency_mod <- lmer(
     (Diachronic_v_Synchronic + Diachronic_v_Isolated|TeamInventory) +
     NumTeamInnovations +
     (1|TeamID),
-  data = TeamInventoryGuesses
+  data = TeamProblems
 )
 
 individual_efficiency_mod <- lmer(
@@ -23,12 +23,12 @@ individual_efficiency_mod <- lmer(
     (Diachronic_v_Synchronic + Diachronic_v_Isolated|TeamInventory) +
     NumInnovations +
     (1|PlayerID),
-  data = IndividualInventoryGuesses #%>% remove_first_gen_diachronic()
+  data = PlayerProblems #%>% remove_first_gen_diachronic()
 )
 
 team_efficiency_preds <- expand.grid(
   Strategy = recode_strategy()$Strategy,
-  NumTeamInnovations = mean(TeamInventoryGuesses$NumTeamInnovations),
+  NumTeamInnovations = mean(TeamProblems$NumTeamInnovations),
   stringsAsFactors = FALSE
 ) %>%
   recode_strategy() %>%
@@ -37,7 +37,7 @@ team_efficiency_preds <- expand.grid(
 
 individual_efficiency_preds <- expand.grid(
   Strategy = recode_strategy()$Strategy,
-  NumInnovations = mean(IndividualInventoryGuesses$NumInnovations),
+  NumInnovations = mean(PlayerProblems$NumInnovations),
   stringsAsFactors = FALSE
 ) %>%
   recode_strategy() %>%

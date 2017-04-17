@@ -145,11 +145,11 @@ redundancy_plot
 ```{r redundant-mods, echo=1:2}
 individual_redundancy_mod <- lmer(
   Redundancy ~ Diachronic_v_Synchronic + Diachronic_v_Isolated + (1|PlayerID),
-  data = IndividualInventoryGuesses
+  data = PlayerProblems
 )
 team_redundancy_mod <- lmer(
   Redundancy ~ Diachronic_v_Synchronic + Diachronic_v_Isolated + (1|TeamID),
-  data = TeamInventoryGuesses
+  data = TeamProblems
 )
 ```
 
@@ -184,7 +184,7 @@ individual_efficiency_mod <- lmer(
     (Diachronic_v_Synchronic + Diachronic_v_Isolated|TeamInventory) +
     NumInnovations +
     (1|TeamID/PlayerID),
-  data = IndividualInventoryGuesses
+  data = PlayerProblems
 )
 team_efficiency_mod <- lmer(
   Guesses ~
@@ -192,7 +192,7 @@ team_efficiency_mod <- lmer(
     (Diachronic_v_Synchronic + Diachronic_v_Isolated|TeamInventory) +
     NumTeamInnovations +
     (1|TeamID),
-  data = TeamInventoryGuesses
+  data = TeamProblems
 )
 ```
 

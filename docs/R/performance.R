@@ -30,6 +30,43 @@ performance_plot <- ggplot(TeamPerformance) +
     axis.title.x = element_blank()
   )
 
+# Create performance over time plots -------------------------------------------
+
+# First step is to summarize inventories at particular time points
+# for both TeamTrials and PlayerTrials.
+SampledTeamTrialsMeans <- SampledTeamTrials %>%
+  group_by(Strategy, SampledTime) %>%
+  summarize(NumInnovations = mean(NumInnovations)) %>%
+  ungroup() %>%
+  recode_strategy() %>%
+  guess_generation("SampledTime") %>%
+  recode_groups_by_generation()
+
+SampledPlayerTrialsMeans <- SampledPlayerTrials %>%
+  group_by(Strategy, Generation, SampledTime) %>%
+  summarize(NumInnovations = mean(NumInnovations)) %>%
+  ungroup() %>%
+  recode_strategy() %>%
+  recode_groups_by_generation()
+
+# Add in points at the origin (which couldn't be sampled)
+trial0 <- data_frame(
+  Strategy = c("Diachronic", "Diachronic", "Synchronic", "Isolated"),
+  Generation = c(1, 2, 1, 1),
+  SampledTime = c(0, 60*25, 0, 0),
+  NumInnovations = 0
+) %>%
+  recode_strategy() %>%
+  recode_groups_by_generation()
+
+SampledTeamTrialsMeans %<>%
+  bind_rows(trial0)
+
+SampledPlayerTrialsMeans %<>%
+  bind_rows(trial0) %>%
+  filter(!(GenerationStrategy == "Diachronic-2" & SampledTime == 1500 & NumInnovations == 0))
+
+# Create the performance over time plot
 performance_over_time_plot <- ggplot(SampledTeamTrialsMeans) +
   aes(SampledTime, NumInnovations, color = StrategyLabel, group = GenerationStrategy) +
   geom_line(size = 1.2) +

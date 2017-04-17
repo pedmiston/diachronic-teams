@@ -144,6 +144,25 @@ SampledPlayerTrials <- Workshop %>%
   # Prevent Synchronic and Diachronic teams from being sampled outside their range.
   filter(!(Strategy %in% c("Synchronic", "Diachronic") & SampledTime > 25*60))
 
+# Summarize performance for each inventory -------------------------------------
+TeamProblems <- Workshop %>%
+  filter(WorkShopResult == 0) %>%
+  group_by(TeamID, TeamInventory) %>%
+  summarize(
+    Guesses = n(),
+    Redundancy = 1 - (sum(TeamUniqueGuess)/n())
+  ) %>%
+  ungroup()
+
+PlayerProblems <- Workshop %>%
+  filter(WorkShopResult == 0) %>%
+  group_by(PlayerID, TeamInventory) %>%
+  summarize(
+    Guesses = n(),
+    Redundancy = 1 - (sum(UniqueGuess)/n())
+  ) %>%
+  ungroup()
+
 # Save data to package ---------------------------------------------------------
 TeamTrials <- Workshop %>%
   left_join(Group) %>%
@@ -155,21 +174,22 @@ TeamTrials <- Workshop %>%
          NumInnovations, NumTeamInnovations,
          NumUniqueGuesses, NumTeamUniqueGuesses)
 
-SampledTeamTrials %<>% select(PlayerID, TeamID, Strategy, Generation,
-                          SampledTime, GuessNum, TeamGuessNum,
-                          Guess = WorkShopString, Result = WorkShopResult,
-                          UniqueGuess, TeamUniqueGuess, UniqueItem, TeamUniqueItem,
-                          Inventory, TeamInventory, NumAdjacent,
-                          NumInnovations, NumTeamInnovations,
-                          NumUniqueGuesses, NumTeamUniqueGuesses)
+SampledTeamTrials %<>% select(
+  PlayerID, TeamID, Strategy, Generation,
+  SampledTime, GuessNum, TeamGuessNum,
+  Guess = WorkShopString, Result = WorkShopResult,
+  UniqueGuess, TeamUniqueGuess, UniqueItem, TeamUniqueItem,
+  Inventory, TeamInventory, NumAdjacent,
+  NumInnovations, NumTeamInnovations,
+  NumUniqueGuesses, NumTeamUniqueGuesses
+)
 
-SampledPlayerTrials %<>% select(PlayerID, TeamID, Strategy, Generation,
-                          SampledTime, GuessNum, TeamGuessNum,
-                          Guess = WorkShopString, Result = WorkShopResult,
-                          UniqueGuess, TeamUniqueGuess, UniqueItem, TeamUniqueItem,
-                          Inventory, TeamInventory, NumAdjacent,
-                          NumInnovations, NumTeamInnovations,
-                          NumUniqueGuesses, NumTeamUniqueGuesses)
+TeamProblems <- TeamProblems %>%
+  left_join(
+    TeamTrials %>%
+      select(TeamID, TeamInventory, Strategy, NumTeamInnovations) %>%
+      unique()
+  )
 
 PlayerTrials <- Workshop %>%
   left_join(Group) %>%
@@ -181,6 +201,22 @@ PlayerTrials <- Workshop %>%
   ) %>%
   ungroup()
 
+SampledPlayerTrials %<>% select(
+  PlayerID, TeamID, Strategy, Generation,
+  SampledTime, GuessNum, TeamGuessNum,
+  Guess = WorkShopString, Result = WorkShopResult,
+  UniqueGuess, TeamUniqueGuess, UniqueItem, TeamUniqueItem,
+  Inventory, TeamInventory, NumAdjacent,
+  NumInnovations, NumTeamInnovations,
+  NumUniqueGuesses, NumTeamUniqueGuesses
+)
+
+PlayerProblems %<>% left_join(
+  TeamTrials %>%
+    select(PlayerID, TeamID, TeamInventory, Strategy, NumInnovations) %>%
+    unique()
+)
+
 TeamPerformance <- Workshop %>%
   left_join(Group) %>%
   group_by(TeamID, Strategy) %>%
@@ -191,11 +227,13 @@ TeamPerformance <- Workshop %>%
   )
 
 use_data(
+  TeamPerformance,
+  TeamProblems,
   TeamTrials,
   SampledTeamTrials,
-  SampledPlayerTrials,
   PlayerTrials,
-  TeamPerformance,
+  PlayerProblems,
+  SampledPlayerTrials,
   Trajectories,
   overwrite = TRUE
 )
