@@ -27,8 +27,8 @@ team_id_map <- data_frame(
   ID_Group = team_id_levels,
   TeamID = team_id_labels
 )
-
 deidentify_group_id <- . %>% left_join(team_id_map) %>% select(-ID_Group)
+
 Group    %<>% deidentify_group_id()
 Player   %<>% deidentify_group_id()
 Workshop %<>% deidentify_group_id()
@@ -42,8 +42,8 @@ player_id_map <- data_frame(
   ID_Player = player_id_levels,
   PlayerID = player_id_labels
 )
-
 recode_player_id <- . %>% left_join(player_id_map) %>% select(-ID_Player)
+
 SubjInfo %<>% recode_player_id()
 Player   %<>% recode_player_id()
 Workshop %<>% recode_player_id()
@@ -77,11 +77,10 @@ Group %<>% rename(Strategy = Treatment)
 # Identify players within teams and generations --------------------------------
 player_generations <- Player %>%
   left_join(Group) %>%
-  # Ancestor is coded as 0 for non-Diachronic teams,
+  # Ancestor is coded as 1 for non-Diachronic teams,
   # Ancestor is coded as 1 for first generation, n+1 for future generations.
   mutate(Generation = ifelse(Strategy != "Diachronic", 1, Ancestor)) %>%
   select(PlayerID, Generation)
-
 identify_players_in_teams <- . %>% left_join(player_generations)
 
 Player   %<>% identify_players_in_teams()
@@ -128,7 +127,9 @@ Workshop %<>%
 SampledTeamTrials <- Workshop %>%
   left_join(Group) %>%
   group_by(TeamID) %>%
-  do({ get_closest_trials_to_times(., times = seq(0, 50 * 60, by = 60)) }) %>%
+  do({
+    get_closest_trials_to_times(., times = seq(0, 50 * 60, by = 60))
+  }) %>%
   ungroup() %>%
   # Prevent Synchronic teams from being sampled outside their range.
   filter(!(Strategy == "Synchronic" & SampledTime > 25*60))
@@ -149,16 +150,16 @@ TeamProblems <- Workshop %>%
   filter(WorkShopResult == 0) %>%
   group_by(TeamID, TeamInventory) %>%
   summarize(
-    Guesses = n(),
+    Guesses = n() + 1,
     Redundancy = 1 - (sum(TeamUniqueGuess)/n())
   ) %>%
   ungroup()
 
 PlayerProblems <- Workshop %>%
   filter(WorkShopResult == 0) %>%
-  group_by(PlayerID, TeamInventory) %>%
+  group_by(PlayerID, Inventory) %>%
   summarize(
-    Guesses = n(),
+    Guesses = n() + 1,
     Redundancy = 1 - (sum(UniqueGuess)/n())
   ) %>%
   ungroup()
@@ -212,8 +213,8 @@ SampledPlayerTrials %<>% select(
 )
 
 PlayerProblems %<>% left_join(
-  TeamTrials %>%
-    select(PlayerID, TeamID, TeamInventory, Strategy, NumInnovations) %>%
+  PlayerTrials %>%
+    select(PlayerID, TeamID, Inventory, Strategy, NumInnovations) %>%
     unique()
 )
 

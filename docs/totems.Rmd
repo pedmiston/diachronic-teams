@@ -171,38 +171,8 @@ A more direct measure of guessing efficiency is the number of guesses it took ea
 
 My hypothesis was that inheritance would improve problem solving efficiency of the second generation of Diachronic players relative to the first.
 
-```{r fig7, fig.width=6, fig.cap="**Individuals are as inefficient as teams.** Although synchronic teamwork reduces the number of guesses per invention for individuals, the overall number of guesses per invention is about the same across the three strategies."}
+```{r fig7}
 efficiency_plot
-```
-
-### Models
-
-```{r efficiency-mods, echo=1:2}
-individual_efficiency_mod <- lmer(
-  Guesses ~
-    Diachronic_v_Synchronic + Diachronic_v_Isolated +
-    (Diachronic_v_Synchronic + Diachronic_v_Isolated|TeamInventory) +
-    NumInnovations +
-    (1|TeamID/PlayerID),
-  data = PlayerProblems
-)
-team_efficiency_mod <- lmer(
-  Guesses ~
-    Diachronic_v_Synchronic + Diachronic_v_Isolated +
-    (Diachronic_v_Synchronic + Diachronic_v_Isolated|TeamInventory) +
-    NumTeamInnovations +
-    (1|TeamID),
-  data = TeamProblems
-)
-```
-
-```{r efficiency-results, results="asis"}
-bind_rows(
-  `Individual efficiency` = tidy(individual_efficiency_mod, effects = "fixed"),
-  `Team efficiency` = tidy(team_efficiency_mod, effects = "fixed"),
-  .id = "model"
-) %>%
-  filter(term != "(Intercept)")
 ```
 
 ## Attempts
