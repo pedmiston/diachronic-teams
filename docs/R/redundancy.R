@@ -3,12 +3,12 @@ source("docs/R/setup.R")
 # ---- redundancy
 team_redundancy_mod <- lmer(
   Redundancy ~ Diachronic_v_Synchronic + Diachronic_v_Isolated + (1|TeamID),
-  data = TeamInventoryGuesses
+  data = TeamProblems
 )
 
 individual_redundancy_mod <- lmer(
   Redundancy ~ Diachronic_v_Synchronic + Diachronic_v_Isolated + (1|PlayerID),
-  data = IndividualInventoryGuesses
+  data = PlayerProblems
 )
 
 team_redundancy_preds <- recode_strategy() %>%
@@ -20,8 +20,8 @@ individual_redundancy_preds <- recode_strategy() %>%
   rename(Redundancy = fit, SE = se.fit)
 
 Redundancy <- bind_rows(
-  `Team redundancy` = TeamInventoryGuesses,
-  `Individual redundancy` = IndividualInventoryGuesses,
+  `Team redundancy` = TeamProblems,
+  `Individual redundancy` = PlayerProblems,
   .id = "RedundancyMeasure"
 )
 

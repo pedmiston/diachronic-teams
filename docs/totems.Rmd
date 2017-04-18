@@ -119,7 +119,7 @@ grid.arrange(
 
 ```{r inventory-mod, echo=1}
 inventory_mod <- lm(NumInnovations ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
-                    data = TotemsTeams)
+                    data = TeamPerformance)
 ```
 
 ```{r inventory-results, results="asis"}
@@ -136,7 +136,7 @@ To compare problem solving efficiency between the three strategies, I first calc
 
 I calculated two measures of redundancy: individual redundancy, which corresponds to the percentage of guesses that were duplicates of previous guesses, and team redundancy, which corresponds to the percentage of duplicate guesses in each team. Fig. 8 shows the results. Isolated individuals were the most redundant with themselves, and Synchronic teams were the most redundant with each other. Put differently, Diachronic collaboration was the least redundant strategy.
 
-```{r fig8, fig.width=6, fig.cap="**Diachronic teams are the least redundant guessers.** Diachronic teams are less likely to repeat themselves than isolated individuals, and also less likely to repeat their teammate than synchronic teams. Synchronic teams are less likely to repeat an incorrect guess they guessed previously, but more likely to repeat a guess made by their partner."}
+```{r fig8, fig.width=6, fig.cap="**Diachronic teamwork is less redundant than synchronic teamwork.** Diachronic teams are as likely to repeat themselves as isolated individuals, and also less likely to repeat their teammate than synchronic teams. Synchronic teams are less likely to repeat an incorrect guess they guessed previously, but more likely to repeat a guess made by their partner."}
 redundancy_plot
 ```
 
@@ -145,11 +145,11 @@ redundancy_plot
 ```{r redundant-mods, echo=1:2}
 individual_redundancy_mod <- lmer(
   Redundancy ~ Diachronic_v_Synchronic + Diachronic_v_Isolated + (1|PlayerID),
-  data = IndividualInventoryGuesses
+  data = PlayerProblems
 )
 team_redundancy_mod <- lmer(
   Redundancy ~ Diachronic_v_Synchronic + Diachronic_v_Isolated + (1|TeamID),
-  data = TeamInventoryGuesses
+  data = TeamProblems
 )
 ```
 
@@ -171,38 +171,8 @@ A more direct measure of guessing efficiency is the number of guesses it took ea
 
 My hypothesis was that inheritance would improve problem solving efficiency of the second generation of Diachronic players relative to the first.
 
-```{r fig7, fig.width=6, fig.cap="**Individuals are as inefficient as teams.** Although synchronic teamwork reduces the number of guesses per invention for individuals, the overall number of guesses per invention is about the same across the three strategies."}
+```{r fig7}
 efficiency_plot
-```
-
-### Models
-
-```{r efficiency-mods, echo=1:2}
-individual_efficiency_mod <- lmer(
-  Guesses ~
-    Diachronic_v_Synchronic + Diachronic_v_Isolated +
-    (Diachronic_v_Synchronic + Diachronic_v_Isolated|TeamInventory) +
-    NumInnovations +
-    (1|TeamID/PlayerID),
-  data = IndividualInventoryGuesses
-)
-team_efficiency_mod <- lmer(
-  Guesses ~
-    Diachronic_v_Synchronic + Diachronic_v_Isolated +
-    (Diachronic_v_Synchronic + Diachronic_v_Isolated|TeamInventory) +
-    NumTeamInnovations +
-    (1|TeamID),
-  data = TeamInventoryGuesses
-)
-```
-
-```{r efficiency-results, results="asis"}
-bind_rows(
-  `Individual efficiency` = tidy(individual_efficiency_mod, effects = "fixed"),
-  `Team efficiency` = tidy(team_efficiency_mod, effects = "fixed"),
-  .id = "model"
-) %>%
-  filter(term != "(Intercept)")
 ```
 
 ## Attempts
@@ -223,7 +193,7 @@ grid.arrange(
 ```{r attempts-mods, echo=1:2}
 team_attempts_mod <- lm(
   NumGuesses ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
-  data = TotemsTeams
+  data = TeamPerformance
 )
 ```
 
