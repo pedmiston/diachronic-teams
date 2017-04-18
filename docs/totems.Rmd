@@ -103,9 +103,13 @@ draw_graphviz("team-structures-exp1", "totems")
 
 There are multiple ways to assess performance. The performance measure shown here is the final number of inventions discovered by each team. Fig. 4 shows the accumulation of inventions over time in the three strategies. Results are similar for alternative performance metrics. My prediction was that inheritance in the diachronic teams would result in more efficient problem solving than the other strategies. Instead it appears there were not clear differences between the strategies. If anything, synchronic collaboration appears to be the most efficient way to solve this particular problem.
 
-```{r fig4, fig.height=4, fig.width=8, fig.cap="**Problem solving performance by strategy**. The accumulation of inventions over time is shown on the left. On the right is final team performance. Synchronic collaboration is the most effective use of 50 labor minutes."}
+```{r fig4, fig.height=6, fig.width=8, fig.cap="**Problem solving performance by strategy**. The accumulation of inventions over time is shown on the left. On the right is final team performance. Synchronic collaboration is the most effective use of 50 labor minutes."}
 grid.arrange(
-  performance_duplicated_plot,
+  arrangeGrob(
+    performance_over_time_plot,
+    performance_stacked_plot + theme(legend.position = "none"),
+    ncol = 1
+  ),
   performance_plot,
   widths = c(0.6, 0.4)
 )
