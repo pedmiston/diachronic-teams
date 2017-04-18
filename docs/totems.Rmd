@@ -136,7 +136,7 @@ To compare problem solving efficiency between the three strategies, I first calc
 
 I calculated two measures of redundancy: individual redundancy, which corresponds to the percentage of guesses that were duplicates of previous guesses, and team redundancy, which corresponds to the percentage of duplicate guesses in each team. Fig. 8 shows the results. Isolated individuals were the most redundant with themselves, and Synchronic teams were the most redundant with each other. Put differently, Diachronic collaboration was the least redundant strategy.
 
-```{r fig8, fig.width=6, fig.cap="**Diachronic teams are the least redundant guessers.** Diachronic teams are less likely to repeat themselves than isolated individuals, and also less likely to repeat their teammate than synchronic teams. Synchronic teams are less likely to repeat an incorrect guess they guessed previously, but more likely to repeat a guess made by their partner."}
+```{r fig8, fig.width=6, fig.cap="**Diachronic teamwork is less redundant than synchronic teamwork.** Diachronic teams are as likely to repeat themselves as isolated individuals, and also less likely to repeat their teammate than synchronic teams. Synchronic teams are less likely to repeat an incorrect guess they guessed previously, but more likely to repeat a guess made by their partner."}
 redundancy_plot
 ```
 
