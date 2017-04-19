@@ -1,3 +1,11 @@
+#' Information about teams
+#' @docType data
+#' @usage data("TeamInfo")
+
+#' Information about players
+#' @docType data
+#' @usage data("PlayerInfo")
+
 #' Workshop guesses made by players in the Totems experiment.
 #'
 #' The raw observations for the Totems experiment are individual

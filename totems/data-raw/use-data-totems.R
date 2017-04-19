@@ -25,9 +25,7 @@ PlayerInfo <- Player %>%
   left_join(Group) %>%
   rename(Strategy = Treatment) %>%
   mutate(Generation = ifelse(Strategy != "Diachronic", 1, Ancestor)) %>%
-  select(
-    PlayerID, TeamID, Strategy, Generation
-  ) %>%
+  select(PlayerID, TeamID, Strategy, Generation) %>%
   arrange(Strategy, TeamID, Generation)
 
 # Guesses ----------------------------------------------------------------------
@@ -45,6 +43,22 @@ Guesses <- WorkshopAnalyzed %>%
   )
 
 # Inventories ------------------------------------------------------------------
+WorkshopAnalyzed %>%
+  group_by(TeamID) %>%
+  arrange(TeamTime) %>%
+  mutate(NumInnovations = cumsum(TeamUniqueItem)) %>%
+  ungroup() %>%
+  group_by(TeamID, TeamInventory, NumInnovations) %>%
+  summarize(
+    Guesses = n(),
+    TeamUniqueGuesses = sum(TeamUniqueGuess),
+    UniqueGuesses = sum(UniqueGuess),
+    Duration = max(TeamTime) - min(TeamTime)
+  ) %>%
+  ungroup() %>%
+  arrange(TeamID, NumInnovations) %>%
+  left_join(TeamInfo) %>%
+  filter(Strategy == "Synchronic")
 
 # Performance ------------------------------------------------------------------
 TeamPerformance <- Guesses %>%
@@ -172,12 +186,7 @@ PlayerPerformance <- Workshop %>%
 
 # Save data to package ---------------------------------------------------------
 use_data(
-  TeamPerformance,
-  TeamProblems,
-  TeamTrials,
-  SampledTeamTrials,
-  PlayerProblems,
-  SampledPlayerTrials,
-  Trajectories,
+  TeamInfo,
+  PlayerInfo,
   overwrite = TRUE
 )
