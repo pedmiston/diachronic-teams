@@ -1,0 +1,41 @@
+#' Workshop guesses made by players in the Totems experiment.
+#'
+#' The raw observations for the Totems experiment are individual
+#' workshop guesses, consisting of a Guess (e.g., "0_0_1_3") and a
+#' Result, which is 0 if the guess was incorrect, and the number
+#' of the created item if correct.
+#'
+#' \describe{
+#'   \item{PlayerID}{unique identifier for players}
+#'   \item{PlayerTime}{seconds, time elapsed for this player when this guess was made}
+#'   \item{TeamTime}{seconds, time elapsed for this team when this guess was made}
+#'   \item{GuessNum}{current guess number}
+#'   \item{TeamGuessNum}{current team guess number}
+#'   \item{Guess}{a string created from a combination of up to 4 items that represents a guess}
+#'   \item{Result}{numeric, the item number of the result. Result == 0 if the guess is incorrect.}
+#'   \item{UniqueGuess}{bool, has this guess been made by this player before?}
+#'   \item{TeamUniqueGuess}{bool, has this guess been made by this team before?}
+#'   \item{UniqueItem}{bool, has this item been made by this player before?}
+#'   \item{TeamUniqueItem}{bool, has this item been made by this team before?}
+#' }
+#' @docType data
+#' @usage data("Guesses")
+"Guesses"
+
+#' Inventories uncovered by teams in the Totems experiment.
+#'
+#' \describe{
+#'   \item{PlayerID}{unique identifier for players}
+#'   \item{NumInnovations}{number of new items discovered by the team}
+#'   \item{Inventory}{a string representing the current items in the inventory}
+#' }
+#'
+#' @docType data
+#' @usage data("Inventories")
+"Inventories"
+
+#' Cumulative performance sampled at a regular interval.
+#'
+#' @docType data
+#' @usage data("SampledTrials")
+"SampledTrials"
