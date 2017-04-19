@@ -110,10 +110,25 @@ def analyze(ctx):
     workshop = filter_valid_teams(workshop)
     workshop = calculate_team_time(workshop)
 
-    workshop = workshop.groupby('ID_Player').apply(rolling_history)
-    workshop = workshop.groupby('ID_Group').apply(rolling_history, prefix='Team')
+    workshop = workshop.sort_values(['ID_Group', 'TeamTime']).reset_index(drop=True)
 
-    workshop.to_csv(Path(TOTEMS_DIR, 'WorkshopAnalyzed.csv'), index=False)
+    workshop = (workshop.groupby('ID_Player')
+                        .apply(rolling_history)
+                        .reset_index(drop=True))
+    workshop = (workshop.groupby('ID_Group')
+                        .apply(rolling_history, prefix='Team')
+                        .reset_index(drop=True))
+
+    workshop_cols = [
+        'ID_Player',
+        'PlayerTime', 'TeamTime',
+        'WorkShopString', 'WorkShopResult',
+        'Inventory', 'TeamInventory',
+        'UniqueItem', 'TeamUniqueItem',
+        'UniqueGuess', 'TeamUniqueGuess',
+    ]
+    workshop[workshop_cols].to_csv(Path(TOTEMS_DIR, 'WorkshopAnalyzed.csv'),
+                                   index=False)
 
     # trajectories = extract_trajectories(workshop)
     # trajectories.to_csv(Path(TOTEMS_DIR, 'Trajectories.csv'), index=False)
@@ -129,7 +144,7 @@ def rolling_history(trials, prefix=''):
     unique_item = []
     unique_guess = []
 
-    for trial in trials.sort_values('TeamTime').itertuples():
+    for trial in trials.itertuples():
         # Record the guess
         is_unique_guess = trial.WorkShopString not in rolling_guesses
         if is_unique_guess:

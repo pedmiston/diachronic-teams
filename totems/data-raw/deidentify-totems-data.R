@@ -13,8 +13,6 @@ deidentify_group_id <- . %>% left_join(team_id_map) %>% select(-ID_Group)
 
 Group    %<>% deidentify_group_id()
 Player   %<>% deidentify_group_id()
-WorkshopAnalyzed %<>% deidentify_group_id()
-Trajectories %<>% deidentify_group_id()
 
 # Recode player id
 # Create a new PlayerID variable that is a character instead of a number.
@@ -30,5 +28,4 @@ SubjInfo %<>% recode_player_id()
 Player   %<>% recode_player_id()
 Workshop %<>% recode_player_id()
 WorkshopAnalyzed %<>% recode_player_id()
-Trajectories %<>% recode_player_id()
 Survey %<>% rename(ID_Player = `Participant ID`) %>% recode_player_id()

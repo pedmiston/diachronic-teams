@@ -1,4 +1,4 @@
-# Save the data from the totems experiment
+# Save the csvs from the Totems experiment as rda data files in the R pkg
 
 library(devtools)
 library(tidyverse)
@@ -31,6 +31,7 @@ PlayerInfo <- Player %>%
 # Guesses ----------------------------------------------------------------------
 Guesses <- WorkshopAnalyzed %>%
   rename(Guess = WorkShopString, Result = WorkShopResult) %>%
+  left_join(PlayerInfo) %>%
   count_guesses("PlayerID", "GuessNum") %>%
   count_guesses("TeamID", "TeamGuessNum") %>%
   select(
@@ -44,6 +45,13 @@ Guesses <- WorkshopAnalyzed %>%
 
 # Inventories ------------------------------------------------------------------
 WorkshopAnalyzed %>%
+  left_join(PlayerInfo) %>%
+  filter(TeamID == "G1") %>%
+  arrange(TeamTime) %>%
+  View()
+
+WorkshopAnalyzed %>%
+  left_join(PlayerInfo) %>%
   group_by(TeamID) %>%
   arrange(TeamTime) %>%
   mutate(NumInnovations = cumsum(TeamUniqueItem)) %>%
@@ -59,6 +67,13 @@ WorkshopAnalyzed %>%
   arrange(TeamID, NumInnovations) %>%
   left_join(TeamInfo) %>%
   filter(Strategy == "Synchronic")
+
+# Verify TeamTime calculation
+WorkshopAnalyzed %>%
+  left_join(PlayerInfo) %>%
+  filter(Strategy == "Diachronic") %>%
+  select(TeamID, Generation, PlayerTime, TeamTime) %>%
+  arrange(TeamID, TeamTime)
 
 # Performance ------------------------------------------------------------------
 TeamPerformance <- Guesses %>%

@@ -7,7 +7,6 @@ Player   %<>% filter_valid_participants()
 Workshop %<>% filter_valid_participants()
 WorkshopAnalyzed %<>% filter_valid_participants()
 Survey   %<>% filter_valid_participants()
-Trajectories %<>% filter_valid_participants()
 
 # Select valid teams
 # Valid teams are those with Status == "E" in the Table_Group
@@ -17,5 +16,3 @@ filter_valid_teams <- . %>%
 
 Group    %<>% filter_valid_teams()
 Player   %<>% filter_valid_teams()
-WorkshopAnalyzed %<>% filter_valid_teams()
-Trajectories %<>% filter_valid_teams()
