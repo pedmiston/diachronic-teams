@@ -93,7 +93,7 @@ draw_image("gameplay", "totems")
 draw_graphviz("team-structures-exp1", "totems")
 ```
 
-```{r data, echo = 1:4}
+```{r data, echo = 1:8}
 ```
 
 ## Performance
@@ -118,8 +118,10 @@ grid.arrange(
 ### Model
 
 ```{r inventory-mod, echo=1}
-inventory_mod <- lm(NumInnovations ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
-                    data = TeamPerformance)
+inventory_mod <- lm(
+  NumInnovations ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
+  data = Performance
+)
 ```
 
 ```{r inventory-results, results="asis"}
@@ -140,28 +142,6 @@ I calculated two measures of redundancy: individual redundancy, which correspond
 redundancy_plot
 ```
 
-### Models
-
-```{r redundant-mods, echo=1:2}
-individual_redundancy_mod <- lmer(
-  Redundancy ~ Diachronic_v_Synchronic + Diachronic_v_Isolated + (1|PlayerID),
-  data = PlayerProblems
-)
-team_redundancy_mod <- lmer(
-  Redundancy ~ Diachronic_v_Synchronic + Diachronic_v_Isolated + (1|TeamID),
-  data = TeamProblems
-)
-```
-
-```{r redundant-results, results="asis"}
-bind_rows(
-  `Individual redundancy` = tidy(team_redundancy_mod, effects = "fixed"),
-  `Team redundancy` = tidy(individual_redundancy_mod, effects = "fixed"),
-  .id = "model"
-) %>%
-  filter(term != "(Intercept)")
-```
-
 ## Guessing efficiency
 
 ```{r efficiency, include=FALSE}
@@ -171,7 +151,7 @@ A more direct measure of guessing efficiency is the number of guesses it took ea
 
 My hypothesis was that inheritance would improve problem solving efficiency of the second generation of Diachronic players relative to the first.
 
-```{r fig7}
+```{r fig7, fig.width=6, fig.height=6}
 efficiency_plot
 ```
 
@@ -188,28 +168,6 @@ grid.arrange(
 )
 ```
 
-### Models
-
-```{r attempts-mods, echo=1:2}
-team_attempts_mod <- lm(
-  NumGuesses ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
-  data = TeamPerformance
-)
-```
-
-```{r attempts-results, results="asis"}
-tidy(team_attempts_mod) %>%
-  filter(term != "(Intercept)")
-```
-
-## Trajectories
-
-```{r trajectories, include=FALSE}
-```
-
-```{r fig9}
-trajectory_count_plot
-```
 
 # Four-person teams
 

@@ -1,10 +1,12 @@
 #' Information about teams
 #' @docType data
 #' @usage data("TeamInfo")
+"TeamInfo"
 
 #' Information about players
 #' @docType data
 #' @usage data("PlayerInfo")
+"PlayerInfo"
 
 #' Workshop guesses made by players in the Totems experiment.
 #'
@@ -45,5 +47,5 @@
 #' Cumulative performance sampled at a regular interval.
 #'
 #' @docType data
-#' @usage data("SampledTrials")
-"SampledTrials"
+#' @usage data("SampledPerformance")
+"SampledPerformance"
