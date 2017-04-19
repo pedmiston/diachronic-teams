@@ -136,7 +136,7 @@ def analyze(ctx):
 
 def rolling_history(trials, prefix=''):
     """Keep track of rolling variables, like total known inventory."""
-    trials = trials.copy()
+    trials = trials.sort_values('TeamTime').reset_index(drop=True)
     rolling_guesses = set()
     rolling_inventory = landscape.starting_inventory()  # also a set
 
