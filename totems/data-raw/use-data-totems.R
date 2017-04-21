@@ -5,7 +5,6 @@ library(tidyverse)
 library(lazyeval)
 library(magrittr)
 library(lubridate)
-
 # Don't load "totems" or use_data() might not work properly
 source("R/util.R")
 source("R/time-bins.R")
