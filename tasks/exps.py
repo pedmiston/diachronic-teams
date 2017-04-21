@@ -119,19 +119,23 @@ def analyze(ctx):
                         .apply(rolling_history, prefix='Team')
                         .reset_index(drop=True))
 
+    # Get scores for all WorkShopResults, then only get
+    # scores for the first time a player makes the item,
+    # and then only for the first time a team makes the item.
+    scores = workshop.WorkShopResult.apply(landscape.get_score)
+    workshop['Score']     = scores.where(workshop.UniqueItem, 0)
+    workshop['TeamScore'] = scores.where(workshop.TeamUniqueItem, 0)
+
     workshop_cols = [
         'ID_Player',
         'PlayerTime', 'TeamTime',
-        'WorkShopString', 'WorkShopResult',
+        'WorkShopString', 'UniqueGuess', 'TeamUniqueGuess',
+        'WorkShopResult', 'UniqueItem', 'TeamUniqueItem',
+        'Score', 'TeamScore',
         'Inventory', 'TeamInventory',
-        'UniqueItem', 'TeamUniqueItem',
-        'UniqueGuess', 'TeamUniqueGuess',
     ]
     workshop[workshop_cols].to_csv(Path(TOTEMS_DIR, 'WorkshopAnalyzed.csv'),
                                    index=False)
-
-    # trajectories = extract_trajectories(workshop)
-    # trajectories.to_csv(Path(TOTEMS_DIR, 'Trajectories.csv'), index=False)
 
 
 def rolling_history(trials, prefix=''):

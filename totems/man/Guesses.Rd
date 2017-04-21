@@ -4,7 +4,7 @@
 \name{Guesses}
 \alias{Guesses}
 \title{Workshop guesses made by players in the Totems experiment.}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 36051 rows and 11 columns.}
+\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 36051 rows and 13 columns.}
 \usage{
 data("Guesses")
 }
@@ -23,6 +23,7 @@ of the created item if correct.
   \item{TeamGuessNum}{current team guess number}
   \item{Guess}{a string created from a combination of up to 4 items that represents a guess}
   \item{Result}{numeric, the item number of the result. Result == 0 if the guess is incorrect.}
+  \item{Score}{numeric, the score, if any, received for this guess. Normal innovations are 15 points each. Anything that is used to make a Totem is worth much more than any tool. More advanced totems are worth more points.}
   \item{UniqueGuess}{bool, has this guess been made by this player before?}
   \item{TeamUniqueGuess}{bool, has this guess been made by this team before?}
   \item{UniqueItem}{bool, has this item been made by this player before?}

@@ -1,0 +1,45 @@
+---
+title: "Comparing different performance metrics"
+author: "Pierce Edmiston"
+output:
+  html_document:
+    theme: flatly
+---
+
+```{r config, include=FALSE}
+library(knitr)
+library(magrittr)
+library(gridExtra)
+
+opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  results = "hide",
+  fig.path = "performance-figs/",
+  fig.width = 4,
+  fig.height = 4,
+  cache = TRUE,
+  cache.path = ".cache.performance/"
+)
+
+list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
+```
+
+```{r setup, cache=FALSE}
+```
+
+```{r performance}
+```
+
+```{r score}
+```
+
+```{r compare-performance-metrics, fig.width=8, fig.height=8}
+grid.arrange(
+  innovations_over_time_plot, innovations_plot,
+  score_over_time_plot + theme(legend.position = "none"), score_plot,
+  nrow = 2,
+  widths = c(0.6, 0.4)
+)
+```

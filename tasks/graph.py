@@ -7,7 +7,7 @@ from tasks.paths import Path, R_PKG, TOTEMS, ITEM_IMAGES
 
 
 @task
-def load(ctx, delete_first=False, load_only=False):
+def load(ctx, delete_first=False):
     """Make the totems landscape as a graph database."""
     graph.load(delete_first=delete_first)
 

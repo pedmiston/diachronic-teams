@@ -48,10 +48,13 @@ def load(delete_first=False):
             raise AnswerKeyOutOfOrder()
 
         # Convert numpy.int64 to native python int because
-        # py2neo nodes don't like numpy.int64 properties.
+        # py2neo nodes don't like numpy.int64 properties
         number = data.Number.item()
 
-        result = Item(number=number, label=data.Label,
+        # Convert ScoreLog to item score
+        score = data.ScoreLog.item() if data.ScoreLog != 0 else 15
+
+        result = Item(number=number, label=data.Label, score=score,
                       generation=max_generation(requirements)+1)
         items[data.Number] = result
 

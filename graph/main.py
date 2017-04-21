@@ -48,11 +48,22 @@ class Landscape:
 
         # self.item_numbers = {label: number for number, label in self.labels}
 
+        self.scores = None
+
     def starting_inventory(self):
         return set([1, 2, 3, 4, 5, 6])
 
     def get_label(self, item_number):
         return self.labels.get(item_number)
+
+    def get_score(self, item_number):
+        if self.scores is None:
+            self.scores = pandas.DataFrame(self.graph.data("""
+            MATCH (n:Item)
+            RETURN n.number as number, n.score as score
+            """)).set_index('number').squeeze().to_dict()
+        return self.scores.get(item_number, 0)
+
 
     # def get_number(self, label):
     #     return self.item_numbers[label]

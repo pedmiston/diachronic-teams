@@ -4,16 +4,16 @@ source("docs/R/setup.R")
 Performance <- TeamPerformance %>%
   recode_strategy()
 
-inventory_mod <- lm(
+innovations_mod <- lm(
   NumInnovations ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
   data = Performance
 )
 
-inventory_preds <- get_lm_mod_preds(inventory_mod) %>%
+innovations_preds <- get_lm_mod_preds(innovations_mod) %>%
   rename(NumInnovations = fit, SE = se.fit) %>%
   recode_strategy()
 
-performance_plot <- ggplot(Performance) +
+innovations_plot <- ggplot(Performance) +
   aes(StrategyLabel, NumInnovations) +
   geom_point(aes(color = StrategyLabel),
              position = position_jitter(width = 0.3),
@@ -21,7 +21,7 @@ performance_plot <- ggplot(Performance) +
   geom_bar(aes(fill = StrategyLabel),
            stat = "summary", fun.y = "mean", alpha = 0.6) +
   geom_errorbar(aes(ymin = NumInnovations - SE, ymax = NumInnovations + SE),
-                width = 0.2, data = inventory_preds) +
+                width = 0.2, data = innovations_preds) +
   ylab("Number of inventions") +
   totems_theme["scale_x_strategy"] +
   totems_theme["scale_color_strategy"] +
@@ -40,7 +40,10 @@ data("SampledPerformance")
 SampledPerformanceMeans <- SampledPerformance %>%
   left_join(PlayerInfo) %>%
   group_by(Strategy, SampledTime) %>%
-  summarize(NumInnovations = mean(NumInnovations)) %>%
+  summarize(
+    NumInnovations = mean(NumInnovations),
+    Score = mean(Score)
+  ) %>%
   ungroup() %>%
   recode_strategy() %>%
   guess_generation("SampledTime") %>%
@@ -51,7 +54,8 @@ trial0 <- data_frame(
   Strategy = c("Diachronic", "Diachronic", "Synchronic", "Isolated"),
   Generation = c(1, 2, 1, 1),
   SampledTime = c(0, 60*25, 0, 0),
-  NumInnovations = 0
+  NumInnovations = 0,
+  Score = 0
 ) %>%
   recode_strategy() %>%
   recode_groups_by_generation()
@@ -60,7 +64,7 @@ SampledPerformanceMeans %<>%
   bind_rows(trial0)
 
 # Create the team time plot
-performance_over_time_plot <- ggplot(SampledPerformanceMeans) +
+innovations_over_time_plot <- ggplot(SampledPerformanceMeans) +
   aes(SampledTime, NumInnovations, color = StrategyLabel, group = GenerationStrategy) +
   geom_line(size = 1.2) +
   scale_x_time("Team time", breaks = seconds(c(0, 25 * 60, 50 * 60))) +
@@ -103,6 +107,45 @@ performance_stacked_plot <- ggplot(SampledPerformancePlayerMeans) +
             nudge_x = 2 * 60, show.legend = FALSE) +
   scale_x_time("Player time", breaks = seconds(c(0, 25 * 60, 50 * 60))) +
   scale_y_continuous("Number of inventions", breaks = seq(0, 20, by = 2)) +
+  totems_theme["scale_color_strategy"] +
+  totems_theme["base_theme"] +
+  theme(legend.position = "top")
+
+# ---- score
+score_mod <- lm(
+  Score ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
+  data = Performance
+)
+
+score_preds <- get_lm_mod_preds(score_mod) %>%
+  rename(Score = fit, SE = se.fit) %>%
+  recode_strategy()
+
+score_plot <- ggplot(Performance) +
+  aes(StrategyLabel, Score) +
+  geom_point(aes(color = StrategyLabel),
+             position = position_jitter(width = 0.3),
+             alpha = 0.8) +
+  geom_bar(aes(fill = StrategyLabel),
+           stat = "summary", fun.y = "mean", alpha = 0.6) +
+  geom_errorbar(aes(ymin = Score - SE, ymax = Score + SE),
+                width = 0.2, data = score_preds) +
+  ylab("Totem score") +
+  totems_theme["scale_x_strategy"] +
+  totems_theme["scale_color_strategy"] +
+  totems_theme["scale_fill_strategy"] +
+  totems_theme["base_theme"] +
+  theme(
+    legend.position = "none",
+    panel.grid.major.x = element_blank(),
+    axis.title.x = element_blank()
+  )
+
+score_over_time_plot <- ggplot(SampledPerformanceMeans) +
+  aes(SampledTime, Score, color = StrategyLabel, group = GenerationStrategy) +
+  geom_line(size = 1.2) +
+  scale_x_time("Team time", breaks = seconds(c(0, 25 * 60, 50 * 60))) +
+  # scale_y_continuous("Number of inventions", breaks = seq(0, 20, by = 2)) +
   totems_theme["scale_color_strategy"] +
   totems_theme["base_theme"] +
   theme(legend.position = "top")

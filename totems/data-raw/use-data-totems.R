@@ -38,6 +38,7 @@ Guesses <- WorkshopAnalyzed %>%
     PlayerTime, TeamTime,
     GuessNum, TeamGuessNum,
     Guess, Result,
+    Score, TeamScore,
     UniqueGuess, TeamUniqueGuess,
     UniqueItem, TeamUniqueItem
   )
@@ -72,7 +73,8 @@ TeamPerformance <- Guesses %>%
   summarize(
     NumInnovations = sum(TeamUniqueItem),
     NumGuesses = max(TeamGuessNum),
-    NumUniqueGuesses = sum(TeamUniqueGuess)
+    NumUniqueGuesses = sum(TeamUniqueGuess),
+    Score = sum(Score)
   ) %>%
   left_join(TeamInfo)
 
@@ -82,26 +84,33 @@ PlayerPerformance <- Guesses %>%
     NumInnovations = sum(TeamUniqueItem),
     NumGuesses = max(GuessNum),
     NumUniqueGuesses = sum(TeamUniqueGuess),
-    NumTeamUniqueGuesses = sum(TeamUniqueGuess)
+    NumTeamUniqueGuesses = sum(TeamUniqueGuess),
+    Score = sum(Score)
   )
 
 # SampledPerformance -----------------------------------------------------------
-calculate_num_team_innovations <- . %>%
+calculate_rolling_team_performance <- . %>%
   group_by(TeamID) %>%
   arrange(TeamTime) %>%
-  mutate(NumTeamInnovations = cumsum(TeamUniqueItem)) %>%
+  mutate(
+    NumTeamInnovations = cumsum(TeamUniqueItem),
+    TeamScore = cumsum(Score)
+  ) %>%
   ungroup()
 
-calculate_num_player_innovations <- . %>%
+calculate_rolling_player_performance <- . %>%
   group_by(PlayerID) %>%
   arrange(TeamTime) %>%
-  mutate(NumInnovations = cumsum(UniqueItem)) %>%
+  mutate(
+    NumInnovations = cumsum(UniqueItem),
+    Score = cumsum(Score)
+  ) %>%
   ungroup()
 
 SampledPerformance <- Guesses %>%
   left_join(PlayerInfo) %>%
-  calculate_num_team_innovations() %>%
-  calculate_num_player_innovations() %>%
+  calculate_rolling_team_performance() %>%
+  calculate_rolling_player_performance() %>%
   group_by(PlayerID) %>%
   # Sample closest trial every 60 seconds
   do({ get_closest_trials_to_times(., times = seq(0, 50 * 60, by = 60)) }) %>%
@@ -110,8 +119,11 @@ SampledPerformance <- Guesses %>%
   filter(!(Strategy == "Synchronic" & SampledTime > 25*60)) %>%
   group_by(PlayerID, SampledTime) %>%
   summarize(
+    # Take max() of cumsum variables, not mean()
     NumInnovations = max(NumInnovations),
-    NumTeamInnovations = max(NumTeamInnovations)
+    NumTeamInnovations = max(NumTeamInnovations),
+    Score = max(Score),
+    TeamScore = max(TeamScore)
   ) %>%
   ungroup() %>%
   left_join(PlayerInfo) %>%
@@ -120,7 +132,9 @@ SampledPerformance <- Guesses %>%
                                SampledTime - (Generation - 1) * (25 * 60))
   ) %>%
   select(
-    PlayerID, SampledTime, SampledPlayerTime, NumInnovations, NumTeamInnovations
+    PlayerID, SampledTime, SampledPlayerTime,
+    NumInnovations, NumTeamInnovations,
+    Score, TeamScore
   )
 
 # Save data to package ---------------------------------------------------------

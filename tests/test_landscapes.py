@@ -70,3 +70,9 @@ def test_starting_inventory(landscape):
 
 def test_getting_label_from_number(landscape):
     assert landscape.get_label(1) == 'Big_Tree'
+
+def test_get_item_score(landscape):
+    assert landscape.get_score(0) == 0     # No item
+    assert landscape.get_score(11) == 15   # Stone
+    assert landscape.get_score(19) == 50   # Log
+    assert landscape.get_score(139) == 650 # A particular painted log
