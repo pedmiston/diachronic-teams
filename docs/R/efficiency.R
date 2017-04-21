@@ -1,70 +1,40 @@
 source("docs/R/setup.R")
 
 # ---- efficiency
-player_generations <- TotemsPlayers %>%
-  select(PlayerID, Generation)
+PlayerEfficiency <- PlayerProblems %>%
+  group_by(PlayerID, TeamID) %>%
+  summarize(Guesses = mean(Guesses)) %>%
+  ungroup() %>%
+  left_join(TeamPerformance %>% select(TeamID, Strategy)) %>%
+  recode_strategy() %>%
+  left_join(PlayerTrials %>% select(PlayerID, Generation) %>% unique()) %>%
+  recode_groups_by_generation()
 
-remove_first_gen_diachronic <- . %>%
-  left_join(player_generations) %>%
-  filter(!(Strategy == "Diachronic" & Generation == 1))
+generation_strategy_position <- position_jitterdodge(jitter.width = 0.4,
+                                                     dodge.width = 0.41)
 
-team_efficiency_mod <- lmer(
-  Guesses ~
-    Diachronic_v_Synchronic + Diachronic_v_Isolated +
-    (Diachronic_v_Synchronic + Diachronic_v_Isolated|TeamInventory) +
-    NumTeamInnovations +
-    (1|TeamID),
-  data = TeamInventoryGuesses
-)
-
-individual_efficiency_mod <- lmer(
-  Guesses ~
-    Diachronic_v_Synchronic + Diachronic_v_Isolated +
-    (Diachronic_v_Synchronic + Diachronic_v_Isolated|TeamInventory) +
-    NumInnovations +
-    (1|PlayerID),
-  data = IndividualInventoryGuesses #%>% remove_first_gen_diachronic()
-)
-
-team_efficiency_preds <- expand.grid(
-  Strategy = recode_strategy()$Strategy,
-  NumTeamInnovations = mean(TeamInventoryGuesses$NumTeamInnovations),
-  stringsAsFactors = FALSE
+diachronic_generation_labels <- data_frame(
+  Strategy = c("Diachronic", "Diachronic"),
+  Generation = 1:2,
+  GenerationLabel = paste0("G", Generation)
 ) %>%
   recode_strategy() %>%
-  cbind(., AICcmodavg::predictSE(team_efficiency_mod, newdata = ., se = TRUE)) %>%
-  rename(Guesses = fit, SE = se.fit)
+  recode_groups_by_generation()
 
-individual_efficiency_preds <- expand.grid(
-  Strategy = recode_strategy()$Strategy,
-  NumInnovations = mean(IndividualInventoryGuesses$NumInnovations),
-  stringsAsFactors = FALSE
-) %>%
-  recode_strategy() %>%
-  cbind(., AICcmodavg::predictSE(individual_efficiency_mod, newdata = ., se = TRUE)) %>%
-  rename(Guesses = fit, SE = se.fit)
-
-efficiency_preds <- bind_rows(
-  `Individual guesses per invention` = individual_efficiency_preds,
-  `Team guesses per invention` = team_efficiency_preds,
-  .id = "GuessMeasure"
-)
-
-efficiency_plot <- ggplot(efficiency_preds) +
-  aes(StrategyLabel, Guesses) +
-  geom_bar(aes(fill = StrategyLabel), stat = "identity",
-           alpha = 0.6) +
-  geom_errorbar(aes(ymin = Guesses - SE, ymax = Guesses + SE),
-                width = 0.3) +
-  facet_wrap("GuessMeasure", strip.position = "left") +
+set.seed(342)
+efficiency_plot <- ggplot(PlayerEfficiency) +
+  aes(StrategyLabel, Guesses, shape = factor(Generation), color = StrategyLabel) +
+  geom_point(position = generation_strategy_position) +
+  geom_text(aes(label = GenerationLabel, y = 4),
+            position = position_dodge(width = 0.4),
+            data = diachronic_generation_labels) +
   totems_theme["scale_x_strategy"] +
-  ylab("Guesses per invention") +
+  scale_y_reverse("Guesses per invention", breaks = c(1, seq(50, 250, by = 50))) +
+  totems_theme["scale_color_strategy"] +
+  scale_shape_manual("", values = c(16, 1)) +
   totems_theme["scale_fill_strategy"] +
   totems_theme["base_theme"] +
   theme(
     legend.position = "none",
-    panel.grid.major.x = element_blank(),
-    strip.placement = "outside",
-    axis.title.y = element_blank()
+    panel.grid.major.x = element_blank()
   )
-efficiency_plot
