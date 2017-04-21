@@ -8,39 +8,14 @@ library(lme4)
 library(broom)
 library(crotchet)
 library(totems)
+totems_theme <- load_totems_theme()
 
 # ---- data
 library(totems)
+data("TeamInfo")
+data("PlayerInfo")
+data("Guesses")
+data("Inventories")
 data("TeamPerformance")
-data("TeamProblems")
-data("TeamTrials")
-data("SampledTeamTrials")
-data("PlayerTrials")
-data("PlayerProblems")
-data("SampledPlayerTrials")
-
-TeamTrials %<>%
-  recode_strategy() %>%
-  recode_groups_by_generation()
-
-SampledTeamTrials %<>%
-  recode_strategy() %>%
-  recode_groups_by_generation()
-
-SampledPlayerTrials %<>%
-  recode_strategy() %>%
-  recode_groups_by_generation()
-
-PlayerTrials %<>%
-  recode_strategy()
-
-TeamPerformance %<>%
-  recode_strategy()
-
-TeamProblems %<>%
-  recode_strategy()
-
-PlayerProblems %<>%
-  recode_strategy()
-
-totems_theme <- load_totems_theme()
+data("PlayerPerformance")
+data("SampledPerformance")

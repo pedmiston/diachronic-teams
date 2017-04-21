@@ -1,14 +1,22 @@
 source("docs/R/setup.R")
 
 # ---- redundancy
+Redundancy <- Inventories %>%
+  left_join(PlayerInfo) %>%
+  recode_strategy() %>%
+  mutate(
+    TeamRedundancy = 1 - (TeamUniqueGuesses/TeamGuesses),
+    PlayerRedundancy = 1 - (UniqueGuesses/TeamGuesses)
+  )
+
 team_redundancy_mod <- lmer(
-  Redundancy ~ Diachronic_v_Synchronic + Diachronic_v_Isolated + (1|TeamID),
-  data = TeamProblems
+  TeamRedundancy ~ Diachronic_v_Synchronic + Diachronic_v_Isolated + (1|TeamID),
+  data = Redundancy
 )
 
 individual_redundancy_mod <- lmer(
-  Redundancy ~ Diachronic_v_Synchronic + Diachronic_v_Isolated + (1|PlayerID),
-  data = PlayerProblems
+  PlayerRedundancy ~ Diachronic_v_Synchronic + Diachronic_v_Isolated + (1|PlayerID),
+  data = Redundancy
 )
 
 team_redundancy_preds <- recode_strategy() %>%
@@ -19,24 +27,28 @@ individual_redundancy_preds <- recode_strategy() %>%
   cbind(., AICcmodavg::predictSE(individual_redundancy_mod, newdata = ., se = TRUE)) %>%
   rename(Redundancy = fit, SE = se.fit)
 
-Redundancy <- bind_rows(
-  `Team redundancy` = TeamProblems,
-  `Individual redundancy` = PlayerProblems,
-  .id = "RedundancyMeasure"
+redundancy_measure_labels <- data_frame(
+  RedundancyMeasure = c("TeamRedundancy", "PlayerRedundancy"),
+  RedundancyLabel = c("Team redundancy", "Individual redundancy")
 )
 
+Redundancy <- Redundancy %>%
+  gather(RedundancyMeasure, Redundancy, -(TeamID:Diachronic_v_Isolated)) %>%
+  left_join(redundancy_measure_labels)
+
 redundancy_preds <- bind_rows(
-  `Team redundancy` = team_redundancy_preds,
-  `Individual redundancy` = individual_redundancy_preds,
+  TeamRedundancy = team_redundancy_preds,
+  PlayerRedundancy = individual_redundancy_preds,
   .id = "RedundancyMeasure"
-)
+) %>%
+  left_join(redundancy_measure_labels)
 
 redundancy_plot <- ggplot(redundancy_preds) +
   aes(StrategyLabel, Redundancy) +
   geom_bar(aes(fill = StrategyLabel), stat = "summary", fun.y = "mean", alpha = 0.6) +
   geom_errorbar(aes(ymin = Redundancy - SE, ymax = Redundancy + SE),
                 width = 0.2) +
-  facet_wrap("RedundancyMeasure", strip.position = "left") +
+  facet_wrap("RedundancyLabel", strip.position = "left") +
   coord_cartesian(ylim = c(0, 0.6)) +
   totems_theme["scale_x_strategy"] +
   scale_y_continuous("Redundancy", labels = scales::percent) +

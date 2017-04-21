@@ -32,7 +32,7 @@ def download(ctx, name=None, clear_before=False, analyze_after=False):
     if name is None:
         names = available
     else:
-        assert name in available
+        assert name in available, 'name "%s" not in %s' % (name, available)
         names = [name]
 
     if clear_before:
@@ -107,48 +107,62 @@ def analyze(ctx):
     """Analyze the totems experiment data."""
     workshop = pandas.read_csv(Path(TOTEMS_DIR, 'Workshop.csv'))
     workshop = label_teams_and_strategies(workshop)
+    workshop = filter_valid_teams(workshop)
     workshop = calculate_team_time(workshop)
 
-    workshop = workshop.groupby('ID_Player').apply(rolling_history)
-    workshop = workshop.groupby('ID_Group').apply(rolling_history, prefix='Team')
+    workshop = workshop.sort_values(['ID_Group', 'TeamTime']).reset_index(drop=True)
 
-    workshop = determine_adjacent_possible(workshop)
+    workshop = (workshop.groupby('ID_Player')
+                        .apply(rolling_history)
+                        .reset_index(drop=True))
+    workshop = (workshop.groupby('ID_Group')
+                        .apply(rolling_history, prefix='Team')
+                        .reset_index(drop=True))
 
-    write_trials_to_csv(workshop, 'WorkshopAnalyzed.csv')
+    workshop_cols = [
+        'ID_Player',
+        'PlayerTime', 'TeamTime',
+        'WorkShopString', 'WorkShopResult',
+        'Inventory', 'TeamInventory',
+        'UniqueItem', 'TeamUniqueItem',
+        'UniqueGuess', 'TeamUniqueGuess',
+    ]
+    workshop[workshop_cols].to_csv(Path(TOTEMS_DIR, 'WorkshopAnalyzed.csv'),
+                                   index=False)
 
-    trajectories = extract_trajectories(workshop)
-    trajectories.to_csv(Path(TOTEMS_DIR, 'Trajectories.csv'), index=False)
+    # trajectories = extract_trajectories(workshop)
+    # trajectories.to_csv(Path(TOTEMS_DIR, 'Trajectories.csv'), index=False)
 
 
 def rolling_history(trials, prefix=''):
     """Keep track of rolling variables, like total known inventory."""
-    trials = trials.copy()
-    rolling_inventory = landscape.starting_inventory()
+    trials = trials.sort_values('TeamTime').reset_index(drop=True)
     rolling_guesses = set()
+    rolling_inventory = landscape.starting_inventory()  # also a set
 
     inventories = []
     unique_item = []
     unique_guess = []
 
-    for trial in trials.sort_values('TeamTime').itertuples():
+    for trial in trials.itertuples():
         # Record the guess
         is_unique_guess = trial.WorkShopString not in rolling_guesses
         if is_unique_guess:
-            rolling_guesses.update({trial.WorkShopString})
+            rolling_guesses.add(trial.WorkShopString)
         unique_guess.append(int(is_unique_guess))
 
         # Record the result of the guess
         is_guess_successful = trial.WorkShopResult != 0
         is_unique_item = 0  # default
         if is_guess_successful:
-            label = int(trial.WorkShopResult)
-            is_unique_item = label not in rolling_inventory
+            item = int(trial.WorkShopResult)
+            is_unique_item = item not in rolling_inventory
             if is_unique_item:
-                rolling_inventory.update({label})
+                rolling_inventory.add(item)
         unique_item.append(int(is_unique_item))
 
         # Store the current rolling inventory
-        inventories.append(list(rolling_inventory))
+        inventories.append(freeze_inventory(rolling_inventory))
 
     trials[prefix+'Inventory'] = inventories
     trials[prefix+'UniqueItem'] = unique_item
@@ -156,14 +170,15 @@ def rolling_history(trials, prefix=''):
     return trials
 
 
-def determine_adjacent_possible(trials):
-    """Calculate the number of adjacent possibilities for each player."""
-    trials = trials.copy()
-    inventories = trials.Inventory
-    trials['NumAdjacent'] = (trials.Inventory
-                                   .apply(landscape.adjacent_possible)
-                                   .apply(len))
-    return trials
+# Broken because Inventory column is no longer a list
+# def determine_adjacent_possible(trials):
+#     """Calculate the number of adjacent possibilities for each player."""
+#     trials = trials.copy()
+#     inventories = trials.Inventory
+#     trials['NumAdjacent'] = (trials.Inventory
+#                                    .apply(landscape.adjacent_possible)
+#                                    .apply(len))
+#     return trials
 
 
 def label_teams_and_strategies(frame):
@@ -197,38 +212,37 @@ def calculate_team_time(trials):
     return trials
 
 
-def write_trials_to_csv(trials, csv_name):
-    trials = freeze_inventories(trials)
-    trials.to_csv(Path(TOTEMS_DIR, csv_name), index=False)
-
-
-def freeze_inventories(trials):
-    trials = trials.copy()
-    trials['Inventory'] = trials.Inventory.apply(freeze_inventory)
-    return trials
-
-
 def freeze_inventory(inventory):
-    return json.dumps(sorted(inventory))
+    return '-'.join(map(str, sorted(list(inventory))))
 
 
-def extract_trajectories(workshop):
-    workshop = workshop.copy()
-    player_trajectories = (workshop.groupby('ID_Player')
-                                   .apply(convert_to_trajectory)
-                                   .reset_index(level=0))
-    unique_trajectories = player_trajectories.Trajectory.unique()
-    trajectory_labels = {trajectory: ix
-                         for ix, trajectory in enumerate(unique_trajectories)}
-    player_trajectories['TrajectoryID'] = \
-        player_trajectories.Trajectory.map(trajectory_labels)
-    return label_teams_and_strategies(player_trajectories)
+# def extract_trajectories(workshop):
+#     workshop = workshop.copy()
+#     player_trajectories = (workshop.groupby('ID_Player')
+#                                    .apply(convert_to_trajectory)
+#                                    .reset_index(level=0))
+#     unique_trajectories = player_trajectories.Trajectory.unique()
+#     trajectory_labels = {trajectory: ix
+#                          for ix, trajectory in enumerate(unique_trajectories)}
+#     player_trajectories['TrajectoryID'] = \
+#         player_trajectories.Trajectory.map(trajectory_labels)
+#     return label_teams_and_strategies(player_trajectories)
+#
+#
+# def convert_to_trajectory(player_workshop):
+#     ordered_inventions = (player_workshop.ix[player_workshop.UniqueItem == 1]
+#                                          .sort_values('TrialTime')
+#                                          .WorkShopResult
+#                                          .tolist())
+#     trajectory_str = '-'.join(map(str, ordered_inventions))
+#     return pandas.DataFrame({'Trajectory': trajectory_str}, index=[0])
 
 
-def convert_to_trajectory(player_workshop):
-    ordered_inventions = (player_workshop.ix[player_workshop.UniqueItem == 1]
-                                         .sort_values('TrialTime')
-                                         .WorkShopResult
-                                         .tolist())
-    trajectory_str = '-'.join(map(str, ordered_inventions))
-    return pandas.DataFrame({'Trajectory': trajectory_str}, index=[0])
+def filter_valid_teams(workshop):
+    con = db.connect_to_db()
+    groups = pandas.read_sql("""
+    SELECT ID_Group, Status
+    FROM Table_Group
+    """, con)
+    valid_groups = groups.ix[groups.Status == 'E', 'ID_Group'].tolist()
+    return workshop.ix[workshop.ID_Group.isin(valid_groups), ]

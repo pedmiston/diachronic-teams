@@ -1,16 +1,19 @@
 source("docs/R/setup.R")
 
 # ---- attempts
+Attempts <- TeamPerformance %>%
+  recode_strategy()
+
 team_attempts_mod <- lm(
   NumGuesses ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
-  data = TeamPerformance
+  data = Attempts
 )
 
 team_attempts_preds <- get_lm_mod_preds(team_attempts_mod) %>%
   rename(NumGuesses = fit, SE = se.fit) %>%
   recode_strategy()
 
-attempts_plot <- ggplot(TeamPerformance) +
+attempts_plot <- ggplot(Attempts) +
   aes(StrategyLabel, NumGuesses) +
   geom_point(aes(color = StrategyLabel),
              position = position_jitter(width = 0.4)) +
@@ -25,7 +28,7 @@ attempts_plot <- ggplot(TeamPerformance) +
   totems_theme["base_theme"] +
   theme(legend.position = "none")
 
-performance_by_attempts_plot <- ggplot(TeamPerformance) +
+performance_by_attempts_plot <- ggplot(Attempts) +
   aes(NumGuesses, NumInnovations, color = StrategyLabel) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +

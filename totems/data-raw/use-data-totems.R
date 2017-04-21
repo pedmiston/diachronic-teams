@@ -1,240 +1,136 @@
-# Save the data from the totems experiment
+# Save the csvs from the Totems experiment as rda data files in the R pkg
+
 library(devtools)
 library(tidyverse)
 library(lazyeval)
 library(magrittr)
 library(lubridate)
-
 # Don't load "totems" or use_data() might not work properly
 source("R/util.R")
 source("R/time-bins.R")
 
 # Start here!
 read_csvs("data-raw/totems")
+source("data-raw/deidentify-totems-data.R")    # Deidentify totems data
+source("data-raw/filter-valid-totems-data.R")  # Filter valid players and teams
 
-# Replace workshop with analyzed version
-Workshop <- WorkshopAnalyzed
+# TeamInfo ---------------------------------------------------------------------
+TeamInfo <- Group %>%
+  rename(Strategy = Treatment) %>%
+  select(TeamID, Strategy)
 
-# Deidentification -------------------------------------------------------------
-# Remove datetime information from subject info sheet and survey data
-SubjInfo %<>% select(-Date, -Room)
-Survey %<>% select(-Timestamp)
-
-# Remove datetime information from group identifier
-team_id_levels <- factor(Group$ID_Group) %>% levels()
-team_id_labels <- paste0("G", seq_along(team_id_levels))
-team_id_map <- data_frame(
-  ID_Group = team_id_levels,
-  TeamID = team_id_labels
-)
-deidentify_group_id <- . %>% left_join(team_id_map) %>% select(-ID_Group)
-
-Group    %<>% deidentify_group_id()
-Player   %<>% deidentify_group_id()
-Workshop %<>% deidentify_group_id()
-Trajectories %<>% deidentify_group_id()
-
-# Recode player id -------------------------------------------------------------
-# Create a new PlayerID variable that is a character instead of a number.
-player_id_levels <- unique(Player$ID_Player)
-player_id_labels <- paste0("P", seq_along(player_id_levels))
-player_id_map <- data_frame(
-  ID_Player = player_id_levels,
-  PlayerID = player_id_labels
-)
-recode_player_id <- . %>% left_join(player_id_map) %>% select(-ID_Player)
-
-SubjInfo %<>% recode_player_id()
-Player   %<>% recode_player_id()
-Workshop %<>% recode_player_id()
-Trajectories %<>% recode_player_id()
-Survey %<>% rename(ID_Player = `Participant ID`) %>% recode_player_id()
-
-# Select valid participants ----------------------------------------------------
-# Valid participants are those recorded in the subject info sheet
-valid_participant_ids <- SubjInfo$PlayerID
-filter_valid_participants <- . %>% filter(PlayerID %in% valid_participant_ids)
-
-Player   %<>% filter_valid_participants()
-Workshop %<>% filter_valid_participants()
-Survey   %<>% filter_valid_participants()
-Trajectories %<>% filter_valid_participants()
-
-# Select valid teams -----------------------------------------------------------
-verified_teams <- Group %>% filter(Status == "E") %>% .$TeamID
-filter_valid_teams <- . %>%
-  filter(TeamID %in% verified_teams)
-
-Group    %<>% filter_valid_teams()
-Player   %<>% filter_valid_teams()
-Workshop %<>% filter_valid_teams()
-Trajectories %<>% filter_valid_teams()
-
-# Rename treatment to strategy -------------------------------------------------
-# The Group table is the only one that contains Treatment information
-Group %<>% rename(Strategy = Treatment)
-
-# Identify players within teams and generations --------------------------------
-player_generations <- Player %>%
+# PlayerInfo -------------------------------------------------------------------
+PlayerInfo <- Player %>%
   left_join(Group) %>%
-  # Ancestor is coded as 1 for non-Diachronic teams,
-  # Ancestor is coded as 1 for first generation, n+1 for future generations.
+  rename(Strategy = Treatment) %>%
   mutate(Generation = ifelse(Strategy != "Diachronic", 1, Ancestor)) %>%
-  select(PlayerID, Generation)
-identify_players_in_teams <- . %>% left_join(player_generations)
+  select(PlayerID, TeamID, Strategy, Generation) %>%
+  arrange(Strategy, TeamID, Generation)
 
-Player   %<>% identify_players_in_teams()
-Workshop %<>% identify_players_in_teams()
-Trajectories %<>% identify_players_in_teams()
-
-# Convert trial times in seconds to R native time objects ----------------------
-convert_times <- . %>%
-  mutate(
-    PlayerTime = dseconds(PlayerTime),
-    TeamTime   = dseconds(TeamTime)
+# Guesses ----------------------------------------------------------------------
+Guesses <- WorkshopAnalyzed %>%
+  rename(Guess = WorkShopString, Result = WorkShopResult) %>%
+  left_join(PlayerInfo) %>%
+  count_guesses("PlayerID", "GuessNum") %>%
+  count_guesses("TeamID", "TeamGuessNum") %>%
+  select(
+    PlayerID,
+    PlayerTime, TeamTime,
+    GuessNum, TeamGuessNum,
+    Guess, Result,
+    UniqueGuess, TeamUniqueGuess,
+    UniqueItem, TeamUniqueItem
   )
-Workshop %<>% convert_times()
 
-# Count guesses ----------------------------------------------------------------
-count_guesses <- function(frame, grouping_var, prefix="") {
-  guess_col_name <- paste0(prefix, "GuessNum")
-  mutate_call <- interp(~ 1:n())
-  frame %>%
-    group_by_(.dots = grouping_var) %>%
-    arrange(TeamTime) %>%
-    mutate_(.dots = setNames(list(mutate_call), guess_col_name)) %>%
-    ungroup()
-}
-Workshop %<>%
-  count_guesses("PlayerID") %>%
-  count_guesses("TeamID", prefix = "Team")
-
-# Calculate cumulative performance variables -----------------------------------
-Workshop %<>%
-  group_by(PlayerID) %>%
-  mutate(
-    NumInnovations = cumsum(UniqueItem),
-    NumUniqueGuesses = cumsum(UniqueGuess)
-  ) %>%
+# Inventories ------------------------------------------------------------------
+calculate_num_innovations <- . %>%
+  left_join(PlayerInfo) %>%
   group_by(TeamID) %>%
-  mutate(
-    NumTeamInnovations = cumsum(TeamUniqueItem),
-    NumTeamUniqueGuesses = cumsum(TeamUniqueGuess)
-  ) %>%
+  arrange(TeamTime) %>%
+  mutate(NumInnovations = cumsum(TeamUniqueItem)) %>%
   ungroup()
 
-# Sample team inventories at particular time points ----------------------------
-SampledTeamTrials <- Workshop %>%
-  left_join(Group) %>%
+summarize_performance_on_inventory <- . %>%
+  group_by(TeamID, TeamInventory, NumInnovations) %>%
+  summarize(
+    TeamGuesses = n(),
+    TeamUniqueGuesses = sum(TeamUniqueGuess),
+    UniqueGuesses = sum(UniqueGuess),
+    Duration = max(TeamTime) - min(TeamTime)
+  ) %>%
+  ungroup() %>%
+  arrange(TeamID, NumInnovations)
+
+Inventories <- WorkshopAnalyzed %>%
+  calculate_num_innovations() %>%
+  summarize_performance_on_inventory()
+
+# Performance ------------------------------------------------------------------
+TeamPerformance <- Guesses %>%
+  left_join(PlayerInfo) %>%
   group_by(TeamID) %>%
-  do({
-    get_closest_trials_to_times(., times = seq(0, 50 * 60, by = 60))
-  }) %>%
+  summarize(
+    NumInnovations = sum(TeamUniqueItem),
+    NumGuesses = max(TeamGuessNum),
+    NumUniqueGuesses = sum(TeamUniqueGuess)
+  ) %>%
+  left_join(TeamInfo)
+
+PlayerPerformance <- Guesses %>%
+  group_by(PlayerID) %>%
+  summarize(
+    NumInnovations = sum(TeamUniqueItem),
+    NumGuesses = max(GuessNum),
+    NumUniqueGuesses = sum(TeamUniqueGuess),
+    NumTeamUniqueGuesses = sum(TeamUniqueGuess)
+  )
+
+# SampledPerformance -----------------------------------------------------------
+calculate_num_team_innovations <- . %>%
+  group_by(TeamID) %>%
+  arrange(TeamTime) %>%
+  mutate(NumTeamInnovations = cumsum(TeamUniqueItem)) %>%
+  ungroup()
+
+calculate_num_player_innovations <- . %>%
+  group_by(PlayerID) %>%
+  arrange(TeamTime) %>%
+  mutate(NumInnovations = cumsum(UniqueItem)) %>%
+  ungroup()
+
+SampledPerformance <- Guesses %>%
+  left_join(PlayerInfo) %>%
+  calculate_num_team_innovations() %>%
+  calculate_num_player_innovations() %>%
+  group_by(PlayerID) %>%
+  # Sample closest trial every 60 seconds
+  do({ get_closest_trials_to_times(., times = seq(0, 50 * 60, by = 60)) }) %>%
   ungroup() %>%
   # Prevent Synchronic teams from being sampled outside their range.
-  filter(!(Strategy == "Synchronic" & SampledTime > 25*60))
-
-SampledPlayerTrials <- Workshop %>%
-  left_join(Group) %>%
-  group_by(PlayerID) %>%
-  do({
-    get_closest_trials_to_times(., times = seq(0, 50 * 60, by = 60),
-                                time_col = "PlayerTime")
-  }) %>%
+  filter(!(Strategy == "Synchronic" & SampledTime > 25*60)) %>%
+  group_by(PlayerID, SampledTime) %>%
+  summarize(
+    NumInnovations = max(NumInnovations),
+    NumTeamInnovations = max(NumTeamInnovations)
+  ) %>%
   ungroup() %>%
-  # Prevent Synchronic and Diachronic teams from being sampled outside their range.
-  filter(!(Strategy %in% c("Synchronic", "Diachronic") & SampledTime > 25*60))
-
-# Summarize performance for each inventory -------------------------------------
-TeamProblems <- Workshop %>%
-  filter(WorkShopResult == 0) %>%
-  group_by(TeamID, TeamInventory) %>%
-  summarize(
-    Guesses = n() + 1,
-    Redundancy = 1 - (sum(TeamUniqueGuess)/n())
+  left_join(PlayerInfo) %>%
+  mutate(
+    SampledPlayerTime = ifelse(Strategy != "Diachronic", SampledTime,
+                               SampledTime - (Generation - 1) * (25 * 60))
   ) %>%
-  ungroup()
-
-PlayerProblems <- Workshop %>%
-  filter(WorkShopResult == 0) %>%
-  group_by(PlayerID, Inventory) %>%
-  summarize(
-    Guesses = n() + 1,
-    Redundancy = 1 - (sum(UniqueGuess)/n())
-  ) %>%
-  ungroup()
+  select(
+    PlayerID, SampledTime, SampledPlayerTime, NumInnovations, NumTeamInnovations
+  )
 
 # Save data to package ---------------------------------------------------------
-TeamTrials <- Workshop %>%
-  left_join(Group) %>%
-  select(PlayerID, TeamID, Strategy, Generation,
-         TeamTime, PlayerTime, GuessNum, TeamGuessNum,
-         Guess = WorkShopString, Result = WorkShopResult,
-         UniqueGuess, TeamUniqueGuess, UniqueItem, TeamUniqueItem,
-         Inventory, TeamInventory, NumAdjacent,
-         NumInnovations, NumTeamInnovations,
-         NumUniqueGuesses, NumTeamUniqueGuesses)
-
-SampledTeamTrials %<>% select(
-  PlayerID, TeamID, Strategy, Generation,
-  SampledTime, GuessNum, TeamGuessNum,
-  Guess = WorkShopString, Result = WorkShopResult,
-  UniqueGuess, TeamUniqueGuess, UniqueItem, TeamUniqueItem,
-  Inventory, TeamInventory, NumAdjacent,
-  NumInnovations, NumTeamInnovations,
-  NumUniqueGuesses, NumTeamUniqueGuesses
-)
-
-TeamProblems <- TeamProblems %>%
-  left_join(
-    TeamTrials %>%
-      select(TeamID, TeamInventory, Strategy, NumTeamInnovations) %>%
-      unique()
-  )
-
-PlayerTrials <- Workshop %>%
-  left_join(Group) %>%
-  group_by(PlayerID, TeamID, Strategy, Generation) %>%
-  summarize(
-    NumGuesses = max(GuessNum),
-    NumInnovations = max(NumInnovations),
-    NumUniqueGuesses = max(NumUniqueGuesses)
-  ) %>%
-  ungroup()
-
-SampledPlayerTrials %<>% select(
-  PlayerID, TeamID, Strategy, Generation,
-  SampledTime, GuessNum, TeamGuessNum,
-  Guess = WorkShopString, Result = WorkShopResult,
-  UniqueGuess, TeamUniqueGuess, UniqueItem, TeamUniqueItem,
-  Inventory, TeamInventory, NumAdjacent,
-  NumInnovations, NumTeamInnovations,
-  NumUniqueGuesses, NumTeamUniqueGuesses
-)
-
-PlayerProblems %<>% left_join(
-  PlayerTrials %>%
-    select(PlayerID, TeamID, Inventory, Strategy, NumInnovations) %>%
-    unique()
-)
-
-TeamPerformance <- Workshop %>%
-  left_join(Group) %>%
-  group_by(TeamID, Strategy) %>%
-  summarize(
-    NumInnovations = max(NumTeamInnovations),
-    NumGuesses = max(TeamGuessNum),
-    NumUniqueGuesses = max(NumTeamUniqueGuesses)
-  )
-
 use_data(
+  TeamInfo,
+  PlayerInfo,
+  Guesses,
+  Inventories,
   TeamPerformance,
-  TeamProblems,
-  TeamTrials,
-  SampledTeamTrials,
-  PlayerTrials,
-  PlayerProblems,
-  SampledPlayerTrials,
-  Trajectories,
+  PlayerPerformance,
+  SampledPerformance,
   overwrite = TRUE
 )
