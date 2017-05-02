@@ -106,11 +106,11 @@ There are multiple ways to assess performance. The performance measure shown her
 ```{r fig4, fig.height=6, fig.width=8, fig.cap="**Problem solving performance by strategy**. The accumulation of inventions over time is shown on the left. On the right is final team performance. Synchronic collaboration is the most effective use of 50 labor minutes."}
 grid.arrange(
   arrangeGrob(
-    performance_over_time_plot,
+    innovations_over_time_plot,
     performance_stacked_plot + theme(legend.position = "none"),
     ncol = 1
   ),
-  performance_plot,
+  innovations_plot,
   widths = c(0.6, 0.4)
 )
 ```
