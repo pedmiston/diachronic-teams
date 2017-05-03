@@ -19,7 +19,9 @@ get_closest_trial_to_time <- function(time, trials, time_col = "TeamTime",
       head(1) %>%
       select(PlayerID, TeamID, Strategy) %>%
       mutate(
-        NumInnovations = 0
+        NumInnovations = 0,
+        GuessNum = 0,
+        TeamGuessNum = 0
       )
     trial %<>% bind_rows(first_trial)
   }

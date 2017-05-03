@@ -117,13 +117,23 @@ SampledPerformance <- Guesses %>%
   ungroup() %>%
   # Prevent Synchronic teams from being sampled outside their range.
   filter(!(Strategy == "Synchronic" & SampledTime > 25*60)) %>%
+  # Calculate number of guesses in each time bin
+  group_by(PlayerID) %>%
+  mutate(
+    NewGuesses = GuessNum - lag(GuessNum),
+    NewTeamGuesses = TeamGuessNum - lag(TeamGuessNum)
+  ) %>%
+  ungroup() %>%
   group_by(PlayerID, SampledTime) %>%
   summarize(
     # Take max() of cumsum variables, not mean()
     NumInnovations = max(NumInnovations),
     NumTeamInnovations = max(NumTeamInnovations),
     Score = max(Score),
-    TeamScore = max(TeamScore)
+    TeamScore = max(TeamScore),
+    # Since time step is 60 seconds,
+    GuessesPerMinute = max(NewGuesses),
+    TeamGuessesPerMinute = max(NewTeamGuesses)
   ) %>%
   ungroup() %>%
   left_join(PlayerInfo) %>%
@@ -134,7 +144,8 @@ SampledPerformance <- Guesses %>%
   select(
     PlayerID, SampledTime, SampledPlayerTime,
     NumInnovations, NumTeamInnovations,
-    Score, TeamScore
+    Score, TeamScore,
+    GuessesPerMinute, TeamGuessesPerMinute
   )
 
 # Save data to package ---------------------------------------------------------

@@ -103,7 +103,7 @@ draw_graphviz("team-structures-exp1", "totems")
 
 There are multiple ways to assess performance. The performance measure shown here is the final number of inventions discovered by each team. Fig. 4 shows the accumulation of inventions over time in the three strategies. Results are similar for alternative performance metrics. My prediction was that inheritance in the diachronic teams would result in more efficient problem solving and therefore more inventions than the other strategies. The results showed instead that synchronic collaboration appears to be the most efficient strategy for allocating 50 labor minutes.
 
-```{r fig4, fig.height=6, fig.width=8, fig.cap="**Problem solving performance by strategy**. The accumulation of inventions over time is shown on the left. On the right is final team performance. Synchronic collaboration is the most effective use of 50 labor minutes."}
+```{r performance-fig, fig.height=6, fig.width=8, fig.cap="**Problem solving performance by strategy**. The accumulation of inventions over time is shown on the left. On the right is final team performance. Synchronic collaboration is the most effective use of 50 labor minutes."}
 grid.arrange(
   arrangeGrob(
     innovations_over_time_plot,
@@ -138,7 +138,7 @@ To compare problem solving efficiency between the three strategies, I first calc
 
 I calculated two measures of redundancy: individual redundancy, which corresponds to the percentage of guesses that were duplicates of previous guesses, and team redundancy, which corresponds to the percentage of duplicate guesses in each team. Fig. 8 shows the results. Isolated individuals were the most redundant with themselves, and Synchronic teams were the most redundant with each other. Put differently, Diachronic collaboration was the least redundant strategy.
 
-```{r fig8, fig.width=6, fig.cap="**Diachronic teamwork is less redundant than synchronic teamwork.** Diachronic teams are as likely to repeat themselves as isolated individuals, and also less likely to repeat their teammate than synchronic teams. Synchronic teams are less likely to repeat an incorrect guess they guessed previously, but more likely to repeat a guess made by their partner."}
+```{r redundancy-fig, fig.width=6, fig.cap="**Diachronic teamwork is less redundant than synchronic teamwork.** Diachronic teams are as likely to repeat themselves as isolated individuals, and also less likely to repeat their teammate than synchronic teams. Synchronic teams are less likely to repeat an incorrect guess they guessed previously, but more likely to repeat a guess made by their partner."}
 redundancy_plot
 ```
 
@@ -151,7 +151,7 @@ A more direct measure of guessing efficiency is the number of guesses it took ea
 
 My hypothesis was that inheritance would improve problem solving efficiency of the second generation of Diachronic players relative to the first.
 
-```{r fig7, fig.width=6, fig.height=6}
+```{r efficiency-fig, fig.width=6, fig.height=6}
 efficiency_plot
 ```
 
@@ -160,7 +160,7 @@ efficiency_plot
 ```{r attempts, include=FALSE}
 ```
 
-```{r fig6, fig.width=8, fig.cap="**Team attempts predict number of inventions.** Teams that make more attempts tend to discover more inventions. Since synchronic teams make more attempts, they in turn discover more inventions."}
+```{r attempts-fig, fig.width=8, fig.cap="**Team attempts predict number of inventions.** Teams that make more attempts tend to discover more inventions. Since synchronic teams make more attempts, they in turn discover more inventions."}
 grid.arrange(
   attempts_plot,
   performance_by_attempts_plot,
@@ -173,8 +173,12 @@ grid.arrange(
 ```{r guessing-rate, include=FALSE}
 ```
 
-```{r}
-guessing_rate_plot
+```{r guessing-rate-fig, fig.width=6}
+grid.arrange(
+  guessing_rate_over_time_plot,
+  guessing_rate_plot,
+  widths = c(0.6, 0.4)
+)
 ```
 
 # Four-person teams

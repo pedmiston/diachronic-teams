@@ -29,3 +29,22 @@ guessing_rate_plot <- ggplot(GuessingRate) +
   totems_theme["scale_x_strategy"] +
   totems_theme["scale_color_strategy"] +
   totems_theme["base_theme"]
+
+# Calculate guessing rate over time
+SampledGuessingRate <- SampledPerformance %>%
+  left_join(PlayerInfo) %>%
+  filter(!(Strategy == "Diachronic" & SampledPlayerTime > 25 * 60)) %>%
+  group_by(Strategy, Generation, SampledPlayerTime) %>%
+  summarize(GuessesPerMinute = mean(GuessesPerMinute)) %>%
+  ungroup() %>%
+  recode_strategy() %>%
+  recode_groups_by_generation()
+
+guessing_rate_over_time_plot <- ggplot(SampledGuessingRate) +
+  aes(SampledPlayerTime, GuessesPerMinute, color = StrategyLabel, group = GenerationStrategy) +
+  geom_line() +
+  scale_x_time("Player time", breaks = seconds(c(0, 25 * 60, 50 * 60))) +
+  scale_y_continuous("Guesses per minute") +
+  totems_theme["scale_color_strategy"] +
+  totems_theme["base_theme"] +
+  theme(legend.position = "top")

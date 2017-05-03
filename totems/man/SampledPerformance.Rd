@@ -4,7 +4,7 @@
 \name{SampledPerformance}
 \alias{SampledPerformance}
 \title{Cumulative performance sampled at a regular interval.}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 5458 rows and 7 columns.}
+\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 5458 rows and 9 columns.}
 \usage{
 data("SampledPerformance")
 }
