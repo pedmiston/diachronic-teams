@@ -6,11 +6,22 @@ GuessingRate <- PlayerPerformance %>%
   recode_strategy() %>%
   mutate(GuessesPerMinute = NumGuesses/SessionDuration)
 
+diachronic_generation_labels <- data_frame(
+  Strategy = "Diachronic",
+  Generation = 1:3,
+  Label = paste0("G", Generation),
+  GuessesPerMinute = 15
+) %>%
+  recode_strategy()
+
 guessing_rate_plot <- ggplot(GuessingRate) +
   aes(StrategyLabel, GuessesPerMinute) +
   geom_point(aes(color = StrategyLabel, group = Generation,
                  alpha = factor(Generation)),
              position = position_jitterdodge(jitter.width = 0.4)) +
+  geom_text(aes(color = StrategyLabel, group = Generation, label = Label),
+            data = diachronic_generation_labels,
+            position = position_dodge(width = 0.7)) +
   scale_y_continuous("Guesses per minute") +
   scale_alpha_manual(values = c(0.8, 0.6, 0.4)) +
   coord_cartesian(ylim = c(0, 22)) +
