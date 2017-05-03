@@ -22,9 +22,9 @@ TeamInfo <- Group %>%
 # PlayerInfo -------------------------------------------------------------------
 PlayerInfo <- Player %>%
   left_join(Group) %>%
-  rename(Strategy = Treatment) %>%
+  rename(Strategy = Treatment, SessionDuration = BuildingTime) %>%
   mutate(Generation = ifelse(Strategy != "Diachronic", 1, Ancestor)) %>%
-  select(PlayerID, TeamID, Strategy, Generation) %>%
+  select(PlayerID, TeamID, Strategy, Generation, SessionDuration) %>%
   arrange(Strategy, TeamID, Generation)
 
 # Guesses ----------------------------------------------------------------------
