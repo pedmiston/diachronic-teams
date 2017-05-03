@@ -4,7 +4,7 @@
 \name{Inventories}
 \alias{Inventories}
 \title{Inventories uncovered by teams in the Totems experiment.}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 928 rows and 7 columns.}
+\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 913 rows and 7 columns.}
 \usage{
 data("Inventories")
 }
