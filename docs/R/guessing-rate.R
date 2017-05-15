@@ -23,7 +23,7 @@ guessing_rate_plot <- ggplot(GuessingRate) +
             data = diachronic_generation_labels,
             position = position_dodge(width = 0.7)) +
   scale_y_continuous("Guesses per minute") +
-  scale_alpha_manual(values = c(0.8, 0.6, 0.4)) +
+  scale_alpha_manual(values = c(0.8, 0.6, 0.4, 0.2)) +
   coord_cartesian(ylim = c(0, 22)) +
   guides(alpha = "none", color = "none") +
   totems_theme["scale_x_strategy"] +
