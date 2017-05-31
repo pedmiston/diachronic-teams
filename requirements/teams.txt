@@ -10,3 +10,5 @@ graphviz==0.5.2
 PyYAML==3.12
 ansible-vault==1.0.4
 fire==0.1.0
+PyMySQL==0.7.11
+SQLAlchemy==1.1.10
