@@ -28,8 +28,7 @@ opts_chunk$set(
   fig.path = "totems-figs/",
   fig.width = 4,
   fig.height = 4,
-  cache = TRUE,
-  cache.path = ".cache.totems/"
+  cache = TRUE
 )
 
 list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
