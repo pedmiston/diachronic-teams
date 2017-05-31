@@ -16,8 +16,8 @@ source("data-raw/filter-valid-totems-data.R")  # Filter valid players and teams
 
 # TeamInfo ---------------------------------------------------------------------
 TeamInfo <- Group %>%
-  rename(Strategy = Treatment) %>%
-  select(TeamID, Strategy)
+  rename(Strategy = Treatment, TeamSize = Size) %>%
+  select(TeamID, Strategy, TeamSize)
 
 # PlayerInfo -------------------------------------------------------------------
 PlayerInfo <- Player %>%
@@ -69,24 +69,36 @@ Inventories <- WorkshopAnalyzed %>%
 # Performance ------------------------------------------------------------------
 TeamPerformance <- Guesses %>%
   left_join(PlayerInfo) %>%
+  # !!! Exclude diachronic players with generations > 2
+  filter(Generation <= 2) %>%
+  # !!! Exclude synchronic teams with team size == 4
+  # ...
   group_by(TeamID) %>%
   summarize(
     NumInnovations = sum(TeamUniqueItem),
     NumGuesses = max(TeamGuessNum),
-    NumUniqueGuesses = sum(TeamUniqueGuess),
-    Score = sum(Score)
+    NumUniqueGuesses = sum(TeamUniqueGuess)
+  ) %>%
+  # Add in Score from Player table
+  left_join(
+    Player %>%
+      left_join(PlayerInfo) %>%
+      filter(Generation <= 2) %>%
+      group_by(TeamID) %>%
+      summarize(Score = max(Score))
   ) %>%
   left_join(TeamInfo)
 
 PlayerPerformance <- Guesses %>%
   group_by(PlayerID) %>%
   summarize(
-    NumInnovations = sum(TeamUniqueItem),
+    NumInnovations = sum(UniqueItem),
     NumGuesses = max(GuessNum),
-    NumUniqueGuesses = sum(TeamUniqueGuess),
-    NumTeamUniqueGuesses = sum(TeamUniqueGuess),
-    Score = sum(Score)
-  )
+    NumUniqueGuesses = sum(UniqueGuess),
+    NumTeamUniqueGuesses = sum(TeamUniqueGuess)
+  ) %>%
+  # Add in Score from Player table
+  left_join(select(Player, PlayerID, Score))
 
 # SampledPerformance -----------------------------------------------------------
 calculate_rolling_team_performance <- . %>%
