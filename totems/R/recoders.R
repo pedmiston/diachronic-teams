@@ -17,6 +17,13 @@ recode_strategy <- function(frame) {
     mutate(Strategy = row.names(.))
   map %<>% left_join(treatment_contrasts)
 
+  # Add helmert contrasts
+  helmert_contrasts <- contr.helmert(3) %>%
+    as.data.frame() %>%
+    rename(DvS = V1, DSvI = V2) %>%
+    mutate(Strategy = c("Diachronic", "Synchronic", "Isolated"))
+  map %<>% left_join(helmert_contrasts)
+
   if (missing(frame)) return(map)
   left_join(frame, map)
 }
