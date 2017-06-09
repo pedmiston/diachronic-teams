@@ -60,4 +60,3 @@ redundancy_plot <- ggplot(redundancy_preds) +
     strip.placement = "outside",
     axis.title.y = element_blank()
   )
-redundancy_plot
