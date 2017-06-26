@@ -1,0 +1,32 @@
+---
+title: "Simulations of teams playing the totems game"
+author: "Pierce Edmiston"
+output:
+  html_document:
+    theme: flatly
+---
+
+```{r config, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE)
+sapply(list.files("R", "*.R"), knitr::read_chunk)
+```
+
+# Replication
+
+```{r replication, fig.width=6, results="hide"}
+```
+
+# Strategy
+
+```{r strategy}
+```
+
+# Team size
+
+```{r}
+```
+
+# Memory
+
+```{r memory}
+```
