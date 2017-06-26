@@ -1,5 +1,6 @@
 # ---- setup
 library(tidyverse)
+library(magrittr)
 library(totems)
 totems_theme <- load_totems_theme()
 
