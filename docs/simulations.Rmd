@@ -1,0 +1,112 @@
+---
+title: "Bots"
+author: "Pierce Edmiston"
+output:
+  html_document:
+    theme: flatly
+---
+
+```{r config, include=FALSE}
+library(knitr)
+library(crotchet)
+
+opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  results = "hide",
+  fig.path = "simulations-figs/",
+  fig.width = 6,
+  fig.height = 3,
+  cache = TRUE,
+  cache.path = ".cache-simulations/"
+)
+
+read_chunk("R/simulations.R")
+read_graphviz_chunk("team-structures", "totems")
+```
+
+```{r simulations, include=FALSE}
+```
+
+# Team structures
+
+```{r team-structures, engine="dot", fig.width=1.5}
+```
+
+# Experiments
+
+## Replication
+
+```{r replication, fig.width=6}
+data("BotsReplication")
+
+team_structures_replication <- read_graphviz("calendar-hours", "totems")
+
+gg_timeline_replication <- (gg_timeline %+% BotsReplication) +
+  scale_color_manual(values = c(totems_theme$synchronic_color,
+                                totems_theme$isolated_color))
+
+BotsReplicationFinal <- BotsReplication %>%
+  filter_final_round() %>%
+  mutate(strategy = factor(strategy,
+                           levels = c("solo", "full"),
+                           labels = c("Isolated", "Team")))
+
+replication_colors <- c(totems_theme$isolated_color, totems_theme$synchronic_color)
+
+gg_final_replication <- (gg_final %+% BotsReplicationFinal) +
+  xlab("Strategy") +
+  scale_color_manual(values = replication_colors) +
+  scale_fill_manual(values = replication_colors)
+
+grid.arrange(
+  team_structures_replication,
+  gg_timeline_replication + theme(legend.position = "none"),
+  gg_final_replication + theme(axis.title.y = element_blank()),
+  nrow = 1,
+  widths = c(0.25, 0.375, 0.375)
+)
+```
+
+## Strategy
+
+```{r}
+data("BotsStrategy")
+gg_timeline %+% BotsStrategy
+gg_final %+% filter_final_round(BotsStrategy)
+```
+
+## Team size
+
+```{r}
+data("BotsPlayers")
+gg_final %+% filter_final_round(BotsPlayers)
+(gg_timeline %+% filter_final_round(BotsPlayers)) +
+  aes(n_players, inventory_size, color = strategy) +
+  scale_x_continuous("team size", breaks = unique(BotsPlayers$n_players)) +
+  theme(panel.grid.minor.x = element_blank())
+```
+
+## Number of guesses
+
+```{r}
+data("BotsGuesses")
+gg_timeline %+% filter_final_round(BotsGuesses) +
+  aes(n_guesses)
+```
+
+## Player and team memory
+
+```{r, fig.height=6}
+data("BotsMemory")
+
+BotsMemory %<>%
+  recode_memory()
+
+gg_timeline %+% BotsMemory +
+  facet_grid(team_memory_label ~ player_memory_label)
+
+gg_final %+% filter_final_round(BotsMemory) +
+  facet_grid(team_memory_label ~ player_memory_label)
+```

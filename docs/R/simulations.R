@@ -1,23 +1,31 @@
-# ---- setup
-base_theme <- theme_minimal()
+# ---- simulations
+library(tidyverse)
+library(magrittr)
+library(grid)
+library(gridExtra)
+library(jsonlite)
+library(totems)
+
+totems_theme <- load_totems_theme()
+
+base_theme <- totems_theme["base_theme"]
 
 strategy_colors <- RColorBrewer::brewer.pal(3, "Set2")[c(1, 3)]
-scale_color_strategy <- scale_color_manual(values = strategy_colors)
-scale_fill_strategy <- scale_fill_manual(values = strategy_colors)
+scale_color_strategy <- scale_color_manual("Strategy", values = strategy_colors)
+scale_fill_strategy <- scale_fill_manual("Strategy", values = strategy_colors)
 
 # inventory
-min_inventory_size <- 6
-max_inventory_size <- 33
-scale_y_inventory_size <- scale_y_continuous("size of inventory",
-                                             breaks = c(min_inventory_size, max_inventory_size,
-                                                        seq(10, 30, by = 5)))
-coord_inventory_lim <- c(min_inventory_size, max_inventory_size)
+scale_y_inventory_size <- scale_y_continuous("Number of innovations",
+                                             breaks = seq(6, 16, by = 2),
+                                             labels = seq(0, 10, by = 2))
+coord_inventory_lim <- c(6, 16.5)
 
 gg_timeline <- ggplot() +
   aes(round, inventory_size, color = strategy) +
-  geom_line(stat = "summary", fun.y = "mean") +
-  scale_color_strategy +
+  geom_line(stat = "summary", fun.y = "mean", size = 1.2) +
+  scale_x_continuous("Round") +
   scale_y_inventory_size +
+  scale_color_strategy +
   coord_cartesian(ylim = coord_inventory_lim) +
   base_theme +
   theme(legend.position = "top")
@@ -33,7 +41,10 @@ gg_final <- ggplot() +
   scale_color_strategy +
   scale_fill_strategy +
   base_theme +
-  theme(legend.position = "none")
+  theme(
+    legend.position = "none",
+    panel.grid.major.x = element_blank()
+  )
 
 sim_vars <- c("strategy", "n_guesses", "n_players", "seed", "player_memory", "team_memory")
 
