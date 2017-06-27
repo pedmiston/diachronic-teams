@@ -28,5 +28,34 @@ data("BotsMemory")
 BotsMemory %<>%
   recode_memory()
 
-# redundancy
+sim_vars <- c("sim_id", "strategy", "n_guesses", "n_players", "seed", "player_memory", "team_memory")
+groupby_vars <- c(sim_vars, "inventory", "inventory_size")
 
+BotsInventories <- BotsMemory %>%
+  group_by_(.dots = sim_vars) %>%
+  summarize(
+    n_team_guesses = sum(n_team_guesses),
+    n_player_unique_guesses = sum(n_player_unique_guesses),
+    n_team_unique_guesses = sum(n_team_unique_guesses)
+  ) %>%
+  ungroup() %>%
+  arrange(sim_id) %>%
+  mutate(
+    team_redundancy = 1 - n_team_unique_guesses/n_team_guesses,
+    player_redundancy = 1 - n_player_unique_guesses/n_team_guesses
+  ) %>%
+  recode_memory()
+
+redundancy_plot <- ggplot(BotsInventories) +
+  geom_point(position = position_jitter(width = 0.2), shape = 1, size = 0.5) +
+  geom_point(stat = "summary", fun.y = "mean", size = 3) +
+  facet_grid(team_memory_label ~ player_memory_label)
+
+redundancy_plot +
+  aes(strategy, player_redundancy) +
+  ggtitle("Player redundancy")
+
+redundancy_plot +
+  aes(strategy, team_redundancy) +
+  facet_grid(player_memory_label ~ team_memory_label) +
+  ggtitle("Team redundancy")

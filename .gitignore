@@ -1,10 +1,12 @@
 # reproducible
 figs/
+*files/
+*cache/
 *.html
 *.pdf
+*.docx
 !docs/**/*.pdf
 docs/irb/methods/*.pdf
-*.docx
 
 # py package
 *egg-info/

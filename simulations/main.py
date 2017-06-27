@@ -22,7 +22,7 @@ of the Experiment class.
 SimVars = namedtuple('SimVars',
     'strategy n_guesses n_players seed player_memory team_memory')
 RoundVars = namedtuple('RoundVars',
-    'guesses new_items inventory inventory_size trajectory n_player_unique_guesses n_team_unique_guesses')
+    'guesses new_items inventory inventory_size trajectory n_team_guesses n_player_unique_guesses n_team_unique_guesses')
 
 
 def simulate(strategy, n_guesses, n_players, seed, player_memory, team_memory):
@@ -43,7 +43,8 @@ def simulate(strategy, n_guesses, n_players, seed, player_memory, team_memory):
         if len(new_items) > 0:
             team.update_inventory(new_items)
 
-        # Record guess uniqueness for players and team
+        # Record total guesses and guess uniqueness for players and team
+        n_team_guesses = len(guesses.values())
         n_player_unique_guesses = 0
         n_team_unique_guesses = 0
         for player_id, guess in guesses.items():
@@ -68,6 +69,7 @@ def simulate(strategy, n_guesses, n_players, seed, player_memory, team_memory):
             inventory=json.dumps(list(team.inventory)),
             inventory_size=len(team.inventory),
             trajectory=team.trajectory,
+            n_team_guesses = n_team_guesses,
             n_player_unique_guesses=n_player_unique_guesses,
             n_team_unique_guesses=n_team_unique_guesses,
         ))
