@@ -33,7 +33,7 @@ def simulate(strategy, n_guesses, n_players, seed, player_memory, team_memory):
 
     for iteration in strategy(team, n_guesses):
         guesses = team.make_guesses()
-        new_items = landscape.evaluate_guesses(guesses)
+        new_items = landscape.evaluate_guesses(guesses.values())
         if len(new_items) > 0:
             team.update_inventory(new_items)
 
@@ -49,7 +49,7 @@ def simulate(strategy, n_guesses, n_players, seed, player_memory, team_memory):
             new_items=jsonify_new_items(new_items),
             inventory=json.dumps(list(team.inventory)),
             inventory_size=len(team.inventory),
-            trajectory=team.trajectory
+            trajectory=team.trajectory,
         ))
 
         if len(team.inventory) == landscape.max_items:

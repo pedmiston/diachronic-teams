@@ -35,3 +35,9 @@ def test_jsonify_works_with_int64():
     result = json.loads(result_json)
     assert result[0]['result'] == 11
     assert set(result[0]['guess']) == set([3, 4])
+
+def test_team_guesses_assign_player_ids():
+    team = simulations.models.create_team()
+    team.active_players = team.players
+    guesses = team.make_guesses()
+    assert 1 in guesses.keys()

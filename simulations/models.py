@@ -30,8 +30,13 @@ class Team:
         self.successful_guesses = []
 
     def make_guesses(self):
-        return [player.guess_new(self.inventory, self.successful_guesses)
-                for player in self.active_players]
+        """Obtain guesses from every active player, recording their id."""
+        guesses = {}
+        for player_id, player in enumerate(self.players):
+            if player in self.active_players:
+                guesses[player_id+1] = player.guess_new(self.inventory,
+                                                        self.successful_guesses)
+        return guesses
 
     def update_inventory(self, new_items):
         self.inventory.update(set(new_items.values()))
