@@ -22,7 +22,7 @@ of the Experiment class.
 SimVars = namedtuple('SimVars',
     'strategy n_guesses n_players seed player_memory team_memory')
 RoundVars = namedtuple('RoundVars',
-    'guesses new_items inventory inventory_size trajectory')
+    'guesses new_items inventory inventory_size trajectory n_player_unique_guesses n_team_unique_guesses')
 
 
 def simulate(strategy, n_guesses, n_players, seed, player_memory, team_memory):
@@ -31,11 +31,29 @@ def simulate(strategy, n_guesses, n_players, seed, player_memory, team_memory):
                        team_memory=team_memory)
     rounds = []
 
+    # Keep track of player and team memories outside of
+    # player and team models to monitor unique guesses.
+    player_memories = {player_id+1: []
+                       for player_id, _ in enumerate(team.players)}
+    team_memories = []
+
     for iteration in strategy(team, n_guesses):
         guesses = team.make_guesses()
         new_items = landscape.evaluate_guesses(guesses.values())
         if len(new_items) > 0:
             team.update_inventory(new_items)
+
+        # Record guess uniqueness for players and team
+        n_player_unique_guesses = 0
+        n_team_unique_guesses = 0
+        for player_id, guess in guesses.items():
+            if guess not in player_memories[player_id]:
+                n_player_unique_guesses += 1
+                player_memories[player_id].append(guess)
+
+            if guess not in team_memories:
+                n_team_unique_guesses += 1
+                team_memories.append(guess)
 
         rounds.append(dict(
             strategy=strategy.__name__,
@@ -50,6 +68,8 @@ def simulate(strategy, n_guesses, n_players, seed, player_memory, team_memory):
             inventory=json.dumps(list(team.inventory)),
             inventory_size=len(team.inventory),
             trajectory=team.trajectory,
+            n_player_unique_guesses=n_player_unique_guesses,
+            n_team_unique_guesses=n_team_unique_guesses,
         ))
 
         if len(team.inventory) == landscape.max_items:
