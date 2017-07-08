@@ -14,14 +14,9 @@ sapply(list.files("R", "*.R", full.names = TRUE), knitr::read_chunk)
 ```{r setup, include=FALSE}
 ```
 
-# Replication
-
-```{r replication, fig.width=6, fig.height=3, results="hide"}
-```
-
 # Strategy
 
-```{r strategy, fig.width=6, fig.height=3, results="hide"}
+```{r strategy, fig.width=8, fig.height=3, results="hide"}
 ```
 
 # Team size
