@@ -14,7 +14,7 @@ timeline_plot <- ggplot(BotsStrategy) +
            vjust = -0.2, size = 3) +
   scale_x_continuous("Round") +
   totems_theme$scale_y_inventory_size +
-  scale_color_manual(values = totems_theme$color_picker(c("blue", "green"))) +
+  totems_theme$scale_color_strategy_2 +
   coord_cartesian(ylim = c(6, 16)) +
   totems_theme$base_theme +
   theme(legend.position = "top")
@@ -27,8 +27,8 @@ final_plot <- ggplot() +
              shape = 1) +
   scale_x_discrete("Strategy", labels = c("Synchronic", "Diachronic")) +
   totems_theme$scale_y_inventory_size +
-  scale_color_manual(values = totems_theme$color_picker(c("blue", "green"))) +
-  scale_fill_manual(values = totems_theme$color_picker(c("blue", "green"))) +
+  totems_theme$scale_color_strategy_2 +
+  totems_theme$scale_fill_strategy_2 +
   coord_cartesian(ylim = c(6, 16)) +
   totems_theme$base_theme +
   theme(

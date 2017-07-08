@@ -21,7 +21,7 @@ sapply(list.files("R", "*.R", full.names = TRUE), knitr::read_chunk)
 
 # Team size
 
-```{r}
+```{r team-size}
 ```
 
 # Memory
