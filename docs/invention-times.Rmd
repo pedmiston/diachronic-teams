@@ -23,10 +23,10 @@ list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
 ```{r invention-times, include=FALSE}
 ```
 
-```{r team-lags, fig.width=10, fig.height=10}
-team_lags_plot
+```{r team-balance, fig.width=10, fig.height=10}
+team_balance_plot
 ```
 
-```{r performance-by-lag}
-performance_by_lag_plot
+```{r performance-by-balance}
+performance_by_balance_plot
 ```
