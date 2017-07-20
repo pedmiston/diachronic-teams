@@ -4,6 +4,16 @@
 "TeamInfo"
 
 #' Information about players
+#'
+#' \describe{
+#'   \item{PlayerID}{unique identifier for players}
+#'   \item{TeamID}{unique identifier for teams}
+#'   \item{Strategy}{strategy assigned to players in this team}
+#'   \item{Generation}{generation of participant. Only relevant for Diachronic teams.}
+#'   \item{SessionDuration}{the length of time this player played the game in a single session}
+#'   \item{PlayerIX}{index for each player in a team, e.g., P1 and P2. Assigned at random.}
+#' }
+#'
 #' @docType data
 #' @usage data("PlayerInfo")
 "PlayerInfo"

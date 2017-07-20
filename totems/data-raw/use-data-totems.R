@@ -25,7 +25,12 @@ PlayerInfo <- Player %>%
   rename(Strategy = Treatment, SessionDuration = BuildingTime) %>%
   mutate(Generation = ifelse(Strategy != "Diachronic", 1, Ancestor)) %>%
   select(PlayerID, TeamID, Strategy, Generation, SessionDuration) %>%
-  arrange(Strategy, TeamID, Generation)
+  arrange(Strategy, TeamID, Generation) %>%
+  # Assign player indices to each player
+  group_by(TeamID, Generation) %>%
+  mutate(PlayerIX = paste0("P", 1:n())) %>%
+  ungroup()
+
 
 # Guesses ----------------------------------------------------------------------
 Guesses <- WorkshopAnalyzed %>%

@@ -4,11 +4,18 @@
 \name{PlayerInfo}
 \alias{PlayerInfo}
 \title{Information about players}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 177 rows and 5 columns.}
+\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 177 rows and 6 columns.}
 \usage{
 data("PlayerInfo")
 }
 \description{
-Information about players
+\describe{
+  \item{PlayerID}{unique identifier for players}
+  \item{TeamID}{unique identifier for teams}
+  \item{Strategy}{strategy assigned to players in this team}
+  \item{Generation}{generation of participant. Only relevant for Diachronic teams.}
+  \item{SessionDuration}{the length of time this player played the game in a single session}
+  \item{PlayerIX}{index for each player in a team, e.g., P1 and P2. Assigned at random.}
+}
 }
 \keyword{datasets}

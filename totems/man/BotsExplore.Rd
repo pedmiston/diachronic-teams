@@ -4,7 +4,7 @@
 \name{BotsExplore}
 \alias{BotsExplore}
 \title{Results of simulations of robots playing the Totems game.}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 500000 rows and 15 columns.}
+\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 500000 rows and 18 columns.}
 \usage{
 data("BotsExplore")
 }
