@@ -1,6 +1,6 @@
 source("docs/simulations/R/setup.R")
 
-# ---- memory
+# ---- redundancy
 recode_team_memory <- function(frame) {
   team_memory_levels <- c("no team memory", "yes team memory")
   team_memory_map <- data_frame(
@@ -59,3 +59,6 @@ redundancy_plot +
   aes(strategy, team_redundancy) +
   facet_grid(player_memory_label ~ team_memory_label) +
   ggtitle("Team redundancy")
+
+# ---- efficiency
+

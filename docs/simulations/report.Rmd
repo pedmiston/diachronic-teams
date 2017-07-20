@@ -28,3 +28,8 @@ sapply(list.files("R", "*.R", full.names = TRUE), knitr::read_chunk)
 
 ```{r memory}
 ```
+
+# Efficiency
+
+```{r efficiency}
+```
