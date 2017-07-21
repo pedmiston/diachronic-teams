@@ -9,20 +9,35 @@ from .paths import PROJ, R_PKG
 
 @task
 def make(ctx, name, reset_before=False, open_after=False, verbose=False):
-    """Compile RMarkdown reports to their output formats."""
+    """Compile RMarkdown reports to their output formats.
+    
+    Examples:
+    
+      $ inv docs.make list   # see available reports
+      $ inv docs.make all    # run all reports
+      $ inv docs.make totems # make the totems.Rmd
+    
+    """
     reports = reports_from_name(name)
+    failed = []
 
     cmd = 'Rscript -e "rmarkdown::render({!r})"'
     for report in reports:
         if reset_before:
             reset(ctx, report, verbose=verbose)
 
-        ctx.run(cmd.format(str(report)), echo=verbose)
+        result = ctx.run(cmd.format(str(report)), echo=verbose, warn=True)
+        
+        if not result.ok:
+            failed.append(str(report))
 
-        if open_after:
+        if open_after and result.ok:
             output_file = Path(report.parent, '{}.html'.format(report.stem))
             ctx.run('open {}'.format(output_file), echo=verbose)
-
+    
+    print('The following reports had errors:')
+    for report in failed:
+        print(' - {}'.format(report))
 
 @task
 def reset(ctx, name, verbose=False):
@@ -57,11 +72,14 @@ def img(ctx, name, output=None, ext='png', dpi=300):
 
 def reports_from_name(name):
     available_reports = [Path(rmd) for rmd in
-                         glob('{proj}/docs/*.Rmd'.format(proj=PROJ))]
+                         glob('{proj}/docs/**/*.Rmd'.format(proj=PROJ),
+                              recursive=True)
+                         if Path(rmd).isfile()]
+    
     if name == 'all':
         rmds = available_reports
     elif name == 'list':
-        print('Available reports:')
+        print('Available docs:')
         for rmd in available_reports:
             print(' - %s' % rmd.stem)
         sys.exit()
@@ -69,6 +87,8 @@ def reports_from_name(name):
         rmds = [Path(name)]
     else:
         rmds = [Path(rmd) for rmd in
-                glob('{proj}/docs/{name}*.Rmd'.format(proj=PROJ, name=name))]
+                glob('{proj}/docs/**/{name}*.Rmd'.format(proj=PROJ, name=name),
+                     recursive=True)
+                if Path(rmd).isfile()]
 
     return rmds
