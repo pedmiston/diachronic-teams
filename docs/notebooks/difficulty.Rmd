@@ -44,19 +44,21 @@ ggplot(possible_guesses) +
 ```
 
 ```{r}
-data("simulations_difficulty")
+data("BotsExplore")
 
-difficulties <- simulations_difficulty %>%
+Difficulties <- BotsExplore %>%
   select(inventory_size, n_adjacent, difficulty) %>%
   unique()
 
-ggplot(difficulties) +
+ggplot(Difficulties) +
   aes(inventory_size, difficulty, color = factor(n_adjacent)) +
   geom_line(aes(group = n_adjacent)) +
   geom_point()
 ```
 
-```{r}
+```{r, eval=FALSE}
+# At some point, the number of adjacent solutions was
+# dropped from analysis of experimental data.
 data("totems_workshops")
 
 difficulties <- totems_workshops %>%

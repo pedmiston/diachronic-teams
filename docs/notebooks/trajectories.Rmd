@@ -17,14 +17,12 @@ opts_chunk$set(
   message = FALSE,
   warning = FALSE,
   results = "hide",
-  fig.path = "trajectories-figs/",
   fig.width = 4,
   fig.height = 3,
-  cache = TRUE,
-  cache.path = ".cache.trajectories/"
+  cache = TRUE
 )
 
-list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
+list.files("../R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
 ```
 
 ```{r setup}
@@ -34,8 +32,8 @@ list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
 ```
 
 ```{r}
-player_trajectories <- totems_workshops %>%
-  group_by(ID_Player, InventorySize, NumAdjacent) %>%
+player_trajectories <- Guesses %>%
+  group_by(PlayerID, InventorySize, NumAdjacent) %>%
   summarize(Guesses = n()) %>%
   left_join(totems_players %>% select(-InventorySize))
 
