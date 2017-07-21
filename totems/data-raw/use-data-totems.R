@@ -67,9 +67,16 @@ summarize_performance_on_inventory <- . %>%
   ungroup() %>%
   arrange(TeamID, NumInnovations)
 
+# The difficulty of a particular inventory is a function of the number
+# of items available, which corresponds to the total number of combinations
+# possible relative to the number of adjacent items that could be discovered.
+calculate_difficulty <- . %>%
+  mutate(Difficulty = (6 + NumInnovations)/NumAdjacent)
+
 Inventories <- WorkshopAnalyzed %>%
   calculate_num_innovations() %>%
-  summarize_performance_on_inventory()
+  summarize_performance_on_inventory() %>%
+  calculate_difficulty()
 
 # Performance ------------------------------------------------------------------
 TeamPerformance <- Guesses %>%

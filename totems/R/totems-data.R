@@ -54,6 +54,9 @@
 #'   \item{TeamUniqueGuesses}{number of unique guesses for the team it took to make a new discovery}
 #'   \item{UniqueGuesses}{number of unique guesses for the players it took to make a new discovery}
 #'   \item{Duration}{the amount of time it took the team to make a new discovery}
+#'   \item{Difficulty}{the difficulty of this inventory, taken as a function of
+#'     the number of items that can be combined relative to the number of adajcent
+#'     and correct items}
 #' }
 #'
 #' @docType data

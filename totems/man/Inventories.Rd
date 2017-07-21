@@ -4,7 +4,7 @@
 \name{Inventories}
 \alias{Inventories}
 \title{Inventories uncovered by teams in the Totems experiment.}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 979 rows and 8 columns.}
+\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 979 rows and 9 columns.}
 \usage{
 data("Inventories")
 }
@@ -18,6 +18,9 @@ data("Inventories")
   \item{TeamUniqueGuesses}{number of unique guesses for the team it took to make a new discovery}
   \item{UniqueGuesses}{number of unique guesses for the players it took to make a new discovery}
   \item{Duration}{the amount of time it took the team to make a new discovery}
+  \item{Difficulty}{the difficulty of this inventory, taken as a function of
+    the number of items that can be combined relative to the number of adajcent
+    and correct items}
 }
 }
 \keyword{datasets}

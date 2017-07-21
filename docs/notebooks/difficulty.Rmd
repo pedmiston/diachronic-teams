@@ -56,16 +56,12 @@ ggplot(Difficulties) +
   geom_point()
 ```
 
-```{r, eval=FALSE}
-# At some point, the number of adjacent solutions was
-# dropped from analysis of experimental data.
-data("totems_workshops")
+```{r}
+data("Inventories")
 
-difficulties <- totems_workshops %>%
-  select(InventorySize, NumAdjacent, Difficulty) %>%
-  unique()
+Inventories$InventorySize <- 6 + Inventories$NumInnovations
 
-ggplot(difficulties) +
+ggplot(Inventories) +
   aes(InventorySize, Difficulty, color = factor(NumAdjacent)) +
   geom_line(aes(group = NumAdjacent)) +
   geom_point()
