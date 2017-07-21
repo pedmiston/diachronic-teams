@@ -136,6 +136,7 @@ def analyze(ctx):
         'WorkShopResult', 'UniqueItem', 'TeamUniqueItem',
         'Score', 'TeamScore',
         'Inventory', 'TeamInventory',
+        'NumAdjacent'
     ]
     workshop[workshop_cols].to_csv(Path(TOTEMS_DIR, 'WorkshopAnalyzed.csv'),
                                    index=False)
@@ -180,14 +181,16 @@ def rolling_history(trials, prefix=''):
 def determine_adjacent_possible(trials):
     """Calculate the number of adjacent possibilities for each player."""
     trials = trials.copy()
-    inventories = trials.Inventory
-    raise AssertionError
+    inventories = trials.TeamInventory.apply(
+        lambda x: list(map(int, x.split('-')))
+    )
     trials['NumAdjacent'] = (inventories.apply(landscape.adjacent_possible)
                                         .apply(len))
     return trials
 
 
 def label_teams_and_strategies(frame):
+    # TODO: Make this work even when db is offline
     con = db.connect_to_db()
     labels = pandas.read_sql("""
     SELECT ID_Player, Treatment, Table_Player.ID_Group as ID_Group, Ancestor

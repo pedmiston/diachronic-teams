@@ -46,9 +46,14 @@
 #' Inventories uncovered by teams in the Totems experiment.
 #'
 #' \describe{
-#'   \item{PlayerID}{unique identifier for players}
+#'   \item{TeamID}{unique identifier for teams}
+#'   \item{TeamInventory}{a string representing all items that have been discovered by this team}
 #'   \item{NumInnovations}{number of new items discovered by the team}
-#'   \item{Inventory}{a string representing the current items in the inventory}
+#'   \item{NumAdjacent}{number of discoveries that could be made from this inventory}
+#'   \item{TeamGuesses}{number of guesses it took to make a new discovery}
+#'   \item{TeamUniqueGuesses}{number of unique guesses for the team it took to make a new discovery}
+#'   \item{UniqueGuesses}{number of unique guesses for the players it took to make a new discovery}
+#'   \item{Duration}{the amount of time it took the team to make a new discovery}
 #' }
 #'
 #' @docType data

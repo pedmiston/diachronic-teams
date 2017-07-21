@@ -57,7 +57,7 @@ calculate_num_innovations <- . %>%
   ungroup()
 
 summarize_performance_on_inventory <- . %>%
-  group_by(TeamID, TeamInventory, NumInnovations) %>%
+  group_by(TeamID, TeamInventory, NumInnovations, NumAdjacent) %>%
   summarize(
     TeamGuesses = n(),
     TeamUniqueGuesses = sum(TeamUniqueGuess),
