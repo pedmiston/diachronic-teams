@@ -1,14 +1,15 @@
 # reproducible
 figs/
 **/*figs/
-*_cache/
-**/*_cache/
-
+*cache/
+**/*cache/
+*files/
+**/*files/
 *.html
 *.pdf
+*.docx
 !docs/**/*.pdf
 docs/irb/methods/*.pdf
-*.docx
 
 # py package
 *egg-info/

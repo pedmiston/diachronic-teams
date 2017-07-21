@@ -6,7 +6,7 @@ Redundancy <- Inventories %>%
   recode_strategy() %>%
   mutate(
     TeamRedundancy = 1 - (TeamUniqueGuesses/TeamGuesses),
-    PlayerRedundancy = 1 - (UniqueGuesses/TeamGuesses)
+    PlayerRedundancy = 1 - (UniqueGuesses/TeamGuesses)  # !!! Should be: Guesses
   )
 
 team_redundancy_mod <- lmer(
