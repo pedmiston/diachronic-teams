@@ -1,5 +1,9 @@
 # reproducible
 figs/
+**/*figs/
+*_cache/
+**/*_cache/
+
 *.html
 *.pdf
 !docs/**/*.pdf
@@ -28,7 +32,7 @@ totems/data-raw/totems/
 __pycache__/
 
 # tests
-.cache*/
+.cache/
 
 # R
 .Rproj.user

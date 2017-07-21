@@ -6,17 +6,15 @@ output:
     theme: flatly
 ---
 
-```{r, include=FALSE}
+```{r config, include=FALSE}
 library(knitr)
 opts_chunk$set(
   echo = FALSE,
   message = FALSE,
   warning = FALSE,
-  fig.path = "difficulty-figs/",
-  cache = TRUE,
-  cache.path = ".cache.difficulty/"
+  cache = TRUE
 )
-read_chunk("R/setup.R")
+read_chunk("../R/setup.R")
 ```
 
 ```{r setup}
@@ -25,6 +23,8 @@ read_chunk("R/setup.R")
 Difficulty is a factor of inventory size--the number of items available for recombination--and the number of adjacent items that could be discovered. If difficulty were only a factor of inventory size, the game would get exponentially more difficult as you went on. However, that doesn't seem to be the case. What matters more than the total number of combinations that could be made is the number of adjacent items that could be discovered.
 
 ```{r}
+library(purrrlyr)
+
 calculate_num_guesses <- function(step_info) {
   n <- step_info$inventory_size
   r <- step_info$guess_size

@@ -16,14 +16,12 @@ opts_chunk$set(
   message = FALSE,
   warning = FALSE,
   results = "hide",
-  fig.path = "performance-figs/",
   fig.width = 4,
   fig.height = 4,
-  cache = TRUE,
-  cache.path = ".cache.performance/"
+  cache = TRUE
 )
 
-list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
+list.files("../R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
 ```
 
 ```{r setup, cache=FALSE}

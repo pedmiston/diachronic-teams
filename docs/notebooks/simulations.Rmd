@@ -15,14 +15,12 @@ opts_chunk$set(
   message = FALSE,
   warning = FALSE,
   results = "hide",
-  fig.path = "simulations-figs/",
   fig.width = 6,
   fig.height = 3,
-  cache = TRUE,
-  cache.path = ".cache-simulations/"
+  cache = TRUE
 )
 
-read_chunk("R/simulations.R")
+read_chunk("../R/simulations.R")
 read_graphviz_chunk("team-structures", "totems")
 ```
 

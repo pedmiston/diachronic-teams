@@ -3,12 +3,12 @@ title: "What is the impact of inheritance on problem solving ability?"
 author: "Pierce Edmiston"
 abstract: |
   Does inheriting an existing solution to a problem simply give a head start on solving it or does it change the way the problem is solved? These experiments measure the impact of inheritance on problem solving ability. In the inheritance condition, one person works on a solution to a problem before passing it on to be inherited by another person to continue. Because the people in this exchange are working together, I refer to them as **Diachronic teams**. This research compares the problem solving abilities of Diachronic teams organized around inheritance to other ways of allocating the same number of labor hours: Synchronic teams comprising individuals working in parallel and Isolated individuals working for the same total amount of time. Comparing the relative efficiencies of these three strategies is expected to reveal the impact of inheritance on problem solving.
-csl: "apa.csl"
-bibliography: "diachronic-collaboration.bib"
+csl: "theme/apa.csl"
+bibliography: "refs/diachronic-collaboration.bib"
 output:
   html_document:
     theme: flatly
-    css: style.css
+    css: theme/style.css
     toc: true
     toc_depth: 2
     toc_float: true
@@ -25,7 +25,6 @@ opts_chunk$set(
   message = FALSE,
   warning = FALSE,
   results = "hide",
-  fig.path = "totems-figs/",
   fig.width = 4,
   fig.height = 4,
   cache = TRUE
