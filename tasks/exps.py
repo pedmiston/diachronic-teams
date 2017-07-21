@@ -126,6 +126,9 @@ def analyze(ctx):
     workshop['Score']     = scores.where(workshop.UniqueItem, 0)
     workshop['TeamScore'] = scores.where(workshop.TeamUniqueItem, 0)
 
+    # Calculate number of adjacent items
+    workshop = determine_adjacent_possible(workshop)
+
     workshop_cols = [
         'ID_Player',
         'PlayerTime', 'TeamTime',
@@ -174,15 +177,14 @@ def rolling_history(trials, prefix=''):
     return trials
 
 
-# Broken because Inventory column is no longer a list
-# def determine_adjacent_possible(trials):
-#     """Calculate the number of adjacent possibilities for each player."""
-#     trials = trials.copy()
-#     inventories = trials.Inventory
-#     trials['NumAdjacent'] = (trials.Inventory
-#                                    .apply(landscape.adjacent_possible)
-#                                    .apply(len))
-#     return trials
+def determine_adjacent_possible(trials):
+    """Calculate the number of adjacent possibilities for each player."""
+    trials = trials.copy()
+    inventories = trials.Inventory
+    raise AssertionError
+    trials['NumAdjacent'] = (inventories.apply(landscape.adjacent_possible)
+                                        .apply(len))
+    return trials
 
 
 def label_teams_and_strategies(frame):
