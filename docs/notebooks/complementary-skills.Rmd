@@ -1,0 +1,31 @@
+---
+title: Complementary skills in teams
+author: Pierce Edmiston
+output:
+  html_document:
+    theme: flatly
+---
+
+```{r config, include=FALSE}
+library(knitr)
+library(printr)
+library(magrittr)
+
+opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  results = "hide",
+  fig.width = 4,
+  fig.height = 3,
+  cache = TRUE
+)
+
+list.files("../R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
+```
+
+```{r setup, include=FALSE}
+```
+
+```{r complementary-skills, include=FALSE}
+```
