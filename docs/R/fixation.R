@@ -28,6 +28,17 @@ Top10IncorrectGuessesPlot <- ggplot(Top10IncorrectGuesses) +
   geom_bar(stat = "identity") +
   coord_flip()
 
+# Top10IncorrectGuessesImages <- Top10IncorrectGuesses %>%
+#   rowwise() %>%
+#   do(GuessImage = view_guess(.$Guess)) %>%
+#   ungroup() %>%
+#   mutate(GuessRank = 1:n())
+# 
+# ggplot(Top10IncorrectGuesses) +
+#   aes(x = GuessRank, y = 0) +
+#   annotation_custom(Top)
+
+
 # How well do people correlate for incorrect guesses?
 #
 # For each Player, tally the number of times each incorrect

@@ -24,6 +24,8 @@ view_guess <- function(guess_str, item_labels, view = FALSE) {
   if (view == TRUE) {
     grid::grid.newpage()
     grid::grid.draw(guess_grobs)
+  } else {
+    return(guess_grobs)
   }
 }
 
