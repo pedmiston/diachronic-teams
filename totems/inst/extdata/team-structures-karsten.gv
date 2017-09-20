@@ -19,16 +19,15 @@ digraph {
   solo[fillcolor="#FC8D62"];
 
   k1a[fillcolor="#d27eb2"];
-  k2a[fillcolor="#e78ac3"];
-  k1b[fillcolor="#eb9fcd"];
   k2b[fillcolor="#f4c9e3"];
 
   // Invisible last nodes
-  dinv1, soloinv1, sinv1, sinv2, kinva, kinvb[style=invis width=0];
+  dinv1, soloinv1, sinv1, sinv2, kinva, kinvb[style=invis];
 
   subgraph cluster1 {
     label="Diachronic";
-    d1 -> d2 -> dinv1[minlen=2];
+    d1 -> d2[minlen=2];
+    d2 -> dinv1[minlen=2];
   }
 
   subgraph cluster2 {
@@ -44,7 +43,9 @@ digraph {
 
   subgraph cluster4 {
     label="Full";
-    k1a -> k2a -> kinva;
-    k1b -> k2b -> kinvb;
+    k1a -> kinva[minlen=2];
+    kinv -> k2b [style=invis minlen=1]
+    k2b -> kinvb[minlen=2];
+    kinv[style=invis]
   }
 }
