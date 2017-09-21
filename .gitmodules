@@ -2,5 +2,5 @@
 	path = experiment
 	url = git@gitlab.com:pedmiston/totems-experiment
 [submodule "totems-data"]
-	path = totems-data
+	path = data
 	url = git@github.com:pedmiston/totems-data.git
