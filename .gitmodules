@@ -4,3 +4,6 @@
 [submodule "totems-data"]
 	path = data
 	url = git@github.com:pedmiston/totems-data.git
+[submodule "graphdb"]
+	path = graphdb
+	url = git@github.com:pedmiston/totems-graphdb.git
