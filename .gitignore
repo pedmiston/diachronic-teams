@@ -1,54 +1,19 @@
-# reproducible
-figs/
-**/*figs/
-*cache/
-**/*cache/
-*files/
-**/*files/
-*.html
-*.pdf
-*.docx
-!docs/**/*.pdf
-docs/irb/methods/*.pdf
-
-# py package
-*egg-info/
-
-*.png
-!img/*.png
-!totems/inst/extdata/*.png
-
-*.gv
-!totems/**/*.gv
-totems/**/landscape*.gv
-totems/**/inventory*.gv
-cassettes/
-
-# reproducible data
-totems/data-raw/simulations/
-totems/data/simulations*.rda
-totems/data-raw/totems/
+# secrets
+.env
 
 # python
 __pycache__/
 
-# tests
-.cache/
-
 # R
-.Rproj.user
-.Rhistory
-.RData
-.Ruserdata
+.Rproj.user/
+
+# dynamic docs
+*.html
+*cache/
+*files/
 
 # editor
 *.swp
 
 # os
 .DS_Store
-
-# submissions
-!submissions/**/*
-
-# totems
-environment
