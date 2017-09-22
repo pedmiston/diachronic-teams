@@ -1,6 +1,0 @@
----
-
-strategy: [diachronic, synchronic]
-n_players: 2
-n_guesses: [50, 100, 150, 200, 500]
-n_seeds: 100
