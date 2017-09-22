@@ -4,19 +4,25 @@ from glob import glob
 from invoke import task
 from unipath import Path
 
-from .paths import PROJ, R_PKG
+
+PROJ = Path(__file__).absolute().ancestor(2)
+R_PKG = Path(PROJ, 'totems')
+REPORTS = Path(PROJ, 'reports')
+TOTEMS = Path(PROJ, 'experiment')
+ITEM_IMAGES = Path(R_PKG, 'inst/extdata/items')
+TOTEMS_RAW_DATA = Path(R_PKG, 'data-raw/totems')
 
 
 @task
 def make(ctx, name, reset_before=False, open_after=False, verbose=False):
     """Compile RMarkdown reports to their output formats.
-    
+
     Examples:
-    
+
       $ inv docs.make list   # see available reports
       $ inv docs.make all    # run all reports
       $ inv docs.make totems # make the totems.Rmd
-    
+
     """
     reports = reports_from_name(name)
     failed = []
@@ -27,14 +33,14 @@ def make(ctx, name, reset_before=False, open_after=False, verbose=False):
             reset(ctx, report, verbose=verbose)
 
         result = ctx.run(cmd.format(str(report)), echo=verbose, warn=True)
-        
+
         if not result.ok:
             failed.append(str(report))
 
         if open_after and result.ok:
             output_file = Path(report.parent, '{}.html'.format(report.stem))
             ctx.run('open {}'.format(output_file), echo=verbose)
-    
+
     print('The following reports had errors:')
     for report in failed:
         print(' - {}'.format(report))
@@ -75,7 +81,7 @@ def reports_from_name(name):
                          glob('{proj}/docs/**/*.Rmd'.format(proj=PROJ),
                               recursive=True)
                          if Path(rmd).isfile()]
-    
+
     if name == 'all':
         rmds = available_reports
     elif name == 'list':
