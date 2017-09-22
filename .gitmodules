@@ -10,3 +10,6 @@
 [submodule "bots"]
 	path = bots
 	url = git@github.com:pedmiston/totems-bots.git
+[submodule "db"]
+	path = db
+	url = git@github.com:pedmiston/totems-db.git
