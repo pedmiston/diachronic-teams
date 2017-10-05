@@ -8,8 +8,6 @@ output:
 
 ```{r config, include=FALSE}
 library(knitr)
-library(magrittr)
-library(gridExtra)
 
 opts_chunk$set(
   echo = FALSE,
@@ -21,23 +19,12 @@ opts_chunk$set(
   cache = TRUE
 )
 
-list.files("../R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
+read_chunk("../R/setup.R")
+read_chunk("../R/performance.R")
 ```
 
-```{r setup, cache=FALSE}
+```{r setup}
 ```
 
 ```{r performance}
-```
-
-```{r score}
-```
-
-```{r compare-performance-metrics, fig.width=8, fig.height=8}
-grid.arrange(
-  innovations_over_time_plot, innovations_plot,
-  score_over_time_plot + theme(legend.position = "none"), score_plot,
-  nrow = 2,
-  widths = c(0.6, 0.4)
-)
 ```

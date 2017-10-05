@@ -1,21 +1,3 @@
 # ---- setup
 library(tidyverse)
-library(lubridate)
-library(magrittr)
-library(grid)
-library(gridExtra)
-library(lme4)
-library(broom)
-library(crotchet)
 library(totems)
-totems_theme <- load_totems_theme()
-
-# ---- data
-library(totems)
-data("TeamInfo")
-data("PlayerInfo")
-data("Guesses")
-data("Inventories")
-data("TeamPerformance")
-data("PlayerPerformance")
-data("SampledPerformance")
