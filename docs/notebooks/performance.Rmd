@@ -28,3 +28,38 @@ read_chunk("../R/performance.R")
 
 ```{r performance}
 ```
+
+```{r}
+data("PlayerPerformance")
+
+PerformanceByGeneration <- PlayerPerformance %>%
+  filter(
+    Exp == "50LaborMinutes",
+    Strategy != "Synchronic",
+    SessionDuration == 25,
+    TeamStatus == "V",
+    SessionStatus == "V"
+  )
+
+ggplot(PerformanceByGeneration) +
+  aes(Generation, NumInnovations) +
+  geom_bar(stat = "summary", fun.y = "mean", alpha = 0.4) +
+  geom_line(aes(group = TeamID), alpha = 0.4) +
+  geom_line(stat = "summary", fun.y = "mean", size = 2) +
+  facet_wrap("Strategy")
+
+ggplot(PerformanceByGeneration) +
+  aes(Generation, NumGuesses) +
+  geom_bar(stat = "summary", fun.y = "mean", alpha = 0.4) +
+  geom_line(aes(group = TeamID), alpha = 0.4) +
+  geom_line(stat = "summary", fun.y = "mean", size = 2) +
+  facet_wrap("Strategy")
+
+ggplot(PerformanceByGeneration) +
+  aes(Generation, NumUniqueGuesses) +
+  geom_bar(stat = "summary", fun.y = "mean", alpha = 0.4) +
+  geom_line(aes(group = TeamID), alpha = 0.4) +
+  geom_line(stat = "summary", fun.y = "mean", size = 2) +
+  facet_wrap("Strategy") +
+  ggtitle("")
+```
