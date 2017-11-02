@@ -25,5 +25,4 @@ ggplot(Isolated50Minutes) +
   geom_errorbar(aes(ymin = NumInnovations-SE, ymax = NumInnovations+SE),
                 data = session_duration_preds, width = 0.2) +
   geom_point(position = position_jitter(width = 0.05),
-             size = 1) +
-  ggtitle("Impact of session duration on isolated participants")
+             size = 1)

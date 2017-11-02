@@ -1,17 +1,18 @@
 source("docs/R/setup.R")
 
-# ---- guesses
+# ---- guesses-50
 data("TeamPerformance")
 
 TeamPerformance %<>%
   recode_strategy() %>%
   filter(
     TeamStatus == "V",
-    Exp == "50LaborMinutes"
+    Exp == "50LaborMinutes",
+    SessionDuration == 25
   )
 
 guesses_mod <- lm(
-  NumGuesses ~ Diachronic_v_Synchronic + Diachronic_v_Isolated + SessionDurationLabel,
+  NumGuesses ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
   data = TeamPerformance
 )
 
@@ -32,14 +33,14 @@ guesses_plot <- ggplot(TeamPerformance) +
 guesses_plot
 
 # ---- performance-by-guesses
-performance_by_guesses_plot <- ggplot(TeamPerformance) +
+performance_by_guesses_plot <- ggplot(filter(TeamPerformance, NumGuesses < 1000)) +
   aes(NumGuesses, NumInnovations, color = StrategyLabel) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
   theme(legend.position = "top")
 performance_by_guesses_plot
 
-# ---- player-guesses
+# ---- player-guesses-all
 data("PlayerPerformance")
 
 PlayerPerformance %<>%
@@ -49,5 +50,5 @@ PlayerPerformance %<>%
 ggplot(PlayerPerformance) +
   aes(Strategy, NumGuesses) +
   geom_bar(stat = "summary", fun.y = "mean") +
-  geom_point() +
+  geom_point(position = position_jitter(width = 0.2)) +
   facet_wrap("ExpLabel")

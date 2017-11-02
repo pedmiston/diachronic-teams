@@ -39,6 +39,11 @@ list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
 ```{r performance-50}
 ```
 
+## Likelihood
+
+```{r likelihood-50}
+```
+
 ## Session duration
 
 ```{r session-duration}
@@ -51,6 +56,9 @@ list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
 
 ## Attempts
 
+```{r guesses-50}
+```
+
 # 100 Labor Minutes
 
 ## Performance
@@ -59,4 +67,14 @@ list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
 ```
 
 ```{r performance-by-generation-100}
+```
+
+## Likelihood
+
+```{r likelihood-100}
+```
+
+## Attempts
+
+```{r player-guesses-all}
 ```
