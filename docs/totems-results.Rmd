@@ -39,12 +39,17 @@ list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
 ```{r performance-50}
 ```
 
+## Session duration
+
+```{r session-duration}
+```
+
+## Multiple sessions
+
 ```{r performance-by-generation-50}
 ```
 
 ## Attempts
-
-## Session Duration
 
 # 100 Labor Minutes
 

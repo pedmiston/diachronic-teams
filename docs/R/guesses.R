@@ -11,7 +11,7 @@ TeamPerformance %<>%
   )
 
 guesses_mod <- lm(
-  NumGuesses ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
+  NumGuesses ~ Diachronic_v_Synchronic + Diachronic_v_Isolated + SessionDurationLabel,
   data = TeamPerformance
 )
 

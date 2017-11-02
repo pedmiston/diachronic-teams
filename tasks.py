@@ -5,13 +5,18 @@ from invoke import task
 from unipath import Path
 
 
-PROJ = Path(__file__).absolute().ancestor(2)
-R_PKG = Path(PROJ, 'totems')
+PROJ = Path(__file__).absolute().parent
+R_PKG = Path(PROJ, 'data')
 REPORTS = Path(PROJ, 'reports')
 TOTEMS = Path(PROJ, 'experiment')
 ITEM_IMAGES = Path(R_PKG, 'inst/extdata/items')
 TOTEMS_RAW_DATA = Path(R_PKG, 'data-raw/totems')
 
+
+@task
+def install(ctx):
+    """Install the totems R package."""
+    ctx.run('cd {} && Rscript -e "devtools::install()"'.format(R_PKG))
 
 @task
 def make(ctx, name, reset_before=False, open_after=False, verbose=False):
