@@ -1,0 +1,57 @@
+---
+title: "The impact of inheritance on problem solving"
+author: "Pierce Edmiston"
+output:
+  html_document:
+    theme: flatly
+    css: theme/style.css
+    toc: true
+    toc_depth: 2
+    toc_float: true
+---
+
+```{r config, include = FALSE}
+library(knitr)
+library(printr)
+library(magrittr)
+library(crotchet)
+
+opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  results = "hide",
+  fig.width = 4,
+  fig.height = 4,
+  cache = TRUE
+)
+
+list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
+```
+
+```{r setup}
+```
+
+# 50 Labor Minutes
+
+## Performance
+
+```{r performance-50}
+```
+
+```{r performance-by-generation-50}
+```
+
+## Attempts
+
+## Session Duration
+
+# 100 Labor Minutes
+
+## Performance
+
+```{r performance-100}
+```
+
+```{r performance-by-generation-100}
+```

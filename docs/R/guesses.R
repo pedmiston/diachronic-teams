@@ -1,6 +1,6 @@
 source("docs/R/setup.R")
 
-# ---- attempts
+# ---- guesses
 data("TeamPerformance")
 
 TeamPerformance %<>%
@@ -29,9 +29,25 @@ guesses_plot <- ggplot(TeamPerformance) +
   geom_errorbar(aes(ymin = NumGuesses - SE, ymax = NumGuesses + SE),
                 data = guesses_preds, width = 0.2) +
   theme(legend.position = "none")
+guesses_plot
 
-performance_by_attempts_plot <- ggplot(TeamPerformance) +
+# ---- performance-by-guesses
+performance_by_guesses_plot <- ggplot(TeamPerformance) +
   aes(NumGuesses, NumInnovations, color = StrategyLabel) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
   theme(legend.position = "top")
+performance_by_guesses_plot
+
+# ---- player-guesses
+data("PlayerPerformance")
+
+PlayerPerformance %<>%
+  filter(TeamStatus == "V") %>%
+  recode_experiment()
+
+ggplot(PlayerPerformance) +
+  aes(Strategy, NumGuesses) +
+  geom_bar(stat = "summary", fun.y = "mean") +
+  geom_point() +
+  facet_wrap("ExpLabel")
