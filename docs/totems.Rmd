@@ -85,33 +85,43 @@ Participants are tasked with a tool-building competition presented in a digital 
 draw_image("gameplay", "totems")
 ```
 
-# Two-person teams
+# 50 Labor Minutes
 
 ```{r team-structures-exp1}
 draw_graphviz("team-structures-exp1", "totems")
 ```
 
-```{r data, echo = 1:8}
-```
-
 ## Performance
 
-```{r performance, include=FALSE}
+There are multiple ways to assess performance. The performance measure shown here is the final number of inventions discovered by each team.
+
+```{r performance-50}
 ```
 
-There are multiple ways to assess performance. The performance measure shown here is the final number of inventions discovered by each team. Fig. 4 shows the accumulation of inventions over time in the three strategies. Results are similar for alternative performance metrics. My prediction was that inheritance in the diachronic teams would result in more efficient problem solving and therefore more inventions than the other strategies. The results showed instead that synchronic collaboration appears to be the most efficient strategy for allocating 50 labor minutes.
-
-```{r performance-fig, fig.height=6, fig.width=8, fig.cap="**Problem solving performance by strategy**. The accumulation of inventions over time is shown on the left. On the right is final team performance. Synchronic collaboration is the most effective use of 50 labor minutes."}
+```{r performance-fig, fig.height=6, fig.width=8, fig.cap="**Problem solving performance by strategy**. Left: The accumulation of inventions over labor time. Right: Final team performance."}
 grid.arrange(
-  arrangeGrob(
-    innovations_over_time_plot,
-    performance_stacked_plot + theme(legend.position = "none"),
-    ncol = 1
-  ),
-  innovations_plot,
+  performance_over_time_50 + theme(legend.position = c(0.2, 0.8)),
+  final_performance_50,
   widths = c(0.6, 0.4)
 )
 ```
+
+### Likelihood of creating a totem
+
+```{r likelihood-50}
+```
+
+### Performance by session duration
+
+```{r session-duration}
+```
+
+### Performance over multiple sessions
+
+```{r performance-by-generation-50}
+```
+
+
 
 ### Model
 
@@ -179,10 +189,23 @@ grid.arrange(
 )
 ```
 
-# Four-person teams
+# 100 Labor Minutes
 
 ```{r team-structures-exp2}
 draw_graphviz("team-structures-exp2", "totems")
+```
+
+## Performance
+
+```{r performance-100}
+```
+
+```{r performance-100-fig, fig.height=6, fig.width=8, fig.cap="**Problem solving performance by strategy**. Left: The accumulation of inventions over labor time. Right: Final team performance."}
+grid.arrange(
+  performance_over_time_100 + theme(legend.position = c(0.2, 0.8)),
+  final_performance_100,
+  widths = c(0.6, 0.4)
+)
 ```
 
 # Discussion
