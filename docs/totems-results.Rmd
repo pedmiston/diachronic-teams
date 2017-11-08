@@ -36,27 +36,52 @@ list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
 
 ## Performance
 
+### Inventory size
+
 ```{r performance-50}
 ```
 
-## Likelihood
+### Likelihood of creating a totem
 
 ```{r likelihood-50}
 ```
 
-## Session duration
+### Performance by session duration
 
 ```{r session-duration}
 ```
 
-## Multiple sessions
+### Performance over multiple sessions
 
 ```{r performance-by-generation-50}
 ```
 
-## Attempts
+## Guesses
+
+### Number of attempts
 
 ```{r guesses-50}
+```
+
+```{r unique-guesses-50}
+```
+
+### Number of attempts and performance
+
+```{r guesses-50-performance}
+```
+
+```{r unique-guesses-50-performance}
+```
+
+### Number of attempts by generation
+
+```{r guesses-50-generation}
+```
+
+### Number of attempts by session duration
+
+```{r guesses-50-session-duration}
 ```
 
 # 100 Labor Minutes
