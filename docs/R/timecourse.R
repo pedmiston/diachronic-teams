@@ -1,37 +1,83 @@
 source("docs/R/setup.R")
 
-# ---- timecourse-50-teams
-data("Sampled")
-
-SampledTeamMax <- Sampled %>%
-  filter(
-    TeamStatus == "V",
-    Exp == "50LaborMinutes"
-  ) %>%
-  group_by(TeamID, Strategy, SessionDuration, Generation, SampledSessionTime) %>%
-  summarize(MaxInnovations = max(TeamInventorySize)) %>%
-  ungroup() %>%
-  recode_strategy()
-
-ggplot(filter(SampledTeamMax, Strategy == "Synchronic")) +
-  aes(SampledSessionTime, MaxInnovations, group = TeamID) +
-  geom_line()
-
 # ---- timecourse-50
 data("Sampled")
 
-SampledMeans <- Sampled %>%
+Sampled <- Sampled %>%
   filter(
     TeamStatus == "V",
     Exp == "50LaborMinutes"
   ) %>%
-  group_by(TeamID, Strategy, SessionDuration, Generation, TeamTime) %>%
-  summarize(NumInnovations = mean(TeamInventorySize)) %>%
-  ungroup() %>%
   recode_strategy()
 
-ggplot(SampledMeans) +
-  aes(TeamTime, NumInnovations,
-      group = interaction(StrategyLabel, SessionDuration, Generation),
-      color = StrategyLabel, linetype = factor(SessionDuration)) +
+ggplot(Sampled) +
+  aes(TeamTime, InventorySize,
+      group = interaction(Strategy, SessionDuration, Generation),
+      color = Strategy, linetype = factor(SessionDuration)) +
   geom_line(stat = "summary", fun.y = "mean")
+
+# ---- timecourse-100
+data("Sampled")
+
+Sampled <- Sampled %>%
+  dplyr::filter(
+    TeamStatus == "V",
+    Exp == "100LaborMinutes"
+  ) %>%
+  recode_strategy()
+
+ggplot(Sampled) +
+  aes(TeamTime, InventorySize,
+      group = interaction(Strategy, SessionDuration, Generation),
+      color = Strategy, linetype = factor(SessionDuration)) +
+  geom_line(stat = "summary", fun.y = "mean")
+
+# ---- timecourse-100-calendar
+data("Sampled")
+
+Sampled <- Sampled %>%
+  dplyr::filter(
+    TeamStatus == "V",
+    Exp == "100LaborMinutes"
+  ) %>%
+  recode_strategy()
+
+ggplot(Sampled) +
+  aes(CalendarTime, InventorySize,
+      group = interaction(Strategy, SessionDuration, Generation),
+      color = Strategy, linetype = factor(SessionDuration)) +
+  geom_line(stat = "summary", fun.y = "mean")
+
+# ---- diachronic-performance
+data("Sampled")
+
+Sampled <- Sampled %>%
+  filter(
+    TeamStatus == "V",
+    Exp == "100LaborMinutes",
+    Strategy == "Diachronic"
+  )
+
+ggplot(Sampled) +
+  aes(SessionTime, InventorySize, group = Generation) +
+  geom_line() +
+  facet_wrap("TeamID")
+
+ggplot(Sampled) +
+  aes(SessionTime, InventorySize, group = Generation, color = Generation) +
+  geom_line(stat = "summary", fun.y = "mean")
+
+# ---- single-player-performance
+data("Sampled")
+
+Sampled <- Sampled %>%
+  filter(
+    TeamStatus == "V",
+    Exp == "100LaborMinutes",
+    Strategy != "Synchronic"
+  )
+
+ggplot(Sampled) +
+  aes(SessionTime, InventorySize, group = Generation, color = factor(Generation)) +
+  geom_line(stat = "summary", fun.y = "mean") +
+  facet_wrap("Strategy")
