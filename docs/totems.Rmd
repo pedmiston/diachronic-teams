@@ -68,7 +68,7 @@ problem\ solution_{interactive} = inheritance \times ability \times time\\
 
 Participants play a computer game where they are given initial resources and tasked with combining the resources to generate new items (inventions). These inventions can then be combined to yield further inventions in pursuit of building a "sacred totem to appease the gods". More advanced inventions produce more intricate totems, and higher performance scores. For example, to build a totem, participants first needed to construct an axe out of three independently invented items: a refined stick used as a handle, a sharpened rock, and string wound from bark fibers (Fig. 2).
 
-```{r sample-landscape, fig.width=8, fig.height=6}
+```{r sample-landscape, fig.width=8, fig.height=6, eval=FALSE}
 ```
 
 ## Participants
@@ -93,12 +93,12 @@ draw_graphviz("team-structures-exp1", "totems")
 
 ## Performance
 
-There are multiple ways to assess performance. The performance measure shown here is the final number of inventions discovered by each team.
+### Number of innovations
 
 ```{r performance-50}
 ```
 
-```{r performance-fig, fig.height=6, fig.width=8, fig.cap="**Problem solving performance by strategy**. Left: The accumulation of inventions over labor time. Right: Final team performance."}
+```{r performance-50-fig, fig.height=4, fig.width=8, fig.cap="**Number of innovations by strategy**. Left: The accumulation of innovations by labor time. Right: Final number of innovations discovered by each team or individual."}
 grid.arrange(
   performance_over_time_50 + theme(legend.position = c(0.2, 0.8)),
   final_performance_50,
@@ -111,83 +111,43 @@ grid.arrange(
 ```{r likelihood-50}
 ```
 
-### Performance by session duration
-
-```{r session-duration}
+```{r likelihood-50-fig}
+likelihood50_plot
 ```
 
-### Performance over multiple sessions
+### Impact of session duration
+
+```{r session-duration-50}
+```
+
+```{r session-duration-50-fig}
+session_duration_50_plot
+```
+
+### Number of innovations by generation
 
 ```{r performance-by-generation-50}
 ```
 
-
-
-### Model
-
-```{r inventory-mod, echo=1}
-inventory_mod <- lm(
-  NumInnovations ~ Diachronic_v_Synchronic + Diachronic_v_Isolated,
-  data = Performance
-)
-```
-
-```{r inventory-results, results="asis"}
-tidy(inventory_mod) %>%
-  filter(term != "(Intercept)")
+```{r performance-by-generation-50-fig}
+performance_by_generation_50_plot
 ```
 
 ## Redundant guesses
 
-```{r redundancy, include=FALSE}
-```
+To compare problem solving efficiency between the three strategies, I first calculated guessing redundancy. An optimal strategy in this game is to never guess the same thing more than once, and yet participants routinely try the same (incorrect) guess over and over. This redundancy is a source of inefficiency; given the same number of guesses, a strategy that allows for less redundancy among its guessers will provide the greatest advantage in uncovering novel combinations of items.
 
-To compare problem solving efficiency between the three strategies, I first calculated guessing redundancy. The seemingly optimal strategy in this game is to never guess the same thing more than once, and yet participants routinely try the same (incorrect) guess over and over. This redundancy is a source of inefficiency; given the same number of guesses, a strategy that allows for less redundancy among its guessers will provide the greatest advantage in uncovering novel combinations of items.
-
-I calculated two measures of redundancy: individual redundancy, which corresponds to the percentage of guesses that were duplicates of previous guesses, and team redundancy, which corresponds to the percentage of duplicate guesses in each team. Fig. 8 shows the results. Isolated individuals were the most redundant with themselves, and Synchronic teams were the most redundant with each other. Put differently, Diachronic collaboration was the least redundant strategy.
-
-```{r redundancy-fig, fig.width=6, fig.cap="**Diachronic teamwork is less redundant than synchronic teamwork.** Diachronic teams are as likely to repeat themselves as isolated individuals, and also less likely to repeat their teammate than synchronic teams. Synchronic teams are less likely to repeat an incorrect guess they guessed previously, but more likely to repeat a guess made by their partner."}
-redundancy_plot
-```
+I calculated two measures of redundancy: individual redundancy, which corresponds to the percentage of guesses that were duplicates of previous guesses, and team redundancy, which corresponds to the percentage of duplicate guesses in each team.
 
 ## Guessing efficiency
-
-```{r efficiency, include=FALSE}
-```
 
 A more direct measure of guessing efficiency is the number of guesses it took each individual and each team to obtain a novel item. Given a particular set of items, guessing efficiency is the number of guesses it takes to obtain a new item. Strategies that are more efficient obtain more novel items for fewer guesses.
 
 My hypothesis was that inheritance would improve problem solving efficiency of the second generation of Diachronic players relative to the first.
 
-```{r efficiency-fig, fig.width=6, fig.height=6}
-efficiency_plot
-```
-
 ## Attempts
 
-```{r attempts, include=FALSE}
-```
-
-```{r attempts-fig, fig.width=8, fig.cap="**Team attempts predict number of inventions.** Teams that make more attempts tend to discover more inventions. Since synchronic teams make more attempts, they in turn discover more inventions."}
-grid.arrange(
-  attempts_plot,
-  performance_by_attempts_plot,
-  nrow = 1
-)
-```
-
 ## Guessing rate
-
-```{r guessing-rate, include=FALSE}
-```
-
-```{r guessing-rate-fig, fig.width=6}
-grid.arrange(
-  guessing_rate_over_time_plot,
-  guessing_rate_plot,
-  widths = c(0.6, 0.4)
-)
-```
 
 # 100 Labor Minutes
 
@@ -200,7 +160,7 @@ draw_graphviz("team-structures-exp2", "totems")
 ```{r performance-100}
 ```
 
-```{r performance-100-fig, fig.height=6, fig.width=8, fig.cap="**Problem solving performance by strategy**. Left: The accumulation of inventions over labor time. Right: Final team performance."}
+```{r performance-100-fig, fig.height=4, fig.width=8, fig.cap="**Problem solving performance by strategy**. Left: The accumulation of inventions over labor time. Right: Final team performance."}
 grid.arrange(
   performance_over_time_100 + theme(legend.position = c(0.2, 0.8)),
   final_performance_100,

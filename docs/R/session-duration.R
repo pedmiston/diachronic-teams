@@ -1,6 +1,6 @@
 source("docs/R/setup.R")
 
-# ---- session-duration
+# ---- session-duration-50
 data("TeamPerformance")
 
 Isolated50Minutes <- TeamPerformance %<>%
@@ -19,7 +19,7 @@ session_duration_preds <- recode_session_duration() %>%
   rename(NumInnovations = fit, SE = se.fit)
 
 set.seed(210)
-ggplot(Isolated50Minutes) +
+session_duration_50_plot <- ggplot(Isolated50Minutes) +
   aes(SessionDurationLabel, NumInnovations) +
   geom_bar(stat = "summary", fun.y = "mean") +
   geom_errorbar(aes(ymin = NumInnovations-SE, ymax = NumInnovations+SE),

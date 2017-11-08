@@ -22,7 +22,7 @@ scale_y_num_innovations <- scale_y_continuous(
   "Number of innovations",
   breaks = seq(0, 30, by = 2))
 
-performance_over_time_50 <- ggplot(Sampled) +
+performance_over_time_50 <- ggplot(Sampled50) +
   aes(TeamTime, NumInnovations,
       group = interaction(Strategy, SessionDuration, Generation),
       color = Strategy, linetype = factor(SessionDuration)) +
@@ -99,70 +99,3 @@ final_performance_100 <- ggplot(TeamPerformance100) +
              position = position_jitter(width = 0.2, height = 0.2)) +
   scale_y_num_innovations +
   theme(legend.position = "none")
-
-# ---- likelihood-of-totem
-TeamPerformance %<>%
-  mutate(GotTotem = ifelse(NumInnovations < 10, 0, 1))
-
-ggplot(TeamPerformance) +
-  aes(Strategy, GotTotem, group = SessionDuration) +
-  facet_wrap("ExpLabel") +
-  geom_bar(aes(fill = Strategy, group = SessionDuration),
-           position = position_dodge(),
-           stat = "summary", fun.y = "mean", alpha = 0.4) +
-  theme(legend.position = "none")
-
-# ---- performance-by-generation
-data("PlayerPerformance")
-
-PerformanceByGeneration <- PlayerPerformance %>%
-  filter(
-    Strategy != "Synchronic",
-    SessionDuration == 25,
-    TeamStatus == "V",
-    SessionStatus == "V"
-  ) %>%
-  recode_experiment()
-
-ggplot(PerformanceByGeneration) +
-  aes(Generation, NumInnovations) +
-  geom_bar(stat = "summary", fun.y = "mean", alpha = 0.4) +
-  geom_line(aes(group = TeamID), alpha = 0.4) +
-  geom_line(stat = "summary", fun.y = "mean", size = 2) +
-  facet_grid(ExpLabel ~ Strategy)
-
-# ---- performance-by-generation-50
-data("PlayerPerformance")
-
-PerformanceByGeneration50 <- PlayerPerformance %>%
-  filter(
-    TeamStatus == "V",
-    Exp == "50LaborMinutes",
-    Strategy != "Synchronic",
-    SessionDuration == 25
-  )
-
-ggplot(PerformanceByGeneration50) +
-  aes(Generation, NumInnovations) +
-  geom_bar(stat = "summary", fun.y = "mean", alpha = 0.4) +
-  geom_line(aes(group = TeamID), alpha = 0.4) +
-  geom_line(stat = "summary", fun.y = "mean", size = 2) +
-  facet_wrap("Strategy")
-
-# ---- performance-by-generation-100
-data("PlayerPerformance")
-
-PerformanceByGeneration100 <- PlayerPerformance %>%
-  filter(
-    TeamStatus == "V",
-    Exp == "100LaborMinutes",
-    Strategy != "Synchronic",
-    SessionDuration == 25
-  )
-
-ggplot(PerformanceByGeneration100) +
-  aes(Generation, NumInnovations) +
-  geom_bar(stat = "summary", fun.y = "mean", alpha = 0.4) +
-  geom_line(aes(group = TeamID), alpha = 0.4) +
-  geom_line(stat = "summary", fun.y = "mean", size = 2) +
-  facet_wrap("Strategy")
