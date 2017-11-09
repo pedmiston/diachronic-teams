@@ -15,10 +15,10 @@ abstract: |
   inheritance on problem solving ability. In the inheritance condition, one
   person works on a solution to a problem before passing it on to be inherited
   by another person to continue. Because the people this exchange are working
-  together, I refer to them as Diachronic teams. The problem solving abilities
+  together, I refer to them as diachronic teams. The effectiveness
   of a diachronic strategy organized around inheritance is compared to
   alternative strategies for allocating the same number of labor hours:
-  Synchronic teams comprising individuals working in parallel, and Isolated
+  synchronic teams comprising individuals working in parallel, and isolated
   individuals working for the same total number of labor hours.
 csl: "theme/apa.csl"
 bibliography: "refs/diachronic-collaboration.bib"
