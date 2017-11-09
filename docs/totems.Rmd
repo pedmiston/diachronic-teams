@@ -2,7 +2,24 @@
 title: "What is the impact of inheritance on problem solving ability?"
 author: "Pierce Edmiston"
 abstract: |
-  Does inheriting an existing solution to a problem simply give a head start on solving it or does it change the way the problem is solved? These experiments measure the impact of inheritance on problem solving ability. In the inheritance condition, one person works on a solution to a problem before passing it on to be inherited by another person to continue. Because the people in this exchange are working together, I refer to them as **Diachronic teams**. This research compares the problem solving abilities of Diachronic teams organized around inheritance to other ways of allocating the same number of labor hours: Synchronic teams comprising individuals working in parallel and Isolated individuals working for the same total amount of time. Comparing the relative efficiencies of these three strategies reveals the impact of inheritance on problem solving.
+  The cognitive abilities believed to enable the accumulation of cultural
+  products by humans and no other animal include the ability to pass on an
+  innovation, such as an improvement in some tool, from one generation to the
+  next. As a result, problem solvers rarely have to start from scratch when
+  solving even new problems, as demonstrated by the prevalence of reuse in the
+  evolution of human technology. But what is the impact of inheritance---
+  starting with a solution that was created by someone else---on problem solving
+  ability? Does inheriting an existing solution to a problem simply save time in
+  future problem solving, or does it change the way problems are solved for
+  future generations? The experiments reported here measure the impact of
+  inheritance on problem solving ability. In the inheritance condition, one
+  person works on a solution to a problem before passing it on to be inherited
+  by another person to continue. Because the people this exchange are working
+  together, I refer to them as Diachronic teams. The problem solving abilities
+  of a diachronic strategy organized around inheritance is compared to
+  alternative strategies for allocating the same number of labor hours:
+  Synchronic teams comprising individuals working in parallel, and Isolated
+  individuals working for the same total number of labor hours.
 csl: "theme/apa.csl"
 bibliography: "refs/diachronic-collaboration.bib"
 output:
@@ -13,7 +30,6 @@ output:
     toc_depth: 2
     toc_float: true
 ---
-
 ```{r config, include = FALSE}
 library(knitr)
 library(printr)
@@ -31,6 +47,8 @@ opts_chunk$set(
 )
 
 list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
+read_graphviz_chunk("team-structures", "totems")
+read_graphviz_chunk("diachronic-collaboration", "totems")
 ```
 
 ```{r setup, cache = FALSE}
@@ -38,52 +56,130 @@ list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
 
 # Introduction
 
-What is the impact of inheritance on problem solving ability? Does inheriting an existing or partial solution to a problem simply give a head start on solving it, or does it actually make for more effective problem solving? To answer this question I consider a simple form of inheritance where one person works on a solution to a problem and then passes it on to another person to continue. Does the person who inherits someone else's solution approach the problem differently as a result of what was inherited as compared to alternative ways of allotting the same number of labor hours (Fig. 1A)? By controlling the number of labor hours (rather than calendar hours, Fig. 1B), the effect of inheritance on problem solving is taken in proportion to the cost of generating the inheritance, and the cost in terms of individual learning (Fig. 1C).
+On November 1, 2015, the English Wikipedia published its 5 millionth article.
+The article, on a shrub native to eastern Australia, was only 9 words long.
+Since then, the article has been edited 419 times by 86 different authors, and
+now includes 8 different sections on the taxonomy, habitat, and ecology of this
+Australian plant. The collaborative effort of writing a Wikipedia article
+exhibits a type of teamwork that is foundational to cumulative cultural
+evolution, and may be unique to our species. Humans are particularly adept at
+using, changing, and in some cases improving cultural products that were first
+created by other people. The ability to inherit and improve a tool or some other
+solution to a problem created by a previous generation of problem solvers is
+necessary in order to observe the ratcheting of technological complexity in a
+culture [@Tomasello:1993vh]. I refer to the type of collaboration that enables
+ratcheting as **diachronic collaboration** (Fig. 1). In diachronic
+collaboration, the products of labor, such as a tool to solve some
+problem, are shared with or inherited by future generations of problem solvers.
+The purpose of this research is to understand why diachronic collaboration may
+be crucial for cumulative cultural evolution by assessing its effectiveness as a
+problem solving strategy.
 
-```{r types-of-time, fig.width=8, fig.height=3, fig.cap="**Left panel.** Three strategies for allocating the same number of labor hours. The experimental condition is the **diachronic strategy** where members of a team work one at a time and pass the results on to the next generation. The other strategies are control conditions, comprising isolated individuals working alone and synchronic teams working in parallel. The other panels show the differences between these strategies along continuous dimensions of time. **Middle.** Relationship between labor hours and calendar hours. Labor hours are being controlled across the strategies, which forces diachronic and synchronic teams to differ in calendar hours. The rate at which labor hours are spent (per calendar hour) is the same for diachronic teams and isolated individuals. **Right.** Differences between teams in terms of time for individual learning. Isolated individuals have the most time for individual learning."}
+```{r diachronic-collaboration, engine="dot", fig.width=6, fig.pos="h", out.extra="", fig.cap="In diachronic collaboration, the products of one generation of labor are inherited to be used and improved by the next generation. An example of diachronic collaboration is Wikipedia article writing, where articles are effectively passed from editor to editor in a chain of edits. The ability to engage in diachronic collaboration---to improve something that was created by someone else---is required in order to observe the ratcheting of technological complexity in a culture."}
 ```
 
-The reason it's important to understand the impact of inheritance on problem solving is because inheritance is hypothesized to be one of the most important mechanisms of human cultural evolution, and yet we don't know it's impact on problem solving. The ability to propagate innovations across generations is foundational to the evolution of technology. Indeed, human cultures exhibit a ratcheting effect such that innovations are rarely lost, allowing improvements to accumulate even gradually and even without prior direction. By calling this process evolutionary, it is intended to imply that ordered i.e. non-random change may accumulate even through a random generation process. Human cultures are more equipped to capitalize on a lucky mutation than any form of biological evolution through sexual reproduction. However, this raises the question of whether human cultures succeed because they are able to retain even rare innovations or because they have the cognitive capacity to generate the innovations in the first place.
+Humans are effective problem solvers. Part of this effectiveness comes from the
+ability to reuse and otherwise adapt solutions to problems that were first
+created by other people. Inventors rarely create inventions with no precursors,
+and commonly use and adapt inventions that were first created by others
+[@Basalla:1989wq]. Part of this reuse is the result of inventions breeding
+further inventions [@Valverde:2007fs; @Borner:2004dm]. But what do innovators
+and other problem solvers gain from inheriting solutions created by previous
+generations? Do diachronic problem solvers simply get a head start on future
+problem solving, or does inheriting an existing solution to a problem actually
+change the way future problems are solved?
 
-Many researchers in cultural evolution prioritize the role of cultural inheritance in explaining the survivability of individuals over individual intelligences. The basic idea is that cultures can retain generations of discovery such that without the influence of culture, many individuals simply wouldn't be able to survive, regardless of how intelligent they might be by today's standards. This perspective puts individual intelligence on a historical timescale: even if an individual was smart enough to rediscover on their own many of the things that might have been passed on from an ancestor, there simply wouldn't be enough time to do everything in a single lifetime. On this view the benefit to cumulative culture is that it gives people a head start on solving a problem without necessarily affecting underlying problem solving ability.
+The purpose of this research is to identify the conditions under which
+inheritance can be predicted to improve one's problem solving effectiveness
+relative to alternative strategies for solving the same set of problems. I
+compare the effectiveness of a diachronic strategy to two alternative strategies
+for allocating the same number of labor hours: synchronic collaboration, where
+team members begin with nothing and collaborate in parallel, and isolated
+individuals, given the most time for individual learning (Fig. 2). The purpose
+of this comparison is to understand the impact of inheritance on problem solving
+by comparing problem solving ability when starting with an inherited
+solution---defined as diachronic problem solvers after the first generation---to
+alternative strategies for solving the same problems without diachronic
+inheritance. Discovering whether and under what conditions diachronic
+collaboration is more effective than alternative strategies will provide for the
+first time empirical evidence of the ratcheting of human problem solving ability
+via inheritance.
 
-But there is also a sense in which new perspectives on a problem might be necessary in order to generate novel innovations. Eventually an individual working alone might get stuck and be unable to generate the necessary solution to a problem. In many cases, problem solvers can get fixated on particular ways of (incorrectly) solving a problem, and have difficulty seeing the problem with fresh eyes. In these cases, a new generation of problem solvers, might actually solve the problem more efficiency. This research is designed to elicit different trajectories through the same problem space, some achieved individually and some inherited from others. The critical test is whether inheritance can be a more efficient method for discovering problem solutions than alternative ways of allocating the same number of labor hours.
+```{r team-structures, engine="dot", fig.width=2, fig.pos="h", fig.cap="Problem solving strategies. Each node is a person. Edge lengths represent labor hours spent solving a problem. In diachronic collaboration, first generation problem solvers work on solutions to a problem before passing them on to be inherited by the next generation. The impact of inheritance on problem solving is measured as the problem solving ability of diachronic problem solvers after the first generation. Isolated individuals do not inherit solutions from other players, but are given the most time for individual learning. In synchronic collaboration, a team of problem solvers work in parallel, sharing their progress, but synchronic teams do not benefit from direct diachronic inheritance because all problem solvers start at the same point."}
+```
 
-## Proposed mechanism
+In the experiments below I test two main hypotheses regarding the conditions
+under which inheritance might be found to improve problem solving ability
+relative to the alternative strategies. The first hypothesis relates to the
+kind of problem being solved. Diachronic inheritance is predicted to be
+effective in overcoming problems in which fixation effects are common, causing
+individuals to return to, or otherwise be mislead by previous and incorrect
+solutions to problems. The plausibility of this hypothesis is demonstrated
+via artificial simulations of problem solvers, described in detail below.
 
-Inheritance is hypothesized to impact problem solving ability by starting the problem solver in a part of the problem space they otherwise might not have been likely to reach on their own. Whether or not this is helpful depends on the type of problem being solved. The type of problem that is hypothesized to benefit most from inheritance is a problem where progress is incrementally achieved. For problems that can't be solved incrementally, such as problems with binary or stochastic solutions, it's more difficult to measure the impact of inheritance because it's harder to know what can be gained from inheriting an incorrect solution that may not be any closer to the correct solution. For problems that allow for solutions to differ in degree of success, the impact of inheritance can be more precisely measured. Problems that can be solved incrementally are often open-ended, allowing many possible solutions, all varying in degree of success. Solutions to open-ended problems can be inherited and modified, but they can also be created by individuals working alone.
+The second hypothesis is that diachronic inheritance will prove effective
+as a function of the skills of problem solvers in subsequent generations. Specifically, the benefits of diachronic inheritance are predicted to be
+amplified as the relative skills of the generations of problems solvers
+diverge. Inheriting a solution that was created by someone with very different skills effectively starts problem solving off in a unique part of the solution
+landscape that would be unlikely to be reached as an isolated individual
+or a synchronic team.
 
-## Problem solving efficiency
+The effectiveness of diachronic collaboration likely depends on the shape of the
+solution landscape. A solution landscape is a visualization of the relationship
+between variation in possible solutions and solution success, analogous to
+fitness landscapes in an evolutionary sense. As the abilities of diachronic
+problem solvers diverge, subsequent generations effectively start off in parts
+of the solution landscape that would have been unreachable as an isolated
+individual. For at least some solution landscapes, diachronic teams with
+divergent skills are predicted to outperform isolated individuals, as
+is demonstrated via artificial simulations below.
 
-I measure problem solving ability as efficiency in completing a problem in a specific amount of time. Problem solving research is often described as the set of cognitive abilities that enable the generation of problem solutions. Here I'm interested less in whether solutions can be generated and more in how efficiently progress is achieved. The goal of this research is to understand the impact of inheritance on problem solving efficiency.
+## Measuring problem solving ability
+
+I measure problem solving ability as efficiency in completing a set of problems
+in a specific amount of time. Other research on problem solving aims to determine
+the cognitive abilities that enable the generation of problem solutions. Here
+I focus less on whether solutions can be generated and more on how
+efficiently progress is achieved. The goal of this research is to measure the
+impact of inheritance on problem solving efficiency. Assuming a constant
+problem landscape and diachronic problem solvers of equalivant abilities, the impact of inheritance on problem solving is expected to be better fit
+by an interactive model than an additive model.
+
 \begin{equation}
 problem\ solution = ability \times time = inheritance\\
 problem\ solution_{additive} = inheritance + ability \times time\\
 problem\ solution_{interactive} = inheritance \times ability \times time\\
 \end{equation}
 
+```{r types-of-time, fig.width=6, fig.height=3, fig.cap="**Left.** Relationship between labor hours and calendar hours. Labor hours are being controlled across the strategies, which forces diachronic and synchronic teams to differ in calendar hours. The rate at which labor hours are spent (per calendar hour) is the same for diachronic teams and isolated individuals. **Right.** Differences between teams in terms of time for individual learning. Isolated individuals have the most time for individual learning. The benefits of individual learning are balanced against the potential costs of fatigue and fixation."}
+```
+
 # Methods
 
-<!-- Describe the problem space. -->
+## Materials and Procedure
 
-Participants play a computer game where they are given initial resources and tasked with combining the resources to generate new items (inventions). These inventions can then be combined to yield further inventions in pursuit of building a "sacred totem to appease the gods". More advanced inventions produce more intricate totems, and higher performance scores. For example, to build a totem, participants first needed to construct an axe out of three independently invented items: a refined stick used as a handle, a sharpened rock, and string wound from bark fibers (Fig. 2).
+Participants solved a set of problems where solutions accumulate and must be
+recombined to solve new problems. To solve the problems, participants played a
+computer game, first reported in @Derex:2015cbb, that involves building
+incrementally more complex tools in pursuit of building "a sacred totem to
+appease the gods." To build a totem, participants first needed to construct an
+axe out of three independently invented items: a refined stick used as a handle,
+a sharpened rock for the blade, and string wound from bark fibers for binding
+(Fig. 3). In the game, more advanced tools produce larger and more intricate
+totems, resulting in higher performance scores.
 
-```{r sample-landscape, fig.width=8, fig.height=6, eval=FALSE}
+```{r gameplay, fig.width=6, fig.height=4, fig.cap="The Totems game. **Left.** A sample of the problem landscape. The top row of 6 items are the resources available to problem solvers at the start of the experiment. Resources are combined to build the first generation of innovations, including a refined rock, a club derived from an antler, and a small branch of a tree. The first 6 generations of innovations are shown. The axe is required to construct the first totem pole. Although the full solution landscape contains more generations of innovations, many participants do not proceed past these 10 innovations in a single 25 minute session. **Right.** Gameplay interface. "}
+grid.arrange(
+  read_graphviz_with_images("landscape-sample", "totems"),
+  read_image("gameplay", "totems"),
+  nrow = 1,
+  widths = c(0.35, 0.65)
+)
 ```
 
 ## Participants
 
 Participants are recruited until the final sample comprises 40 teams in each of the three strategy conditions for a total of 200 participants.
-
-## Materials
-
-Participants are tasked with a tool-building competition presented in a digital environment [@Derex:2015cbb]. Individuals combine resources and build ever more complicated tools in order to build "sacred totems to appease the gods". Individuals achieve high scores by traversing the innovation landscape and developing more and more elaborate ways of cutting, carving, and decorating their totems. A sample of the problem space is presented in Fig. 2.
-
-## Procedure
-
-```{r gameplay, fig.width=8, fig.height=6}
-draw_image("gameplay", "totems")
-```
 
 # 50 Labor Minutes
 
@@ -91,22 +187,33 @@ draw_image("gameplay", "totems")
 draw_graphviz("team-structures-exp1", "totems")
 ```
 
-## Performance
+## Number of innovations
 
-### Number of innovations
-
-```{r performance-50}
+```{r num-innovations-50}
 ```
 
-```{r performance-50-fig, fig.height=4, fig.width=8, fig.cap="**Number of innovations by strategy**. Left: The accumulation of innovations by labor time. Right: Final number of innovations discovered by each team or individual."}
+```{r num-innovations-50-fig, fig.height=4, fig.width=8, fig.cap="**Number of innovations by strategy**. Left: The accumulation of innovations by labor time. Right: Final number of innovations discovered by each team or individual."}
 grid.arrange(
-  performance_over_time_50 + theme(legend.position = c(0.2, 0.8)),
-  final_performance_50,
+  num_innovations_over_time_50 + theme(legend.position = c(0.2, 0.8)),
+  final_num_innovations_50,
   widths = c(0.6, 0.4)
 )
 ```
 
-### Likelihood of creating a totem
+```{r num-innovations-by-generation-50-fig}
+num_innovations_by_generation_50_plot
+```
+
+```{r performance-by-generation-50-mod, echo = 1, results = "asis"}
+num_innovations_by_generation_50_mod <- lmer(
+  NumInnovations ~ Diachronic_v_Isolated * Generation + (1|TeamID),
+  data = NumInnovationsByGeneration50
+)
+tidy(num_innovations_by_generation_50_mod, effects = "fixed") %>%
+  kable()
+```
+
+## Likelihood of creating a totem
 
 ```{r likelihood-50}
 ```
@@ -115,39 +222,54 @@ grid.arrange(
 likelihood50_plot
 ```
 
-### Impact of session duration
+## Total guesses
 
-```{r session-duration-50}
+```{r total-guesses-50}
 ```
 
-```{r session-duration-50-fig}
-session_duration_50_plot
+```{r total-guesses-50-fig}
+total_guesses_50_plot
 ```
 
-### Number of innovations by generation
-
-```{r performance-by-generation-50}
+```{r total-guesses-per-generation-50-fig}
+total_guesses_per_generation_50_plot
 ```
 
-```{r performance-by-generation-50-fig}
-performance_by_generation_50_plot
+```{r performance-by-total-guesses-50-fig}
+performance_by_total_guesses_50_plot
+```
+
+```{r performance-by-total-guesses-50-mod, echo = 1, results = "asis"}
+performance_by_total_guesses_50_mod <- lm(
+  NumInnovations ~ NumGuesses * (DvS + DSvI),
+  data = TeamPerformance50
+)
+tidy(performance_by_total_guesses_50_mod) %>%
+  kable()
+```
+
+## Unique guesses
+
+```{r unique-guesses-50}
+```
+
+```{r unique-guesses-50-fig}
+unique_guesses_50_plot
+```
+
+```{r unique-guesses-by-total-guesses-50-fig}
+unique_guesses_by_total_guesses_50_plot
+```
+
+```{r unique-guesses-per-generation-50-fig}
+unique_guesses_per_generation_50_plot
+```
+
+```{r num-innovations-by-unique-guesses-50-fig}
+num_innovations_by_unique_guesses_50_plot
 ```
 
 ## Redundant guesses
-
-To compare problem solving efficiency between the three strategies, I first calculated guessing redundancy. An optimal strategy in this game is to never guess the same thing more than once, and yet participants routinely try the same (incorrect) guess over and over. This redundancy is a source of inefficiency; given the same number of guesses, a strategy that allows for less redundancy among its guessers will provide the greatest advantage in uncovering novel combinations of items.
-
-I calculated two measures of redundancy: individual redundancy, which corresponds to the percentage of guesses that were duplicates of previous guesses, and team redundancy, which corresponds to the percentage of duplicate guesses in each team.
-
-## Guessing efficiency
-
-A more direct measure of guessing efficiency is the number of guesses it took each individual and each team to obtain a novel item. Given a particular set of items, guessing efficiency is the number of guesses it takes to obtain a new item. Strategies that are more efficient obtain more novel items for fewer guesses.
-
-My hypothesis was that inheritance would improve problem solving efficiency of the second generation of Diachronic players relative to the first.
-
-## Attempts
-
-## Guessing rate
 
 # 100 Labor Minutes
 
