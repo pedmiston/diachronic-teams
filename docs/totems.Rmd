@@ -222,7 +222,9 @@ tidy(num_innovations_by_generation_50_mod, effects = "fixed") %>%
 likelihood50_plot
 ```
 
-## Total guesses
+## Guesses
+
+### Total guesses
 
 ```{r total-guesses-50}
 ```
@@ -248,7 +250,7 @@ tidy(performance_by_total_guesses_50_mod) %>%
   kable()
 ```
 
-## Unique guesses
+### Unique guesses
 
 ```{r unique-guesses-50}
 ```
@@ -269,7 +271,53 @@ unique_guesses_per_generation_50_plot
 num_innovations_by_unique_guesses_50_plot
 ```
 
-## Redundant guesses
+### Guess types
+
+```{r types-of-guesses, results = "asis"}
+recode_guess_type() %>%
+  select(GuessTypeLabel, UniqueGuess, CreatedItem, UniqueResult) %>%
+  kable()
+```
+
+```{r guess-type-50}
+```
+
+```{r prop-redundant-guesses-50-fig}
+prop_redundant_guesses_50_plot
+```
+
+```{r prop-repeat-items-50-fig}
+prop_repeat_items_50_plot
+```
+
+```{r prop-unique-guesses-50-fig}
+prop_unique_guesses_50_plot
+```
+
+```{r prop-guess-types-50-fig}
+prop_guess_types_plot
+```
+
+```{r prop-guess-types-by-generation-50-fig}
+prop_guess_types_by_generation_50_plot
+```
+
+## Performance per inventory
+
+```{r performance-per-inventory-50}
+```
+
+```{r total-guesses-per-problem-50-fig}
+total_guesses_per_problem_50_plot
+```
+
+```{r total-guesses-per-problem-50-mod-fig}
+total_guesses_per_problem_50_mod_plot
+```
+
+```{r total-labor-time-per-problem-50-fig}
+total_labor_time_per_problem_50_plot
+```
 
 # 100 Labor Minutes
 

@@ -9,7 +9,8 @@ TeamPerformance50 <- TeamPerformance %>%
   recode_strategy() %>%
   filter(
     TeamStatus == "V",
-    Exp == "50LaborMinutes"
+    Exp == "50LaborMinutes",
+    NumGuesses < 800
   )
 
 total_guesses_50_mod <- lm(
@@ -50,7 +51,8 @@ PlayerPerformance50 <- PlayerPerformance %>%
     TeamStatus == "V",
     Strategy != "Synchronic",
     SessionDuration == 25,
-    Exp == "50LaborMinutes"
+    Exp == "50LaborMinutes",
+    NumGuesses < 400
   )
 
 guesses_per_generation_50_mod <- lmer(
@@ -83,7 +85,8 @@ data("TeamPerformance")
 TeamPerformance50 <- TeamPerformance %>%
   filter(
     Exp == "50LaborMinutes",
-    TeamStatus == "V"
+    TeamStatus == "V",
+    NumGuesses < 800
   ) %>%
   recode_strategy()
 
