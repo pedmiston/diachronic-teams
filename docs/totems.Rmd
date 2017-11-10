@@ -2,24 +2,32 @@
 title: "What is the impact of inheritance on problem solving ability?"
 author: "Pierce Edmiston"
 abstract: |
-  The cognitive abilities believed to enable the accumulation of cultural
-  products by humans and no other animal include the ability to pass on an
-  innovation, such as an improvement in some tool, from one generation to the
-  next. As a result, problem solvers rarely have to start from scratch when
-  solving even new problems, as demonstrated by the prevalence of reuse in the
-  evolution of human technology. But what is the impact of inheritance---
-  starting with a solution that was created by someone else---on problem solving
-  ability? Does inheriting an existing solution to a problem simply save time in
-  future problem solving, or does it change the way problems are solved for
-  future generations? The experiments reported here measure the impact of
-  inheritance on problem solving ability. In the inheritance condition, one
-  person works on a solution to a problem before passing it on to be inherited
-  by another person to continue. Because the people this exchange are working
-  together, I refer to them as diachronic teams. The effectiveness
-  of a diachronic strategy organized around inheritance is compared to
-  alternative strategies for allocating the same number of labor hours:
-  synchronic teams comprising individuals working in parallel, and isolated
-  individuals working for the same total number of labor hours.
+  Human cultures are able to accumulate cultural products like no other animal.
+  One of the cognitive abilities that enables this accumulation is the ability
+  to inherit innovations, such as an improvement in some tool, from previous
+  generations. The result of accumulated inheritance is that problem solvers
+  rarely have to start from scratch when solving even new problems, as
+  demonstrated by the widepsread prevalence of reuse in the evolution of human
+  technology. But what is the impact of inheritance---starting with a solution
+  that was created by someone else---on problem solving ability? Does
+  inheriting an existing solution to a problem simply save time in future
+  problem solving, or does it actually change the way problems are solved?
+  The experiments reported here measure the impact of inheritance
+  on problem solving ability. In the inheritance condition, one person works on
+  a solution to a problem before passing it on to be inherited by another
+  person to continue. Because the people this exchange are working together, I
+  refer to them as diachronic teams. The effectiveness of a diachronic strategy
+  organized around inheritance is compared to alternative strategies for
+  allocating the same number of labor hours: synchronic teams comprising
+  individuals working in parallel, and isolated individuals working for the
+  same total number of labor hours. The purpose of this comparison is to
+  understand the conditions under which inheritance is most helpful for
+  problem solving. Two hypothesis are tested: first, that inheritance
+  will free future generations of problem solvers from being fixated on
+  previous and incorrect learning experiences; and second, that inheriting
+  solutions from problem solvers with diverse skill sets will impact
+  future problem solving more than inheriting solutions from homogenous
+  problem solvers. 
 csl: "theme/apa.csl"
 bibliography: "refs/diachronic-collaboration.bib"
 output:
@@ -60,79 +68,102 @@ On November 1, 2015, the English Wikipedia published its 5 millionth article.
 The article, on a shrub native to eastern Australia, was only 9 words long.
 Since then, the article has been edited 419 times by 86 different authors, and
 now includes 8 different sections on the taxonomy, habitat, and ecology of this
-Australian plant. The collaborative effort of writing a Wikipedia article
-exhibits a type of teamwork that is foundational to cumulative cultural
-evolution, and may be unique to our species. Humans are particularly adept at
-using, changing, and in some cases improving cultural products that were first
-created by other people. The ability to inherit and improve a tool or some other
-solution to a problem created by a previous generation of problem solvers is
-necessary in order to observe the ratcheting of technological complexity in a
-culture [@Tomasello:1993vh]. I refer to the type of collaboration that enables
-ratcheting as **diachronic collaboration** (Fig. 1). In diachronic
-collaboration, the products of labor, such as a tool to solve some
-problem, are shared with or inherited by future generations of problem solvers.
-The purpose of this research is to understand why diachronic collaboration may
-be crucial for cumulative cultural evolution by assessing its effectiveness as a
-problem solving strategy.
+Australian plant.
+
+The collaborative effort of writing a Wikipedia article exhibits a type of
+teamwork that is foundational to cumulative cultural evolution, and may be
+unique to our species. Humans are particularly adept at using, changing, and,
+in some cases, improving cultural products that were first created by other
+people. The ability to inherit and improve a tool or some other solution to a
+problem is necessary in order to observe the ratcheting of technological
+complexity in a culture [@Tomasello:1993vh]. I refer to the type of
+collaboration that enables ratcheting as **diachronic collaboration** (Fig. 1).
+In diachronic collaboration, the products of labor, such as a tool to solve
+some problem, are shared with or inherited by future generations of problem
+solvers. The purpose of this research is to understand why diachronic
+collaboration may be crucial for cumulative cultural evolution by assessing its
+effectiveness as a problem solving strategy.
 
 ```{r diachronic-collaboration, engine="dot", fig.width=6, fig.pos="h", out.extra="", fig.cap="In diachronic collaboration, the products of one generation of labor are inherited to be used and improved by the next generation. An example of diachronic collaboration is Wikipedia article writing, where articles are effectively passed from editor to editor in a chain of edits. The ability to engage in diachronic collaboration---to improve something that was created by someone else---is required in order to observe the ratcheting of technological complexity in a culture."}
 ```
 
 Humans are effective problem solvers. Part of this effectiveness comes from the
-ability to reuse and otherwise adapt solutions to problems that were first
-created by other people. Inventors rarely create inventions with no precursors,
-and commonly use and adapt inventions that were first created by others
-[@Basalla:1989wq]. Part of this reuse is the result of inventions breeding
-further inventions [@Valverde:2007fs; @Borner:2004dm]. But what do innovators
-and other problem solvers gain from inheriting solutions created by previous
-generations? Do diachronic problem solvers simply get a head start on future
-problem solving, or does inheriting an existing solution to a problem actually
-change the way future problems are solved?
+ability to reuse and adapt solutions to problems that were first created by
+other people. Reuse is common in human history. Inventors rarely create
+inventions with no precursors, and commonly use and adapt inventions that were
+first created by others [@Basalla:1989wq]. Part of this reuse is the result of
+innovation breeding further innovation [@Valverde:2007fs]. But
+what do innovators and other problem solvers gain from inheriting solutions
+created by previous generations of problem solvers? Does diachronic collaboration simply save time on future problem solving, or does inheriting an existing solution to a problem actually change the way future problems are solved?
 
 The purpose of this research is to identify the conditions under which
-inheritance can be predicted to improve one's problem solving effectiveness
-relative to alternative strategies for solving the same set of problems. I
-compare the effectiveness of a diachronic strategy to two alternative strategies
-for allocating the same number of labor hours: synchronic collaboration, where
-team members begin with nothing and collaborate in parallel, and isolated
-individuals, given the most time for individual learning (Fig. 2). The purpose
-of this comparison is to understand the impact of inheritance on problem solving
-by comparing problem solving ability when starting with an inherited
-solution---defined as diachronic problem solvers after the first generation---to
-alternative strategies for solving the same problems without diachronic
-inheritance. Discovering whether and under what conditions diachronic
-collaboration is more effective than alternative strategies will provide for the
-first time empirical evidence of the ratcheting of human problem solving ability
-via inheritance.
+inheritance might actually improve one's problem solving ability relative to
+the same amount of time spent solving the problem in other ways, without
+diachronic inheritance. Specifically, I compare the effectiveness of a
+diachronic strategy to two alternative strategies for allocating the same
+number of labor hours: synchronic collaboration, where team members begin with
+no prior solutions and collaborate in parallel, and isolated individuals, given
+the most time for individual learning (Fig. 2). The purpose of this comparison
+is to measure the impact of inheritance on problem solving by comparing
+problem solving ability when starting with an inherited solution---defined as
+diachronic problem solvers after the first generation---to alternative
+strategies for solving the same problems without diachronic inheritance.
+Discovering whether and under what conditions diachronic collaboration is more
+effective than alternative strategies will provide empirical evidence of the
+benefits to diachronic collaboration, including the ability to ratchet human
+problem solving ability via inheritance.
 
-```{r team-structures, engine="dot", fig.width=2, fig.pos="h", fig.cap="Problem solving strategies. Each node is a person. Edge lengths represent labor hours spent solving a problem. In diachronic collaboration, first generation problem solvers work on solutions to a problem before passing them on to be inherited by the next generation. The impact of inheritance on problem solving is measured as the problem solving ability of diachronic problem solvers after the first generation. Isolated individuals do not inherit solutions from other players, but are given the most time for individual learning. In synchronic collaboration, a team of problem solvers work in parallel, sharing their progress, but synchronic teams do not benefit from direct diachronic inheritance because all problem solvers start at the same point."}
+```{r team-structures, engine="dot", fig.width=2, fig.pos="h", fig.cap="Problem solving strategies. Each node is a person. Edge lengths represent labor hours spent solving a problem. In diachronic collaboration, first generation problem solvers work on a solution to a problem before passing it on to be inherited by the next generation. The impact of inheritance on problem solving is measured as the problem solving ability of diachronic problem solvers after the first generation. Isolated individuals do not inherit solutions from other players, but are given the most time for individual learning. In synchronic collaboration, teams of problem solvers work in parallel, sharing their progress as they go, but synchronic teams do not benefit from direct diachronic inheritance because all problem solvers start without any prior solutions."}
 ```
 
 In the experiments below I test two main hypotheses regarding the conditions
 under which inheritance might be found to improve problem solving ability
-relative to the alternative strategies. The first hypothesis relates to the
-kind of problem being solved. Diachronic inheritance is predicted to be
-effective in overcoming problems in which fixation effects are common, causing
-individuals to return to, or otherwise be mislead by previous and incorrect
-solutions to problems. The plausibility of this hypothesis is demonstrated
-via artificial simulations of problem solvers, described in detail below.
+relative to the alternative strategies depicted in Fig. 2. The first hypothesis
+relates to the kind of problem being solved. Diachronic inheritance is
+predicted to be effective in solving problems in which fixation effects are
+common. Fixation in problem solving is demonstrated by individuals returning
+to, or otherwise being mislead by, previous and incorrect solutions to
+problems. **Inheritance is hypothesized to improve future problem solving by
+making it unlikely that future generations return to the same incorrect
+solutions that may have slowed down previous generations.**
 
-The second hypothesis is that diachronic inheritance will prove effective
-as a function of the skills of problem solvers in subsequent generations. Specifically, the benefits of diachronic inheritance are predicted to be
-amplified as the relative skills of the generations of problems solvers
-diverge. Inheriting a solution that was created by someone with very different skills effectively starts problem solving off in a unique part of the solution
-landscape that would be unlikely to be reached as an isolated individual
-or a synchronic team.
+There are two possible mechanisms by which inheritance may overcome the cost of
+fixation. The first and most basic is that inheriting a solution that was
+difficult for the previous generation to achieve may save future generations
+the time already spent in coming up with the difficult solution. However, in
+this case, inheritance may not actually impact problem solving ability, and
+thus may be indistinguishable from simply having the first generation continue
+problem solving. The second and more interesting mechanism is that inheritance
+may change the learning experiences for future generations, which may help
+overcome the costs of fixation by beginning problem solving in a unique 
+environment.
 
-The effectiveness of diachronic collaboration likely depends on the shape of the
-solution landscape. A solution landscape is a visualization of the relationship
-between variation in possible solutions and solution success, analogous to
-fitness landscapes in an evolutionary sense. As the abilities of diachronic
-problem solvers diverge, subsequent generations effectively start off in parts
-of the solution landscape that would have been unreachable as an isolated
-individual. For at least some solution landscapes, diachronic teams with
-divergent skills are predicted to outperform isolated individuals, as
-is demonstrated via artificial simulations below.
+The uniqueness of the learning environment inherited from previous generations
+is the product of the diversity of skills among diachronic problem solvers.
+Inheriting a solution created by someone with very similar problem solving
+ability (homogenous problem solvers) is unlikely to impact problem solving
+beyond what could be achieved by an isolated individual working for the same
+total amount of time. In contrast, inheriting a solution created by someone
+with very different problem solving ability can introduce a learning environment
+that would be impossible to reach by either individual working alone.
+**Inheritance is hypothesized to have the largest effect on problem solving
+ability when solutions are inherited from heterogenous problem solvers.**
+
+The plausibility of both hypothesis can be demonstrated via artificial
+simulations of problem solvers. In these simulations, problem solving is akin
+to traversing a solution landscape. A solution landscape is a visualization of
+the relationship between variation in possible solutions and resulting solution
+success, analogous to fitness landscapes in an evolutionary sense. Problem
+solvers traversing a solution landscape seek the highest point in the
+landscape. A key intuition generated by these landscapes is that movement
+across the landscape is costly, and constrained by current location.
+
+As
+the abilities of diachronic problem solvers diverge, subsequent generations
+effectively start off in parts of the solution landscape that would have been
+unreachable as an isolated individual. For at least some solution landscapes,
+diachronic teams with divergent skills are predicted to outperform isolated
+individuals, as is demonstrated via artificial simulations below.
 
 ## Measuring problem solving ability
 
