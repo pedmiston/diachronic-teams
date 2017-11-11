@@ -182,7 +182,11 @@ problem\ solution_{additive} = inheritance + ability \times time\\
 problem\ solution_{interactive} = inheritance \times ability \times time\\
 \end{equation}
 
-```{r types-of-time, fig.width=6, fig.height=3, fig.cap="**Left.** Relationship between labor hours and calendar hours. Labor hours are being controlled across the strategies, which forces diachronic and synchronic teams to differ in calendar hours. The rate at which labor hours are spent (per calendar hour) is the same for diachronic teams and isolated individuals. **Right.** Differences between teams in terms of time for individual learning. Isolated individuals have the most time for individual learning. The benefits of individual learning are balanced against the potential costs of fatigue and fixation."}
+```{r types-of-time}
+```
+
+```{r types-of-time-fig, fig.width=6, fig.height=3, fig.cap="**Left.** Relationship between labor hours and calendar hours. Labor hours are being controlled across the strategies, which forces diachronic and synchronic teams to differ in calendar hours. The rate at which labor hours are spent (per calendar hour) is the same for diachronic teams and isolated individuals. **Right.** Differences between teams in terms of time for individual learning. Isolated individuals have the most time for individual learning. The benefits of individual learning are balanced against the potential costs of fatigue and fixation."}
+types_of_time_plot
 ```
 
 # Methods
@@ -234,11 +238,30 @@ grid.arrange(
 
 ```{r final-num-innovations-50-mod, echo = 1, results = "asis"}
 final_num_innovations_50_mod <- lm(
-  NumInnovations ~ DG2_v_DG1 + DG2_v_S2 + DG2_v_I50 + DG2_v_IS1 + DG2_v_IS2,
+  NumInnovations ~ DG2_v_DG1 + DG2_v_I50 + DG2_v_IS1 + DG2_v_IS2 + DG2_v_S2,
   data = PlayerPerformance50
 )
 tidy(final_num_innovations_50_mod) %>%
   kable()
+```
+
+```{r num-innovations-over-time-50-fig, fig.width = 6, fig.height = 10}
+grid.arrange(
+  types_of_time_plot,
+  num_innovations_over_time_50 +
+    aes(CalendarTime) +
+    scale_x_calendar_time_50 +
+    theme(legend.position = c(0.12, 0.75)),
+  num_innovations_over_time_50 +
+    aes(PlayerTime) +
+    scale_x_player_time_50 +
+    theme(legend.position = "none"),
+  num_innovations_over_time_50 +
+    aes(TeamTime) +
+    scale_x_team_time_50 +
+    theme(legend.position = "none"),
+  ncol = 1
+)
 ```
 
 ```{r num-innovations-by-generation-50-fig}

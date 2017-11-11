@@ -41,8 +41,8 @@ axis_labels <- c(0, expression(1/2), 1)
 
 gg_time <- ggplot(time, aes(CalendarHours, LaborHours)) +
   geom_line(aes(color = StrategyLabel), size = 1.2) +
-  scale_x_continuous("Calendar hours", breaks = axis_breaks, labels = axis_labels) +
-  scale_y_continuous("Labor hours", breaks = axis_breaks, labels = axis_labels) +
+  scale_x_continuous("Calendar time", breaks = axis_breaks, labels = axis_labels) +
+  scale_y_continuous("Labor time", breaks = axis_breaks, labels = axis_labels) +
   totems_theme["scale_color_strategy"] +
   scale_linetype_manual(values = c(1, 1, 2)) +
   guides(color = guide_legend("", reverse = TRUE), linetype = "none") +
@@ -57,13 +57,13 @@ gg_person <- ggplot(time) +
   geom_bar(aes(fill = StrategyLabel), stat = "summary", fun.y = "max",
            alpha = 0.8) +
   scale_x_discrete("") +
-  scale_y_continuous("Learning hours", breaks = axis_breaks, labels = axis_labels) +
+  scale_y_continuous("Learning time", breaks = axis_breaks, labels = axis_labels) +
   totems_theme["scale_fill_strategy"] +
   totems_theme["base_theme"] +
   theme(legend.position = "none",
         panel.grid.major.x = element_blank())
 
-gridExtra::grid.arrange(
+types_of_time_plot <- gridExtra::grid.arrange(
   gg_time,
   gg_person,
   nrow = 1
