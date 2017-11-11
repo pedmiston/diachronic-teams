@@ -1,32 +1,32 @@
 ---
-title: "What is the impact of inheritance on problem solving ability?"
+title: "The impact of inheritance on problem solving ability"
 author: "Pierce Edmiston"
 abstract: |
-  Human cultures are able to accumulate cultural products like no other animal.
-  One of the cognitive abilities that enables this accumulation is the ability
-  to inherit innovations, such as an improvement in some tool, from previous
-  generations. The result of accumulated inheritance is that problem solvers
-  rarely have to start from scratch when solving even new problems, as
-  demonstrated by the widepsread prevalence of reuse in the evolution of human
-  technology. But what is the impact of inheritance---starting with a solution
-  that was created by someone else---on problem solving ability? Does
-  inheriting an existing solution to a problem simply save time in future
-  problem solving, or does it actually change the way problems are solved?
-  The experiments reported here measure the impact of inheritance
-  on problem solving ability. In the inheritance condition, one person works on
-  a solution to a problem before passing it on to be inherited by another
-  person to continue. Because the people this exchange are working together, I
-  refer to them as diachronic teams. The effectiveness of a diachronic strategy
-  organized around inheritance is compared to alternative strategies for
-  allocating the same number of labor hours: synchronic teams comprising
-  individuals working in parallel, and isolated individuals working for the
-  same total number of labor hours. The purpose of this comparison is to
-  understand the conditions under which inheritance is most helpful for
-  problem solving. Two hypothesis are tested: first, that inheritance
-  will free future generations of problem solvers from being fixated on
-  previous and incorrect learning experiences; and second, that inheriting
-  solutions from problem solvers with diverse skill sets will impact
-  future problem solving more than inheriting solutions from homogenous
+  Human cultures are able to accumulate products of culture including tools and
+  other technology like no other animal. The cognitive ability that enables
+  cultural accumulation is the ability to inherit innovations, such as an
+  improvement in some tool, from previous generations. A result of
+  accumulated inheritance is that problem solvers rarely have to start from
+  scratch when solving even new problems, as demonstrated by the widepsread
+  prevalence of reuse in the evolution of human technology. But what is the
+  impact of inheritance---starting with a solution that was created by someone
+  else---on problem solving ability? Does inheriting an existing solution to a
+  problem only save time in future problem solving, or does it actually
+  change the way problems are solved?  The experiments reported here measure
+  the impact of inheritance on problem solving ability. In the inheritance
+  condition, one person works on a solution to a problem before passing it on
+  to be inherited by another person to continue. Because the people this
+  exchange are working together, I refer to them as diachronic teams. The
+  effectiveness of a diachronic strategy organized around inheritance is
+  compared to alternative strategies for allocating the same number of labor
+  hours: synchronic teams comprising individuals working in parallel, and
+  isolated individuals working for the same total number of labor hours. The
+  purpose of this comparison is to understand the conditions under which
+  inheritance is most helpful for problem solving. Two hypothesis are tested:
+  first, that inheritance will free future generations of problem solvers from
+  being fixated on previous and incorrect learning experiences; and second,
+  that inheriting solutions from problem solvers with diverse skill sets will
+  impact future problem solving more than inheriting solutions from homogenous
   problem solvers. 
 csl: "theme/apa.csl"
 bibliography: "refs/diachronic-collaboration.bib"
@@ -223,12 +223,22 @@ draw_graphviz("team-structures-exp1", "totems")
 ```{r num-innovations-50}
 ```
 
-```{r num-innovations-50-fig, fig.height=4, fig.width=8, fig.cap="**Number of innovations by strategy**. Left: The accumulation of innovations by labor time. Right: Final number of innovations discovered by each team or individual."}
+```{r final-num-innovations-50-fig, fig.height=4, fig.width=8, fig.cap="Total number of innovations discovered by strategy."}
 grid.arrange(
-  num_innovations_over_time_50 + theme(legend.position = c(0.2, 0.8)),
-  final_num_innovations_50,
-  widths = c(0.6, 0.4)
+  read_graphviz("team-structures-exp1", "totems"),
+  final_num_innovations_50_plot,
+  nrow = 1,
+  widths = c(0.3, 0.7)
 )
+```
+
+```{r final-num-innovations-50-mod, echo = 1, results = "asis"}
+final_num_innovations_50_mod <- lm(
+  NumInnovations ~ DG2_v_DG1 + DG2_v_S2 + DG2_v_I50 + DG2_v_IS1 + DG2_v_IS2,
+  data = PlayerPerformance50
+)
+tidy(final_num_innovations_50_mod) %>%
+  kable()
 ```
 
 ```{r num-innovations-by-generation-50-fig}

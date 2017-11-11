@@ -66,28 +66,92 @@ num_innovations_over_time_50 <- num_innovations_over_time_50 +
             hjust = 0)
 
 # Final performance
-data("TeamPerformance")
+data("PlayerPerformance")
 
-TeamPerformance50 <- TeamPerformance %>%
+recode_session_type_50 <- function(frame) {
+  session_type_levels <- c(
+    "DG1", "DG2",
+    "I50", "IS1", "IS2",
+    "S2"
+  )
+  
+  session_type_labels <- c(
+    "Diachronic G1",
+    "Diachronic G2",
+    "Isolated 50min",
+    "Isolated S1",
+    "Isolated S2",
+    "Synchronic"
+  )
+
+  session_type_map <- data_frame(
+    Strategy = c(rep("Diachronic", 2), rep("Isolated", 3), "Synchronic"),
+    Generation = c(1:2, 1, 1:2, 1),
+    SessionDuration = c(rep(25, 2), 50, rep(25, 3)),
+    NumPlayers = c(rep(2, 2), rep(1, 3), 2),
+    SessionType = session_type_levels,
+    SessionTypeOrdered = factor(session_type_levels, levels = session_type_levels, labels = session_type_labels),
+    SessionTypeTreat = factor(session_type_levels, levels = session_type_levels)
+  )
+  
+  # Set treatment contrasts for SessionType with D-G2 as base comparison group.
+  session_type_treat_contrasts <- contr.treatment(factor(session_type_levels, levels = session_type_levels),
+                                                  base = 2)
+  contrasts(session_type_map$SessionTypeTreat) <- session_type_treat_contrasts
+  
+  session_type_treat_contrasts <- as.data.frame(session_type_treat_contrasts)
+  contrast_names <- colnames(session_type_treat_contrasts) %>%
+    purrr::map(function(x) paste0("DG2_v_", x)) %>%
+    unlist()
+  colnames(session_type_treat_contrasts) <- contrast_names
+  session_type_treat_contrasts <- session_type_treat_contrasts %>%
+    rownames_to_column("SessionType")
+  session_type_map <- left_join(session_type_map, session_type_treat_contrasts)
+
+  if(missing(frame)) return(session_type_map)
+  left_join(frame, session_type_map)
+}
+
+PlayerPerformance50 <- PlayerPerformance %>%
+  recode_strategy() %>%
+  recode_session_type_50() %>%
+  highlight_inheritance() %>%
   filter(
     TeamStatus == "V",
     Exp == "50LaborMinutes"
-  ) %>%
-  recode_strategy()
+  )
+
+final_num_innovations_50_mod <- lm(
+  NumInnovations ~ DG2_v_DG1 + DG2_v_S2 + DG2_v_I50 + DG2_v_IS1 + DG2_v_IS2,
+  data = PlayerPerformance50)
+
+final_num_innovations_50_preds <- recode_session_type_50() %>%
+  cbind(., predict(final_num_innovations_50_mod, newdata = ., se = TRUE)) %>%
+  rename(NumInnovations = fit, SE = se.fit) %>%
+  recode_strategy() %>%
+  highlight_inheritance()
 
 set.seed(432)
-final_num_innovations_50 <- ggplot(TeamPerformance50) +
-  aes(Strategy, NumInnovations, group = SessionDuration) +
-  geom_bar(aes(fill = Strategy, group = SessionDuration),
-           position = position_dodge(),
-           stat = "summary", fun.y = "mean", alpha = 0.4) +
-  geom_point(aes(color = Strategy, shape = factor(SessionDuration)),
-             position = position_jitterdodge(jitter.height = 0.2,
-                                             jitter.width = 0.4,
-                                             dodge.width = 1.01)) +
+final_num_innovations_50_plot <- ggplot(PlayerPerformance50) +
+  aes(SessionTypeOrdered, NumInnovations) +
+  geom_bar(aes(fill = StrategyLabel, alpha = Inheritance),
+           stat = "identity", data = final_num_innovations_50_preds) +
+  geom_point(aes(color = StrategyLabel),
+             position = position_jitter(width = 0.3)) +
+  geom_linerange(aes(ymin = NumInnovations-SE, ymax = NumInnovations+SE),
+                 data = final_num_innovations_50_preds) +
+  totems_theme$scale_color_strategy +
+  totems_theme$scale_fill_strategy +
+  scale_alpha_manual(values = c(0.7, 0.4)) +
+  xlab("") +
   scale_y_num_innovations +
   scale_shape_manual(values = c(16, 1)) +
-  theme(legend.position = "none")
+  totems_theme$base_theme +
+  theme(
+    legend.position = "none",
+    panel.grid.major.x = element_blank()
+  ) +
+  ggtitle("Final number of innovations discovered by each strategy")
 
 
 data("PlayerPerformance")

@@ -4,6 +4,8 @@ from glob import glob
 from invoke import task
 from unipath import Path
 
+import graphdb
+
 
 PROJ = Path(__file__).absolute().parent
 R_PKG = Path(PROJ, 'data')
@@ -12,6 +14,10 @@ TOTEMS = Path(PROJ, 'experiment')
 ITEM_IMAGES = Path(R_PKG, 'inst/extdata/items')
 TOTEMS_RAW_DATA = Path(R_PKG, 'data-raw/totems')
 
+
+@task
+def load(ctx):
+    graphdb.load(delete_first=True)
 
 @task
 def install(ctx):
