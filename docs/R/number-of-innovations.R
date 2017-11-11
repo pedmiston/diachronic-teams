@@ -5,8 +5,23 @@ source("docs/R/setup.R")
 # Performance over time
 data("Sampled")
 
+highlight_inheritance <- function(frame) {
+  highlight_inheritance_map <- expand.grid(
+      Strategy = c("Diachronic", "Isolated", "Synchronic"),
+      Generation = 1:4,
+      stringsAsFactors = FALSE
+    ) %>%
+    dplyr::filter(!(Strategy == "Synchronic" & Generation > 1)) %>%
+    dplyr::mutate(Inheritance = ifelse(Strategy == "Diachronic" & Generation > 1,
+                  "diachronic_inheritance", "no_inheritance")) %>%
+    dplyr::arrange(Strategy, Generation)
+  if(missing(frame)) return(highlight_inheritance_map)
+  left_join(frame, highlight_inheritance_map)
+}
+
 Sampled50 <- Sampled %>%
   recode_strategy() %>%
+  highlight_inheritance() %>%
   mutate(NumInnovations = InventorySize - 6) %>%
   filter(
     TeamStatus == "V",
@@ -23,13 +38,32 @@ scale_y_num_innovations <- scale_y_continuous(
   breaks = seq(0, 30, by = 2))
 
 num_innovations_over_time_50 <- ggplot(Sampled50) +
-  aes(TeamTime, NumInnovations,
-      group = interaction(Strategy, SessionDuration, Generation),
-      color = Strategy, linetype = factor(SessionDuration)) +
-  geom_line(stat = "summary", fun.y = "mean") +
+  aes(TeamTime, NumInnovations) +
+  geom_line(aes(color = StrategyLabel,
+                group = interaction(StrategyLabel, SessionDuration, Generation),
+                linetype = factor(SessionDuration),
+                size = Inheritance),
+            stat = "summary", fun.y = "mean") +
+  totems_theme$scale_color_strategy +
+  scale_size_manual(values = c(1.8, 1.0)) +
   scale_x_labor_time_50 +
   scale_y_num_innovations +
+  guides(linetype = "none", size = "none") +
+  totems_theme$base_theme +
   theme(legend.position = c(0.15, 0.8))
+
+label <- data_frame(
+  Text = "Diachronic inheritance",
+  Strategy = "Diachronic",
+  TeamTime = 32 * 60,
+  NumInnovations = 5
+)
+
+num_innovations_over_time_50 <- num_innovations_over_time_50 +
+  geom_text(aes(label = Text), data = label,
+            color = totems_theme$diachronic_color,
+            fontface = "bold",
+            hjust = 0)
 
 # Final performance
 data("TeamPerformance")
