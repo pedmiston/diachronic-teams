@@ -245,6 +245,8 @@ tidy(final_num_innovations_50_mod) %>%
   kable()
 ```
 
+## Rate of innovation
+
 ```{r num-innovations-over-time-50-fig, fig.width = 6, fig.height = 10}
 grid.arrange(
   types_of_time_plot,
@@ -264,6 +266,8 @@ grid.arrange(
 )
 ```
 
+## Comparing generations to repeat sessions
+
 ```{r num-innovations-by-generation-50-fig}
 num_innovations_by_generation_50_plot
 ```
@@ -275,6 +279,24 @@ num_innovations_by_generation_50_mod <- lmer(
 )
 tidy(num_innovations_by_generation_50_mod, effects = "fixed") %>%
   kable()
+```
+
+```{r num-additional-innovations-50-fig}
+num_additional_innovations_50_plot
+```
+
+```{r num-additional-innovations-50-mod, echo = 1, results = "asis"}
+additional_innovations_50_mod <- lmer(
+  AdditionalInnovations ~ Diachronic_v_Isolated * Generation + (1|TeamID),
+  data = AdditionalInnovations50
+)
+tidy(additional_innovations_50_mod, effects = "fixed") %>%
+  kable()
+```
+
+## Are some inheritances more helpful than others?
+
+```{r inheritance-50}
 ```
 
 ## Likelihood of creating a totem
