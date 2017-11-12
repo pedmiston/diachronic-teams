@@ -8,10 +8,9 @@ TeamSizes <- Teams %>%
 condition_counts <- Teams %>%
   filter(TeamStatus == "V") %>%
   count(Exp, Strategy, SessionDuration) %>%
-  arrange(desc(Exp), Strategy) %>%
+  arrange(desc(Exp), Strategy, desc(SessionDuration)) %>%
   rename(NumTeams = n) %>%
   left_join(TeamSizes) %>%
+  recode_experiment() %>%
   mutate(NumPlayers = PlayersPerTeam * NumTeams) %>%
   select(Exp, Strategy, PlayersPerTeam, SessionDuration, SessionsPerPlayer, NumTeams, NumPlayers)
-
-condition_counts

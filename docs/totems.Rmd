@@ -193,17 +193,16 @@ types_of_time_plot
 
 ## Materials and Procedure
 
-Participants solved a set of problems where solutions accumulate and must be
-recombined to solve new problems. To solve the problems, participants played a
-computer game, first reported in @Derex:2015cbb, that involves building
-incrementally more complex tools in pursuit of building "a sacred totem to
-appease the gods." To build a totem, participants first needed to construct an
-axe out of three independently invented items: a refined stick used as a handle,
-a sharpened rock for the blade, and string wound from bark fibers for binding
-(Fig. 3). In the game, more advanced tools produce larger and more intricate
-totems, resulting in higher performance scores.
+Participants played a computer game requiring them to combine items to create
+new items (tools), and use those tools to build further tools, all for the sake of
+building "a sacred totem to appease the gods." To build a totem, participants
+first needed to construct an axe out of three independently discovered items: a
+refined stick used as a handle, a sharpened rock for the blade, and string
+wound from bark fibers for binding. In the game, more advanced tools
+produce larger and more intricate totems, resulting in higher performance
+scores.
 
-```{r gameplay, fig.width=6, fig.height=4, fig.cap="The Totems game. **Left.** A sample of the problem landscape. The top row of 6 items are the resources available to problem solvers at the start of the experiment. Resources are combined to build the first generation of innovations, including a refined rock, a club derived from an antler, and a small branch of a tree. The first 6 generations of innovations are shown. The axe is required to construct the first totem pole. Although the full solution landscape contains more generations of innovations, many participants do not proceed past these 10 innovations in a single 25 minute session. **Right.** Gameplay interface. "}
+```{r gameplay, fig.width=6, fig.height=4, fig.cap="The Totems game. **Left.** A sample of the solution landscape. The top row of 6 items are the initial resources available to problem solvers at the start of the experiment. Resources are combined to build the first generation of innovations, including a refined rock, a club derived from an antler, and a small branch of a tree. The first 6 generations of possible innovations are shown. The axe is required to construct the first totem pole. Although the full solution landscape contains more generations of innovations, many participants do not proceed past these 10 innovations in a single 25 minute session. **Right.** Gameplay interface. Participants generated guesses by dragging items into the Workshop and selecting the Try button. If the guess created an item, it could be stored in the Stock panel. Totem segments could be dragged into the Totem panel for scoring."}
 grid.arrange(
   read_graphviz_with_images("landscape-sample", "totems"),
   read_image("gameplay", "totems"),
@@ -214,7 +213,14 @@ grid.arrange(
 
 ## Participants
 
-Participants are recruited until the final sample comprises 40 teams in each of the three strategy conditions for a total of 200 participants.
+Participants were recruited until there were at least 40 teams in each strategy.
+
+```{r counts}
+```
+
+```{r counts-table, results = "asis"}
+kable(condition_counts)
+```
 
 # 50 Labor Minutes
 
@@ -227,7 +233,7 @@ draw_graphviz("team-structures-exp1", "totems")
 ```{r num-innovations-50}
 ```
 
-```{r final-num-innovations-50-fig, fig.height=4, fig.width=8, fig.cap="Total number of innovations discovered by strategy."}
+```{r final-num-innovations-50-fig, fig.height=4, fig.width=8, fig.cap="Total number of innovations discovered by strategy. Each point represents the number of innovations created by a single player in a single session."}
 grid.arrange(
   read_graphviz("team-structures-exp1", "totems"),
   final_num_innovations_50_plot,
@@ -236,7 +242,7 @@ grid.arrange(
 )
 ```
 
-```{r final-num-innovations-50-mod, echo = 1, results = "asis"}
+```{r final-num-innovations-50-mod, echo=1, results="asis"}
 final_num_innovations_50_mod <- lm(
   NumInnovations ~ DG2_v_DG1 + DG2_v_I50 + DG2_v_IS1 + DG2_v_IS2 + DG2_v_S2,
   data = PlayerPerformance50
@@ -247,7 +253,7 @@ tidy(final_num_innovations_50_mod) %>%
 
 ## Rate of innovation
 
-```{r num-innovations-over-time-50-fig, fig.width = 6, fig.height = 10}
+```{r num-innovations-over-time-50-fig, fig.width=6, fig.height=10}
 grid.arrange(
   types_of_time_plot,
   num_innovations_over_time_50 +
@@ -268,29 +274,29 @@ grid.arrange(
 
 ## Comparing generations to repeat sessions
 
-```{r num-innovations-by-generation-50-fig}
-num_innovations_by_generation_50_plot
+```{r num-innovations-by-generation-50-fig, fig.width=8}
+grid.arrange(
+  num_innovations_by_generation_50_plot,
+  num_unique_innovations_50_plot,
+  nrow = 1
+)
 ```
 
 ```{r performance-by-generation-50-mod, echo = 1, results = "asis"}
-num_innovations_by_generation_50_mod <- lmer(
+final_num_innovations_by_generation_50_mod <- lmer(
   NumInnovations ~ Diachronic_v_Isolated * Generation + (1|TeamID),
   data = NumInnovationsByGeneration50
 )
-tidy(num_innovations_by_generation_50_mod, effects = "fixed") %>%
+tidy(final_num_innovations_by_generation_50_mod, effects = "fixed") %>%
   kable()
 ```
 
-```{r num-additional-innovations-50-fig}
-num_additional_innovations_50_plot
-```
-
 ```{r num-additional-innovations-50-mod, echo = 1, results = "asis"}
-additional_innovations_50_mod <- lmer(
+num_additional_innovations_50_mod <- lmer(
   AdditionalInnovations ~ Diachronic_v_Isolated * Generation + (1|TeamID),
   data = AdditionalInnovations50
 )
-tidy(additional_innovations_50_mod, effects = "fixed") %>%
+tidy(num_additional_innovations_50_mod, effects = "fixed") %>%
   kable()
 ```
 
