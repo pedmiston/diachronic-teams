@@ -17,17 +17,13 @@ scale_x_team_time_50 <- scale_x_continuous(
   breaks = seq(0, 3000, by = 60 * 5),
   labels = seq(0, 50, by = 5))
 
-scale_y_num_innovations <- scale_y_continuous(
-  "Number of innovations",
-  breaks = seq(0, 30, by = 2))
-
 # Final num innovations ----
 data("PlayerPerformance")
 
 PlayerPerformance50 <- PlayerPerformance %>%
   recode_strategy() %>%
   recode_session_type_50() %>%
-  highlight_inheritance() %>%
+  highlight_inheritance_50() %>%
   filter(
     TeamStatus == "V",
     Exp == "50LaborMinutes"
@@ -41,7 +37,7 @@ final_num_innovations_50_preds <- recode_session_type_50() %>%
   cbind(., predict(final_num_innovations_50_mod, newdata = ., se = TRUE)) %>%
   rename(NumInnovations = fit, SE = se.fit) %>%
   recode_strategy() %>%
-  highlight_inheritance()
+  highlight_inheritance_50()
 
 set.seed(432)
 final_num_innovations_50_plot <- ggplot(PlayerPerformance50) +
@@ -56,7 +52,7 @@ final_num_innovations_50_plot <- ggplot(PlayerPerformance50) +
   totems_theme$scale_fill_strategy +
   scale_alpha_manual(values = c(0.7, 0.4)) +
   xlab("") +
-  scale_y_num_innovations +
+  totems_theme$scale_y_num_innovations +
   scale_shape_manual(values = c(16, 1)) +
   totems_theme$base_theme +
   theme(
@@ -69,13 +65,13 @@ final_num_innovations_50_plot <- ggplot(PlayerPerformance50) +
 data("Sampled")
 
 Sampled50 <- Sampled %>%
-  recode_strategy() %>%
-  highlight_inheritance() %>%
-  mutate(NumInnovations = InventorySize - 6) %>%
   filter(
     TeamStatus == "V",
     Exp == "50LaborMinutes"
-  )
+  ) %>%
+  recode_strategy() %>%
+  highlight_inheritance_50() %>%
+  mutate(NumInnovations = InventorySize - 6)
 
 num_innovations_over_time_50 <- ggplot(Sampled50) +
   aes(y = NumInnovations) +
@@ -86,7 +82,7 @@ num_innovations_over_time_50 <- ggplot(Sampled50) +
             stat = "summary", fun.y = "mean") +
   totems_theme$scale_color_strategy +
   scale_size_manual(values = c(1.8, 1.0)) +
-  scale_y_num_innovations +
+  totems_theme$scale_y_num_innovations +
   guides(linetype = "none", size = "none") +
   totems_theme$base_theme
 
@@ -127,7 +123,7 @@ num_innovations_by_generation_50_plot <- ggplot(NumInnovationsByGeneration50) +
                 data = num_innovations_by_generation_50_preds,
                 width = 0.1, size = 1.5) +
   scale_x_discrete("") +
-  scale_y_num_innovations +
+  totems_theme$scale_y_num_innovations +
   scale_color_manual(values = totems_theme$color_picker(c("orange", "blue"))) +
   facet_wrap("Strategy", scales = "free_x") +
   totems_theme$base_theme +

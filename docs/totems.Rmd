@@ -291,12 +291,12 @@ tidy(final_num_innovations_by_generation_50_mod, effects = "fixed") %>%
   kable()
 ```
 
-```{r num-additional-innovations-50-mod, echo = 1, results = "asis"}
-num_additional_innovations_50_mod <- lmer(
-  AdditionalInnovations ~ Diachronic_v_Isolated * Generation + (1|TeamID),
-  data = AdditionalInnovations50
+```{r num-additional-innovations-50-mod, echo=1, results="asis"}
+num_unique_innovations_50_mod <- lmer(
+  UniqueInnovations ~ Diachronic_v_Isolated * Generation + (1|TeamID),
+  data = UniqueInnovations50
 )
-tidy(num_additional_innovations_50_mod, effects = "fixed") %>%
+tidy(num_unique_innovations_50_mod, effects = "fixed") %>%
   kable()
 ```
 
@@ -417,16 +417,47 @@ total_labor_time_per_problem_50_plot
 draw_graphviz("team-structures-exp2", "totems")
 ```
 
-## Performance
+## Number of innovations
 
-```{r performance-100}
+```{r num-innovations-100}
 ```
 
-```{r performance-100-fig, fig.height=4, fig.width=8, fig.cap="**Problem solving performance by strategy**. Left: The accumulation of inventions over labor time. Right: Final team performance."}
+```{r final-num-innovations-100-fig, fig.height=4, fig.width=8, fig.cap="Total number of innovations discovered by strategy. Each point represents the number of innovations created by a single player in a single session."}
 grid.arrange(
-  performance_over_time_100 + theme(legend.position = c(0.2, 0.8)),
-  final_performance_100,
-  widths = c(0.6, 0.4)
+  read_graphviz("team-structures-exp2", "totems"),
+  final_num_innovations_100_plot,
+  nrow = 1,
+  widths = c(0.35, 0.65)
+)
+```
+
+## Innovation rate
+
+```{r num-innovations-over-time-100-fig, fig.width=6, fig.height=8}
+grid.arrange(
+  num_innovations_over_time_100 +
+    aes(CalendarTime) +
+    scale_x_calendar_time_100 +
+    theme(legend.position = c(0.12, 0.75)),
+  num_innovations_over_time_100 +
+    aes(PlayerTime) +
+    scale_x_player_time_100 +
+    theme(legend.position = "none"),
+  num_innovations_over_time_100 +
+    aes(TeamTime) +
+    scale_x_team_time_100 +
+    theme(legend.position = "none"),
+  ncol = 1
+)
+```
+
+## Comparing generations and sessions
+
+```{r num-innovations-by-generation-100-fig, fig.width=8}
+grid.arrange(
+  num_innovations_by_generation_100_plot,
+  num_unique_innovations_100_plot,
+  nrow = 1
 )
 ```
 
