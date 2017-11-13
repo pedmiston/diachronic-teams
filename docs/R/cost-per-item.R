@@ -1,3 +1,5 @@
+source("docs/R/setup.R")
+
 # ---- cost-per-item
 data("Guesses")
 data("AdjacentItems")
@@ -19,11 +21,15 @@ recode_discovered <- function(frame) {
 }
 
 CostPerItem <- Guesses %>%
+  group_by(SessionID) %>%
+  mutate(GuessTime = SessionTime - lag(SessionTime, default = 0)) %>%
+  ungroup() %>%
   # Copy guesses for each adjacent item
   left_join(AdjacentItems, by = c("PrevSessionInventoryID" = "ID")) %>%
   group_by(Exp, TeamID, Adjacent) %>%
   summarize(
     TotalGuesses = n(),
+    TotalTime = sum(GuessTime, na.rm = TRUE),
     Discovered = any(Result == Adjacent)
   ) %>%
   ungroup() %>%
@@ -96,6 +102,63 @@ guesses_per_item_50_by_discovered_preds <- bind_rows(
   recode_discovered()
 
 guesses_per_item_50_by_discovered_mod_plot <- (guesses_per_item_50_mod_plot %+% guesses_per_item_50_by_discovered_preds) +
+  facet_wrap("DiscoveredLabel", ncol = 1, scales = "free_y")
+
+# 50: Time per item ----
+time_per_item_50_plot <- guesses_per_item_50_plot +
+  aes(y = TotalTime)
+
+time_per_item_50_mod <- lmer(
+  TotalTime ~ Diachronic_v_Isolated + Diachronic_v_Synchronic +
+    (Diachronic_v_Isolated + Diachronic_v_Synchronic|Adjacent) +
+    (1|TeamID),
+  data = TeamCostPerItem50
+)
+
+time_per_item_50_preds <- recode_strategy() %>%
+  cbind(., predictSE(time_per_item_50_mod, newdata = ., se = TRUE)) %>%
+  rename(TotalTime = fit, SE = se.fit)
+
+time_per_item_50_mod_plot <- ggplot(time_per_item_50_preds) +
+  aes(StrategyLabel, TotalTime) +
+  geom_bar(aes(fill = StrategyLabel), stat = "identity") +
+  geom_linerange(aes(ymin = TotalTime - SE, ymax = TotalTime + SE)) +
+  scale_y_continuous("Labor time per item") +
+  totems_theme$scale_x_strategy +
+  totems_theme$scale_fill_strategy +
+  totems_theme$base_theme +
+  theme(legend.position = "none")
+
+# 50: Time per item by discovery
+time_per_item_50_by_discovery_plot <- time_per_item_50_plot +
+  facet_wrap("DiscoveredLabel", nrow = 2, scales = "free_y")
+
+time_per_discovered_item_50_mod <- lmer(
+  TotalGuesses ~ Diachronic_v_Isolated + Diachronic_v_Synchronic +
+    (Diachronic_v_Isolated + Diachronic_v_Synchronic|Adjacent),
+  data = filter(TeamCostPerItem50, Discovered)
+)
+time_per_discovered_item_50_mod_preds <- recode_strategy() %>%
+  cbind(., predictSE(time_per_discovered_item_50_mod, newdata = ., se = TRUE)) %>%
+  rename(TotalTime = fit, SE = se.fit)
+
+time_per_undiscovered_item_50_mod <- lmer(
+  TotalGuesses ~ Diachronic_v_Isolated + Diachronic_v_Synchronic +
+    (Diachronic_v_Isolated + Diachronic_v_Synchronic|Adjacent),
+  data = filter(TeamCostPerItem50, !Discovered)
+)
+time_per_undiscovered_item_50_mod_preds <- recode_strategy() %>%
+  cbind(., predictSE(time_per_undiscovered_item_50_mod, newdata = ., se = TRUE)) %>%
+  rename(TotalTime = fit, SE = se.fit)
+
+time_per_item_50_by_discovered_preds <- bind_rows(
+  discovered = time_per_discovered_item_50_mod_preds,
+  undiscovered = time_per_undiscovered_item_50_mod_preds,
+  .id = 'DiscoveredType'
+) %>%
+  recode_discovered()
+
+time_per_item_50_by_discovered_mod_plot <- (time_per_item_50_mod_plot %+% time_per_item_50_by_discovered_preds) +
   facet_wrap("DiscoveredLabel", ncol = 1, scales = "free_y")
 
 # 100: Guesses per item ----

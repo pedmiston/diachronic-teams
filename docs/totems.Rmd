@@ -323,6 +323,26 @@ grid.arrange(
 )
 ```
 
+## Labor time per innovations
+
+```{r time-per-item-50-fig, fig.width=8}
+grid.arrange(
+  time_per_item_50_plot,
+  time_per_item_50_mod_plot,
+  nrow = 1,
+  widths = c(0.7, 0.3)
+)
+```
+
+```{r time-per-item-by-discovery-50-fig, fig.width=8, fig.height=6}
+grid.arrange(
+  time_per_item_50_by_discovery_plot,
+  time_per_item_50_by_discovered_mod_plot,
+  nrow = 1,
+  widths = c(0.7, 0.3)
+)
+```
+
 ## Are some inheritances more helpful than others?
 
 ```{r inheritance-50}
