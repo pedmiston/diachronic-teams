@@ -272,7 +272,7 @@ grid.arrange(
 )
 ```
 
-## Comparing generations to repeat sessions
+## Inheritance compared to repeating sessions
 
 ```{r num-innovations-by-generation-50-fig, fig.width=8}
 grid.arrange(
@@ -298,6 +298,29 @@ num_unique_innovations_50_mod <- lmer(
 )
 tidy(num_unique_innovations_50_mod, effects = "fixed") %>%
   kable()
+```
+
+## Cost per innovation
+
+```{r cost-per-item}
+```
+
+```{r guesses-per-item-50-fig, fig.width=8}
+grid.arrange(
+  guesses_per_item_50_plot,
+  guesses_per_item_50_mod_plot,
+  nrow = 1,
+  widths = c(0.7, 0.3)
+)
+```
+
+```{r guesses-per-item-by-discovery-50-fig, fig.width=8, fig.height=6}
+grid.arrange(
+  guesses_per_item_50_by_discovery_plot,
+  guesses_per_item_50_by_discovered_mod_plot,
+  nrow = 1,
+  widths = c(0.7, 0.3)
+)
 ```
 
 ## Are some inheritances more helpful than others?
@@ -458,6 +481,29 @@ grid.arrange(
   num_innovations_by_generation_100_plot,
   num_unique_innovations_100_plot,
   nrow = 1
+)
+```
+
+## Cost per innovation
+
+```{r cost-per-item}
+```
+
+```{r guesses-per-item-100-fig, fig.width=8}
+grid.arrange(
+  guesses_per_item_100_plot,
+  guesses_per_item_100_mod_plot,
+  nrow = 1,
+  widths = c(0.7, 0.3)
+)
+```
+
+```{r guesses-per-item-by-discovery-100-fig, fig.width=8, fig.height=6}
+grid.arrange(
+  guesses_per_item_100_by_discovery_plot,
+  guesses_per_item_100_by_discovered_mod_plot,
+  nrow = 1,
+  widths = c(0.7, 0.3)
 )
 ```
 
