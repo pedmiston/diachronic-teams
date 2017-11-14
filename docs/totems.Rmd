@@ -343,6 +343,19 @@ grid.arrange(
 )
 ```
 
+## Impact of inheritance on problem solving
+
+```{r diachronic-inheritance}
+```
+
+```{r diachronic-inheritance-fig, fig.width=6}
+diachronic_stages_plot
+```
+
+```{r isolated-inheritance-fig, fig.width=6}
+isolated_stages_plot
+```
+
 ## Are some inheritances more helpful than others?
 
 ```{r inheritance-50}
