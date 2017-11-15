@@ -274,7 +274,7 @@ grid.arrange(
 
 ## Inheritance compared to repeating sessions
 
-```{r num-innovations-by-generation-50-fig, fig.width=8}
+```{r num-innovations-by-generation-50-fig, fig.width=8, fig.cap=""}
 grid.arrange(
   num_innovations_by_generation_50_plot,
   num_unique_innovations_50_plot,
@@ -282,7 +282,7 @@ grid.arrange(
 )
 ```
 
-```{r performance-by-generation-50-mod, echo = 1, results = "asis"}
+```{r performance-by-generation-50-mod, echo=1, results="asis"}
 final_num_innovations_by_generation_50_mod <- lmer(
   NumInnovations ~ Diachronic_v_Isolated * Generation + (1|TeamID),
   data = NumInnovationsByGeneration50
@@ -298,6 +298,23 @@ num_unique_innovations_50_mod <- lmer(
 )
 tidy(num_unique_innovations_50_mod, effects = "fixed") %>%
   kable()
+```
+
+## Impact of inheritance on future problem solving
+
+```{r diachronic-inheritance}
+```
+
+```{r inheritance-fig, fig.width=6}
+individual_stages_plot
+```
+
+```{r inheritance-fig, fig.width=6}
+individual_stages_mod_plot
+```
+
+```{r isolated-inheritance-fig, fig.width=6}
+isolated_stages_plot
 ```
 
 ## Cost per innovation
@@ -341,19 +358,6 @@ grid.arrange(
   nrow = 1,
   widths = c(0.7, 0.3)
 )
-```
-
-## Impact of inheritance on problem solving
-
-```{r diachronic-inheritance}
-```
-
-```{r diachronic-inheritance-fig, fig.width=6}
-diachronic_stages_plot
-```
-
-```{r isolated-inheritance-fig, fig.width=6}
-isolated_stages_plot
 ```
 
 ## Are some inheritances more helpful than others?

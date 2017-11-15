@@ -1,144 +1,108 @@
 source("docs/R/setup.R")
 
-# ---- diachronic-inheritance
+# ---- inheritance
 data("Guesses")
 data("Players")
 
-# Diachronic players ----
-DiachronicPlayers <- Players %>%
-  filter(Strategy == "Diachronic", Exp == "100LaborMinutes", TeamStatus == "V")
+IndividualPlayers <- filter(Players, Strategy != "Synchronic", Exp == "100LaborMinutes", TeamStatus == "V")
 
-DiachronicGuesses <- Guesses %>%
-  filter(Strategy == "Diachronic", Exp == "100LaborMinutes", TeamStatus == "V") %>%
-  arrange(SessionTime) %>%
-  group_by(SessionID) %>%
-  mutate(
-    Stage = ifelse(nchar(PrevTeamInventoryID) > nchar(PrevSessionInventoryID),
-                   "learning", "playing")
-  ) %>%
-  group_by(SessionID, Stage) %>%
-  do({
-    stage <- .data$Stage[[1]]
-    if(stage == "learning") {
-      result <- .data %>%
-        arrange(desc(SessionTime)) %>%
-        mutate(StageIX = -cumsum(UniqueSessionResult))
-    } else if(stage == "playing") {
-      result <- .data %>%
-        arrange(SessionTime) %>%
-        mutate(StageIX = cumsum(UniqueSessionResult))
-    }
-    result
-  })
+IndividualGuesses <- Guesses %>%
+  filter(Strategy != "Synchronic", Exp == "100LaborMinutes", TeamStatus == "V") %>%
+  label_stage_ix()
 
-DiachronicStages <- DiachronicGuesses %>%
+IndividualStages <- IndividualGuesses %>%
   group_by(SessionID, StageIX) %>%
-  summarize(
-    NumGuesses = n()
-  ) %>%
-  left_join(DiachronicPlayers) %>%
+  summarize(NumGuesses = n()) %>%
+  left_join(IndividualPlayers) %>%
   highlight_inheritance_100() %>%
-  filter(!is.na(AllInheritance))
+  # Should not be necessary!
+  filter(!is.na(Inheritance))
 
-DiachronicStagesModData <- DiachronicStages %>%
-  filter(StageIX >= 1) %>%
+IndividualStagesModData <- IndividualStages %>%
+  filter(StageIX >= 0) %>%
   mutate(StageIX_2 = StageIX^2)
 
-diachronic_stages_mod <- lmer(
-  NumGuesses ~ AllInheritance * (StageIX + StageIX_2) +
+individual_stages_mod <- lmer(
+  NumGuesses ~ Diachronic_v_Individual * (StageIX + StageIX_2) +
     (StageIX + StageIX_2|PlayerID),
-  data = DiachronicStagesModData
+  data = filter(IndividualStagesModData, Inheritance != "no_inheritance")
 )
 
-diachronic_stages_preds <- expand.grid(
-  StageIX = 1:10,
-  AllInheritance = c("diachronic_inheritance", "no_inheritance"),
+inheritance_labels <- highlight_inheritance_100() %>%
+  select(-Generation) %>%
+  unique() %>%
+  filter(Strategy != "Synchronic")
+
+individual_stages_preds <- expand.grid(
+  StageIX = 0:10,
+  Inheritance = c("diachronic_inheritance", "individual_inheritance"),
   stringsAsFactors = FALSE
 ) %>%
   mutate(StageIX_2 = StageIX^2) %>%
-  cbind(., predictSE(diachronic_stages_mod, newdata = ., se = TRUE)) %>%
+  left_join(inheritance_labels) %>%
+  mutate(StageIX_2 = StageIX^2) %>%
+  cbind(., predictSE(individual_stages_mod, newdata = ., se = TRUE)) %>%
   rename(NumGuesses = fit, SE = se.fit)
 
-diachronic_stages_plot <- ggplot(DiachronicStages) +
-  aes(StageIX, NumGuesses, color = AllInheritance) +
-  geom_line(aes(group = AllInheritance), stat = "summary", fun.y = "mean") +
-  geom_smooth(aes(ymin = NumGuesses - SE, ymax = NumGuesses + SE),
-              stat = "identity", data = diachronic_stages_preds) +
+individual_stages_plot <- ggplot(IndividualStages) +
+  aes(StageIX, NumGuesses, color = InheritanceOrdered) +
+  geom_line(aes(group = InheritanceOrdered),
+            stat = "summary", fun.y = "mean") +
   scale_x_continuous("Size of inventory relative to ancestor") +
   scale_y_continuous("Number of guesses") +
-  scale_color_manual("", labels = c("Generation > 1", "Generation 1"),
-                     values = totems_theme$color_picker(c("green", "blue"))) +
-  guides(color = guide_legend(reverse = TRUE)) +
+  totems_theme$scale_color_strategy +
   totems_theme$base_theme +
   theme(legend.position = c(0.85, 0.8)) +
   ggtitle("Diachronic inheritance")
 
+individual_stages_mod_plot <- individual_stages_plot +
+  geom_smooth(aes(ymin = NumGuesses - SE, ymax = NumGuesses + SE),
+              stat = "identity", data = individual_stages_preds)
 
-# Isolated players ----
-IsolatedPlayers <- Players %>%
-  filter(Strategy == "Isolated", Exp == "100LaborMinutes", TeamStatus == "V")
+FirstDiscovery <- IndividualStages %>%
+  filter(StageIX == 0, Inheritance != "no_inheritance") %>%
+  recode_strategy()
 
-IsolatedGuesses <- Guesses %>%
-  filter(Strategy == "Isolated", Exp == "100LaborMinutes", TeamStatus == "V") %>%
-  arrange(SessionTime) %>%
-  group_by(SessionID) %>%
-  mutate(
-    Stage = ifelse(nchar(PrevTeamInventoryID) > nchar(PrevSessionInventoryID),
-                   "learning", "playing")
-  ) %>%
-  group_by(SessionID, Stage) %>%
-  do({
-    stage <- .data$Stage[[1]]
-    if(stage == "learning") {
-      result <- .data %>%
-        arrange(desc(SessionTime)) %>%
-        mutate(StageIX = -cumsum(UniqueSessionResult))
-    } else if(stage == "playing") {
-      result <- .data %>%
-        arrange(SessionTime) %>%
-        mutate(StageIX = cumsum(UniqueSessionResult))
-    }
-    result
-  })
+first_discovery_mod <- lm(NumGuesses ~ Diachronic_v_Isolated,
+                          data = FirstDiscovery)
 
-IsolatedStages <- IsolatedGuesses %>%
-  group_by(SessionID, StageIX) %>%
-  summarize(
-    NumGuesses = n()
-  ) %>%
-  left_join(IsolatedPlayers) %>%
-  mutate(Generation1 = Generation == 1) %>%
-  filter(!is.na(Generation1))
-
-IsolatedStagesModData <- IsolatedStages %>%
-  filter(StageIX >= 1) %>%
-  mutate(StageIX_2 = StageIX^2)
-
-isolated_stages_mod <- lmer(
-  NumGuesses ~ Generation1 * (StageIX + StageIX_2) +
-    (StageIX + StageIX_2|PlayerID),
-  data = IsolatedStagesModData
-)
-
-isolated_stages_preds <- expand.grid(
-  StageIX = 1:10,
-  Generation1 = c(TRUE, FALSE),
-  stringsAsFactors = FALSE
-) %>%
-  mutate(StageIX_2 = StageIX^2) %>%
-  cbind(., predictSE(isolated_stages_mod, newdata = ., se = TRUE)) %>%
+first_discovery_preds <- recode_strategy() %>%
+  filter(Strategy != "Synchronic") %>%
+  cbind(., predict(first_discovery_mod, newdata = ., se = TRUE)) %>%
   rename(NumGuesses = fit, SE = se.fit)
 
-isolated_stages_plot <- ggplot(IsolatedStages) +
-  aes(StageIX, NumGuesses, color = factor(Generation1)) +
-  geom_line(aes(group = Generation1), stat = "summary", fun.y = "mean") +
-  geom_smooth(aes(ymin = NumGuesses - SE, ymax = NumGuesses + SE),
-              stat = "identity", data = isolated_stages_preds) +
-  scale_x_continuous("Size of inventory relative to ancestor") +
+first_discovery_plot <- ggplot(FirstDiscovery) +
+  aes(StrategyLabel, NumGuesses) +
+  # geom_bar(aes(fill = StrategyLabel),
+  #          stat = "identity", data = first_discovery_preds,
+  #          alpha = 0.6) +
+  # geom_linerange(aes(ymin = NumGuesses - SE, ymax = NumGuesses + SE),
+  #                data = first_discovery_preds) +
+  geom_bar(aes(fill = StrategyLabel),
+           stat = "summary", fun.y = "mean",
+           alpha = 0.6) +
+  geom_point(aes(color = StrategyLabel),
+             position = position_jitter(width = 0.2)) +
   scale_y_continuous("Number of guesses") +
-  scale_color_manual("", labels = c("Generation > 1", "Generation 1"),
-                     values = totems_theme$color_picker(c("green", "blue"))) +
-  guides(color = guide_legend(reverse = TRUE)) +
+  totems_theme$scale_color_strategy +
+  totems_theme$scale_fill_strategy +
   totems_theme$base_theme +
-  theme(legend.position = c(0.85, 0.8)) +
-  ggtitle("Repeat sessions")
+  theme(legend.position = "none",
+        panel.grid.major.x = element_blank()) +
+  ggtitle("Cost of first innovation")
+
+first_discovery_by_generation_plot <- ggplot(FirstDiscovery) +
+  aes(Generation, NumGuesses) +
+  geom_bar(aes(fill = StrategyLabel, group = factor(Generation)),
+           stat = "summary", fun.y = "mean",
+           alpha = 0.6) +
+  geom_point(aes(color = StrategyLabel),
+             position = position_jitter(width = 0.2)) +
+  facet_wrap("StrategyLabel") +
+  totems_theme$scale_fill_strategy +
+  totems_theme$scale_color_strategy +
+  totems_theme$base_theme +
+  theme(legend.position = "none",
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  ggtitle("Cost of first innovation")
