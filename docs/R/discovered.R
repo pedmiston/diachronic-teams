@@ -1,5 +1,4 @@
 source("docs/R/setup.R")
-# source("docs/R/axis-pics.R")
 
 # ---- cost-per-item
 data("Guesses")
@@ -7,11 +6,11 @@ data("AdjacentItems")
 data("Teams")
 
 CostPerItem <- Guesses %>%
-  mutate(Stage == ifelse(Strategy == "Synchronic", "playing", Stage)) %>%
+  group_by(SessionID) %>%
+  mutate(GuessTime = SessionTime - lag(SessionTime, default = 0)) %>%
+  ungroup() %>%
   # Copy guesses for each adjacent item
   left_join(AdjacentItems, by = c("PrevSessionInventoryID" = "ID")) %>%
-  highlight_inheritance_100() %>%
-  filter(Stage == "playing") %>%
   group_by(Exp, TeamID, Adjacent) %>%
   summarize(
     TotalGuesses = n(),
@@ -19,10 +18,9 @@ CostPerItem <- Guesses %>%
     Discovered = any(Result == Adjacent)
   ) %>%
   ungroup() %>%
-  recode_discovered() %>%
   left_join(Teams) %>%
-  recode_strategy() %>%
-  highlight_inheritance_50()
+  recode_discovered() %>%
+  recode_strategy()
 
 scale_x_adjacent <- scale_x_discrete("Innovation ID")
 
@@ -32,26 +30,29 @@ TeamCostPerItem50 <- CostPerItem %>%
   mutate(AdjacentFactor = factor(Adjacent))
 
 guesses_per_item_50_plot <- ggplot(TeamCostPerItem50) +
-  aes(AdjacentFactor, TotalGuesses, group = InheritanceOrdered) +
-  geom_bar(aes(fill = InheritanceOrdered),
-           stat = "summary", fun.y = "mean", position = "dodge")
+  aes(AdjacentFactor, TotalGuesses, group = Strategy) +
+  geom_bar(aes(fill = StrategyLabel),
+           stat = "summary", fun.y = "mean", position = "dodge") +
+  scale_x_adjacent +
+  totems_theme$scale_fill_strategy +
+  totems_theme$base_theme +
+  guides(fill = guide_legend(reverse = TRUE)) +
+  theme(legend.position = "top")
 
-guesses_per_item_50_mod <- lmer(
-  TotalGuesses ~ Diachronic_v_Individual + Diachronic_v_NoInheritance +
-    (Diachronic_v_Individual + Diachronic_v_NoInheritance|Adjacent),
-  data = TeamCostPerItem50)
+guesses_per_item_50_mod <- lmer(TotalGuesses ~ Diachronic_v_Isolated + Diachronic_v_Synchronic +
+                                  (Diachronic_v_Isolated + Diachronic_v_Synchronic|Adjacent),
+                                data = TeamCostPerItem50)
 
-guesses_per_item_50_preds <- highlight_inheritance_50() %>%
-  select(-Generation, -SessionDuration, -Strategy) %>%
-  unique() %>%
+guesses_per_item_50_preds <- recode_strategy() %>%
   cbind(., predictSE(guesses_per_item_50_mod, newdata = ., se = TRUE)) %>%
   rename(TotalGuesses = fit, SE = se.fit)
 
 guesses_per_item_50_mod_plot <- ggplot(guesses_per_item_50_preds) +
-  aes(InheritanceOrdered, TotalGuesses) +
-  geom_bar(aes(fill = InheritanceOrdered), stat = "identity") +
+  aes(StrategyLabel, TotalGuesses) +
+  geom_bar(aes(fill = StrategyLabel), stat = "identity") +
   geom_linerange(aes(ymin = TotalGuesses - SE, ymax = TotalGuesses + SE)) +
   scale_y_continuous("Average guesses per item") +
+  totems_theme$scale_x_strategy +
   totems_theme$scale_fill_strategy +
   totems_theme$base_theme +
   theme(legend.position = "none")
@@ -61,24 +62,20 @@ guesses_per_item_50_by_discovery_plot <- guesses_per_item_50_plot +
   facet_wrap("DiscoveredLabel", nrow = 2, scales = "free_y")
 
 guesses_per_discovered_item_50_mod <- lmer(
-  TotalGuesses ~ Diachronic_v_Individual + Diachronic_v_NoInheritance +
-    (Diachronic_v_Individual + Diachronic_v_NoInheritance|Adjacent),
+  TotalGuesses ~ Diachronic_v_Isolated + Diachronic_v_Synchronic +
+    (Diachronic_v_Isolated + Diachronic_v_Synchronic|Adjacent),
   data = filter(TeamCostPerItem50, Discovered)
 )
-guesses_per_discovered_item_50_mod_preds <- highlight_inheritance_50() %>%
-  select(-Generation, -SessionDuration, -Strategy) %>%
-  unique() %>%
+guesses_per_discovered_item_50_mod_preds <- recode_strategy() %>%
   cbind(., predictSE(guesses_per_discovered_item_50_mod, newdata = ., se = TRUE)) %>%
   rename(TotalGuesses = fit, SE = se.fit)
 
 guesses_per_undiscovered_item_50_mod <- lmer(
-  TotalGuesses ~ Diachronic_v_Individual + Diachronic_v_NoInheritance +
-    (Diachronic_v_Individual + Diachronic_v_NoInheritance|Adjacent),
+  TotalGuesses ~ Diachronic_v_Isolated + Diachronic_v_Synchronic +
+    (Diachronic_v_Isolated + Diachronic_v_Synchronic|Adjacent),
   data = filter(TeamCostPerItem50, !Discovered)
 )
-guesses_per_undiscovered_item_50_mod_preds <- highlight_inheritance_50() %>%
-  select(-Generation, -SessionDuration, -Strategy) %>%
-  unique() %>%
+guesses_per_undiscovered_item_50_mod_preds <- recode_strategy() %>%
   cbind(., predictSE(guesses_per_undiscovered_item_50_mod, newdata = ., se = TRUE)) %>%
   rename(TotalGuesses = fit, SE = se.fit)
 

@@ -319,6 +319,9 @@ isolated_stages_plot
 
 ## Cost per innovation
 
+```{r load-axis-pics, include=FALSE}
+```
+
 ```{r cost-per-item}
 ```
 
