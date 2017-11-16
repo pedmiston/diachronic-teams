@@ -21,19 +21,15 @@ scale_x_team_time_50 <- scale_x_continuous(
 data("PlayerPerformance")
 
 PlayerPerformance50 <- PlayerPerformance %>%
+  filter(TeamStatus == "V", Exp == "50LaborMinutes") %>%
   recode_strategy() %>%
-  recode_session_type_50() %>%
-  highlight_inheritance_50() %>%
-  filter(
-    TeamStatus == "V",
-    Exp == "50LaborMinutes"
-  )
+  recode_session_type_50min()
 
 final_num_innovations_50_mod <- lm(
-  NumInnovations ~ DG2_v_DG1 + DG2_v_S2 + DG2_v_I50 + DG2_v_IS1 + DG2_v_IS2,
+  NumInnovations ~ DG2_v_DG1 + DG2_v_S2 + DG2_v_I50,
   data = PlayerPerformance50)
 
-final_num_innovations_50_preds <- recode_session_type_50() %>%
+final_num_innovations_50_preds <- recode_session_type_50min() %>%
   cbind(., predict(final_num_innovations_50_mod, newdata = ., se = TRUE)) %>%
   rename(NumInnovations = fit, SE = se.fit) %>%
   recode_strategy() %>%
@@ -74,12 +70,12 @@ Sampled50 <- Sampled %>%
   mutate(NumInnovations = InventorySize - 6)
 
 num_innovations_over_time_50 <- ggplot(Sampled50) +
-  aes(y = NumInnovations) +
+  aes(TeamTime, NumInnovations) +
   geom_line(aes(color = StrategyLabel,
-                group = interaction(StrategyLabel, SessionDuration, Generation),
-                linetype = factor(SessionDuration),
+                group = interaction(StrategyLabel, Generation),
                 size = Inheritance),
             stat = "summary", fun.y = "mean") +
+  scale_x_team_time_50 +
   totems_theme$scale_color_strategy +
   scale_size_manual(values = c(1.8, 1.0)) +
   totems_theme$scale_y_num_innovations +

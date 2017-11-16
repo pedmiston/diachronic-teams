@@ -224,8 +224,8 @@ kable(condition_counts)
 
 # 50 Labor Minutes
 
-```{r team-structures-exp1}
-draw_graphviz("team-structures-exp1", "totems")
+```{r team-structures-50min}
+draw_graphviz("team-structures-50min", "totems")
 ```
 
 ## Number of innovations
@@ -235,20 +235,31 @@ draw_graphviz("team-structures-exp1", "totems")
 
 ```{r final-num-innovations-50-fig, fig.height=4, fig.width=8, fig.cap="Total number of innovations discovered by strategy. Each point represents the number of innovations created by a single player in a single session."}
 grid.arrange(
-  read_graphviz("team-structures-exp1", "totems"),
+  read_graphviz("team-structures-50min", "totems"),
   final_num_innovations_50_plot,
   nrow = 1,
-  widths = c(0.3, 0.7)
+  widths = c(0.4, 0.6)
 )
 ```
 
 ```{r final-num-innovations-50-mod, echo=1, results="asis"}
-final_num_innovations_50_mod <- lm(
-  NumInnovations ~ DG2_v_DG1 + DG2_v_I50 + DG2_v_IS1 + DG2_v_IS2 + DG2_v_S2,
+final_num_innovations_50_mod <- lmer(
+  NumInnovations ~ DG2_v_DG1 + DG2_v_I50 + DG2_v_S2 + (1|TeamID),
   data = PlayerPerformance50
 )
-tidy(final_num_innovations_50_mod) %>%
-  kable()
+tidy(final_num_innovations_50_mod, effects = "fixed") %>%
+  kable(caption = "Final number of innovations model (50 min).")
+```
+
+### Teamwork versus individual labor
+
+```{r teamwork-v-individual-50-mod, echo=1, results="asis"}
+teamwork_50min_mod <- lmer(
+  NumInnovations ~ DSvI + DvS + (1|TeamID),
+  data = filter(PlayerPerformance50, !(Strategy == "Diachronic" & Generation == 1))
+)
+tidy(teamwork_50min_mod, effects = "fixed") %>%
+  kable(caption = "Teamwork model (50 min). Tests whether teams (Diachronic and Synchronic) discovered more innovations than isolated individuals in a single 50 minute session.")
 ```
 
 ## Rate of innovation
@@ -272,7 +283,16 @@ grid.arrange(
 )
 ```
 
+# Type of inheritance
+
+```{r team-structures-type-of-inheritance}
+draw_graphviz("type-of-inheritance", "totems")
+```
+
 ## Inheritance compared to repeating sessions
+
+```{r type-of-inheritance}
+```
 
 ```{r num-innovations-by-generation-50-fig, fig.width=8, fig.cap=""}
 grid.arrange(
@@ -303,18 +323,6 @@ tidy(num_unique_innovations_50_mod, effects = "fixed") %>%
 ## Impact of inheritance on future problem solving
 
 ```{r diachronic-inheritance}
-```
-
-```{r inheritance-fig, fig.width=6}
-individual_stages_plot
-```
-
-```{r inheritance-fig, fig.width=6}
-individual_stages_mod_plot
-```
-
-```{r isolated-inheritance-fig, fig.width=6}
-isolated_stages_plot
 ```
 
 ## Cost per innovation

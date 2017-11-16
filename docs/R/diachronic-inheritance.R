@@ -3,57 +3,46 @@ source("docs/R/setup.R")
 # ---- inheritance
 data("Guesses")
 data("Players")
+data("AdjacentItems")
 
 IndividualPlayers <- filter(Players, Strategy != "Synchronic", Exp == "100LaborMinutes", TeamStatus == "V")
 
 IndividualGuesses <- Guesses %>%
   filter(Strategy != "Synchronic", Exp == "100LaborMinutes", TeamStatus == "V") %>%
-  label_stage_ix()
+  left_join(AdjacentItems, by = c("PrevSessionInventoryID" = "ID"))
 
 IndividualStages <- IndividualGuesses %>%
-  group_by(SessionID, StageIX) %>%
-  summarize(NumGuesses = n()) %>%
+  group_by(SessionID, Stage, Result) %>%
+  summarize(
+    NumGuesses = n()
+  ) %>%
   left_join(IndividualPlayers) %>%
   highlight_inheritance_100() %>%
   # Should not be necessary!
   filter(!is.na(Inheritance))
 
-IndividualStagesModData <- IndividualStages %>%
-  filter(StageIX >= 0) %>%
-  mutate(StageIX_2 = StageIX^2)
-
 individual_stages_mod <- lmer(
-  NumGuesses ~ Diachronic_v_Individual * (StageIX + StageIX_2) +
-    (StageIX + StageIX_2|PlayerID),
-  data = filter(IndividualStagesModData, Inheritance != "no_inheritance")
+  NumGuesses ~ Diachronic_v_Individual * Stage +
+    (Stage|TeamID),
+  data = IndividualStages
 )
 
-inheritance_labels <- highlight_inheritance_100() %>%
-  select(-Generation) %>%
-  unique() %>%
-  filter(Strategy != "Synchronic")
-
 individual_stages_preds <- expand.grid(
-  StageIX = 0:10,
+  Stage = c("learning", "playing"),
   Inheritance = c("diachronic_inheritance", "individual_inheritance"),
   stringsAsFactors = FALSE
 ) %>%
-  mutate(StageIX_2 = StageIX^2) %>%
-  left_join(inheritance_labels) %>%
-  mutate(StageIX_2 = StageIX^2) %>%
+  recode_inheritance() %>%
   cbind(., predictSE(individual_stages_mod, newdata = ., se = TRUE)) %>%
   rename(NumGuesses = fit, SE = se.fit)
 
-individual_stages_plot <- ggplot(IndividualStages) +
-  aes(StageIX, NumGuesses, color = InheritanceOrdered) +
-  geom_line(aes(group = InheritanceOrdered),
-            stat = "summary", fun.y = "mean") +
-  scale_x_continuous("Size of inventory relative to ancestor") +
-  scale_y_continuous("Number of guesses") +
-  totems_theme$scale_color_strategy +
-  totems_theme$base_theme +
-  theme(legend.position = c(0.85, 0.8)) +
-  ggtitle("Diachronic inheritance")
+ggplot(IndividualStages) +
+  aes(Stage, NumGuesses, color = Inheritance) +
+  geom_line(aes(group = Inheritance),
+            stat = "identity", data = individual_stages_preds) +
+  geom_errorbar(aes(ymin = NumGuesses-SE, ymax = NumGuesses+SE),
+                data = individual_stages_preds,
+                width = 0.2)
 
 individual_stages_mod_plot <- individual_stages_plot +
   geom_smooth(aes(ymin = NumGuesses - SE, ymax = NumGuesses + SE),
