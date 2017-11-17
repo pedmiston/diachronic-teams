@@ -3,7 +3,7 @@ source("docs/R/setup.R")
 # ---- inheritances-50
 data("PlayerPerformance")
 
-PlayerPerformance50 <- PlayerPerformance %>%
+PlayerPerformance50min <- PlayerPerformance %>%
   dplyr::filter(
     TeamStatus == "V",
     Strategy != "Synchronic",
@@ -12,7 +12,7 @@ PlayerPerformance50 <- PlayerPerformance %>%
   ) %>%
   recode_strategy()
 
-Inheritance50 <- PlayerPerformance50 %>%
+Inheritance50 <- PlayerPerformance50min %>%
   group_by(TeamID) %>%
   summarize(
     InheritedInventoryID = FinalInventoryID[Generation == 1],

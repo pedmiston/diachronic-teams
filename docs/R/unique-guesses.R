@@ -72,7 +72,7 @@ unique_guesses_by_total_guesses_50_plot <- ggplot(TeamPerformance50) +
 # Unique guesses by generation
 data("PlayerPerformance")
 
-PlayerPerformance50 <- PlayerPerformance %>%
+PlayerPerformance50min <- PlayerPerformance %>%
   recode_strategy() %>%
   filter(
     TeamStatus == "V",
@@ -84,7 +84,7 @@ PlayerPerformance50 <- PlayerPerformance %>%
 
 unique_guesses_per_generation_50_mod <- lmer(
   NumUniqueGuesses ~ Generation * Diachronic_v_Isolated + (1|TeamID),
-  data = PlayerPerformance50)
+  data = PlayerPerformance50min)
 
 unique_guesses_per_generation_50_preds <- expand.grid(
   Generation = 1:2,
@@ -95,7 +95,7 @@ unique_guesses_per_generation_50_preds <- expand.grid(
   cbind(., predictSE(unique_guesses_per_generation_50_mod, newdata = ., se = TRUE)) %>%
   rename(NumUniqueGuesses = fit, SE = se.fit)
 
-unique_guesses_per_generation_50_plot <- ggplot(PlayerPerformance50) +
+unique_guesses_per_generation_50_plot <- ggplot(PlayerPerformance50min) +
   aes(Generation, NumUniqueGuesses) +
   geom_line(aes(group = TeamID), alpha = 0.6) +
   geom_line(stat = "identity", data = unique_guesses_per_generation_50_preds,

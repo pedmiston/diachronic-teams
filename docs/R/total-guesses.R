@@ -45,7 +45,7 @@ total_guesses_50_plot <- ggplot(TeamPerformance50) +
 # Diachronic v. Isolated
 data("PlayerPerformance")
 
-PlayerPerformance50 <- PlayerPerformance %>%
+PlayerPerformance50min <- PlayerPerformance %>%
   recode_strategy() %>%
   filter(
     TeamStatus == "V",
@@ -57,7 +57,7 @@ PlayerPerformance50 <- PlayerPerformance %>%
 
 guesses_per_generation_50_mod <- lmer(
   NumGuesses ~ Generation * Diachronic_v_Isolated + (1|TeamID),
-  data = PlayerPerformance50)
+  data = PlayerPerformance50min)
 
 guesses_per_generation_50_preds <- expand.grid(
   Generation = 1:2,
@@ -68,7 +68,7 @@ guesses_per_generation_50_preds <- expand.grid(
   cbind(., predictSE(guesses_per_generation_50_mod, newdata = ., se = TRUE)) %>%
   rename(NumGuesses = fit, SE = se.fit)
 
-total_guesses_per_generation_50_plot <- ggplot(PlayerPerformance50) +
+total_guesses_per_generation_50_plot <- ggplot(PlayerPerformance50min) +
   aes(Generation, NumGuesses) +
   geom_line(aes(group = TeamID), alpha = 0.6) +
   geom_line(stat = "identity", data = guesses_per_generation_50_preds,

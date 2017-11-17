@@ -245,7 +245,7 @@ grid.arrange(
 ```{r final-num-innovations-50-mod, echo=1, results="asis"}
 final_num_innovations_50_mod <- lmer(
   NumInnovations ~ DG2_v_DG1 + DG2_v_I50 + DG2_v_S2 + (1|TeamID),
-  data = PlayerPerformance50
+  data = PlayerPerformance50min
 )
 tidy(final_num_innovations_50_mod, effects = "fixed") %>%
   kable(caption = "Final number of innovations model (50 min).")
@@ -256,7 +256,7 @@ tidy(final_num_innovations_50_mod, effects = "fixed") %>%
 ```{r teamwork-v-individual-50-mod, echo=1, results="asis"}
 teamwork_50min_mod <- lmer(
   NumInnovations ~ DSvI + DvS + (1|TeamID),
-  data = filter(PlayerPerformance50, !(Strategy == "Diachronic" & Generation == 1))
+  data = filter(PlayerPerformance50min, !(Strategy == "Diachronic" & Generation == 1))
 )
 tidy(teamwork_50min_mod, effects = "fixed") %>%
   kable(caption = "Teamwork model (50 min). Tests whether teams (Diachronic and Synchronic) discovered more innovations than isolated individuals in a single 50 minute session.")
