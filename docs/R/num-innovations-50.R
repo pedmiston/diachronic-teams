@@ -18,7 +18,8 @@ final_num_innovations_50_preds <- recode_session_type_50min() %>%
   cbind(., predict(final_num_innovations_50_mod, newdata = ., se = TRUE)) %>%
   rename(NumInnovations = fit, SE = se.fit) %>%
   recode_strategy() %>%
-  highlight_inheritance_50()
+  label_inheritance() %>%
+  recode_inheritance()
 
 set.seed(432)
 final_num_innovations_50_plot <- ggplot(PlayerPerformance50min) +
@@ -29,13 +30,13 @@ final_num_innovations_50_plot <- ggplot(PlayerPerformance50min) +
              position = position_jitter(width = 0.3)) +
   geom_linerange(aes(ymin = NumInnovations-SE, ymax = NumInnovations+SE),
                  data = final_num_innovations_50_preds) +
-  totems_theme$scale_color_strategy +
-  totems_theme$scale_fill_strategy +
+  t_$scale_color_strategy +
+  t_$scale_fill_strategy +
   scale_alpha_manual(values = c(0.7, 0.4)) +
   xlab("") +
-  totems_theme$scale_y_num_innovations +
+  t_$scale_y_num_innovations +
   scale_shape_manual(values = c(16, 1)) +
-  totems_theme$base_theme +
+  t_$base_theme +
   theme(
     legend.position = "none",
     panel.grid.major.x = element_blank()
@@ -51,7 +52,8 @@ Sampled50 <- Sampled %>%
     Exp == "50LaborMinutes"
   ) %>%
   recode_strategy() %>%
-  highlight_inheritance_50() %>%
+  label_inheritance() %>%
+  recode_inheritance() %>%
   mutate(NumInnovations = InventorySize - 6)
 
 num_innovations_over_time_50 <- ggplot(Sampled50) +
@@ -60,9 +62,9 @@ num_innovations_over_time_50 <- ggplot(Sampled50) +
                 group = interaction(StrategyLabel, Generation),
                 size = Inheritance),
             stat = "summary", fun.y = "mean") +
-  scale_x_team_time_50 +
-  totems_theme$scale_color_strategy +
+  t_$scale_x_team_time_50 +
+  t_$scale_color_strategy +
   scale_size_manual(values = c(1.8, 1.0)) +
-  totems_theme$scale_y_num_innovations +
+  t_$scale_y_num_innovations +
   guides(linetype = "none", size = "none") +
-  totems_theme$base_theme
+  t_$base_theme

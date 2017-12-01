@@ -52,13 +52,13 @@ final_num_innovations_100_plot <- ggplot(PlayerPerformance100) +
              position = position_jitter(width = 0.3)) +
   geom_linerange(aes(ymin = NumInnovations-SE, ymax = NumInnovations+SE),
                  data = final_num_innovations_100_preds) +
-  totems_theme$scale_color_strategy +
-  totems_theme$scale_fill_strategy +
+  t_$scale_color_strategy +
+  t_$scale_fill_strategy +
   scale_alpha_manual(values = c(0.7, 0.4)) +
   xlab("") +
-  totems_theme$scale_y_num_innovations +
+  t_$scale_y_num_innovations +
   scale_shape_manual(values = c(16, 1)) +
-  totems_theme$base_theme +
+  t_$base_theme +
   theme(
     legend.position = "none",
     panel.grid.major.x = element_blank()
@@ -83,8 +83,8 @@ num_innovations_over_time_100 <- ggplot(Sampled100) +
                 group = interaction(StrategyLabel, Generation),
                 size = Inheritance),
             stat = "summary", fun.y = "mean") +
-  totems_theme$scale_color_strategy +
+  t_$scale_color_strategy +
   scale_size_manual(values = c(1.8, 1.0)) +
-  totems_theme$scale_y_num_innovations +
+  t_$scale_y_num_innovations +
   guides(size = "none") +
-  totems_theme$base_theme
+  t_$base_theme

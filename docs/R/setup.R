@@ -8,19 +8,19 @@ library(gridExtra)
 library(crotchet)
 library(totems)
 
-totems_theme <- totems::load_totems_theme()
+t_ <- totems::load_totems_theme()
 
-totems_theme$scale_x_calendar_time_50 <- scale_x_continuous(
+t_$scale_x_calendar_time_50 <- scale_x_continuous(
   "Calendar time (min)",
   breaks = seq(0, 3000, by = 60 * 5),
   labels = seq(0, 50, by = 5))
 
-totems_theme$scale_x_player_time_50 <- scale_x_continuous(
+t_$scale_x_player_time_50 <- scale_x_continuous(
   "Learning time (min)",
   breaks = seq(0, 3000, by = 60 * 5),
   labels = seq(0, 50, by = 5))
 
-totems_theme$scale_x_team_time_50 <- scale_x_continuous(
+t_$scale_x_team_time_50 <- scale_x_continuous(
   "Labor time (min)",
   breaks = seq(0, 3000, by = 60 * 5),
   labels = seq(0, 50, by = 5))

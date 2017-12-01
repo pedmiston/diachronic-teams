@@ -3,7 +3,7 @@ title: "The impact of inheritance on problem solving ability"
 author: "Pierce Edmiston"
 abstract: |
   Human cultures are able to accumulate products of culture including tools and
-  other technology like no other animal. The cognitive ability that enables
+  other technology like no other species of animal. The cognitive ability that enables
   cultural accumulation is the ability to inherit innovations, such as an
   improvement in some tool, from previous generations. A result of
   accumulated inheritance is that problem solvers rarely have to start from
@@ -12,7 +12,7 @@ abstract: |
   impact of inheritance---starting with a solution that was created by someone
   else---on problem solving ability? Does inheriting an existing solution to a
   problem only save time in future problem solving, or does it actually
-  change the way problems are solved?  The experiments reported here measure
+  change the way problems are solved? The experiments reported here measure
   the impact of inheritance on problem solving ability. In the inheritance
   condition, one person works on a solution to a problem before passing it on
   to be inherited by another person to continue. Because the people this
@@ -176,11 +176,11 @@ impact of inheritance on problem solving efficiency. Assuming a constant
 problem landscape and diachronic problem solvers of equalivant abilities, the impact of inheritance on problem solving is expected to be better fit
 by an interactive model than an additive model.
 
-\begin{equation}
-problem\ solution = ability \times time = inheritance\\
-problem\ solution_{additive} = inheritance + ability \times time\\
-problem\ solution_{interactive} = inheritance \times ability \times time\\
-\end{equation}
+\begin{align}
+problem\ solution = ability \times time &= inheritance\\
+problem\ solution_{additive} &= inheritance + ability \times time\\
+problem\ solution_{interactive} &= inheritance \times ability \times time\\
+\end{align}
 
 ```{r types-of-time}
 ```
@@ -204,7 +204,7 @@ scores.
 
 ```{r gameplay, fig.width=6, fig.height=4, fig.cap="The Totems game. **Left.** A sample of the solution landscape. The top row of 6 items are the initial resources available to problem solvers at the start of the experiment. Resources are combined to build the first generation of innovations, including a refined rock, a club derived from an antler, and a small branch of a tree. The first 6 generations of possible innovations are shown. The axe is required to construct the first totem pole. Although the full solution landscape contains more generations of innovations, many participants do not proceed past these 10 innovations in a single 25 minute session. **Right.** Gameplay interface. Participants generated guesses by dragging items into the Workshop and selecting the Try button. If the guess created an item, it could be stored in the Stock panel. Totem segments could be dragged into the Totem panel for scoring."}
 grid.arrange(
-  read_graphviz_with_images("landscape-sample", "totems"),
+  read_image("landscape-sample.gv", "totems"),
   read_image("gameplay", "totems"),
   nrow = 1,
   widths = c(0.35, 0.65)
@@ -269,15 +269,15 @@ grid.arrange(
   types_of_time_plot,
   num_innovations_over_time_50 +
     aes(CalendarTime) +
-    scale_x_calendar_time_50 +
+    t_$scale_x_calendar_time_50 +
     theme(legend.position = c(0.12, 0.75)),
   num_innovations_over_time_50 +
     aes(PlayerTime) +
-    scale_x_player_time_50 +
+    t_$scale_x_player_time_50 +
     theme(legend.position = "none"),
   num_innovations_over_time_50 +
     aes(TeamTime) +
-    scale_x_team_time_50 +
+    t_$scale_x_team_time_50 +
     theme(legend.position = "none"),
   ncol = 1
 )

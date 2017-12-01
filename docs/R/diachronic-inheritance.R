@@ -73,9 +73,9 @@ first_discovery_plot <- ggplot(FirstDiscovery) +
   geom_point(aes(color = StrategyLabel),
              position = position_jitter(width = 0.2)) +
   scale_y_continuous("Number of guesses") +
-  totems_theme$scale_color_strategy +
-  totems_theme$scale_fill_strategy +
-  totems_theme$base_theme +
+  t_$scale_color_strategy +
+  t_$scale_fill_strategy +
+  t_$base_theme +
   theme(legend.position = "none",
         panel.grid.major.x = element_blank()) +
   ggtitle("Cost of first innovation")
@@ -88,9 +88,9 @@ first_discovery_by_generation_plot <- ggplot(FirstDiscovery) +
   geom_point(aes(color = StrategyLabel),
              position = position_jitter(width = 0.2)) +
   facet_wrap("StrategyLabel") +
-  totems_theme$scale_fill_strategy +
-  totems_theme$scale_color_strategy +
-  totems_theme$base_theme +
+  t_$scale_fill_strategy +
+  t_$scale_color_strategy +
+  t_$base_theme +
   theme(legend.position = "none",
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank()) +

@@ -65,8 +65,8 @@ guesses_per_item_50_mod_plot <- ggplot(guesses_per_item_50_preds) +
   geom_bar(aes(fill = StrategyLabel), stat = "identity") +
   geom_linerange(aes(ymin = TotalGuesses - SE, ymax = TotalGuesses + SE)) +
   scale_y_continuous("Average guesses per item") +
-  totems_theme$scale_fill_strategy +
-  totems_theme$base_theme +
+  t_$scale_fill_strategy +
+  t_$base_theme +
   theme(legend.position = "none")
 
 # 50: Guesses per item by discovery ----
@@ -78,7 +78,7 @@ guesses_per_discovered_item_50_mod <- lmer(
     (Diachronic_v_Individual + Diachronic_v_NoInheritance|Adjacent),
   data = filter(TeamCostPerItem50, Discovered)
 )
-guesses_per_discovered_item_50_mod_preds <- highlight_inheritance_50() %>%
+guesses_per_discovered_item_50_mod_preds <- recode_inheritance() %>%
   select(-Generation, -SessionDuration, -Strategy) %>%
   unique() %>%
   cbind(., predictSE(guesses_per_discovered_item_50_mod, newdata = ., se = TRUE)) %>%
@@ -89,7 +89,7 @@ guesses_per_undiscovered_item_50_mod <- lmer(
     (Diachronic_v_Individual + Diachronic_v_NoInheritance|Adjacent),
   data = filter(TeamCostPerItem50, !Discovered)
 )
-guesses_per_undiscovered_item_50_mod_preds <- highlight_inheritance_50() %>%
+guesses_per_undiscovered_item_50_mod_preds <- recode_inheritance() %>%
   select(-Generation, -SessionDuration, -Strategy) %>%
   unique() %>%
   cbind(., predictSE(guesses_per_undiscovered_item_50_mod, newdata = ., se = TRUE)) %>%
@@ -125,9 +125,9 @@ time_per_item_50_mod_plot <- ggplot(time_per_item_50_preds) +
   geom_bar(aes(fill = StrategyLabel), stat = "identity") +
   geom_linerange(aes(ymin = TotalTime - SE, ymax = TotalTime + SE)) +
   scale_y_continuous("Labor time per item") +
-  totems_theme$scale_x_strategy +
-  totems_theme$scale_fill_strategy +
-  totems_theme$base_theme +
+  t_$scale_x_strategy +
+  t_$scale_fill_strategy +
+  t_$base_theme +
   theme(legend.position = "none")
 
 # 50: Time per item by discovery
@@ -184,9 +184,9 @@ guesses_per_item_100_mod_plot <- ggplot(guesses_per_item_100_preds) +
   geom_bar(aes(fill = StrategyLabel), stat = "identity") +
   geom_linerange(aes(ymin = TotalGuesses - SE, ymax = TotalGuesses + SE)) +
   scale_y_continuous("Average guesses per item") +
-  totems_theme$scale_x_strategy +
-  totems_theme$scale_fill_strategy +
-  totems_theme$base_theme +
+  t_$scale_x_strategy +
+  t_$scale_fill_strategy +
+  t_$base_theme +
   theme(legend.position = "none")
 
 # 100: Guesses per item by discovered ----

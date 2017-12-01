@@ -26,9 +26,9 @@ guessing_rate_plot <- ggplot(GuessingRate) +
   scale_alpha_manual(values = c(0.8, 0.6, 0.4, 0.2)) +
   coord_cartesian(ylim = c(0, 22)) +
   guides(alpha = "none", color = "none") +
-  totems_theme["scale_x_strategy"] +
-  totems_theme["scale_color_strategy"] +
-  totems_theme["base_theme"]
+  t_["scale_x_strategy"] +
+  t_["scale_color_strategy"] +
+  t_["base_theme"]
 
 # Calculate guessing rate over time
 SampledGuessingRate <- SampledPerformance %>%
@@ -45,6 +45,6 @@ guessing_rate_over_time_plot <- ggplot(SampledGuessingRate) +
   geom_line() +
   scale_x_time("Player time", breaks = seconds(c(0, 25 * 60, 50 * 60))) +
   scale_y_continuous("Guesses per minute") +
-  totems_theme["scale_color_strategy"] +
-  totems_theme["base_theme"] +
+  t_["scale_color_strategy"] +
+  t_["base_theme"] +
   theme(legend.position = "top")

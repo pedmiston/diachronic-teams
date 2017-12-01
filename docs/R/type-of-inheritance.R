@@ -10,18 +10,20 @@ NumInnovationsByGeneration100 <- PlayerPerformance %>%
     Strategy != "Synchronic"
   ) %>%
   recode_strategy() %>%
+  label_inheritance() %>%
+  recode_inheritance() %>%
   recode_generation_type_100()
 
 ggplot(NumInnovationsByGeneration100) +
   aes(Generation, NumInnovations, color = StrategyLabel) +
   geom_line(aes(group = TeamID), size = 0.4, alpha = 0.6) +
   geom_line(stat = "summary", fun.y = "mean", size = 1.4) +
-  totems_theme$scale_y_num_innovations +
-  totems_theme$scale_color_strategy +
-  totems_theme$base_theme
+  t_$scale_y_num_innovations +
+  t_$scale_color_strategy +
+  t_$base_theme
 
 num_innovations_by_generation_100_mod <- lmer(
-  NumInnovations ~ InheritanceC * Generation * GenerationC + (GenerationC|TeamID),
+  NumInnovations ~ Diachronic_v_Isolated * GenerationC + (1|TeamID),
   data = NumInnovationsByGeneration100
 )
 
@@ -44,14 +46,14 @@ num_innovations_by_generation_100_plot <- ggplot(NumInnovationsByGeneration100) 
                 data = num_innovations_by_generation_100_preds,
                 width = 0.1, size = 1.5) +
   scale_x_discrete("") +
-  totems_theme$scale_y_num_innovations +
-  scale_color_manual(values = totems_theme$color_picker(c("orange", "blue"))) +
+  t_$scale_y_num_innovations +
+  scale_color_manual(values = t_$color_picker(c("orange", "blue"))) +
   facet_wrap("Strategy", scales = "free_x") +
-  totems_theme$base_theme +
+  t_$base_theme +
   theme(legend.position = "none",
         panel.grid.minor.x = element_blank())
 
-ggplot(NumInnovationsByGeneration100) +
+num_innovations_by_generation_100_plot_grouped <- ggplot(NumInnovationsByGeneration100) +
   aes(GenerationTypeLabel, NumInnovations, color = StrategyLabel) +
   # geom_line(aes(group = interaction(TeamID, GenerationTypeGroup)), alpha = 0.4) +
   geom_line(aes(group = interaction(StrategyLabel, GenerationTypeGroup)), stat = "summary", fun.y = "mean")
@@ -91,8 +93,8 @@ num_unique_innovations_100_plot <- ggplot(UniqueInnovations100) +
                 width = 0.1, size = 1.5) +
   scale_x_discrete("") +
   scale_y_continuous("Unique innovations", breaks = seq(-30, 30, by = 2)) +
-  scale_color_manual(values = totems_theme$color_picker(c("orange", "blue"))) +
+  scale_color_manual(values = t_$color_picker(c("orange", "blue"))) +
   facet_wrap("Strategy", scales = "free_x") +
-  totems_theme$base_theme +
+  t_$base_theme +
   theme(legend.position = "none",
         panel.grid.minor.x = element_blank())

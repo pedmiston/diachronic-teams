@@ -27,12 +27,12 @@ efficiency_plot <- ggplot(EfficiencyMeans) +
   geom_point(position = position_jitter(width = 0.15), shape = 1) +
   geom_errorbar(aes(ymin = Guesses - SE, ymax = Guesses + SE),
                 data = efficiency_preds, width = 0.1, size = 1.1) +
-  totems_theme["scale_x_strategy"] +
+  t_["scale_x_strategy"] +
   scale_y_reverse("Guesses per invention", breaks = c(1, seq(50, 250, by = 50))) +
-  totems_theme["scale_color_strategy"] +
+  t_["scale_color_strategy"] +
   scale_shape_manual("", values = c(16, 1)) +
-  totems_theme["scale_fill_strategy"] +
-  totems_theme["base_theme"] +
+  t_["scale_fill_strategy"] +
+  t_["base_theme"] +
   coord_cartesian(ylim = c(0, 210)) +
   theme(
     legend.position = "none",

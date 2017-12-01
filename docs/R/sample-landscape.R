@@ -18,7 +18,7 @@ unique_trajectories_plot <- ggplot(sample_trajectories) +
   geom_line(size = 1.2, color = "gray") +
   scale_x_inventory_size +
   scale_y_continuous("Unique trajectories", breaks = c(1, seq(10, 80, by = 10))) +
-  totems_theme["base_theme"] +
+  t_["base_theme"] +
   theme(
     panel.grid.minor.x = element_blank(),
     panel.grid.minor.y = element_blank()
@@ -67,9 +67,9 @@ possible_guesses_plot <- ggplot(possible_guesses) +
   scale_y_continuous("Combinations") +
   scale_color_manual(
     # alphabetical: n_combinations, n_correct_combinations, n_new_combinations
-    values = c(totems_theme$synchronic_color, totems_theme$isolated_color, totems_theme$diachronic_color)
+    values = c(t_$synchronic_color, t_$isolated_color, t_$diachronic_color)
   ) +
-  totems_theme["base_theme"] +
+  t_["base_theme"] +
   theme(
     legend.position = "none",
     panel.grid.minor.x = element_blank()

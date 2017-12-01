@@ -53,8 +53,8 @@ trajectory_plot <- ggplot() +
   geom_point(aes(size = Guesses, color = StrategyLabel)) +
   geom_line(aes(color = StrategyLabel, group = ID_Player)) +
   scale_x_continuous("Inventory size", breaks = c(6, seq(10, 40, by = 5))) +
-  totems_theme["scale_color_strategy"] +
-  totems_theme["base_theme"] +
+  t_["scale_color_strategy"] +
+  t_["base_theme"] +
   theme(legend.position = "top")
 
 count_teams <- . %>% .$ID_Group %>% unique() %>% length()
@@ -78,7 +78,7 @@ trajectory_plot %+% filter(player_trajectories, ID_Player == 12)
 
 ```{r trajectories-isolated}
 (trajectory_plot %+% filter(player_trajectories, Strategy == "Isolated")) +
-  scale_color_manual("Strategy", values = totems_theme[["isolated_color"]])
+  scale_color_manual("Strategy", values = t_[["isolated_color"]])
 ```
 
 ## Diachronic teams
@@ -86,7 +86,7 @@ trajectory_plot %+% filter(player_trajectories, ID_Player == 12)
 ```{r trajectories-diachronic, fig.width=6, fig.height=facet_row_height*n_diachronic_teams}
 (trajectory_plot %+% filter(player_trajectories, Strategy == "Diachronic")) +
   facet_grid(ID_Group ~ Generation) +
-  scale_color_manual("Strategy", values = totems_theme[["diachronic_color"]])
+  scale_color_manual("Strategy", values = t_[["diachronic_color"]])
 ```
 
 ## Synchronic teams
@@ -94,5 +94,5 @@ trajectory_plot %+% filter(player_trajectories, ID_Player == 12)
 ```{r trajectories-synchronic, fig.width=6, fig.height=facet_row_height*n_synchronic_teams}
 (trajectory_plot %+% filter(player_trajectories, Strategy == "Synchronic")) +
   facet_grid(ID_Group ~ IX_Player) +
-  scale_color_manual("Strategy", values = totems_theme[["synchronic_color"]])
+  scale_color_manual("Strategy", values = t_[["synchronic_color"]])
 ```
