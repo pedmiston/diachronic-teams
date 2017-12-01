@@ -1,6 +1,6 @@
 ---
 title: "The impact of inheritance on problem solving ability"
-author: "Pierce Edmiston"
+author: "Pierce Edmiston, Max Derex, & Gary Lupyan"
 abstract: |
   Human cultures are able to accumulate products of culture including tools and
   other technology like no other species of animal. The cognitive ability that enables
@@ -31,17 +31,15 @@ abstract: |
 csl: "theme/apa.csl"
 bibliography: "refs/diachronic-collaboration.bib"
 output:
-  html_document:
-    theme: flatly
-    css: theme/style.css
+  bookdown::html_document2:
     toc: true
     toc_depth: 2
     toc_float: true
+    css: theme/style.css
+    keep_md: true
 ---
-```{r config, include = FALSE}
+```{r config, include=FALSE}
 library(knitr)
-library(printr)
-library(magrittr)
 library(crotchet)
 
 opts_chunk$set(
@@ -54,507 +52,556 @@ opts_chunk$set(
   cache = TRUE
 )
 
-list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
-read_graphviz_chunk("team-structures", "totems")
-read_graphviz_chunk("diachronic-collaboration", "totems")
+read_chunk("R/_setup.R")
+read_chunk("R/exp1.R")
+read_chunk("R/exp2.R")
+read_chunk("R/exp3.R")
+
+source("R/report_model_results.R")
 ```
 
-```{r setup, cache = FALSE}
+```{r setup, cache=FALSE}
 ```
 
-# Introduction
-
-On November 1, 2015, the English Wikipedia published its 5 millionth article.
-The article, on a shrub native to eastern Australia, was only 9 words long.
-Since then, the article has been edited 419 times by 86 different authors, and
-now includes 8 different sections on the taxonomy, habitat, and ecology of this
-Australian plant.
-
-The collaborative effort of writing a Wikipedia article exhibits a type of
-teamwork that is foundational to cumulative cultural evolution, and may be
-unique to our species. Humans are particularly adept at using, changing, and,
-in some cases, improving cultural products that were first created by other
-people. The ability to inherit and improve a tool or some other solution to a
-problem is necessary in order to observe the ratcheting of technological
-complexity in a culture [@Tomasello:1993vh]. I refer to the type of
-collaboration that enables ratcheting as **diachronic collaboration** (Fig. 1).
-In diachronic collaboration, the products of labor, such as a tool to solve
-some problem, are shared with or inherited by future generations of problem
-solvers. The purpose of this research is to understand why diachronic
-collaboration may be crucial for cumulative cultural evolution by assessing its
-effectiveness as a problem solving strategy.
-
-```{r diachronic-collaboration, engine="dot", fig.width=6, fig.pos="h", out.extra="", fig.cap="In diachronic collaboration, the products of one generation of labor are inherited to be used and improved by the next generation. An example of diachronic collaboration is Wikipedia article writing, where articles are effectively passed from editor to editor in a chain of edits. The ability to engage in diachronic collaboration---to improve something that was created by someone else---is required in order to observe the ratcheting of technological complexity in a culture."}
-```
+# Introduction {-}
 
 Humans are effective problem solvers. Part of this effectiveness comes from the
 ability to reuse and adapt solutions to problems that were first created by
-other people. Reuse is common in human history. Inventors rarely create
-inventions with no precursors, and commonly use and adapt inventions that were
-first created by others [@Basalla:1989wq]. Part of this reuse is the result of
-innovation breeding further innovation [@Valverde:2007fs]. But
-what do innovators and other problem solvers gain from inheriting solutions
-created by previous generations of problem solvers? Does diachronic collaboration simply save time on future problem solving, or does inheriting an existing solution to a problem actually change the way future problems are solved?
+other people. Inventors rarely create inventions with no precursors, and
+commonly use and adapt inventions that were first created by other people
+[@Basalla:1989wq]. Some reuse is the result of inventions breeding further
+inventions [@Valverde:2007fs; @Borner:2004dm]. But what do innovators and other
+problem solvers gain from inheriting solutions created by others?
+Do future generations of problem solvers gain a head start on future problem
+solving, or does inheriting an existing solution to a problem affect future
+problem solving beyond simply saving time?
 
-The purpose of this research is to identify the conditions under which
-inheritance might actually improve one's problem solving ability relative to
-the same amount of time spent solving the problem in other ways, without
-diachronic inheritance. Specifically, I compare the effectiveness of a
-diachronic strategy to two alternative strategies for allocating the same
-number of labor hours: synchronic collaboration, where team members begin with
-no prior solutions and collaborate in parallel, and isolated individuals, given
-the most time for individual learning (Fig. 2). The purpose of this comparison
-is to measure the impact of inheritance on problem solving by comparing
-problem solving ability when starting with an inherited solution---defined as
-diachronic problem solvers after the first generation---to alternative
-strategies for solving the same problems without diachronic inheritance.
-Discovering whether and under what conditions diachronic collaboration is more
-effective than alternative strategies will provide empirical evidence of the
-benefits to diachronic collaboration, including the ability to ratchet human
-problem solving ability via inheritance.
+A tool that required a lot of work to create benefits its user by saving them
+the time it would have taken to create the tool themselves, thus giving them a
+head start on future problem solving. The ability to learn socially from others
+can in some cases improve problem solving ability relative to individual
+learning. At the scale of human cultures involving thousands of generations of
+collective labor, populations can sustain innovations that no individual would
+be able to recreate in a single lifetime. A modern personal computer may have
+hundreds of thousands of patents involved in its creation, requiring many
+lifetimes of labor to recreate. The question driving this research is whether
+the best way to understand the impact of inheritance on problem solving is that
+it saves future problem solvers labor time, or if and how inheriting a tool has
+the potential to shape future problem solving ability.
 
-```{r team-structures, engine="dot", fig.width=2, fig.pos="h", fig.cap="Problem solving strategies. Each node is a person. Edge lengths represent labor hours spent solving a problem. In diachronic collaboration, first generation problem solvers work on a solution to a problem before passing it on to be inherited by the next generation. The impact of inheritance on problem solving is measured as the problem solving ability of diachronic problem solvers after the first generation. Isolated individuals do not inherit solutions from other players, but are given the most time for individual learning. In synchronic collaboration, teams of problem solvers work in parallel, sharing their progress as they go, but synchronic teams do not benefit from direct diachronic inheritance because all problem solvers start without any prior solutions."}
+Some forms of inheritance may negatively shape future problem solving ability.
+Inheriting or starting with a particular way of approaching a problem can
+negatively affect problem solving by making it more likely that individuals
+become fixated on incorrect solutions. In these cases, the same problem could
+have been solved more efficiently if the problem solver would have approached
+the problem from a different starting point. In addition, too much inheritance
+or sharing of information in a group of problem solvers can lead to inefficient
+problem solving. Fully connected networks of problem solvers can under some
+circumstances converge prematurely on locally maximal solutions, resulting in
+inefficient group performance.
+
+As for the potential for beneficial effects of inheritance on problem solving
+ability, most models of cultural transmission assume that there isn't one.
+Problem solving ability is presumed to be constant over generations. The best
+case scenario for cultural transmission in these models is an agent successfully
+passing on an innovation to the next generation without losing any information.
+Thus current models of cultural evolution assume that what is inherited is a
+savings in labor time, without any impact on problem solving ability.
+
+This research investigates the impact of inheritance on problem solving ability
+by studying the problem solving ability of individuals who inherit the solutions
+of a previous generation at the start of a problem solving task. I refer to this
+type of collaboration, organized around inheritance, as
+**diachronic collaboration** (Fig. \@ref(fig:team-structures)). To understand
+how inheritance impacts problem solving ability, I compare the effectiveness of
+diachronic collaboration to alternative strategies for solving the same problems
+in the same amount of labor time: synchronic collaboration, where team members
+begin with nothing and collaborate in parallel, and isolated individuals, given
+the most time for individual learning (Fig. \@ref(fig:team-structures)). The
+purpose of this comparison is to understand the impact of inheritance on problem
+solving by comparing problem solving ability when starting with an inherited
+solution---defined as diachronic problem solvers after the first generation---to
+alternative strategies for solving the same problems without diachronic
+inheritance.
+
+(ref:team-structures) Problem solving strategies. Each node is a person. Edge
+lengths represent labor hours spent solving a problem. In diachronic
+collaboration, first generation problem solvers work on solutions to a problem
+before passing them on to be inherited by the next generation. The impact of
+inheritance on problem solving is measured as the problem solving ability of
+diachronic problem solvers after the first generation. Isolated individuals do
+not inherit solutions from other players, but are given the most time for
+individual learning. In synchronic collaboration, multiple problem solvers work
+in parallel, sharing their progress, but synchronic teams do not benefit from
+direct diachronic inheritance because all problem solvers start at the same
+point.
+
+```{r team-structures, fig.width=1.5, fig.cap="(ref:team-structures)"}
+draw_graphviz("team-structures", "totems")
 ```
 
-In the experiments below I test two main hypotheses regarding the conditions
-under which inheritance might be found to improve problem solving ability
-relative to the alternative strategies depicted in Fig. 2. The first hypothesis
-relates to the kind of problem being solved. Diachronic inheritance is
-predicted to be effective in solving problems in which fixation effects are
-common. Fixation in problem solving is demonstrated by individuals returning
-to, or otherwise being mislead by, previous and incorrect solutions to
-problems. **Inheritance is hypothesized to improve future problem solving by
-making it unlikely that future generations return to the same incorrect
-solutions that may have slowed down previous generations.**
+The synchronic and isolated strategies serve as control conditions in these
+experiments: ways of solving the same set of problems without diachronic
+inheritance. Synchronic and isolated problem solvers all begin the problem
+solving task at the same starting point. Only diachronic problem solvers after
+the first generation inherit solutions from the previous generation to
+start.
 
-There are two possible mechanisms by which inheritance may overcome the cost of
-fixation. The first and most basic is that inheriting a solution that was
-difficult for the previous generation to achieve may save future generations
-the time already spent in coming up with the difficult solution. However, in
-this case, inheritance may not actually impact problem solving ability, and
-thus may be indistinguishable from simply having the first generation continue
-problem solving. The second and more interesting mechanism is that inheritance
-may change the learning experiences for future generations, which may help
-overcome the costs of fixation by beginning problem solving in a unique 
-environment.
+The three strategies considered here are overlapping in some aspects. The
+problem solvers using a synchronic strategy can share or "inherit" solutions
+from one another. What distinguishes diachronic and synchronic inheritance is
+when the solutions are shared. For diachronic problem solvers, solutions are
+inherited once, at the start of the problem solving task. For synchronic
+problem solvers, solutions are inherited intermittently, throughout the task.
 
-The uniqueness of the learning environment inherited from previous generations
-is the product of the diversity of skills among diachronic problem solvers.
-Inheriting a solution created by someone with very similar problem solving
-ability (homogenous problem solvers) is unlikely to impact problem solving
-beyond what could be achieved by an isolated individual working for the same
-total amount of time. In contrast, inheriting a solution created by someone
-with very different problem solving ability can introduce a learning environment
-that would be impossible to reach by either individual working alone.
-**Inheritance is hypothesized to have the largest effect on problem solving
-ability when solutions are inherited from heterogenous problem solvers.**
+A third type of inheritance, individual inheritance, is introduced in Experiment
+2. Individual inheritance is when one's own problem solving is resumed in
+subsequent sessions. Individual inheritance involves inheriting from oneself, as
+opposed to inheriting from someone else. The purpose of this research is to
+investigate specifically how diachronic inheritance may impact problem solving
+ability differently than these alternative ways of solving the same set of
+problems.
 
-The plausibility of both hypothesis can be demonstrated via artificial
-simulations of problem solvers. In these simulations, problem solving is akin
-to traversing a solution landscape. A solution landscape is a visualization of
-the relationship between variation in possible solutions and resulting solution
-success, analogous to fitness landscapes in an evolutionary sense. Problem
-solvers traversing a solution landscape seek the highest point in the
-landscape. A key intuition generated by these landscapes is that movement
-across the landscape is costly, and constrained by current location.
+Computational and experimental models of cultural evolution have traditionally
+compared two types of learning: individual learning and social learning. In
+explaining why humans are able to accumulate cultural products and technological
+improvements, the evidence points to a suite of social learning strategies that
+humans possess that make us capable of propagating cultural innovations in a
+population. Even discoveries that happen by accident can survive to be
+replicated throughout a population.
 
-As
-the abilities of diachronic problem solvers diverge, subsequent generations
-effectively start off in parts of the solution landscape that would have been
-unreachable as an isolated individual. For at least some solution landscapes,
-diachronic teams with divergent skills are predicted to outperform isolated
-individuals, as is demonstrated via artificial simulations below.
+However, most previous approaches have not accounted for the cost of social
+learning relative to individual learning in terms of **labor hours**, instead
+opting to control for **calendar hours**. For example, a group of 5 social
+learners who each spend an hour on a task is measured against the success of an
+individual learner given the same amount of calendar time. Labor time and
+calendar time are different in that a group of 5 social learners working in
+parallel for an hour expends a total of 5 labor hours, but is being compared
+to a single individual given just 1 labor hour.
 
-## Measuring problem solving ability
+In order to understand the impact of inheritance on problem solving ability, it
+is necessary to account for the labor time invested in creating the initial
+inheritance, as well as measuring the impact of that inheritance on future
+problem solving. Therefore, all strategies in this research are compared given a
+fixed number of labor hours. Labor hours can be contrasted by two other measures
+of time that are not controlled in these experiments: calendar hours and
+individual learning hours (Fig. \@ref(fig:types-of-time)).
 
-I measure problem solving ability as efficiency in completing a set of problems
-in a specific amount of time. Other research on problem solving aims to determine
-the cognitive abilities that enable the generation of problem solutions. Here
-I focus less on whether solutions can be generated and more on how
-efficiently progress is achieved. The goal of this research is to measure the
-impact of inheritance on problem solving efficiency. Assuming a constant
-problem landscape and diachronic problem solvers of equalivant abilities, the impact of inheritance on problem solving is expected to be better fit
-by an interactive model than an additive model.
+(ref:types-of-time) Types of time. **Left.** Key for problem solving strategies.
+**Middle.** Relationship between calendar hours and labor hours. Synchronic
+collaboration consumes a fixed amount of labor time more rapidly (per calendar
+hour) than either the diachronic or isolated strategies. **Right.** Amount of
+individual learning time in each strategy. An isolated strategy maximizes the
+amount of time for individual learning.
 
-\begin{align}
-problem\ solution = ability \times time &= inheritance\\
-problem\ solution_{additive} &= inheritance + ability \times time\\
-problem\ solution_{interactive} &= inheritance \times ability \times time\\
-\end{align}
-
-```{r types-of-time}
-```
-
-```{r types-of-time-fig, fig.width=6, fig.height=3, fig.cap="**Left.** Relationship between labor hours and calendar hours. Labor hours are being controlled across the strategies, which forces diachronic and synchronic teams to differ in calendar hours. The rate at which labor hours are spent (per calendar hour) is the same for diachronic teams and isolated individuals. **Right.** Differences between teams in terms of time for individual learning. Isolated individuals have the most time for individual learning. The benefits of individual learning are balanced against the potential costs of fatigue and fixation."}
-types_of_time_plot
-```
-
-# Methods
-
-## Materials and Procedure
-
-Participants played a computer game requiring them to combine items to create
-new items (tools), and use those tools to build further tools, all for the sake of
-building "a sacred totem to appease the gods." To build a totem, participants
-first needed to construct an axe out of three independently discovered items: a
-refined stick used as a handle, a sharpened rock for the blade, and string
-wound from bark fibers for binding. In the game, more advanced tools
-produce larger and more intricate totems, resulting in higher performance
-scores.
-
-```{r gameplay, fig.width=6, fig.height=4, fig.cap="The Totems game. **Left.** A sample of the solution landscape. The top row of 6 items are the initial resources available to problem solvers at the start of the experiment. Resources are combined to build the first generation of innovations, including a refined rock, a club derived from an antler, and a small branch of a tree. The first 6 generations of possible innovations are shown. The axe is required to construct the first totem pole. Although the full solution landscape contains more generations of innovations, many participants do not proceed past these 10 innovations in a single 25 minute session. **Right.** Gameplay interface. Participants generated guesses by dragging items into the Workshop and selecting the Try button. If the guess created an item, it could be stored in the Stock panel. Totem segments could be dragged into the Totem panel for scoring."}
+```{r types-of-time, fig.width=8, fig.height=3, fig.cap="(ref:types-of-time)"}
 grid.arrange(
-  read_image("landscape-sample.gv", "totems"),
-  read_image("gameplay", "totems"),
+  read_graphviz("team-structures", "totems"),
+  gg_time,
+  gg_person,
   nrow = 1,
-  widths = c(0.35, 0.65)
+  widths = c(0.2, 0.4, 0.4)
 )
 ```
 
-## Participants
+# Methods {-}
+
+Participants were recruited to solve a series of smaller problems in a problem
+solving task and randomly assigned to either the diachronic condition (the
+treatment condition) or one of the control conditions: isolated or synchronic.
+Participants in the diachronic condition either participated as a first
+generation problem solver, or began the problem solving task with the solutions
+discovered by the previous generation. Participants in the synchronic condition
+collaborated in parallel via separate computers. Once a solution was discovered
+by a synchronic participant, it became available for all members of the
+synchronic team. Participants in the isolated condition participated in a single
+50 minute session, or returned for four 25 minute sessions spaced at least one
+day apart. When isolated participants returned for later sessions, they
+inherited the tools they had discovered in the previous session.
+
+The results generated using these methods are reported in three experiments.
+In Experiment 1, the simplest form of diachronic inheritance, a two-person
+diachronic team, is compared to a two-person synchronic team and an isolated
+individual given 50 minutes. In Experiment 2, inheriting from someone else
+is compared to inheriting from oneself: isolated participants returning
+for multiple sessions. Experiment 3 compares the three main strategies given
+100 minutes to estimate the scalability of each strategy.
+
+The experiments are related in that some data is included in multiple results
+sections. Namely, the data from first and second generation diachronic
+participants are analyzed alone in Experiment 1 and in combination of third and
+fourth generation diachronic participants in Experiments 2 and 3. Experiment
+2 introduces more diachronic participants and data from four sessions by
+isolated participants. The new data reported in Experiment 3 is from the
+four-person synchronic teams. Because the data are being analyzed in this way,
+no statistics collapse across experiment.
+
+(ref:team-structures-all) All experimental conditions. First generation diachronic
+participants began without any items and worked on the problem solving task for
+25 minutes. Generation 2-4 diachronic participants inherited the solutions discovered
+by the previous generation. Isolated participants either participated in a single
+50 minute session, or returned for 4 subsequent 25 minute sessions. Upon returning,
+these participants "inherited" the items they had created in the previous session.
+Synchronic participants completed the problem solving task in groups of 2 or 4
+individuals, each participating for 25 minutes.
+
+```{r team-structures-all, fig.cap="(ref:team-structures-all)"}
+draw_graphviz("team-structures-all", "totems")
+```
+
+## Materials and Procedure {-}
+
+Participants played a computer game, first reported in @Derex:2015cbb, requiring
+players to iteratively combine items to create new items (tools) for the sake
+of building "a sacred totem to appease the gods." To build a totem,
+participants first needed to construct an axe out of three independently
+discovered items: a refined stick used as a handle, a sharpened rock for the
+blade, and string wound from bark fibers for binding (Fig.
+\@ref(fig:landscape-sample)). In the game, more advanced tools produce larger
+and more intricate totems, resulting in higher performance scores.
+
+(ref:landscape-sample) A sample of the solution landscape. The top row of 6
+items are the initial resources available to problem solvers at the start of the
+session. Resources must be combined to build the first generation of
+innovations, including a refined rock, a club derived from an antler, and a
+small branch of a tree. The first 6 generations of possible innovations are
+shown. The axe is required to construct the first totem pole.
+
+```{r landscape-sample, fig.cap="(ref:landscape-sample)"}
+# draw_graphviz_with_images("landscape-sample", "totems")
+draw_image("landscape-sample.gv", "totems")
+```
+
+Of all the valid combinations of items that can be made, only a very small
+percentage yield new items. The 6 initial resources can be combined with between
+1 and 4 other items with replacement for a total of `r count_unique_guesses(6)`
+unique guesses, only three of which yield any new tools: a branch can be broken
+off a tree, an antler refined into a club, and two rocks can be combined to
+yield a shaped stone.
+
+To generate new guesses, participants tried combinations of items one at a time
+by clicking and dragging items into a workshop panel (Fig.
+\@ref(fig:interface)). If the combination yielded an item, it could be stored
+in a stock panel. Items could also be discarded if for example more room was
+needed in the stock panel. Once an item was discovered, its recipe was recorded
+in the history panel. Participants could review their item history and see the
+recipes for their previous innovations, even ones they had discarded.
+
+In addition to an individual history, the history pane also had other tabs,
+depending on which strategy each participant was assigned. Diachronic
+participants after the first generation began with a tab that could be selected
+to show all item recipes discovered by the previous generation. Isolated
+participants, if returning for multiple sessions, had a tab with the solutions
+they had come up with during their previous session. Synchronic participants
+had tabs for other synchronic players. The tab displayed the current score of
+each player, so synchronic players were notified that a discovery had been made
+by seeing their teammates score rise above their own.
+
+(ref:interface) The Totems gameplay interface. Participants generated guesses
+by dragging items into the Workshop and selecting the Try button. If the guess
+created an item, it could be dragged into the Stock panel, and used again. Once
+totem segments were made through cutting, carving, and painting, they could be
+dragged into the Totem panel for scoring.
+
+```{r interface, fig.cap="(ref:interface)"}
+draw_image("gameplay", "totems")
+```
+
+After the experiment was completed, participants completed a brief post
+experiment survey assessing their understanding of the task, their experience
+with games like the Totems game, and whether they used any particular strategy
+for guessing.
+
+## Participants {-}
+
+Participants were students at the University of Wisconsin-Madison who completed
+the experiment in exchange for course credit. Students received credit for each
+completed session based on the duration of the session. Participants in the
+Isolated, multi-session experiment who completed all four sessions were awarded
+a small bonus.
 
 Participants were recruited until there were at least 40 teams in each strategy.
+If one of the participants, scheduled for a four-person synchronic session, did
+not show up to the experiment, the remaining three participants were run as a
+combination of diachronic and two-person synchronic participants. This happened
+frequently, which explains why the final data includes more than 40 teams
+for some strategies.
 
-```{r counts}
+```{r counts-table, results="asis"}
+kable(ConditionCounts, caption = "Total participant and team recruitment.")
 ```
 
-```{r counts-table, results = "asis"}
-kable(condition_counts)
+# Experiment 1 {-}
+
+```{r exp1, include=FALSE}
 ```
 
-# 50 Labor Minutes
+## Methods {-}
 
-```{r team-structures-50min}
-draw_graphviz("team-structures-50min", "totems")
+Participants were recruited for either a 25-minute session or a 50-minute session.
+All participants who signed up for a 50-minute session were assigned to the isolated
+condition. Participants recruited for a 25-minute session were assigned either
+to the diachronic or synchronic conditions.
+
+### Participants {-}
+
+The total number of participants and teams included in this analysis are presented in Table \@ref(tab:counts-table-50).
+
+```{r counts-table-50, results="asis", fig.pos="h"}
+kable(ConditionCounts50, caption = "Participants used in the 50 labor minute experiment.")
 ```
 
-## Number of innovations
+## Results {-}
 
-```{r num-innovations-50}
-```
+### Number of innovations {-}
 
-```{r final-num-innovations-50-fig, fig.height=4, fig.width=8, fig.cap="Total number of innovations discovered by strategy. Each point represents the number of innovations created by a single player in a single session."}
+The impact of inheritance on the number of discoveries made via different
+strategies for problem solving is shown in Fig. \@ref(fig:num-innovations-50min-fig).
+Second generation diachronic problem solvers reliably exceeded the discoveries
+made by the first generation in a single 25 minute session,
+`r report_lmer_mod(num_innovations_50min_mod, "DG2_v_DG1")`. However, second
+generation problem solvers did not discover significantly more innovations than
+either a two-person synchronic strategy,
+`r report_lmer_mod(num_innovations_50min_mod, "DG2_v_S2")`, or a single 50 minute
+session, `r report_lmer_mod(num_innovations_50min_mod, "DG2_v_I50")`.
+
+(ref:num-innovations-50min-fig) Number of innovations discovered by each
+strategy. **Top left.** Key showing experimental conditions. **Top right.** Final number
+of innovations. Each point represents the number of innovations created by a
+single player in a single session. Bars and error lines show point estimates
+from the linear model. **Bottom.** Innovation rate by strategy. Innovation rates
+are given in terms of labor time, which differs from calendar time and time
+for individual learning (see Fig. \@ref(fig:types-of-time)).
+
+```{r num-innovations-50min-fig, fig.height=6, fig.width=8, fig.cap="(ref:num-innovations-50min-fig)"}
 grid.arrange(
-  read_graphviz("team-structures-50min", "totems"),
-  final_num_innovations_50_plot,
-  nrow = 1,
-  widths = c(0.4, 0.6)
+  arrangeGrob(
+    read_graphviz("team-structures-exp1", "totems"),
+    num_innovations_50min_plot,
+    nrow = 1,
+    widths = c(0.4, 0.6)
+  ),
+  innovation_rate_50min_plot +
+    theme(legend.position = c(0.11, 0.75))
 )
 ```
 
-```{r final-num-innovations-50-mod, echo=1, results="asis"}
-final_num_innovations_50_mod <- lmer(
+```{r num-innovations-50min-mod, results="asis"}
+num_innovations_50min_mod <- lmer(
   NumInnovations ~ DG2_v_DG1 + DG2_v_I50 + DG2_v_S2 + (1|TeamID),
   data = PlayerPerformance50min
 )
-tidy(final_num_innovations_50_mod, effects = "fixed") %>%
-  kable(caption = "Final number of innovations model (50 min).")
+tidy(num_innovations_50min_mod, effects = "fixed") %>%
+  kable(caption = "Model results estimating the final number of innovations discovered by each participant in each strategy. Strategies were Diachronic Generation 1 (DG1), Diachronic Generation 2 (DG2), Isolated 50min (I50), and 2-person Synchronic (S2). Strategy was coded with treatment contrasts using DG2 participants as the comparison group. For example, the model parameter DG2 v DG1 indicates the difference in final number of innovations between second and first generation diachronic players.")
 ```
 
-### Teamwork versus individual labor
+Participants in both strategies involving inheritance from
+other people (diachronic and synchronic) outperformed isolated
+individuals given the same total amount of labor time,
+`r report_lmer_mod(num_innovations_50min_teamwork_mod, "DSvI")`.
+In this model, fit with Helmert contrasts, there was no residual
+difference between diachronic and synchronic strategies,
+`r report_lmer_mod(num_innovations_50min_teamwork_mod, "DvS")`.
 
-```{r teamwork-v-individual-50-mod, echo=1, results="asis"}
-teamwork_50min_mod <- lmer(
+```{r num-innovations-50min-teamwork-mod, results="asis"}
+num_innovations_50min_teamwork_mod <- lmer(
   NumInnovations ~ DSvI + DvS + (1|TeamID),
-  data = filter(PlayerPerformance50min, !(Strategy == "Diachronic" & Generation == 1))
+  data = filter(PlayerPerformance50min, SessionType != "DG1")
 )
-tidy(teamwork_50min_mod, effects = "fixed") %>%
-  kable(caption = "Teamwork model (50 min). Tests whether teams (Diachronic and Synchronic) discovered more innovations than isolated individuals in a single 50 minute session.")
+tidy(num_innovations_50min_teamwork_mod, effects = "fixed") %>%
+  kable(caption = "Model results estimating the effectiveness of teamwork (Diachronic + Synchronic) versus an Isolated strategy. Strategy was coded with Helmert contrasts. The parameter DSvI compares the final number of innovations discovered by second generation Diachronic participants and Synchronic participants to the number of innovations discovered by isolated individuals in a single 50 minute session. The parameter DvS compares the residual difference between Diachronic and Synchronic participants.")
 ```
 
-## Rate of innovation
+(ref:innovation-rate-50min-types-of-time-fig) Comparing innovation rate by different
+measures of time.
 
-```{r num-innovations-over-time-50-fig, fig.width=6, fig.height=10}
+```{r innovation-rate-50min-types-of-time-fig, fig.width=8, fig.height=8, fig.cap="(ref:innovation-rate-50min-types-of-time-fig)"}
 grid.arrange(
-  types_of_time_plot,
-  num_innovations_over_time_50 +
+  arrangeGrob(
+    read_graphviz("team-structures", "totems"),
+    gg_time,
+    gg_person,
+    nrow = 1,
+    widths = c(0.2, 0.4, 0.4)
+  ),
+  innovation_rate_50min_plot +
     aes(CalendarTime) +
-    t_$scale_x_calendar_time_50 +
+    t_$scale_x_calendar_time +
     theme(legend.position = c(0.12, 0.75)),
-  num_innovations_over_time_50 +
+  innovation_rate_50min_plot +
     aes(PlayerTime) +
-    t_$scale_x_player_time_50 +
+    t_$scale_x_player_time +
     theme(legend.position = "none"),
-  num_innovations_over_time_50 +
-    aes(TeamTime) +
-    t_$scale_x_team_time_50 +
+  innovation_rate_50min_plot +
     theme(legend.position = "none"),
   ncol = 1
 )
 ```
 
-# Type of inheritance
+### Guesses per innovation {-}
 
-```{r team-structures-type-of-inheritance}
-draw_graphviz("type-of-inheritance", "totems")
+We next report whether diachronic inheritance resulted in a unique problem
+solving strategy relative to the other ways of solving the same set of problems.
+To answer this question, we first tallied the number of guesses that each item
+required before being discovered. This was done by counting the number of
+guesses that were made in which the prerequisite items for a particular
+innovation had already been discovered, but the correct guess for the novel
+target item was not made. The tallies take into account for which items were
+"adjacent" to each individual's innovation record. For example, the count of the
+number of guesses it took for a participant to discover their first totem only
+begins after the axe had been discovered, which is required in the recipe for
+constructing the totem.
+
+Counting guesses in this way revealed that diachronic participants benefiting
+from inheritance averaged fewer guesses per item than strategies without any
+diachronic inheritance,
+`r report_lmer_mod(guesses_per_item_by_inheritance_mod, "Diachronic_v_NoInheritance")`.
+
+```{r guesses-per-item-by-inheritance-50min-mod, results="asis"}
+guesses_per_item_by_inheritance_mod <- lmer(
+  TotalGuesses ~ Diachronic_v_NoInheritance +
+    (Diachronic_v_NoInheritance|Adjacent) +
+    (1|TeamID),
+  data = filter(CostPerItem50min, Discovered))
+tidy(guesses_per_item_by_inheritance_mod, effects = "fixed") %>%
+  kable(caption = "Model results estimating number of guesses for each item based on inheritance condition. The model compares the number of guesses made for each item by second generation diachronic participants to the conditions without any inheritance.")
 ```
 
-## Inheritance compared to repeating sessions
+The reason inheritance results in fewer guesses per item is because they start
+off with the recipes that had already been discovered. They started with a
+partial answer key. A second generation diachronic participants session can thus
+be divided into two parts: time spent learning from the previous generation, and
+time spent generating novel innovations.
 
-```{r type-of-inheritance}
+```{r guesses-per-item-by-inheritance-50min-playing-mod, results="asis"}
+guesses_per_item_by_inheritance_playing_mod <- lmer(
+  TotalGuesses ~ Diachronic_v_NoInheritance +
+    (Diachronic_v_NoInheritance|Adjacent) +
+    (1|TeamID),
+  data = filter(CostPerItem50minPlaying, Discovered))
+tidy(guesses_per_item_by_inheritance_playing_mod, effects = "fixed") %>%
+  kable(caption = "Model results estimating number of guesses for each item based on inheritance condition.")
 ```
 
-```{r num-innovations-by-generation-50-fig, fig.width=8, fig.cap=""}
+(ref:guesses-per-item-by-inheritance-50min-fig) The impact of inheritance on the
+average number of guesses for each discovery. **Top**. Total number of guesses
+per item. Each line shows the average number of guesses made for a particular
+item when being guessed in either a condition without inheritance, or a
+condition with diachronic inheritance. On the left is the number of guesses made
+for all items. On the right is the number of guesses made for new items.
+Diachronic inheritance reduced the average number of guesses made for each
+discovery, but only for discoveries that had already been made by the previous
+generation. For new items, diachronic inheritance had no impact on future
+problem solving. **Bottom**. Example trajectories for second generation
+diachronic players, showing the time taken to recreate all previous items,
+followed by the time taken to create new items.
+
+```{r guesses-per-item-by-inheritance-50min-fig, fig.width=8, fig.height=6, fig.cap="(ref:guesses-per-item-by-inheritance-50min-fig)"}
 grid.arrange(
-  num_innovations_by_generation_50_plot,
-  num_unique_innovations_50_plot,
-  nrow = 1
+  arrangeGrob(guesses_per_item_by_inheritance_plot + ggtitle("All items"),
+              guesses_per_new_item_by_inheritance_plot + ggtitle("New items"),
+              nrow = 1),
+  illustrative_diachronic_player_stages_plot,
+  ncol = 1
 )
 ```
 
-```{r performance-by-generation-50-mod, echo=1, results="asis"}
-final_num_innovations_by_generation_50_mod <- lmer(
-  NumInnovations ~ Diachronic_v_Isolated * Generation + (1|TeamID),
-  data = NumInnovationsByGeneration50
-)
-tidy(final_num_innovations_by_generation_50_mod, effects = "fixed") %>%
-  kable()
-```
+### Guess types {-}
 
-```{r num-additional-innovations-50-mod, echo=1, results="asis"}
-num_unique_innovations_50_mod <- lmer(
-  UniqueInnovations ~ Diachronic_v_Isolated * Generation + (1|TeamID),
-  data = UniqueInnovations50
-)
-tidy(num_unique_innovations_50_mod, effects = "fixed") %>%
-  kable()
-```
+Next we report the impact of inheritance on guessing strategy, as defined
+as the proportion of guesses made by guess type. Each guess could be
+classified as one of four different types of guesses. Redundant guesses
+were incorrect guesses that had already been made once before. These are
+the most inefficient type of guesses. Repeat item guesses recreated a previously
+discovered item. Unique guesses had not been tried before, but they were
+ultimately incorrect, and did not result in the creation of a new item.
+Finally, unique item guesses were guesses that yielded a new item.
 
-## Impact of inheritance on future problem solving
+To investigate the impact of inheritance on guessing strategy, we
+measured whether diachronic problem solvers generated different proportions
+of guesses relative to the other strategies. We found that diachronic
+problem solvers generated a lower proportion of redundant guesses than
+both their first generation ancestors,
+`r report_lm_mod(prop_redundant_guesses_mod, "DG2_v_DG1")`,
+as well as isolated individuals given 50 minutes,
+`r report_lm_mod(prop_redundant_guesses_mod, "DG2_v_I50")`.
+Diachronic problem solvers also had a higher proportion of unique guesses
+than isolated individuals, `r report_lm_mod(prop_unique_guesses_mod, "DG2_v_I50")`,
+but not first generation diachronic problem solvers,
+`r report_lm_mod(prop_unique_guesses_mod, "DG2_v_DG1")`.
 
-```{r diachronic-inheritance}
-```
 
-## Cost per innovation
-
-```{r load-axis-pics, include=FALSE}
-```
-
-```{r cost-per-item}
-```
-
-```{r guesses-per-item-50-fig, fig.width=8}
-grid.arrange(
-  guesses_per_item_50_plot,
-  guesses_per_item_50_mod_plot,
-  nrow = 1,
-  widths = c(0.7, 0.3)
-)
-```
-
-```{r guesses-per-item-by-discovery-50-fig, fig.width=8, fig.height=6}
-grid.arrange(
-  guesses_per_item_50_by_discovery_plot,
-  guesses_per_item_50_by_discovered_mod_plot,
-  nrow = 1,
-  widths = c(0.7, 0.3)
-)
-```
-
-## Labor time per innovations
-
-```{r time-per-item-50-fig, fig.width=8}
-grid.arrange(
-  time_per_item_50_plot,
-  time_per_item_50_mod_plot,
-  nrow = 1,
-  widths = c(0.7, 0.3)
-)
-```
-
-```{r time-per-item-by-discovery-50-fig, fig.width=8, fig.height=6}
-grid.arrange(
-  time_per_item_50_by_discovery_plot,
-  time_per_item_50_by_discovered_mod_plot,
-  nrow = 1,
-  widths = c(0.7, 0.3)
-)
-```
-
-## Are some inheritances more helpful than others?
-
-```{r inheritance-50}
-```
-
-## Likelihood of creating a totem
-
-```{r likelihood-50}
-```
-
-```{r likelihood-50-fig}
-likelihood50_plot
-```
-
-## Guesses
-
-### Total guesses
-
-```{r total-guesses-50}
-```
-
-```{r total-guesses-50-fig}
-total_guesses_50_plot
-```
-
-```{r total-guesses-per-generation-50-fig}
-total_guesses_per_generation_50_plot
-```
-
-```{r performance-by-total-guesses-50-fig}
-performance_by_total_guesses_50_plot
-```
-
-```{r performance-by-total-guesses-50-mod, echo = 1, results = "asis"}
-performance_by_total_guesses_50_mod <- lm(
-  NumInnovations ~ NumGuesses * (DvS + DSvI),
-  data = TeamPerformance50
-)
-tidy(performance_by_total_guesses_50_mod) %>%
-  kable()
-```
-
-### Unique guesses
-
-```{r unique-guesses-50}
-```
-
-```{r unique-guesses-50-fig}
-unique_guesses_50_plot
-```
-
-```{r unique-guesses-by-total-guesses-50-fig}
-unique_guesses_by_total_guesses_50_plot
-```
-
-```{r unique-guesses-per-generation-50-fig}
-unique_guesses_per_generation_50_plot
-```
-
-```{r num-innovations-by-unique-guesses-50-fig}
-num_innovations_by_unique_guesses_50_plot
-```
-
-### Guess types
-
-```{r types-of-guesses, results = "asis"}
+```{r types-of-guesses, results="asis"}
 recode_guess_type() %>%
   select(GuessTypeLabel, UniqueGuess, CreatedItem, UniqueResult) %>%
-  kable()
+  kable(caption = "Four kinds of guesses. Redundant guesses were incorrect guesses that had already been made. Repeat item guesses recreated a previously discovered item. Unique guesses had not been tried before, but did not result in a new item. Unique item guesses were unique guesses that resulted in the creation of a new item.")
 ```
 
-```{r guess-type-50}
+(ref:prop-guess-types-50min-fig) Proportion of guesses made by problem solvers
+in each strategy.
+
+```{r prop-guess-types-50min-fig, fig.width=6, fig.cap="(ref:prop-guess-types-50min-fig)"}
+prop_guess_types_50min_plot
 ```
 
-```{r prop-redundant-guesses-50-fig}
-prop_redundant_guesses_50_plot
+# Experiment 2 {-}
+
+```{r exp2, include=FALSE}
 ```
 
-```{r prop-repeat-items-50-fig}
-prop_repeat_items_50_plot
+## Methods {-}
+
+```{r team-structures-exp2, fig.width=3}
+draw_graphviz("team-structures-exp2a", "totems")
 ```
 
-```{r prop-unique-guesses-50-fig}
-prop_unique_guesses_50_plot
+### Participants {-}
+
+## Results {-}
+
+### Number of innovations following inheritance {-}
+
+```{r}
+num_innovations_by_generation_100_plot
 ```
 
-```{r prop-guess-types-50-fig}
-prop_guess_types_plot
+```{r}
+num_innovations_by_generation_100_plot_grouped
 ```
 
-```{r prop-guess-types-by-generation-50-fig}
-prop_guess_types_by_generation_50_plot
+```{r}
+num_unique_innovations_100_plot
 ```
 
-## Performance per inventory
+### Cost of first innovation {-}
 
-```{r performance-per-inventory-50}
+```{r}
+first_discovery_plot
 ```
 
-```{r total-guesses-per-problem-50-fig}
-total_guesses_per_problem_50_plot
+# Experiment 3 {-}
+
+```{r exp3, include=FALSE}
 ```
 
-```{r total-guesses-per-problem-50-mod-fig}
-total_guesses_per_problem_50_mod_plot
-```
-
-```{r total-labor-time-per-problem-50-fig}
-total_labor_time_per_problem_50_plot
-```
-
-# 100 Labor Minutes
-
-```{r team-structures-exp2}
+```{r team-structures-exp3}
 draw_graphviz("team-structures-exp2", "totems")
 ```
 
-## Number of innovations
+## Methods {-}
 
-```{r num-innovations-100}
+### Participants {-}
+
+```{r counts-table-100, results="asis"}
+kable(ConditionCounts100)
 ```
 
-```{r final-num-innovations-100-fig, fig.height=4, fig.width=8, fig.cap="Total number of innovations discovered by strategy. Each point represents the number of innovations created by a single player in a single session."}
-grid.arrange(
-  read_graphviz("team-structures-exp2", "totems"),
-  final_num_innovations_100_plot,
-  nrow = 1,
-  widths = c(0.35, 0.65)
-)
+## Results {-}
+
+```{r, fig.width=6}
+num_innovations_100min_plot
 ```
 
-## Innovation rate
+# Discussion {-}
 
-```{r num-innovations-over-time-100-fig, fig.width=6, fig.height=8}
-grid.arrange(
-  num_innovations_over_time_100 +
-    aes(CalendarTime) +
-    scale_x_calendar_time_100 +
-    theme(legend.position = c(0.12, 0.75)),
-  num_innovations_over_time_100 +
-    aes(PlayerTime) +
-    scale_x_player_time_100 +
-    theme(legend.position = "none"),
-  num_innovations_over_time_100 +
-    aes(TeamTime) +
-    scale_x_team_time_100 +
-    theme(legend.position = "none"),
-  ncol = 1
-)
-```
-
-## Comparing generations and sessions
-
-```{r num-innovations-by-generation-100-fig, fig.width=8}
-grid.arrange(
-  num_innovations_by_generation_100_plot,
-  num_unique_innovations_100_plot,
-  nrow = 1
-)
-```
-
-## Cost per innovation
-
-```{r cost-per-item}
-```
-
-```{r guesses-per-item-100-fig, fig.width=8}
-grid.arrange(
-  guesses_per_item_100_plot,
-  guesses_per_item_100_mod_plot,
-  nrow = 1,
-  widths = c(0.7, 0.3)
-)
-```
-
-```{r guesses-per-item-by-discovery-100-fig, fig.width=8, fig.height=6}
-grid.arrange(
-  guesses_per_item_100_by_discovery_plot,
-  guesses_per_item_100_by_discovered_mod_plot,
-  nrow = 1,
-  widths = c(0.7, 0.3)
-)
-```
-
-# Discussion
-
-# References
+# References {-}
