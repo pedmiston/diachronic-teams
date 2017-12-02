@@ -336,22 +336,60 @@ kable(ConditionCounts, caption = "Total participant and team recruitment.")
 ```{r exp1, include=FALSE}
 ```
 
+In the first experiment we compared the effectiveness of the simplest form
+of inheritance involving a two-person diachronic team to alternative strategies
+for allocating 50 labor minutes (Fig. \@ref(fig:team-structures-exp1)).
+Our analyses focus on the overall achievements of second generation diachronic
+participants compared to the alternatives, as well as the differences in
+problem solving strategy induced via diachronic inheritance. Specifically,
+we tested the hypothesis that diachronic collaboration resulted in a more
+efficient use of labor hours compared to alternative forms of problem solving.
+
+(ref:team-structures-exp1) Problem solving strategies compared in Experiment 1. Each strategy
+was allotted 50 labor minutes. The treatment condition was the diachronic strategy, and the
+impact of inheritance on problem solving ability is measured as the problem solving ability
+of the second generation diachronic participant who begins the problem solving task with the
+solutions discovered by the previous generation. The other conditions are control conditions,
+representing alternative ways of solving the same set of problems without diachronic inheritance.
+
+```{r team-structures-exp1, fig.cap="(ref:team-structures-exp1)"}
+draw_graphviz("team-structures-exp1", "totems")
+```
+
 ## Methods {-}
 
-Participants were recruited for either a 25-minute session or a 50-minute session.
-All participants who signed up for a 50-minute session were assigned to the isolated
-condition. Participants recruited for a 25-minute session were assigned either
-to the diachronic or synchronic conditions.
+Participants completed the Totems game in either a 25-minute session or a 50-minute session.
+All participants recruited for a 50-minute session were assigned to the isolated
+condition. Participants recruited for a 25-minute session were randomly assigned either
+to the diachronic or synchronic conditions. Participants assigned to the diachronic
+condition were assigned to new or existing diachronic team. If they were assigned
+to a new team, they became the first generation participant. If they were assigned
+to an existing team, they inherited the items discovered by the
+previous (first) generation of that team.
 
 ### Participants {-}
 
-The total number of participants and teams included in this analysis are presented in Table \@ref(tab:counts-table-50).
+The total number of participants and teams included in this analysis are
+presented in Table \@ref(tab:counts-table-50).
+
+(ref:counts-table-50) Participants used in the 50 labor minute experiment.
 
 ```{r counts-table-50, results="asis", fig.pos="h"}
-kable(ConditionCounts50, caption = "Participants used in the 50 labor minute experiment.")
+kable(ConditionCounts50, caption = "(ref:counts-table-50)")
 ```
 
 ## Results {-}
+
+Our results are divided into three sections. First, we report the effect
+of problem solving strategy on overall performance in terms of the total
+number of innovations discovered by the end of the experiment. Second,
+we report the effect of strategy on problem solving effectiveness, defined
+as the number of guesses required to discover each new item. Third,
+we report differences in guessing strategy caused by problem solving strategy.
+
+Throughout the analyses our focus is on comparing the problem solving
+ability of second generation diachronic participants to the other conditions
+in the experiment.
 
 ### Number of innovations {-}
 

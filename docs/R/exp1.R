@@ -1,6 +1,42 @@
-source("R/totems/0-setup.R")
+source("docs/R/_setup.R")
 
 # ---- exp1
+
+# Participant and condition counts ----
+TeamCounts50 <- Teams %>%
+  filter(TeamStatus == "V", Exp == "50LaborMinutes") %>%
+  rename(TeamSize = NumPlayers) %>%
+  count(Strategy, SessionDuration, TeamSize) %>%
+  rename(NumTeams = n)
+
+PlayerCounts50 <- Players %>%
+  left_join(
+    Teams %>%
+      filter(TeamStatus == "V", Exp == "50LaborMinutes") %>%
+      select(TeamID, SessionDuration, TeamSize = NumPlayers, SessionsPerPlayer, PlayersPerSession) %>%
+      unique()
+  ) %>%
+  filter(TeamStatus == "V", Exp == "50LaborMinutes") %>%
+  select(PlayerID, Strategy, SessionDuration, TeamSize, SessionsPerPlayer, PlayersPerSession) %>%
+  unique() %>%
+  count(Strategy, SessionDuration, TeamSize) %>%
+  rename(NumPlayers = n)
+
+ConditionCounts50 <- Teams %>%
+  filter(TeamStatus == "V", Exp == "50LaborMinutes") %>%
+  select(Strategy, SessionDuration, TeamSize = NumPlayers, SessionsPerPlayer, PlayersPerSession) %>%
+  unique() %>%
+  arrange(Strategy) %>%
+  left_join(TeamCounts50) %>%
+  left_join(PlayerCounts50) %>%
+  select(-SessionsPerPlayer) %>%
+  rename(
+    `Duration` = SessionDuration,
+    `Team Size` = TeamSize,
+    `Session Size` = PlayersPerSession,
+    `Num Teams` = NumTeams,
+    `Num Participants` = NumPlayers
+  )
 
 # Number of innovations ----
 data("PlayerPerformance")

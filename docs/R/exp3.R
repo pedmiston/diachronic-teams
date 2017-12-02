@@ -1,4 +1,4 @@
-source("R/totems/0-setup.R")
+source("docs/R/_setup.R")
 
 # ---- exp3
 

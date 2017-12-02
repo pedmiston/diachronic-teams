@@ -176,33 +176,6 @@ ConditionCounts <- Teams %>%
   left_join(TeamCounts) %>%
   left_join(PlayerCounts)
 
-TeamCounts50 <- Teams %>%
-  filter(TeamStatus == "V", Exp == "50LaborMinutes") %>%
-  rename(TeamSize = NumPlayers) %>%
-  count(Strategy, SessionDuration, TeamSize) %>%
-  rename(NumTeams = n)
-
-PlayerCounts50 <- Players %>%
-  left_join(
-    Teams %>%
-      filter(TeamStatus == "V", Exp == "50LaborMinutes") %>%
-      select(TeamID, SessionDuration, TeamSize = NumPlayers, SessionsPerPlayer, PlayersPerSession) %>%
-      unique()
-  ) %>%
-  filter(TeamStatus == "V", Exp == "50LaborMinutes") %>%
-  select(PlayerID, Strategy, SessionDuration, TeamSize, SessionsPerPlayer, PlayersPerSession) %>%
-  unique() %>%
-  count(Strategy, SessionDuration, TeamSize) %>%
-  rename(NumPlayers = n)
-
-ConditionCounts50 <- Teams %>%
-  filter(TeamStatus == "V", Exp == "50LaborMinutes") %>%
-  select(Strategy, SessionDuration, TeamSize = NumPlayers, SessionsPerPlayer, PlayersPerSession) %>%
-  unique() %>%
-  arrange(Strategy) %>%
-  left_join(TeamCounts50) %>%
-  left_join(PlayerCounts50)
-
 TeamCounts100 <- Teams %>%
   filter(TeamStatus == "V", Exp == "100LaborMinutes") %>%
   rename(TeamSize = NumPlayers) %>%
