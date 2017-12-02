@@ -2,32 +2,18 @@
 title: "The impact of inheritance on problem solving ability"
 author: "Pierce Edmiston, Max Derex, & Gary Lupyan"
 abstract: |
-  Human cultures are able to accumulate products of culture including tools and
-  other technology like no other species of animal. The cognitive ability that enables
-  cultural accumulation is the ability to inherit innovations, such as an
-  improvement in some tool, from previous generations. A result of
-  accumulated inheritance is that problem solvers rarely have to start from
-  scratch when solving even new problems, as demonstrated by the widepsread
-  prevalence of reuse in the evolution of human technology. But what is the
-  impact of inheritance---starting with a solution that was created by someone
-  else---on problem solving ability? Does inheriting an existing solution to a
-  problem only save time in future problem solving, or does it actually
-  change the way problems are solved? The experiments reported here measure
-  the impact of inheritance on problem solving ability. In the inheritance
-  condition, one person works on a solution to a problem before passing it on
-  to be inherited by another person to continue. Because the people this
-  exchange are working together, I refer to them as diachronic teams. The
-  effectiveness of a diachronic strategy organized around inheritance is
-  compared to alternative strategies for allocating the same number of labor
-  hours: synchronic teams comprising individuals working in parallel, and
-  isolated individuals working for the same total number of labor hours. The
-  purpose of this comparison is to understand the conditions under which
-  inheritance is most helpful for problem solving. Two hypothesis are tested:
-  first, that inheritance will free future generations of problem solvers from
-  being fixated on previous and incorrect learning experiences; and second,
-  that inheriting solutions from problem solvers with diverse skill sets will
-  impact future problem solving more than inheriting solutions from homogenous
-  problem solvers. 
+  Human accumulate cultural products including tools and other technology like
+  no other species of animal. Cultural accumulation is enabled by the ability to
+  inherit tools and other solutions to problems that were first created by other
+  people. A result of cultural accumulation is that problem solvers rarely have
+  to start from scratch when solving even new problems, as demonstrated by the
+  widespread prevalence of reuse in the history of human technology. But what is
+  the impact of inheritance---starting off a problem solving task with a partial
+  solution that was created by a prior generation---on problem solving ability?
+  Does inheriting from a previous generation simply save time in future problem
+  solving, or does it affect the rate at which new problems are solved? To
+  answer this question, we compared problem solving with inheritance to problem
+  solving without inheritance.j
 csl: "theme/apa.csl"
 bibliography: "refs/diachronic-collaboration.bib"
 output:
@@ -69,18 +55,22 @@ Humans are effective problem solvers. Part of this effectiveness comes from the
 ability to reuse and adapt solutions to problems that were first created by
 other people. Inventors rarely create inventions with no precursors, and
 commonly use and adapt inventions that were first created by other people
-[@Basalla:1989wq]. Some reuse is the result of inventions breeding further
-inventions [@Valverde:2007fs; @Borner:2004dm]. But what do innovators and other
-problem solvers gain from inheriting solutions created by others?
-Do future generations of problem solvers gain a head start on future problem
-solving, or does inheriting an existing solution to a problem affect future
-problem solving beyond simply saving time?
+[@Basalla:1989wq; @Valverde:2007fs] [cf. @Borner:2004dm]. But what do innovators
+and other problem solvers gain from adapting solutions created by others? Do
+problem solvers gain a head start on future problem solving, or does inheriting
+an existing solution to a problem affect the way in which future problems are
+solved?
 
-A tool that required a lot of work to create benefits its user by saving them
+A tool or other solution to a problem that required a lot of work to create
+benefits its user by saving them
 the time it would have taken to create the tool themselves, thus giving them a
 head start on future problem solving. The ability to learn socially from others
 can in some cases improve problem solving ability relative to individual
-learning. At the scale of human cultures involving thousands of generations of
+learning. Models of the cultural evolutionary process suggest that inheriting from others
+via social learning is more adaptive than individual learning when individual
+learning is costly in a stable environment [@Boyd:1988slm].
+
+At the scale of human cultures involving thousands of generations of
 collective labor, populations can sustain innovations that no individual would
 be able to recreate in a single lifetime. A modern personal computer may have
 hundreds of thousands of patents involved in its creation, requiring many
