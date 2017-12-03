@@ -35,6 +35,7 @@ opts_chunk$set(
   results = "hide",
   fig.width = 4,
   fig.height = 4,
+  dpi = 144,
   cache = TRUE
 )
 
@@ -370,28 +371,59 @@ kable(ConditionCounts50, caption = "(ref:counts-table-50)")
 
 ## Results {-}
 
-Our results are divided into three sections. First, we report the effect
-of problem solving strategy on overall performance in terms of the total
-number of innovations discovered by the end of the experiment. Second,
-we report the effect of strategy on problem solving effectiveness, defined
-as the number of guesses required to discover each new item. Third,
-we report differences in guessing strategy caused by problem solving strategy.
+### Problem solving with inheritance {-}
 
-Throughout the analyses our focus is on comparing the problem solving
-ability of second generation diachronic participants to the other conditions
-in the experiment.
+On average, second generation diachronic participants took
+`r mean_learning_time_min` minutes of a 25 minute session
+(`r proportion_learning_time`%) to recreate the items that were discovered
+by the previous generation. We refer to this stage of the experiment as the
+learning stage.
+
+The length of the learning stage depended on the number of items that were
+inherited. On average second generation diachronic participants inherited
+`r exp1$mean_inheritance_size` items (SD=`r exp1$sd_inheritance_size`). The
+length of the learning stage scaled linearly with the size of the inheritance,
+but there were some exceptions. A few participants took disproportionately
+long to recreate the items discovered by their ancestor.
+
+Some participants discovered new items that had not been discoverd by their
+ancestor while they were still in the learning stage. That is, they discovered
+new items while there were still items discovered by their ancestor that had not
+been created yet. This suggests that diachronic problem solving is not the
+result of first inheriting and then innovating, but that innovation can occur
+at any point during the learning stage.
+
+(ref:illustrative-diachronic-players) Problem solving with inheritance. Each
+plot shows the rate of problem solving for a second generation diachronic
+problem solver. Diachronic problem solvers spent the first stage of the
+experiment recreating the discoveries made by the previous generation. After
+this learning stage, diachronic problem solvers entered the discovery stage,
+where they attempted to discover new items. The left three plots show trajectories
+for individual participants. The rightmost plot shows the trajectories for all
+participants centered on the time at which the learning stage was completed.
+
+```{r illustrative-diachronic-players, fig.width=8, fig.height=3, fig.cap="(ref:illustrative-diachronic-players)"}
+grid.arrange(
+  illustrative_diachronic_player_stages_plot,
+  diachronic_player_trajectories_plot,
+  nrow = 1,
+  widths = c(0.7, 0.3)
+)
+```
 
 ### Number of innovations {-}
 
-The impact of inheritance on the number of discoveries made via different
-strategies for problem solving is shown in Fig. \@ref(fig:num-innovations-50min-fig).
-Second generation diachronic problem solvers reliably exceeded the discoveries
-made by the first generation in a single 25 minute session,
-`r report_lmer_mod(num_innovations_50min_mod, "DG2_v_DG1")`. However, second
-generation problem solvers did not discover significantly more innovations than
-either a two-person synchronic strategy,
-`r report_lmer_mod(num_innovations_50min_mod, "DG2_v_S2")`, or a single 50 minute
-session, `r report_lmer_mod(num_innovations_50min_mod, "DG2_v_I50")`.
+The impact of inheritance on the total number of discoveries made via
+different strategies for problem solving is shown in Fig. \@ref(fig:num-
+innovations-50min-fig). Second generation diachronic problem solvers
+reliably exceeded the discoveries made by their first generation
+ancestors, `r report_lmer_mod(num_innovations_50min_mod, "DG2_v_DG1")`.
+The advantage of diachronic problem solving over an isolated individual
+given 50 minutes was smaller and not statistically significant
+`r report_lmer_mod(num_innovations_50min_mod, "DG2_v_I50")`. A diachronic
+strategy given 50 minutes performed worse than a two-person synchronic strategy,
+but this difference was small as well and not statistically significant,
+`r report_lmer_mod(num_innovations_50min_mod, "DG2_v_S2")`.
 
 (ref:num-innovations-50min-fig) Number of innovations discovered by each
 strategy. **Top left.** Key showing experimental conditions. **Top right.** Final number
@@ -525,13 +557,9 @@ diachronic players, showing the time taken to recreate all previous items,
 followed by the time taken to create new items.
 
 ```{r guesses-per-item-by-inheritance-50min-fig, fig.width=8, fig.height=6, fig.cap="(ref:guesses-per-item-by-inheritance-50min-fig)"}
-grid.arrange(
-  arrangeGrob(guesses_per_item_by_inheritance_plot + ggtitle("All items"),
+grid.arrange(guesses_per_item_by_inheritance_plot + ggtitle("All items"),
               guesses_per_new_item_by_inheritance_plot + ggtitle("New items"),
-              nrow = 1),
-  illustrative_diachronic_player_stages_plot,
-  ncol = 1
-)
+              nrow = 1)
 ```
 
 ### Guess types {-}
@@ -580,7 +608,7 @@ prop_guess_types_50min_plot
 ## Methods {-}
 
 ```{r team-structures-exp2, fig.width=3}
-draw_graphviz("team-structures-exp2a", "totems")
+draw_graphviz("team-structures-exp2", "totems")
 ```
 
 ### Participants {-}
@@ -613,7 +641,7 @@ first_discovery_plot
 ```
 
 ```{r team-structures-exp3}
-draw_graphviz("team-structures-exp2", "totems")
+draw_graphviz("team-structures-exp3", "totems")
 ```
 
 ## Methods {-}
