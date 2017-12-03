@@ -27,51 +27,59 @@ def install(ctx):
 
 @task
 def make(ctx, name, reset_before=False, open_after=False, verbose=False):
-    """Compile RMarkdown reports to their output formats.
+    """Compile RMarkdown documents.
 
     Examples:
 
-      $ inv docs.make list   # see available reports
-      $ inv docs.make all    # run all reports
-      $ inv docs.make totems # make the totems.Rmd
+      $ inv make list      # see available reports
+      $ inv make all       # run all reports
+      $ inv make totems -o # make totems.Rmd and open output after
 
     """
-    reports = reports_from_name(name)
+    if name == 'list':
+        print('Available docs:')
+        available_docs = get_available_docs()
+        for rmd in available_docs:
+            print(' - %s' % rmd.stem)
+        sys.exit()
+
+    docs = get_available_docs(name)
     failed = []
 
     cmd = 'Rscript -e "rmarkdown::render({!r})"'
-    for report in reports:
+    for doc in docs:
         if reset_before:
-            reset(ctx, report, verbose=verbose)
+            # Run prerequisite task
+            reset(ctx, doc, verbose=verbose)
 
-        result = ctx.run(cmd.format(str(report)), echo=verbose, warn=True)
+        result = ctx.run(cmd.format(str(doc)), echo=verbose, warn=True)
 
         if not result.ok:
-            failed.append(str(report))
+            failed.append(str(doc))
 
         if open_after and result.ok:
-            output_file = Path(report.parent, '{}.html'.format(report.stem))
+            output_file = Path(doc.parent, '{}.html'.format(doc.stem))
             ctx.run('open {}'.format(output_file), echo=verbose)
 
-    print('The following reports had errors:')
-    for report in failed:
-        print(' - {}'.format(report))
+    print('The following docs had errors:')
+    for doc in failed:
+        print(' - {}'.format(doc))
 
 @task
 def reset(ctx, name, verbose=False):
     """Clear the cache and outputs of RMarkdown reports."""
-    reports = reports_from_name(name)
+    docs = get_available_docs(name)
 
-    for report in reports:
-        cache_dir = Path(report.parent, '.cache.{}/'.format(report.stem))
+    for doc in docs:
+        cache_dir = Path(doc.parent, '.cache.{}/'.format(doc.stem))
         if cache_dir.isdir():
             cache_dir.rmtree()
 
-        figs_dir = Path(report.parent, '{}-figs'.format(report.stem))
+        figs_dir = Path(doc.parent, '{}-figs'.format(doc.stem))
         if figs_dir.isdir():
             figs_dir.rmtree()
 
-        code_str = Path(report.parent, 'code*')
+        code_str = Path(doc.parent, 'code*')
         ctx.run('rm -rf {} {} {}'.format(cache_dir, figs_dir, code_str),
                 echo=verbose)
 
@@ -88,22 +96,18 @@ def img(ctx, name, output=None, ext='png', dpi=300):
     ctx.run('dot -T{} -Gdpi={} -o {} {}'.format(ext, dpi, dst, src))
 
 
-def reports_from_name(name):
-    available_reports = [Path(rmd) for rmd in
-                         glob('{proj}/docs/**/*.Rmd'.format(proj=PROJ),
-                              recursive=True)
-                         if Path(rmd).isfile()]
+def get_available_docs(name=''):
+    available_docs = [Path(rmd) for rmd in
+                      glob('{proj}/docs/**/*.Rmd'.format(proj=PROJ),
+                           recursive=True)
+                      if Path(rmd).isfile()]
 
-    if name == 'all':
-        rmds = available_reports
-    elif name == 'list':
-        print('Available docs:')
-        for rmd in available_reports:
-            print(' - %s' % rmd.stem)
-        sys.exit()
+    if name == '':
+        rmds = available_docs
     elif Path(name).isfile():
         rmds = [Path(name)]
     else:
+        # name is a glob
         rmds = [Path(rmd) for rmd in
                 glob('{proj}/docs/**/{name}*.Rmd'.format(proj=PROJ, name=name),
                      recursive=True)
