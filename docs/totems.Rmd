@@ -43,6 +43,7 @@ read_chunk("R/_setup.R")
 read_chunk("R/exp1.R")
 read_chunk("R/exp2.R")
 read_chunk("R/exp3.R")
+read_chunk("R/exp4.R")
 
 source("R/report_model_results.R")
 ```
@@ -327,6 +328,53 @@ kable(ConditionCounts, caption = "Total participant and team recruitment.")
 ```{r exp1, include=FALSE}
 ```
 
+## Results {-}
+
+### Problem solving with inheritance {-}
+
+On average, second generation diachronic participants took
+`r exp1$mean_learning_time_min` minutes of a 25 minute session
+(`r exp1$proportion_learning_time`%) to recreate the items that were discovered
+by the previous generation. We refer to this stage of the experiment as the
+learning stage.
+
+The length of the learning stage depended on the number of items that were
+inherited. On average second generation diachronic participants inherited
+`r exp1$mean_inheritance_size` items (SD=`r exp1$sd_inheritance_size`). The
+length of the learning stage scaled linearly with the size of the inheritance,
+but there were some exceptions. A few participants took disproportionately
+long to recreate the items discovered by their ancestor.
+
+Some participants discovered new items that had not been discoverd by their
+ancestor while they were still in the learning stage. That is, they discovered
+new items while there were still items discovered by their ancestor that had not
+been created yet. This suggests that diachronic problem solving is not the
+result of first inheriting and then innovating, but that innovation can occur
+at any point during the learning stage.
+
+(ref:illustrative-diachronic-players) Problem solving with inheritance. Each
+plot shows the rate of problem solving for a second generation diachronic
+problem solver. Diachronic problem solvers spent the first stage of the
+experiment recreating the discoveries made by the previous generation. After
+this learning stage, diachronic problem solvers entered the discovery stage,
+where they attempted to discover new items. The left three plots show trajectories
+for individual participants. The rightmost plot shows the trajectories for all
+participants centered on the time at which the learning stage was completed.
+
+```{r illustrative-diachronic-players, fig.width=8, fig.height=3, fig.cap="(ref:illustrative-diachronic-players)"}
+grid.arrange(
+  illustrative_diachronic_player_stages_plot,
+  diachronic_player_trajectories_plot,
+  nrow = 1,
+  widths = c(0.7, 0.3)
+)
+```
+
+# Experiment 2 {-}
+
+```{r exp2, include=FALSE}
+```
+
 In the first experiment we compared the effectiveness of the simplest form
 of inheritance involving a two-person diachronic team to alternative strategies
 for allocating 50 labor minutes (Fig. \@ref(fig:team-structures-exp1)).
@@ -370,46 +418,6 @@ kable(ConditionCounts50, caption = "(ref:counts-table-50)")
 ```
 
 ## Results {-}
-
-### Problem solving with inheritance {-}
-
-On average, second generation diachronic participants took
-`r mean_learning_time_min` minutes of a 25 minute session
-(`r proportion_learning_time`%) to recreate the items that were discovered
-by the previous generation. We refer to this stage of the experiment as the
-learning stage.
-
-The length of the learning stage depended on the number of items that were
-inherited. On average second generation diachronic participants inherited
-`r exp1$mean_inheritance_size` items (SD=`r exp1$sd_inheritance_size`). The
-length of the learning stage scaled linearly with the size of the inheritance,
-but there were some exceptions. A few participants took disproportionately
-long to recreate the items discovered by their ancestor.
-
-Some participants discovered new items that had not been discoverd by their
-ancestor while they were still in the learning stage. That is, they discovered
-new items while there were still items discovered by their ancestor that had not
-been created yet. This suggests that diachronic problem solving is not the
-result of first inheriting and then innovating, but that innovation can occur
-at any point during the learning stage.
-
-(ref:illustrative-diachronic-players) Problem solving with inheritance. Each
-plot shows the rate of problem solving for a second generation diachronic
-problem solver. Diachronic problem solvers spent the first stage of the
-experiment recreating the discoveries made by the previous generation. After
-this learning stage, diachronic problem solvers entered the discovery stage,
-where they attempted to discover new items. The left three plots show trajectories
-for individual participants. The rightmost plot shows the trajectories for all
-participants centered on the time at which the learning stage was completed.
-
-```{r illustrative-diachronic-players, fig.width=8, fig.height=3, fig.cap="(ref:illustrative-diachronic-players)"}
-grid.arrange(
-  illustrative_diachronic_player_stages_plot,
-  diachronic_player_trajectories_plot,
-  nrow = 1,
-  widths = c(0.7, 0.3)
-)
-```
 
 ### Number of innovations {-}
 
@@ -600,9 +608,9 @@ in each strategy.
 prop_guess_types_50min_plot
 ```
 
-# Experiment 2 {-}
+# Experiment 3 {-}
 
-```{r exp2, include=FALSE}
+```{r exp3, include=FALSE}
 ```
 
 ## Methods {-}
@@ -635,9 +643,9 @@ num_unique_innovations_100_plot
 first_discovery_plot
 ```
 
-# Experiment 3 {-}
+# Experiment 4 {-}
 
-```{r exp3, include=FALSE}
+```{r exp4, include=FALSE}
 ```
 
 ```{r team-structures-exp3}
