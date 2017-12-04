@@ -17,7 +17,7 @@ TOTEMS_RAW_DATA = Path(R_PKG, 'data-raw/totems')
 
 @task
 def load(ctx):
-    """Load the neo4j graph db with totems data."""
+    """Load the Neo4j graph db with totems data."""
     graphdb.load(delete_first=True)
 
 @task
