@@ -5,68 +5,82 @@ source("docs/R/_setup.R")
 # List to hold descriptives for in-text citation
 exp1 <- list()
 
-# Diachronic G2 ----
+# Inheritances ----
+data("Sessions")
 data("Guesses")
-data("Sampled")
+
+Sessions %<>% filter(TeamID != "G47")
+Guesses %<>% filter(TeamID != "G47")
+
+AncestorMap <- Sessions %>%
+  filter_diachronic_exp() %>%
+  group_by(TeamID) %>%
+  arrange(Generation) %>%
+  mutate(AncestorID = lag(SessionID)) %>%
+  ungroup() %>%
+  filter(Generation > 1) %>%
+  select(SessionID, AncestorID)
+
+Inheritances <- Guesses %>%
+  filter_diachronic_exp() %>%
+  filter(Generation < 4) %>%
+  group_by(SessionID) %>%
+  summarize(InheritanceSize = max(SessionInventorySize) - 6) %>%
+  rename(AncestorID = SessionID) %>%
+  left_join(AncestorMap, .)
+
+exp1$mean_inheritance_size <- round(mean(Inheritances$InheritanceSize), 1)
+exp1$sd_inheritance_size <- round(sd(Inheritances$InheritanceSize), 1)
+
+# Learning times ----
+data("Guesses")
 
 Guesses %<>% filter(TeamID != "G47")
 
-DiachronicInheritance <- filter_diachronic_exp(Guesses) %>%
-  filter(Generation > 1) %>%
-  label_stage_time() %>%
-  mutate(StageTime_2 = StageTime * StageTime)
-
-DG1Summary <- Guesses %>%
+LearningTimes <- Guesses %>%
   filter_diachronic_exp() %>%
-  filter(Generation == 1) %>%
-  group_by(SessionID) %>%
-  summarize(InheritanceSize = max(SessionInventorySize)) %>%
-  mutate(NumInnovationsInherited = InheritanceSize - 6)
-
-exp1$mean_inheritance_size <- round(mean(DG1Summary$NumInnovationsInherited), 1)
-exp1$sd_inheritance_size <- round(sd(DG1Summary$NumInnovationsInherited), 1)
-
-DiachronicStages <- DiachronicInheritance %>%
+  filter(Generation > 1) %>%
   group_by(SessionID) %>%
   summarize(EndLearning = max(SessionTime[Stage == "learning"]))
 
-exp1$mean_learning_time_min <- round(mean(DiachronicStages$EndLearning)/60, 1)
+exp1$mean_learning_time_min <- round(mean(LearningTimes$EndLearning)/60, 1)
 exp1$proportion_learning_time <- round((exp1$mean_learning_time_min/25) * 100, 1)
 
-learning_times_plot <- ggplot(DiachronicStages) +
+learning_times_plot <- ggplot(LearningTimes) +
   aes(EndLearning) +
   geom_histogram(binwidth = 2.5, center = 1.25) +
   scale_x_continuous("Time of learning stage", breaks = seq(0, 25, by = 5))
 
-TimeToRecreateInheritance <- left_join(DG1Summary, DiachronicStages)
+# Learning rates ----
+LearningRates <- left_join(Inheritances, LearningTimes)
 
-time_to_recreate_inheritance_mod <- lm(
-  EndLearning ~ NumInnovationsInherited,
-  # Remove outliers who took exorbitantly long to recreate their inheritance
-  data = dplyr::filter(TimeToRecreateInheritance, EndLearning < 10 * 60)
-)
-time_to_recreate_inheritance_preds <- get_lm_mod_preds(time_to_recreate_inheritance_mod) %>%
+learning_rates_mod <- lm(EndLearning ~ InheritanceSize, data = LearningRates)
+learning_rates_preds <- get_lm_mod_preds(learning_rates_mod) %>%
   rename(EndLearning = fit, SE = se.fit)
 
-learning_times_by_inheritance_size_plot <- ggplot(TimeToRecreateInheritance) +
-  aes(NumInnovationsInherited, EndLearning) +
-  geom_point() +
+learning_rates_plot <- ggplot(LearningRates) +
+  aes(InheritanceSize, EndLearning) +
+  geom_point(position = position_jitter(width = 0.1)) +
   geom_smooth(aes(ymin = EndLearning-SE, ymax = EndLearning + SE),
-              stat = "identity", data = time_to_recreate_inheritance_preds) +
+              stat = "identity", data = learning_rates_preds) +
   scale_x_continuous("Number of items inherited") +
   scale_y_continuous("Time of learning stage (min)", breaks = seq(0, 25, by = 5))
+
+# Stages ----
+data("Guesses")
+
+Guesses %<>% filter(TeamID != "G47")
+
+DiachronicInheritance <- Guesses %>%
+  filter_diachronic_exp() %>%
+  filter(Generation > 1) %>%
+  label_stage_time() %>%
+  mutate(StageTime_2 = StageTime * StageTime)
 
 diachronic_player_stages_plot <- ggplot(DiachronicInheritance) +
   aes(SessionTime, SessionInventorySize) +
   geom_line(aes(group = SessionID), color = t_$color_picker("green")) +
-  facet_wrap("SessionID") +
   theme(legend.position = "none")
-
-# This plot is broken because some participants get unique items that their ancestors do not.
-diachronic_player_stages_plot_labeled <- diachronic_player_stages_plot +
-  geom_vline(aes(xintercept = EndLearning),
-             data = DiachronicStages,
-             color = t_$color_picker("blue"))
 
 illustrative_sessions <- c("G123", "G160", "G164")
 illustrative_diachronic_player_stages_plot <- (
