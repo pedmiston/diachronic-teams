@@ -99,22 +99,22 @@ illustrative_diachronic_player_stages_plot <- (
 
 DiachronicPlaying <- DiachronicInheritance %>%
   filter(Stage == "playing") %>%
-  left_join(DG1Summary)
+  left_join(Inheritances)
 
 diachronic_learning_rate_mod <- lmer(
-  SessionInventorySize ~ (StageTimeMin + StageTimeMin_2) * InheritanceSize + (StageTimeMin + StageTimeMin_2|TeamID),
+  SessionInventorySize ~ (StageTime + StageTime_2) * InheritanceSize + (0 + StageTime + StageTime_2|TeamID),
   data = DiachronicPlaying
 )
 
-mean_inheritance_size <- mean(DG1Summary$InheritanceSize)
-sd_inheritance_size <- sd(DG1Summary$InheritanceSize)
+mean_inheritance_size <- mean(Inheritances$InheritanceSize)
+sd_inheritance_size <- sd(Inheritances$InheritanceSize)
 sampled_inheritance_sizes <- c(mean_inheritance_size - sd_inheritance_size, mean_inheritance_size, mean_inheritance_size + sd_inheritance_size)
 
 diachronic_learning_rate_preds <- expand.grid(
-  StageTimeMin = seq(0, 20, by = 1),
+  StageTime = seq(0, 20, by = 1),
   InheritanceSize = sampled_inheritance_sizes
 ) %>%
-  mutate(StageTimeMin_2 = StageTimeMin * StageTimeMin) %>%
+  mutate(StageTime_2 = StageTime * StageTime) %>%
   cbind(., predictSE(diachronic_learning_rate_mod, newdata = ., se = TRUE)) %>%
   rename(SessionInventorySize = fit, SE = se.fit)
 
@@ -129,5 +129,28 @@ diachronic_player_trajectories_plot <- ggplot(DiachronicInheritance) +
                      breaks = seq(-25, 25, by = 5),
                      labels = seq(-25, 25, by = 5)) +
   scale_y_continuous("Inventory Size") +
-  t_$base_theme +
-  ggtitle("All participants")
+  t_$base_theme
+
+# Performance rel player ----
+data("DiachronicPerformance")
+
+DiachronicPerformance %<>%
+  filter(GuessesRel == "player_guesses", GuessType == "unique_item") %>%
+  rename(NumInnovations = NumGuesses)
+
+ggplot(DiachronicPerformance) +
+  aes(Generation, NumInnovations) +
+  geom_line(aes(group = TeamID))
+
+# Performance rel team ----
+data("DiachronicPerformance")
+
+DiachronicPerformance %<>%
+  filter(Generation > 1) %>%
+  left_join(Inheritances) %>%
+  filter(GuessesRel == "team_guesses", GuessType == "unique_item") %>%
+  rename(NumInnovations = NumGuesses)
+
+ggplot(DiachronicPerformance) +
+  aes(InheritanceSize, NumInnovations) +
+  geom_point(position = position_jitter(width = 0.2))

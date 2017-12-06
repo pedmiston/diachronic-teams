@@ -332,17 +332,20 @@ kable(ConditionCounts, caption = "Total participant and team recruitment.")
 
 ### Problem solving with inheritance {-}
 
-On average, second generation diachronic participants took
-`r exp1$mean_learning_time_min` minutes of a 25 minute session
-(`r exp1$proportion_learning_time`%) to recreate the items that were discovered
-by the previous generation. We refer to this stage of the experiment as the
-learning stage.
+Problem solving with inheritance is divided into two stages: a learning
+stage, and a playing stage. Problem solvers begin in the learning stage.
+The learning stage is defined as the time spent recreating the items whose
+recipe for construction had been inherited from a previous generation.
+On average, diachronic problem solvers after the first generation
+spent `r exp1$mean_learning_time_min` minutes of a 25 minute session
+(`r exp1$proportion_learning_time`%) in the learning stage.
 
 The length of the learning stage depended on the number of items that were
-inherited. On average second generation diachronic participants inherited
+inherited. On average diachronic problem solvers inherited
 `r exp1$mean_inheritance_size` items (SD=`r exp1$sd_inheritance_size`). The
 length of the learning stage scaled linearly with the size of the inheritance,
-but there were some exceptions. A few participants took disproportionately
+`r report_lm_mod(learning_rates_mod, "InheritanceSize")`,
+but there were some exceptions; some participants took disproportionately
 long to recreate the items discovered by their ancestor.
 
 Some participants discovered new items that had not been discoverd by their
@@ -351,6 +354,12 @@ new items while there were still items discovered by their ancestor that had not
 been created yet. This suggests that diachronic problem solving is not the
 result of first inheriting and then innovating, but that innovation can occur
 at any point during the learning stage.
+
+Once all inherited items have been created, problem solvers
+begin the playing stage, where they are tasked with discovering
+new items not discovered by their ancestor.
+
+
 
 (ref:illustrative-diachronic-players) Problem solving with inheritance. Each
 plot shows the rate of problem solving for a second generation diachronic
