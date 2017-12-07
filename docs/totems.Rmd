@@ -13,7 +13,7 @@ abstract: |
   Does inheriting from a previous generation simply save time in future problem
   solving, or does it affect the rate at which new problems are solved? To
   answer this question, we compared problem solving with inheritance to problem
-  solving without inheritance.j
+  solving without inheritance.
 csl: "theme/apa.csl"
 bibliography: "refs/diachronic-collaboration.bib"
 output:
@@ -39,19 +39,16 @@ opts_chunk$set(
   cache = TRUE
 )
 
-read_chunk("R/_setup.R")
-read_chunk("R/exp1.R")
-read_chunk("R/exp2.R")
-read_chunk("R/exp3.R")
-read_chunk("R/exp4.R")
-
-source("R/report_model_results.R")
+sapply(list.files("R", "*.R", full.names = TRUE), read_chunk)
 ```
 
-```{r setup, cache=FALSE}
+```{r setup, include=TRUE, cache=FALSE}
 ```
 
 # Introduction {-}
+
+```{r intro, include=TRUE}
+```
 
 Humans are effective problem solvers. Part of this effectiveness comes from the
 ability to reuse and adapt solutions to problems that were first created by
@@ -198,6 +195,9 @@ grid.arrange(
 
 # Methods {-}
 
+```{r methods, include=FALSE}
+```
+
 Participants were recruited to solve a series of smaller problems in a problem
 solving task and randomly assigned to either the diachronic condition (the
 treatment condition) or one of the control conditions: isolated or synchronic.
@@ -330,7 +330,15 @@ kable(ConditionCounts, caption = "Total participant and team recruitment.")
 
 ## Results {-}
 
-### Problem solving with inheritance {-}
+### Innovations by generation {-}
+
+(ref:innovations-by-generation) Diachronic performance by generation.
+
+```{r innovations-by-generation, fig.cap="(ref:innovations-by-generation)"}
+innovations_by_generation_plot
+```
+
+### Guesses per innovation {-}
 
 Problem solving with inheritance is divided into two stages: a learning
 stage, and a playing stage. Problem solvers begin in the learning stage.
@@ -355,28 +363,24 @@ been created yet. This suggests that diachronic problem solving is not the
 result of first inheriting and then innovating, but that innovation can occur
 at any point during the learning stage.
 
+```{r diachronic-player-trajectories-plot, fig.width=6}
+diachronic_player_trajectories_plot
+```
+
 Once all inherited items have been created, problem solvers
 begin the playing stage, where they are tasked with discovering
 new items not discovered by their ancestor.
 
+(ref:guesses-per-item-by-inheritance) Guesses per innovation by inheritance condition.
 
+```{r guesses-per-item-by-inheritance, fig.cap="(ref:guesses-per-item-by-inheritance)"}
+guesses_per_item_by_inheritance_plot
+```
 
-(ref:illustrative-diachronic-players) Problem solving with inheritance. Each
-plot shows the rate of problem solving for a second generation diachronic
-problem solver. Diachronic problem solvers spent the first stage of the
-experiment recreating the discoveries made by the previous generation. After
-this learning stage, diachronic problem solvers entered the discovery stage,
-where they attempted to discover new items. The left three plots show trajectories
-for individual participants. The rightmost plot shows the trajectories for all
-participants centered on the time at which the learning stage was completed.
+### Guessing strategy
 
-```{r illustrative-diachronic-players, fig.width=8, fig.height=3, fig.cap="(ref:illustrative-diachronic-players)"}
-grid.arrange(
-  illustrative_diachronic_player_stages_plot,
-  diachronic_player_trajectories_plot,
-  nrow = 1,
-  widths = c(0.7, 0.3)
-)
+```{r guess-types-prop, fig.width=6}
+guess_types_prop_plot
 ```
 
 # Experiment 2 {-}

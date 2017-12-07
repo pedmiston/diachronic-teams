@@ -1,5 +1,4 @@
-source("docs/R/_setup.R")
-
+source("docs/R/0-setup.R")
 # ---- exp3
 
 # Improvement over generations ----

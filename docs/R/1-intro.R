@@ -1,3 +1,6 @@
+source("docs/R/0-setup.R")
+# ---- intro
+
 # Types of time ----
 # Makes "types of time" plot.
 # Types of time plot shows the relationship
@@ -59,11 +62,3 @@ gg_person <- ggplot(time) +
   t_$base_theme +
   theme(legend.position = "none",
         panel.grid.major.x = element_blank())
-
-# Combinations ----
-count_unique_guesses <- function(n_items) {
-  n_guesses_of_size <- function(guess_size) {
-    nrow(expand.grid(rep(list(1:n_items), guess_size)))
-  }
-  sum(sapply(1:4, n_guesses_of_size))
-}
