@@ -379,6 +379,26 @@ guesses_per_item_by_inheritance_plot
 
 ### Guessing strategy
 
+Each guess can be classified in one of four ways (Table \@ref(tab:types-of-guesses)). Guesses that had never been made by the participant before were unique item guesses if they created a new item, or simply a unique guess if the guess did not create any item. Guesses that had been made before either could repeat a previously created item, or they could be redundant guesses. We refer to the distribution of guesses
+in these four categories as the guessing strategy.
+
+(ref:types-of-guesses) Four kinds of guesses. Redundant guesses were incorrect guesses that had already been made. Repeat item guesses recreated a previously discovered item. Unique guesses had not been tried before, but did not result in a new item. Unique item guesses were unique guesses that resulted in the creation of a new item.
+
+```{r types-of-guesses, results="asis"}
+recode_guess_type() %>%
+  select(GuessTypeLabel, UniqueGuess, CreatedItem, UniqueResult) %>%
+  kable(caption = "(ref:types-of-guesses)")
+```
+
+To investigate the impact of inheritance on problem solving ability, we compared the
+guessing strategy of problem solvers without inheritance (generation 1 problem solvers)
+to the guessing strategy of problem solvers with inheritance. We found that
+diachronic inheritance resulted in fewer redundant guesses than problem solving
+without inheritance, `r report_lm_mod(redundant_guesses_mod, "Diachronic_v_NoInheritance")`.
+
+Problem solving with inheritance did not result in an increase in the proportion of
+unique guesses, `r report_lm_mod(redundant_guesses_mod, "Diachronic_v_NoInheritance")`.
+
 ```{r guess-types-prop, fig.width=6}
 guess_types_prop_plot
 ```
@@ -388,7 +408,7 @@ guess_types_prop_plot
 ```{r exp2, include=FALSE}
 ```
 
-In the first experiment we compared the effectiveness of the simplest form
+In the second experiment we compared the effectiveness of the simplest form
 of inheritance involving a two-person diachronic team to alternative strategies
 for allocating 50 labor minutes (Fig. \@ref(fig:team-structures-exp1)).
 Our analyses focus on the overall achievements of second generation diachronic
@@ -606,13 +626,6 @@ Diachronic problem solvers also had a higher proportion of unique guesses
 than isolated individuals, `r report_lm_mod(prop_unique_guesses_mod, "DG2_v_I50")`,
 but not first generation diachronic problem solvers,
 `r report_lm_mod(prop_unique_guesses_mod, "DG2_v_DG1")`.
-
-
-```{r types-of-guesses, results="asis"}
-recode_guess_type() %>%
-  select(GuessTypeLabel, UniqueGuess, CreatedItem, UniqueResult) %>%
-  kable(caption = "Four kinds of guesses. Redundant guesses were incorrect guesses that had already been made. Repeat item guesses recreated a previously discovered item. Unique guesses had not been tried before, but did not result in a new item. Unique item guesses were unique guesses that resulted in the creation of a new item.")
-```
 
 (ref:prop-guess-types-50min-fig) Proportion of guesses made by problem solvers
 in each strategy.

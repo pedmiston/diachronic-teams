@@ -228,6 +228,24 @@ Guesses %<>%
   label_inheritance() %>%
   recode_inheritance()
 
+RedundantGuesses <- filter(Guesses, GuessType == "redundant")
+redundant_guesses_mod <- lm(NumGuesses ~ Diachronic_v_NoInheritance,
+                            data = RedundantGuesses)
+prop_redundant_guesses_mod <- lm(PropGuesses ~ Diachronic_v_NoInheritance,
+                                 data = RedundantGuesses)
+
+UniqueGuesses <- Guesses %>% filter(GuessType == "unique_guess")
+unique_guesses_mod <- lm(NumGuesses ~ Diachronic_v_NoInheritance,
+                         data = UniqueGuesses)
+prop_unique_guesses_mod <- lm(PropGuesses ~ Diachronic_v_NoInheritance,
+                              data = UniqueGuesses)
+
+RepeatItems <- Guesses %>% filter(GuessType == "repeat_item")
+repeat_items_mod <- lm(NumGuesses ~ Diachronic_v_NoInheritance,
+                       data = RepeatItems)
+prop_repeat_items_mod <- lm(NumGuesses ~ Diachronic_v_NoInheritance,
+                            data = RepeatItems)
+
 GuessTypesProp <- Guesses %>%
   group_by(Diachronic_v_NoInheritance, GuessType) %>%
   summarize(
