@@ -211,31 +211,29 @@ synchronic team. Participants in the isolated condition participated in a single
 day apart. When isolated participants returned for later sessions, they
 inherited the tools they had discovered in the previous session.
 
-The results generated using these methods are reported in three experiments.
-In Experiment 1, the simplest form of diachronic inheritance, a two-person
-diachronic team, is compared to a two-person synchronic team and an isolated
-individual given 50 minutes. In Experiment 2, inheriting from someone else
-is compared to inheriting from oneself: isolated participants returning
-for multiple sessions. Experiment 3 compares the three main strategies given
-100 minutes to estimate the scalability of each strategy.
+The data generated using these methods are reported in four experiments.
+Experiment 1 investigates the result of accumulated inheritance over four
+generations of problem solving. The analyses explore the differences between
+first generation problem solvers and problem solvers who benefit from
+inheritance, defined as diachronic problem solvers after the first generation.
+In Experiment 2, we compare the simplest form of diachronic inheritance, a
+two-person diachronic team, to a two-person synchronic strategy and an isolated
+individual given 50 minutes. In Experiment 3, inheriting from someone else
+as in diachronic teams is compared to inheriting from oneself: isolated
+participants returning for multiple sessions. Experiment 4 compares the three
+main strategies given 100 minutes, including a four-person synchronic strategy.
 
-The experiments are related in that some data is included in multiple results
-sections. Namely, the data from first and second generation diachronic
-participants are analyzed alone in Experiment 1 and in combination of third and
-fourth generation diachronic participants in Experiments 2 and 3. Experiment
-2 introduces more diachronic participants and data from four sessions by
-isolated participants. The new data reported in Experiment 3 is from the
-four-person synchronic teams. Because the data are being analyzed in this way,
-no statistics collapse across experiment.
-
-(ref:team-structures-all) All experimental conditions. First generation diachronic
-participants began without any items and worked on the problem solving task for
-25 minutes. Generation 2-4 diachronic participants inherited the solutions discovered
-by the previous generation. Isolated participants either participated in a single
-50 minute session, or returned for 4 subsequent 25 minute sessions. Upon returning,
-these participants "inherited" the items they had created in the previous session.
-Synchronic participants completed the problem solving task in groups of 2 or 4
-individuals, each participating for 25 minutes.
+(ref:team-structures-all) All experimental conditions. The **Diachronic**
+condition is the treatment condition: problem solving with inheritance. First
+generation diachronic participants began without any previous solutions and
+worked on the problem solving task for 25 minutes. Diachronic participants
+assigned to generation 2-4 inherited the solutions discovered by the previous
+generation at the start of the problem solving task. The two control conditions
+were Isolated and Synchronic. **Isolated** participants either completed a
+single 50 minute session, or returned for 4 subsequent 25 minute sessions. Upon
+returning, these participants "inherited" the solutions they had created in the
+previous session. **Synchronic** participants completed the problem solving task
+in groups of 2 or 4 individuals, each participating for 25 minutes.
 
 ```{r team-structures-all, fig.cap="(ref:team-structures-all)"}
 draw_graphviz("team-structures-all", "totems")
@@ -243,12 +241,14 @@ draw_graphviz("team-structures-all", "totems")
 
 ## Materials and Procedure {-}
 
+### The Totems game
+
 Participants played a computer game, first reported in @Derex:2015cbb, requiring
-players to iteratively combine items to create new items (tools) for the sake
-of building "a sacred totem to appease the gods." To build a totem,
-participants first needed to construct an axe out of three independently
-discovered items: a refined stick used as a handle, a sharpened rock for the
-blade, and string wound from bark fibers for binding (Fig.
+players to iteratively solve problems involving combining items to create new
+items (tools) for the purposes of building "a sacred totem to appease the gods."
+To build a totem, participants first needed to construct an axe out of three
+independently discovered items: a refined stick used as a handle, a sharpened
+rock for the blade, and string wound from bark fibers for binding (Fig.
 \@ref(fig:landscape-sample)). In the game, more advanced tools produce larger
 and more intricate totems, resulting in higher performance scores.
 
@@ -264,30 +264,37 @@ shown. The axe is required to construct the first totem pole.
 draw_image("landscape-sample.gv", "totems")
 ```
 
-Of all the valid combinations of items that can be made, only a very small
-percentage yield new items. The 6 initial resources can be combined with between
-1 and 4 other items with replacement for a total of `r count_unique_guesses(6)`
-unique guesses, only three of which yield any new tools: a branch can be broken
-off a tree, an antler refined into a club, and two rocks can be combined to
-yield a shaped stone.
+### Guesses
 
-To generate new guesses, participants tried combinations of items one at a time
-by clicking and dragging items into a workshop panel (Fig.
-\@ref(fig:interface)). If the combination yielded an item, it could be stored
-in a stock panel. Items could also be discarded if for example more room was
-needed in the stock panel. Once an item was discovered, its recipe was recorded
-in the history panel. Participants could review their item history and see the
-recipes for their previous innovations, even ones they had discarded.
+To generate new guesses, participants tried combinations of items by dragging
+items into a workshop panel (Fig. \@ref(fig:interface)). Of all the valid
+combinations of items that can be made (combinations of between 1 and 4 items,
+with replacement), only a small percentage successfully yielded new items. The 6 initial
+resources can be combined with between 1 and 4 other items with replacement for
+a total of `r count_unique_guesses(6)` unique guesses, only three of which yield
+any new tools: a branch can be broken off a tree, an antler refined into a club,
+and two rocks can be combined to yield a shaped stone. If the guess
+yielded an item, it could be stored in a stock panel. A maximum of 12 items
+could be stored in the stock panel. Items could be discarded if space was needed
+in the stock panel for new items, or if an item was not needed for any reason.
+
+### Recipes
+
+Once an item was discovered, the recipe for its creation was recorded in the
+history panel. Participants could review their item history and see the recipes
+for their previous innovations, even items they had discarded.
 
 In addition to an individual history, the history pane also had other tabs,
 depending on which strategy each participant was assigned. Diachronic
 participants after the first generation began with a tab that could be selected
-to show all item recipes discovered by the previous generation. Isolated
-participants, if returning for multiple sessions, had a tab with the solutions
-they had come up with during their previous session. Synchronic participants
-had tabs for other synchronic players. The tab displayed the current score of
-each player, so synchronic players were notified that a discovery had been made
-by seeing their teammates score rise above their own.
+to show all item recipes discovered by the previous generation. This was the way
+in which solutions to previous problems were shared with future generations.
+Isolated participants, if returning for multiple sessions, had a tab with the
+solutions they had come up with during their previous session. Synchronic
+participants had tabs for other synchronic problem solvers on their team.
+The tab displayed the current score of each player, so synchronic were
+notified that a discovery had been made by seeing their teammates score rise
+above their own.
 
 (ref:interface) The Totems gameplay interface. Participants generated guesses
 by dragging items into the Workshop and selecting the Try button. If the guess
@@ -306,18 +313,24 @@ for guessing.
 
 ## Participants {-}
 
-Participants were students at the University of Wisconsin-Madison who completed
-the experiment in exchange for course credit. Students received credit for each
-completed session based on the duration of the session. Participants in the
-Isolated, multi-session experiment who completed all four sessions were awarded
-a small bonus.
+Participants (N=`n_recruited`) were students at the University of
+Wisconsin-Madison who completed the experiment in exchange for course credit.
+Students received credit for each completed session based on the duration of the
+session, 25 minutes or 50 minutes. Participants in the Isolated, multi-session
+experiment who completed all four sessions were awarded additional credit.
 
 Participants were recruited until there were at least 40 teams in each strategy.
-If one of the participants, scheduled for a four-person synchronic session, did
-not show up to the experiment, the remaining three participants were run as a
-combination of diachronic and two-person synchronic participants. This happened
-frequently, which explains why the final data includes more than 40 teams
-for some strategies.
+Most strategies, other than four-person synchronic teams, ended up receiving
+more than 40 teams. The reason for this is that participants were scheduled in
+groups of 4 participants at a time, and frequently one or more participants
+would fail to show up for their extra credit opportunity. In these cases, the
+remaining three participants were run as a combination of diachronic and
+two-person synchronic participants.
+
+Data from individual participants were excluded from the final analyses (N=`n_excluded`)
+for the following reasons. Most of these (N=`n_errors`) were excluded because
+the experienced errors in the computer game. Others (N=`n_noncomplaint`) were
+noncomplaint, giving up on the problem solving task (N=`n_gave_up`).
 
 ```{r counts-table, results="asis"}
 kable(ConditionCounts, caption = "Total participant and team recruitment.")
@@ -328,9 +341,34 @@ kable(ConditionCounts, caption = "Total participant and team recruitment.")
 ```{r exp1, include=FALSE}
 ```
 
+In the first experiment, we measure the impact of inheritance on problem solving
+over four generations of diachronic problem solvers (Fig.
+\@ref(fig:team-structures-exp1)). Our analyses answer the following questions
+about the impact of diachronic inheritance on problem solving. First, we ask
+whether and by how much future generations of problem solvers are able to exceed
+the solutions obtained by their ancestors. Second, we ask how diachronic problem
+solvers are affected by the size of their inheritance. Is future problem solving
+unaffected by the number solutions inherited from previous generations? Finally,
+we ask whether diachronic inheritance affects the type of guesses generated
+by future generations of problem solvers. We compare the rates of redundant
+to unique guesses among first generation problem solvers to future generations
+of problem solvers.
+
+```{r team-structures-exp1}
+draw_graphviz("team-structures-exp1", "totems")
+```
+
 ## Results {-}
 
 ### Innovations by generation {-}
+
+Diachronic problem solvers were consistently able to exceed the number of
+innovations discovered by their ancestors (Fig.
+\@ref(innovations-by-generation)). The benefit of inheritance decreased over
+generations, such that later generations of problem solvers benefitted less from
+inheritance than previous generations. Part of the reason for this is
+independent of inheritance and may deal with the combinatorial complexity that
+results from generating guesses from a larger inventory of items.
 
 (ref:innovations-by-generation) Diachronic performance by generation.
 

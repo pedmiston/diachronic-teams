@@ -4,33 +4,39 @@ source("docs/R/0-setup.R")
 # List to hold descriptives for in-text citation
 exp1 <- list()
 
-# Innovations by generation ----
-data("Guesses")
-data("Sessions")
-
-Guesses %<>%
-  filter_diachronic_exp() %>%
-  filter(TeamID != "G47") %>%
-  recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
-  group_by(SessionID) %>%
-  count(GuessType) %>%
-  mutate(PropGuesses = n/sum(n)) %>%
-  ungroup() %>%
-  rename(NumGuesses = n) %>%
-  left_join(Sessions)
-
-Innovations <- Guesses %>%
-  filter(GuessType == "unique_item") %>%
-  rename(NumInnovations = NumGuesses) %>%
+# Jitter Generation by TeamID for plotting
+jitter_team_generation <- . %>%
   group_by(TeamID) %>%
   mutate(GenerationJittered = Generation + rnorm(1, mean = 0, sd = 0.05)) %>%
   ungroup()
 
+# Recode Generation poly
+recode_generation_quad <- . %>%
+  mutate(Generation_2 = Generation^2)
+
+# Innovations by generation ----
+data("Guesses")
+data("Sessions")
+
+Innovations <- Guesses %>%
+  filter_diachronic_exp() %>%
+  filter(TeamID != "G47") %>%
+  recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
+  group_by(SessionID) %>%
+  summarize(NumInnovations = sum(GuessType == "unique_item")) %>%
+  ungroup() %>%
+  left_join(Sessions) %>%
+  jitter_team_generation() %>%
+  recode_generation_quad()
+
 innovations_by_generation_mod <- lmer(
-  NumInnovations ~ Generation + (Generation|TeamID),
+  NumInnovations ~ Generation + Generation_2 +
+    (Generation + Generation_2|TeamID),
   data = Innovations
 )
+
 innovations_by_generation_preds <- data_frame(Generation = 1:4) %>%
+  recode_generation_quad() %>%
   cbind(., predictSE(innovations_by_generation_mod, newdata = ., SE = TRUE)) %>%
   rename(NumInnovations = fit, SE = se.fit)
 
@@ -38,14 +44,63 @@ innovations_by_generation_plot <- ggplot(Innovations) +
   aes(Generation, NumInnovations) +
   geom_line(aes(GenerationJittered, group = TeamID),
             color = t_$color_picker("green"), alpha = 0.6) +
-  geom_line(aes(group = 1), data = diachronic_performance_by_generation_preds,
+  geom_line(aes(group = 1), data = innovations_by_generation_preds,
             color = t_$color_picker("blue"), size = 1.5) +
   geom_errorbar(aes(ymin = NumInnovations-SE, ymax = NumInnovations+SE),
-                data = diachronic_performance_by_generation_preds,
+                data = innovations_by_generation_preds,
                 color = t_$color_picker("blue"), width = 0.2, size = 1.5) +
   geom_point(stat = "summary", fun.y = "mean",
              color = t_$color_picker("green"), size = 3) +
   t_$scale_y_num_innovations +
+  t_$base_theme +
+  theme(
+    panel.grid.minor.x = element_blank()
+  )
+
+# Difficulty score by generation ----
+data("Guesses")
+data("InventoryInfo")
+data("Sessions")
+
+Difficulties <- InventoryInfo %>%
+  transmute(
+    PrevSessionInventoryID = ID,
+    UniqueSessionResult = 1,
+    Difficulty
+  )
+
+DifficultyScores <- Guesses %>%
+  filter_diachronic_exp() %>%
+  filter(TeamID != "G47") %>%
+  recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
+  left_join(Difficulties) %>%
+  group_by(SessionID) %>%
+  summarize(DifficultyScore = sum(Difficulty, na.rm = TRUE)) %>%
+  left_join(Sessions) %>%
+  jitter_team_generation() %>%
+  recode_generation_quad()
+
+difficulty_score_by_generation_mod <- lmer(
+  DifficultyScore ~ Generation + Generation_2 +
+    (Generation + Generation_2|TeamID),
+  data = DifficultyScores
+)
+difficulty_score_by_generation_preds <- data_frame(Generation = 1:4) %>%
+  recode_generation_quad() %>%
+  cbind(., predictSE(difficulty_score_by_generation_mod, newdata = ., SE = TRUE)) %>%
+  rename(DifficultyScore = fit, SE = se.fit)
+
+difficulty_score_by_generation_plot <- ggplot(DifficultyScores) +
+  aes(Generation, DifficultyScore) +
+  geom_line(aes(GenerationJittered, group = TeamID),
+            color = t_$color_picker("green"), alpha = 0.6) +
+  geom_line(aes(group = 1), data = difficulty_score_by_generation_preds,
+            color = t_$color_picker("blue"), size = 1.5) +
+  geom_errorbar(aes(ymin = DifficultyScore-SE, ymax = DifficultyScore+SE),
+                data = difficulty_score_by_generation_preds,
+                color = t_$color_picker("blue"), width = 0.2, size = 1.5) +
+  geom_point(stat = "summary", fun.y = "mean",
+             color = t_$color_picker("green"), size = 3) +
   t_$base_theme +
   theme(
     panel.grid.minor.x = element_blank()

@@ -5,11 +5,11 @@ exp2 <- list()
 
 # Methods ----
 TeamCounts50 <- Teams %>%
-  filter(TeamStatus == "V", Exp == "50LaborMinutes") %>%
+  filter_50min_exp() %>%
   count(Strategy, SessionDuration, NumPlayers) %>%
   rename(NumTeams = n)
 
-PlayerCounts50 <- Players %>%
+PlayerCounts50 <- Sessions%>%
   filter(TeamStatus == "V", Exp == "50LaborMinutes") %>%
   left_join(
     Teams %>%
@@ -125,7 +125,7 @@ data("Guesses")
 data("AdjacentItems")
 data("Teams")
 
-SessionTypes50min <- Players %>%
+SessionTypes50min <- Sessions%>%
   filter(Exp == "50LaborMinutes", TeamStatus == "V") %>%
   recode_session_type_50min() %>%
 

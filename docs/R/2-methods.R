@@ -1,14 +1,6 @@
 source("docs/R/0-setup.R")
 # ---- methods
 
-# Combinations ----
-count_unique_guesses <- function(n_items) {
-  n_guesses_of_size <- function(guess_size) {
-    nrow(expand.grid(rep(list(1:n_items), guess_size)))
-  }
-  sum(sapply(1:4, n_guesses_of_size))
-}
-
 # Reporting model results ----
 
 report_lmer_mod <- function(lmer_mod, term) {
