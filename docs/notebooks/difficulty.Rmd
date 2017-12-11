@@ -14,55 +14,40 @@ opts_chunk$set(
   warning = FALSE,
   cache = TRUE
 )
-read_chunk("../R/setup.R")
+read_chunk("../R/0-setup.R")
 ```
 
 ```{r setup}
+# source("docs/R/0-setup.R")
 ```
 
-Difficulty is a factor of inventory size--the number of items available for recombination--and the number of adjacent items that could be discovered. If difficulty were only a factor of inventory size, the game would get exponentially more difficult as you went on. However, that doesn't seem to be the case. What matters more than the total number of combinations that could be made is the number of adjacent items that could be discovered.
+Difficulty is a factor of inventory size--the number of items available for
+recombination--and the number of adjacent items that could be discovered. If
+difficulty were only a factor of inventory size, the game would get
+exponentially more difficult as you went on. However, that doesn't seem to be
+the case. What matters more than the total number of combinations that could be
+made is the number of adjacent items that could be discovered.
 
 ```{r}
-library(purrrlyr)
+data("Combinatorics")
 
-calculate_num_guesses <- function(step_info) {
-  n <- step_info$inventory_size
-  r <- step_info$guess_size
-  factorial(n)/(factorial(r) * factorial(n-r))
-}
+Combinatorics %<>%
+  tidyr::gather(Type, Count, -InventorySize)
 
-possible_guesses <- expand.grid(inventory_size = 6:30,
-                                guess_size = 1:4) %>%
-  by_row(calculate_num_guesses, .to = "n_combinations",
-         .collate = "rows") %>%
-  group_by(inventory_size) %>%
-  summarize(n_combinations = sum(n_combinations))
-
-ggplot(possible_guesses) +
-  aes(inventory_size, n_combinations) +
-  geom_line(aes(group = 1))
+ggplot(Combinatorics) +
+  aes(InventorySize, Count, color = Type) +
+  geom_point()
 ```
 
 ```{r}
-data("BotsExplore")
+data("InventoryInfo")
 
-Difficulties <- BotsExplore %>%
-  select(inventory_size, n_adjacent, difficulty) %>%
-  unique()
+Difficulties <- InventoryInfo %>%
+  select(InventorySize, GuessDifficulty, CombnDifficulty) %>%
+  tidyr::gather(Type, Difficulty, -InventorySize)
 
 ggplot(Difficulties) +
-  aes(inventory_size, difficulty, color = factor(n_adjacent)) +
-  geom_line(aes(group = n_adjacent)) +
-  geom_point()
-```
-
-```{r}
-data("Inventories")
-
-Inventories$InventorySize <- 6 + Inventories$NumInnovations
-
-ggplot(Inventories) +
-  aes(InventorySize, Difficulty, color = factor(NumAdjacent)) +
-  geom_line(aes(group = NumAdjacent)) +
-  geom_point()
+  aes(InventorySize, Difficulty, color = Type) +
+  geom_point(alpha = 0.5) +
+  facet_wrap("Type")
 ```

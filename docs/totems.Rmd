@@ -15,7 +15,7 @@ abstract: |
   answer this question, we compared problem solving with inheritance to problem
   solving without inheritance.
 csl: "theme/apa.csl"
-bibliography: "refs/diachronic-collaboration.bib"
+bibliography: "references.bib"
 output:
   bookdown::html_document2:
     toc: true
@@ -137,8 +137,8 @@ the first generation inherit solutions from the previous generation to
 start.
 
 The three strategies considered here are overlapping in some aspects. The
-problem solvers using a synchronic strategy can share or "inherit" solutions
-from one another. What distinguishes diachronic and synchronic inheritance is
+problem solvers using a synchronic strategy can share solutions
+with one another. What distinguishes diachronic and synchronic inheritance is
 when the solutions are shared. For diachronic problem solvers, solutions are
 inherited once, at the start of the problem solving task. For synchronic
 problem solvers, solutions are inherited intermittently, throughout the task.
@@ -346,15 +346,15 @@ over four generations of diachronic problem solvers (Fig.
 \@ref(fig:team-structures-exp1)). Our analyses answer the following questions
 about the impact of diachronic inheritance on problem solving. First, we ask
 whether and by how much future generations of problem solvers are able to exceed
-the solutions obtained by their ancestors. Second, we ask how diachronic problem
-solvers are affected by the size of their inheritance. Is future problem solving
-unaffected by the number solutions inherited from previous generations? Finally,
-we ask whether diachronic inheritance affects the type of guesses generated
-by future generations of problem solvers. We compare the rates of redundant
-to unique guesses among first generation problem solvers to future generations
-of problem solvers.
+the solutions obtained by their ancestors. Second, we determine how diachronic
+problem solving is affected by the size of the inheritance. Finally, we
+report how diachronic inheritance influences the type of solutions attempted by
+future generations of problem solvers.
 
-```{r team-structures-exp1}
+(ref:team-structures-exp1) Diachronic problem solving strategy examined in
+Experiment 1.
+
+```{r team-structures-exp1, fig.cap="(ref:team-structures-exp1)"}
 draw_graphviz("team-structures-exp1", "totems")
 ```
 
@@ -365,18 +365,30 @@ draw_graphviz("team-structures-exp1", "totems")
 Diachronic problem solvers were consistently able to exceed the number of
 innovations discovered by their ancestors (Fig.
 \@ref(innovations-by-generation)). The benefit of inheritance decreased over
-generations, such that later generations of problem solvers benefitted less from
-inheritance than previous generations. Part of the reason for this is
-independent of inheritance and may deal with the combinatorial complexity that
-results from generating guesses from a larger inventory of items.
+generations, such that later generations of problem solvers benefitted less 
+from inheritance than previous generations.
 
-(ref:innovations-by-generation) Diachronic performance by generation.
+(ref:innovations-by-generation) Number of innovations discovered by each generation.
 
 ```{r innovations-by-generation, fig.cap="(ref:innovations-by-generation)"}
 innovations_by_generation_plot
 ```
 
+Some slow down in problem solving rate is expected in this task.
+As innovations are accumulated, the total number of possible guesses than can
+be made increases exponentially, and so later generations of times
+are likely to be more difficult.
+
+(ref:difficulty-score-by-generation) Accumulated difficulty scores by each generation.
+
+```{r difficulty-score-by-generation, fig.cap="(ref:difficulty-score-by-generation)"}
+difficulty_score_by_generation_plot
+```
+
 ### Guesses per innovation {-}
+
+Diachronic problem solvers made on average fewer guesses per new item
+than problem solvers without inheritance.
 
 Problem solving with inheritance is divided into two stages: a learning
 stage, and a playing stage. Problem solvers begin in the learning stage.
