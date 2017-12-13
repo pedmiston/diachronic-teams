@@ -3,11 +3,7 @@ title: "The impact of inheritance on problem solving ability"
 author: "Pierce Edmiston, Max Derex, & Gary Lupyan"
 abstract: |
   Human accumulate cultural products including tools and other technology like
-  no other species of animal. Cultural accumulation is enabled by the ability to
-  inherit tools and other solutions to problems that were first created by other
-  people. A result of cultural accumulation is that problem solvers rarely have
-  to start from scratch when solving even new problems, as demonstrated by the
-  widespread prevalence of reuse in the history of human technology. But what is
+  no other species of animal. As a consequence of this accumulation of tools and other solutions to problems, problem solvers rarely have to start from scratch when solving even new problems, as demonstrated by the prevalence of reuse in the history of human technology. But what is
   the impact of inheritance---starting off a problem solving task with a partial
   solution that was created by a prior generation---on problem solving ability?
   Does inheriting from a previous generation simply save time in future problem
@@ -60,70 +56,34 @@ problem solvers gain a head start on future problem solving, or does inheriting
 an existing solution to a problem affect the way in which future problems are
 solved?
 
-A tool or other solution to a problem that required a lot of work to create
-benefits its user by saving them
-the time it would have taken to create the tool themselves, thus giving them a
-head start on future problem solving. The ability to learn socially from others
-can in some cases improve problem solving ability relative to individual
-learning. Models of the cultural evolutionary process suggest that inheriting from others
-via social learning is more adaptive than individual learning when individual
-learning is costly in a stable environment [@Boyd:1988slm].
-
-At the scale of human cultures involving thousands of generations of
-collective labor, populations can sustain innovations that no individual would
-be able to recreate in a single lifetime. A modern personal computer may have
-hundreds of thousands of patents involved in its creation, requiring many
-lifetimes of labor to recreate. The question driving this research is whether
-the best way to understand the impact of inheritance on problem solving is that
-it saves future problem solvers labor time, or if and how inheriting a tool has
-the potential to shape future problem solving ability.
-
-Some forms of inheritance may negatively shape future problem solving ability.
-Inheriting or starting with a particular way of approaching a problem can
-negatively affect problem solving by making it more likely that individuals
-become fixated on incorrect solutions. In these cases, the same problem could
-have been solved more efficiently if the problem solver would have approached
-the problem from a different starting point. In addition, too much inheritance
-or sharing of information in a group of problem solvers can lead to inefficient
-problem solving. Fully connected networks of problem solvers can under some
-circumstances converge prematurely on locally maximal solutions, resulting in
-inefficient group performance.
-
-As for the potential for beneficial effects of inheritance on problem solving
-ability, most models of cultural transmission assume that there isn't one.
-Problem solving ability is presumed to be constant over generations. The best
-case scenario for cultural transmission in these models is an agent successfully
-passing on an innovation to the next generation without losing any information.
-Thus current models of cultural evolution assume that what is inherited is a
-savings in labor time, without any impact on problem solving ability.
-
 This research investigates the impact of inheritance on problem solving ability
 by studying the problem solving ability of individuals who inherit the solutions
-of a previous generation at the start of a problem solving task. I refer to this
-type of collaboration, organized around inheritance, as
+created by a previous generation at the start of a problem solving task. This
+type of collaboration, organized around inheritance, will be referred to as
 **diachronic collaboration** (Fig. \@ref(fig:team-structures)). To understand
 how inheritance impacts problem solving ability, I compare the effectiveness of
-diachronic collaboration to alternative strategies for solving the same problems
-in the same amount of labor time: synchronic collaboration, where team members
-begin with nothing and collaborate in parallel, and isolated individuals, given
-the most time for individual learning (Fig. \@ref(fig:team-structures)). The
-purpose of this comparison is to understand the impact of inheritance on problem
-solving by comparing problem solving ability when starting with an inherited
+diachronic collaboration to two alternative strategies for solving the same
+problems in the same amount of labor time but without diachronic inheritance:
+**synchronic collaboration**, where team members begin with nothing and
+collaborate in parallel, and **isolated individuals**, given the most time for
+individual learning (Fig. \@ref(fig:team-structures)). The purpose of this
+comparison is to understand the impact of inheritance on problem solving by
+comparing problem solving ability when starting with an inherited
 solution---defined as diachronic problem solvers after the first generation---to
 alternative strategies for solving the same problems without diachronic
 inheritance.
 
-(ref:team-structures) Problem solving strategies. Each node is a person. Edge
-lengths represent labor hours spent solving a problem. In diachronic
-collaboration, first generation problem solvers work on solutions to a problem
-before passing them on to be inherited by the next generation. The impact of
-inheritance on problem solving is measured as the problem solving ability of
-diachronic problem solvers after the first generation. Isolated individuals do
-not inherit solutions from other players, but are given the most time for
-individual learning. In synchronic collaboration, multiple problem solvers work
-in parallel, sharing their progress, but synchronic teams do not benefit from
-direct diachronic inheritance because all problem solvers start at the same
-point.
+(ref:team-structures) Problem solving strategies. Each node is a single problem
+solver. Edge lengths represent labor hours spent solving a set of problems. In
+diachronic collaboration, first generation problem solvers work on solutions to
+problems before passing them on to be inherited by the next generation. The
+impact of inheritance on problem solving is measured as the problem solving
+ability of diachronic problem solvers after the first generation. Isolated
+individuals do not inherit solutions from other players, but are given the most
+time for individual learning. In synchronic collaboration, multiple problem
+solvers work in parallel, sharing their progress, but synchronic teams do not
+benefit from direct diachronic inheritance because all problem solvers start at
+the same point.
 
 ```{r team-structures, fig.width=1.5, fig.cap="(ref:team-structures)"}
 draw_graphviz("team-structures", "totems")
@@ -159,22 +119,24 @@ humans possess that make us capable of propagating cultural innovations in a
 population. Even discoveries that happen by accident can survive to be
 replicated throughout a population.
 
-However, most previous approaches have not accounted for the cost of social
-learning relative to individual learning in terms of **labor hours**, instead
-opting to control for **calendar hours**. For example, a group of 5 social
+However, most previous approaches have not directly measured the cost savings
+from social learning relative to individual learning in terms of **labor hours**,
+opting instead to control for **calendar hours**. For example, a group of 5 social
 learners who each spend an hour on a task is measured against the success of an
-individual learner given the same amount of calendar time. Labor time and
-calendar time are different in that a group of 5 social learners working in
-parallel for an hour expends a total of 5 labor hours, but is being compared
-to a single individual given just 1 labor hour.
+individual learner given the same amount of calendar time: a single hour. Controlling
+for labor time would mean the problem solving ability of a group of 5 social
+learners each working for one hour should be compared to an isolated individual
+given 5 hours.
 
-In order to understand the impact of inheritance on problem solving ability, it
-is necessary to account for the labor time invested in creating the initial
-inheritance, as well as measuring the impact of that inheritance on future
-problem solving. Therefore, all strategies in this research are compared given a
-fixed number of labor hours. Labor hours can be contrasted by two other measures
-of time that are not controlled in these experiments: calendar hours and
-individual learning hours (Fig. \@ref(fig:types-of-time)).
+In order to fully understand the impact of inheritance on problem solving
+ability, it is necessary to account for both the cost of creating the
+inheritance as well as the consequences of inheritance on future problem
+solving. In this study the cost and consequence of inheritance is controlled by
+allotting a fixed number of labor hours to diachronic teams. The other
+strategies investigated in this research are compared given the same number of
+labor hours. Labor hours can be contrasted by two other measures of time that
+are not controlled in these experiments: calendar hours and individual learning
+hours (Fig. \@ref(fig:types-of-time)).
 
 (ref:types-of-time) Types of time. **Left.** Key for problem solving strategies.
 **Middle.** Relationship between calendar hours and labor hours. Synchronic
@@ -198,18 +160,19 @@ grid.arrange(
 ```{r methods, include=FALSE}
 ```
 
-Participants were recruited to solve a series of smaller problems in a problem
-solving task and randomly assigned to either the diachronic condition (the
-treatment condition) or one of the control conditions: isolated or synchronic.
-Participants in the diachronic condition either participated as a first
-generation problem solver, or began the problem solving task with the solutions
-discovered by the previous generation. Participants in the synchronic condition
-collaborated in parallel via separate computers. Once a solution was discovered
-by a synchronic participant, it became available for all members of the
-synchronic team. Participants in the isolated condition participated in a single
-50 minute session, or returned for four 25 minute sessions spaced at least one
-day apart. When isolated participants returned for later sessions, they
-inherited the tools they had discovered in the previous session.
+Participants were recruited to engage in a problem solving task requiring them
+to solve a series of smaller problems in service of meeting a larger problem
+solving goal. Participants were randomly assigned to either the diachronic
+condition (the treatment condition) or one of the control conditions: isolated
+or synchronic. Participants in the diachronic condition either participated as a
+first generation problem solver, or began the problem solving task with the
+solutions discovered by a previous generation. Participants in the synchronic
+condition collaborated in parallel via separate computers. Once a solution was
+discovered by a synchronic participant, it became available for all members of
+the synchronic team. Participants in the isolated condition participated in a
+single 50 minute session, or alternately returned for four 25 minute sessions
+spaced least one day apart. When isolated participants returned for later
+sessions, they inherited the tools they had discovered in the previous session.
 
 The data generated using these methods are reported in four experiments.
 Experiment 1 investigates the result of accumulated inheritance over four
@@ -233,7 +196,9 @@ were Isolated and Synchronic. **Isolated** participants either completed a
 single 50 minute session, or returned for 4 subsequent 25 minute sessions. Upon
 returning, these participants "inherited" the solutions they had created in the
 previous session. **Synchronic** participants completed the problem solving task
-in groups of 2 or 4 individuals, each participating for 25 minutes.
+in groups of 2 or 4 individuals, each participating for 25 minutes. Synchronic
+participants collaborated in parallel, sharing solutions with all team members
+as they were discovered.
 
 ```{r team-structures-all, fig.cap="(ref:team-structures-all)"}
 draw_graphviz("team-structures-all", "totems")
@@ -244,8 +209,8 @@ draw_graphviz("team-structures-all", "totems")
 ### The Totems game
 
 Participants played a computer game, first reported in @Derex:2015cbb, requiring
-players to iteratively solve problems involving combining items to create new
-items (tools) for the purposes of building "a sacred totem to appease the gods."
+players to iteratively solve problems related to creating new tools out of
+existing items for the purposes of building "a sacred totem to appease the gods."
 To build a totem, participants first needed to construct an axe out of three
 independently discovered items: a refined stick used as a handle, a sharpened
 rock for the blade, and string wound from bark fibers for binding (Fig.
@@ -266,17 +231,27 @@ draw_image("landscape-sample.gv", "totems")
 
 ### Guesses
 
-To generate new guesses, participants tried combinations of items by dragging
-items into a workshop panel (Fig. \@ref(fig:interface)). Of all the valid
-combinations of items that can be made (combinations of between 1 and 4 items,
-with replacement), only a small percentage successfully yielded new items. The 6 initial
-resources can be combined with between 1 and 4 other items with replacement for
-a total of `r count_unique_guesses(6)` unique guesses, only three of which yield
-any new tools: a branch can be broken off a tree, an antler refined into a club,
-and two rocks can be combined to yield a shaped stone. If the guess
-yielded an item, it could be stored in a stock panel. A maximum of 12 items
-could be stored in the stock panel. Items could be discarded if space was needed
-in the stock panel for new items, or if an item was not needed for any reason.
+Participants solved problems by trial-and-error guessing of different
+combinations of items they believed would yield new tools. To generate new
+guesses, participants dragged items into a workshop panel (Fig.
+\@ref(fig:interface)).
+
+Of all the valid combinations of items that could be made, only a small
+percentage successfully yielded new items. The 6 initial resources can be
+combined with between 1 and 4 other items with replacement for a total of
+`r count_unique_guesses_with_replacement(6)` unique guesses, only three of which
+yield any new tools: a branch can be broken off a tree, an antler refined into
+a club, and two rocks can be combined to yield a shaped stone. As the number
+of items available to each problem solver increased, so did the combinatorial
+complexity of the problem space. Thus, problems became more difficult
+over time.
+
+### Stock
+
+If a guess yielded an item, it could be stored in a stock panel. A maximum of 12
+items could be stored in the stock panel at any given time. Items could be
+discarded if space was needed in the stock panel for new items, or if an item
+was not needed for any reason.
 
 ### Recipes
 
@@ -292,19 +267,20 @@ in which solutions to previous problems were shared with future generations.
 Isolated participants, if returning for multiple sessions, had a tab with the
 solutions they had come up with during their previous session. Synchronic
 participants had tabs for other synchronic problem solvers on their team.
-The tab displayed the current score of each player, so synchronic were
-notified that a discovery had been made by seeing their teammates score rise
-above their own.
+The tab displayed the current score of each player, so synchronic were notified
+that a discovery had been made by seeing a change in their teammates' score.
 
 (ref:interface) The Totems gameplay interface. Participants generated guesses
 by dragging items into the Workshop and selecting the Try button. If the guess
 created an item, it could be dragged into the Stock panel, and used again. Once
-totem segments were made through cutting, carving, and painting, they could be
+segments of a totem were made through cutting, carving, and painting, they could be
 dragged into the Totem panel for scoring.
 
 ```{r interface, fig.cap="(ref:interface)"}
 draw_image("gameplay", "totems")
 ```
+
+### Post experiment survey
 
 After the experiment was completed, participants completed a brief post
 experiment survey assessing their understanding of the task, their experience
@@ -324,12 +300,12 @@ Most strategies, other than four-person synchronic teams, ended up receiving
 more than 40 teams. The reason for this is that participants were scheduled in
 groups of 4 participants at a time, and frequently one or more participants
 would fail to show up for their extra credit opportunity. In these cases, the
-remaining three participants were run as a combination of diachronic and
+remaining participants were run as a combination of diachronic and
 two-person synchronic participants.
 
 Data from individual participants were excluded from the final analyses (N=`n_excluded`)
 for the following reasons. Most of these (N=`n_errors`) were excluded because
-the experienced errors in the computer game. Others (N=`n_noncomplaint`) were
+they experienced errors in the computer game. Others (N=`n_noncomplaint`) were
 noncomplaint, giving up on the problem solving task (N=`n_gave_up`).
 
 ```{r counts-table, results="asis"}
@@ -346,15 +322,18 @@ over four generations of diachronic problem solvers (Fig.
 \@ref(fig:team-structures-exp1)). Our analyses answer the following questions
 about the impact of diachronic inheritance on problem solving. First, we ask
 whether and by how much future generations of problem solvers are able to exceed
-the solutions obtained by their ancestors. Second, we determine how diachronic
-problem solving is affected by the size of the inheritance. Finally, we
-report how diachronic inheritance influences the type of solutions attempted by
-future generations of problem solvers.
+the solutions obtained by their ancestors. Second, we ask how diachronic problem
+solvers are affected by the size of their inheritance. Does the impact of
+inheritance on future problem solving depend on the size of the inheritance? Finally,
+we ask whether diachronic inheritance affects the type of guesses generated
+by future generations of problem solvers. To answer this question, we compare
+the rates of redundant to unique guesses among first generation problem solvers
+to future generations of problem solvers.
 
 (ref:team-structures-exp1) Diachronic problem solving strategy examined in
 Experiment 1.
 
-```{r team-structures-exp1, fig.cap="(ref:team-structures-exp1)"}
+```{r team-structures-exp1, fig.cap="(ref-team-structures-exp1)"}
 draw_graphviz("team-structures-exp1", "totems")
 ```
 
@@ -363,10 +342,12 @@ draw_graphviz("team-structures-exp1", "totems")
 ### Innovations by generation {-}
 
 Diachronic problem solvers were consistently able to exceed the number of
-innovations discovered by their ancestors (Fig.
-\@ref(innovations-by-generation)). The benefit of inheritance decreased over
-generations, such that later generations of problem solvers benefitted less 
-from inheritance than previous generations.
+innovations discovered by their ancestors (Fig. \@ref(innovations-by-generation)).
+The benefit of inheritance decreased over generations, such that later
+generations of problem solvers benefitted less from inheritance than previous
+generations. Part of the reason for this is independent of inheritance and may
+deal with the combinatorial complexity that results from generating guesses from
+a larger inventory of items.
 
 (ref:innovations-by-generation) Number of innovations discovered by each generation.
 
