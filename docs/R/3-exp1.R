@@ -30,8 +30,7 @@ Innovations <- Guesses %>%
   recode_generation_quad()
 
 innovations_by_generation_mod <- lmer(
-  NumInnovations ~ Generation + Generation_2 +
-    (Generation + Generation_2|TeamID),
+  NumInnovations ~ Generation + (Generation|TeamID),
   data = Innovations
 )
 
