@@ -35,3 +35,15 @@ report_lm_mod <- function(lm_mod, term, min_p_value = 0.001, p_value_only = FALS
   sprintf("_b_ = %.2f (SE = %.2f), _t_(%.1f) = %.2f, %s",
           results$estimate, results$std.error, results$df, results$statistic, results$p_value_str)
 }
+
+report_beta <- function(mod, param, digits = 1) {
+  param_ <- param # prevent masking in NSE
+  mod %>%
+    summary %>%
+    .$coefficients %>%
+    as.data.frame() %>%
+    rownames_to_column("param") %>%
+    filter(param == param_) %>%
+    .$Estimate %>%
+    round(digits = digits)
+}

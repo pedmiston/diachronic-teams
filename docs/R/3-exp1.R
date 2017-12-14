@@ -14,6 +14,15 @@ jitter_team_generation <- . %>%
 recode_generation_quad <- . %>%
   mutate(Generation_2 = Generation^2)
 
+# Methods ----
+data("Sessions")
+
+Exp1Participants <- Sessions %>%
+  filter_diachronic_exp() %>%
+  count(Generation) %>%
+  rename(N = n) %>%
+  mutate(Inheritance = c("None", rep("Diachronic", 3)))
+
 # Innovations by generation ----
 data("Guesses")
 data("Sessions")
