@@ -1,4 +1,4 @@
-source("docs/R/0-setup.R")
+source("R/totems/0-setup.R")
 # ---- methods
 
 # Condition counts ----
