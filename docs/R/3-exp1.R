@@ -1,4 +1,4 @@
-source("docs/R/0-setup.R")
+source("R/totems/0-setup.R")
 # ---- exp1
 
 # List to hold descriptives for in-text citation
@@ -74,7 +74,8 @@ Difficulties <- InventoryInfo %>%
   transmute(
     PrevSessionInventoryID = ID,
     UniqueSessionResult = 1,
-    Difficulty
+    GuessDifficulty,
+    CombinationDifficulty
   )
 
 DifficultyScores <- Guesses %>%
@@ -83,14 +84,14 @@ DifficultyScores <- Guesses %>%
   recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
   left_join(Difficulties) %>%
   group_by(SessionID) %>%
-  summarize(DifficultyScore = sum(Difficulty, na.rm = TRUE)) %>%
+  summarize(DifficultyScore = sum(CombinationDifficulty, na.rm = TRUE)) %>%
   left_join(Sessions) %>%
   jitter_team_generation() %>%
   recode_generation_quad()
 
 difficulty_score_by_generation_mod <- lmer(
-  DifficultyScore ~ Generation + Generation_2 +
-    (Generation + Generation_2|TeamID),
+  DifficultyScore ~ Generation +
+    (Generation|TeamID),
   data = DifficultyScores
 )
 difficulty_score_by_generation_preds <- data_frame(Generation = 1:4) %>%
@@ -115,13 +116,13 @@ difficulty_score_by_generation_plot <- ggplot(DifficultyScores) +
   )
 
 # Page's trend test ----
-PerformanceMatrix <- Performance %>%
-  select(TeamID, Generation, NumInnovations) %>%
-  tidyr::spread(Generation, NumInnovations) %>%
-  select(-TeamID) %>%
-  as.matrix()
-
-page_trend_test_results <- crank::page.trend.test(PerformanceMatrix, ranks = FALSE)
+# PerformanceMatrix <- Performance %>%
+#   select(TeamID, Generation, NumInnovations) %>%
+#   tidyr::spread(Generation, NumInnovations) %>%
+#   select(-TeamID) %>%
+#   as.matrix()
+#
+# page_trend_test_results <- crank::page.trend.test(PerformanceMatrix, ranks = FALSE)
 
 # Inheritances ----
 data("Sessions")

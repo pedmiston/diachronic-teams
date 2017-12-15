@@ -1,4 +1,4 @@
-source("docs/R/0-setup.R")
+source("R/totems/0-setup.R")
 # ---- exp2
 
 exp2 <- list()
