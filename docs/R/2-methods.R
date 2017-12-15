@@ -1,6 +1,53 @@
 source("docs/R/0-setup.R")
 # ---- methods
 
+# Condition counts ----
+data("Teams")
+data("Sessions")
+
+TeamCounts <- Teams %>%
+  filter(
+    TeamStatus == "V",
+    !(Strategy == "Isolated" & SessionsPerPlayer == 2),
+    !(Strategy == "Diachronic" & NumPlayers == 2)
+  ) %>%
+  rename(TeamSize = NumPlayers) %>%
+  count(Strategy, SessionDuration, TeamSize) %>%
+  rename(NumTeams = n)
+
+PlayerCounts <- Players %>%
+  left_join(
+    Teams %>%
+      filter(
+        TeamStatus == "V",
+        !(Strategy == "Isolated" & SessionsPerPlayer == 2),
+        !(Strategy == "Diachronic" & NumPlayers == 2)
+      ) %>%
+      select(TeamID, SessionDuration, TeamSize = NumPlayers, SessionsPerPlayer, PlayersPerSession) %>%
+      unique()
+  ) %>%
+  filter(
+    TeamStatus == "V",
+    !(Strategy == "Isolated" & SessionsPerPlayer == 2),
+    !(Strategy == "Diachronic" & NumPlayers == 2)
+  ) %>%
+  select(PlayerID, Strategy, SessionDuration, TeamSize, SessionsPerPlayer, PlayersPerSession) %>%
+  unique() %>%
+  count(Strategy, SessionDuration, TeamSize) %>%
+  rename(NumPlayers = n)
+
+ConditionCounts <- Teams %>%
+  filter(
+    TeamStatus == "V",
+    !(Strategy == "Isolated" & SessionsPerPlayer == 2),
+    !(Strategy == "Diachronic" & NumPlayers == 2)
+  ) %>%
+  select(Strategy, SessionDuration, TeamSize = NumPlayers, SessionsPerPlayer, PlayersPerSession) %>%
+  unique() %>%
+  arrange(Strategy) %>%
+  left_join(TeamCounts) %>%
+  left_join(PlayerCounts)
+
 # Reporting model results ----
 
 report_lmer_mod <- function(lmer_mod, term) {
