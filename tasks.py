@@ -35,7 +35,7 @@ def install(ctx):
     ctx.run('cd {} && Rscript -e "devtools::install()"'.format(R_PKG))
 
 @task
-def make(ctx, name, reset_before=False, open_after=False, verbose=False):
+def make(ctx, name, clear_cache=False, open_after=False, verbose=False):
     """Compile RMarkdown documents.
 
     Examples:
@@ -57,8 +57,7 @@ def make(ctx, name, reset_before=False, open_after=False, verbose=False):
 
     cmd = 'Rscript -e "rmarkdown::render({!r})"'
     for doc in docs:
-        if reset_before:
-            # Run prerequisite task
+        if clear_cache:
             reset(ctx, doc, verbose=verbose)
 
         result = ctx.run(cmd.format(str(doc)), echo=verbose, warn=True)

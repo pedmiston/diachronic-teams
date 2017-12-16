@@ -1,4 +1,3 @@
-source("R/totems/0-setup.R")
 # ---- exp1
 
 # List to hold descriptives for in-text citation
@@ -18,7 +17,7 @@ recode_generation_quad <- . %>%
 data("Sessions")
 
 Exp1Participants <- Sessions %>%
-  filter_diachronic_exp() %>%
+  filter_exp1() %>%
   count(Generation) %>%
   rename(N = n) %>%
   mutate(Inheritance = c("None", rep("Diachronic", 3)))
@@ -28,7 +27,7 @@ data("Guesses")
 data("Sessions")
 
 Innovations <- Guesses %>%
-  filter_diachronic_exp() %>%
+  filter_exp1() %>%
   filter(TeamID != "G47") %>%
   recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
   group_by(SessionID) %>%
@@ -79,7 +78,7 @@ Difficulties <- InventoryInfo %>%
   )
 
 DifficultyScores <- Guesses %>%
-  filter_diachronic_exp() %>%
+  filter_exp1() %>%
   filter(TeamID != "G47") %>%
   recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
   left_join(Difficulties) %>%
@@ -129,7 +128,7 @@ data("Sessions")
 data("Guesses")
 
 AncestorMap <- Sessions %>%
-  filter_diachronic_exp() %>%
+  filter_exp1() %>%
   filter(TeamID != "G47") %>%
   group_by(TeamID) %>%
   arrange(Generation) %>%
@@ -139,7 +138,7 @@ AncestorMap <- Sessions %>%
   select(SessionID, AncestorID)
 
 Inheritances <- Guesses %>%
-  filter_diachronic_exp() %>%
+  filter_exp1() %>%
   filter(TeamID != "G47") %>%
   filter(Generation < 4) %>%
   group_by(SessionID) %>%
@@ -154,7 +153,7 @@ exp1$sd_inheritance_size <- round(sd(Inheritances$InheritanceSize), 1)
 data("Guesses")
 
 LearningTimes <- Guesses %>%
-  filter_diachronic_exp() %>%
+  filter_exp1() %>%
   filter(TeamID != "G47") %>%
   filter(Generation > 1) %>%
   group_by(SessionID) %>%
@@ -187,7 +186,7 @@ learning_rates_plot <- ggplot(LearningRates) +
 data("Guesses")
 
 DiachronicInheritance <- Guesses %>%
-  filter_diachronic_exp() %>%
+  filter_exp1() %>%
   filter(TeamID != "G47") %>%
   filter(Generation > 1) %>%
   label_stage_time() %>%
@@ -232,7 +231,7 @@ data("Guesses")
 data("AdjacentItems")
 
 GuessesPerItem <- Guesses %>%
-  filter_diachronic_exp() %>%
+  filter_exp1() %>%
   filter(TeamID != "G47") %>%
   left_join(AdjacentItems, by = c("PrevSessionInventoryID" = "ID")) %>%
   group_by(SessionID, Adjacent) %>%
@@ -280,7 +279,7 @@ data("Guesses")
 data("Sessions")
 
 Guesses %<>%
-  filter_diachronic_exp() %>%
+  filter_exp1() %>%
   filter(TeamID != "G47") %>%
   recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
   group_by(SessionID) %>%
