@@ -3,6 +3,7 @@ from glob import glob
 
 from invoke import task
 from unipath import Path
+import jinja2
 
 import graphdb
 
@@ -14,6 +15,14 @@ TOTEMS = Path(PROJ, 'experiment')
 ITEM_IMAGES = Path(R_PKG, 'inst/extdata/items')
 TOTEMS_RAW_DATA = Path(R_PKG, 'data-raw/totems')
 
+
+@task
+def env(ctx):
+    """Create environment file from a template."""
+    dst = '.env'
+    template = jinja2.Template(open('environment.j2', 'r').read())
+    with open(dst, 'w') as f:
+        f.write(template.render())
 
 @task
 def load(ctx):
