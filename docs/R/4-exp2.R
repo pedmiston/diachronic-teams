@@ -1,38 +1,40 @@
-source("R/totems/0-setup.R")
 # ---- exp2
 
 exp2 <- list()
 
 # Methods ----
+data("Teams")
+data("Sessions")
+
 TeamCounts50 <- Teams %>%
-  filter_50min_exp() %>%
-  count(Strategy, SessionDuration, NumPlayers) %>%
+  filter_exp2() %>%
+  count(Strategy, SessionDuration, PlayersPerSession) %>%
   rename(NumTeams = n)
 
-PlayerCounts50 <- Sessions%>%
-  filter(TeamStatus == "V", Exp == "50LaborMinutes") %>%
+PlayerCounts50 <- Sessions %>%
+  filter_exp2() %>%
   left_join(
     Teams %>%
-      filter(TeamStatus == "V", Exp == "50LaborMinutes") %>%
-      select(TeamID, SessionDuration, NumPlayers, SessionsPerPlayer, PlayersPerSession) %>%
+      filter_exp2() %>%
+      select(TeamID, SessionDuration, PlayersPerSession) %>%
       unique()
   ) %>%
-  select(PlayerID, Strategy, SessionDuration, NumPlayers, SessionsPerPlayer, PlayersPerSession) %>%
+  select(PlayerID, Strategy, SessionDuration, PlayersPerSession) %>%
   unique() %>%
-  count(Strategy, SessionDuration, NumPlayers) %>%
+  count(Strategy, SessionDuration, PlayersPerSession) %>%
   rename(NumParticipants = n)
 
-ConditionCounts50 <- Teams %>%
-  filter(TeamStatus == "V", Exp == "50LaborMinutes") %>%
-  select(Strategy, SessionDuration, NumPlayers, SessionsPerPlayer, PlayersPerSession) %>%
-  unique() %>%
-  arrange(Strategy) %>%
-  left_join(TeamCounts50) %>%
-  left_join(PlayerCounts50) %>%
-  select(-SessionsPerPlayer) %>%
+ConditionCounts50 <- left_join(
+    TeamCounts50,
+    PlayerCounts50
+  ) %>%
+  mutate(TeamSize = ifelse(Strategy == "Isolated", 1, 2)) %>%
+  select(
+    Strategy, SessionDuration, TeamSize, PlayersPerSession, NumTeams, NumParticipants
+  ) %>%
   rename(
     `Duration` = SessionDuration,
-    `Team Size` = NumPlayers,
+    `Team Size` = TeamSize,
     `Session Size` = PlayersPerSession,
     `Num Teams` = NumTeams,
     `Num Participants` = NumParticipants
@@ -41,10 +43,19 @@ ConditionCounts50 <- Teams %>%
 exp2$N <- sum(ConditionCounts50$`Num Participants`)
 
 # Number of innovations ----
-data("PlayerPerformance")
+data("Guesses")
+data("Exp2Manifest")
 
-PlayerPerformance50min <- PlayerPerformance %>%
-  filter(TeamStatus == "V", Exp == "50LaborMinutes") %>%
+Exp2Sessions <- filter(Exp2Manifest, TeamStatus == "valid", SessionStatus == "valid") %>%
+  select(-(TeamStatus:Notes))
+
+PlayerPerformance50min <- Guesses %>%
+  filter_exp2() %>%
+  recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
+  group_by(SessionID, GuessType) %>%
+  summarize(NumGuesses = n()) %>%
+  ungroup() %>%
+  left_join(Exp2Sessions) %>%
   recode_strategy() %>%
   recode_session_type_50min() %>%
   label_inheritance()

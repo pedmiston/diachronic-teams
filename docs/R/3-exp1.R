@@ -38,7 +38,7 @@ Innovations <- Guesses %>%
   recode_generation_quad()
 
 innovations_by_generation_mod <- lmer(
-  NumInnovations ~ Generation + (Generation|TeamID),
+  NumInnovations ~ Generation + Generation_2 + (Generation + Generation_2|TeamID),
   data = Innovations
 )
 
@@ -69,17 +69,17 @@ data("Guesses")
 data("InventoryInfo")
 data("Sessions")
 
+# Label the difficulty of each unique session result
 Difficulties <- InventoryInfo %>%
   transmute(
     PrevSessionInventoryID = ID,
     UniqueSessionResult = 1,
-    GuessDifficulty,
-    CombinationDifficulty
+    GuessDifficulty = GuessDifficulty/max(GuessDifficulty),
+    CombinationDifficulty = CombinationDifficulty/max(CombinationDifficulty)
   )
 
 DifficultyScores <- Guesses %>%
   filter_exp1() %>%
-  filter(TeamID != "G47") %>%
   recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
   left_join(Difficulties) %>%
   group_by(SessionID) %>%
@@ -97,6 +97,12 @@ difficulty_score_by_generation_preds <- data_frame(Generation = 1:4) %>%
   recode_generation_quad() %>%
   cbind(., predictSE(difficulty_score_by_generation_mod, newdata = ., SE = TRUE)) %>%
   rename(DifficultyScore = fit, SE = se.fit)
+
+difficulty_score_by_generation_quad_mod <- lmer(
+  DifficultyScore ~ Generation + Generation_2 +
+    (Generation + Generation_2|TeamID),
+  data = DifficultyScores
+)
 
 difficulty_score_by_generation_plot <- ggplot(DifficultyScores) +
   aes(Generation, DifficultyScore) +
