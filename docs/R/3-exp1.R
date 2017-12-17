@@ -28,7 +28,6 @@ data("Sessions")
 
 Innovations <- Guesses %>%
   filter_exp1() %>%
-  filter(TeamID != "G47") %>%
   recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
   group_by(SessionID) %>%
   summarize(NumInnovations = sum(GuessType == "unique_item")) %>%
@@ -74,8 +73,8 @@ Difficulties <- InventoryInfo %>%
   transmute(
     PrevSessionInventoryID = ID,
     UniqueSessionResult = 1,
-    GuessDifficulty = GuessDifficulty/max(GuessDifficulty),
-    CombinationDifficulty = CombinationDifficulty/max(CombinationDifficulty)
+    GuessDifficulty = (GuessDifficulty/max(GuessDifficulty))/NumAdjacent,
+    CombinationDifficulty = (CombinationDifficulty/max(CombinationDifficulty))/NumAdjacent
   )
 
 DifficultyScores <- Guesses %>%
@@ -133,19 +132,24 @@ difficulty_score_by_generation_plot <- ggplot(DifficultyScores) +
 data("Sessions")
 data("Guesses")
 
+FinalInventoryIDs <- Guesses %>%
+  filter_exp1() %>%
+  group_by(SessionID) %>%
+  summarize(InventoryID = PrevSessionInventoryID[SessionTime == max(SessionTime)])
+
 AncestorMap <- Sessions %>%
   filter_exp1() %>%
-  filter(TeamID != "G47") %>%
   group_by(TeamID) %>%
   arrange(Generation) %>%
   mutate(AncestorID = lag(SessionID)) %>%
   ungroup() %>%
   filter(Generation > 1) %>%
-  select(SessionID, AncestorID)
+  select(SessionID, AncestorID) %>%
+  left_join(FinalInventoryIDs, by = c("AncestorID" = "SessionID")) %>%
+  rename(AncestorInventoryID = InventoryID)
 
 Inheritances <- Guesses %>%
   filter_exp1() %>%
-  filter(TeamID != "G47") %>%
   filter(Generation < 4) %>%
   group_by(SessionID) %>%
   summarize(InheritanceSize = max(SessionInventorySize) - 6) %>%
@@ -158,35 +162,110 @@ exp1$sd_inheritance_size <- round(sd(Inheritances$InheritanceSize), 1)
 # Learning times ----
 data("Guesses")
 
-LearningTimes <- Guesses %>%
+StageTimes <- Guesses %>%
   filter_exp1() %>%
-  filter(TeamID != "G47") %>%
   filter(Generation > 1) %>%
   group_by(SessionID) %>%
-  summarize(EndLearning = max(SessionTime[Stage == "learning"]))
+  summarize(LearningTime = max(SessionTime[Stage == "learning"])) %>%
+  mutate(PlayingTime = 25 - LearningTime)
 
-exp1$mean_learning_time_min <- round(mean(LearningTimes$EndLearning)/60, 1)
+OutliersByLearningTime <- StageTimes %>%
+  transmute(SessionID, Outlier = LearningTime > 22)
+StageTimes %<>% left_join(OutliersByLearningTime)
+
+exp1$mean_learning_time_min <- round(mean(StageTimes$LearningTime)/60, 1)
 exp1$proportion_learning_time <- round((exp1$mean_learning_time_min/25) * 100, 1)
 
-learning_times_plot <- ggplot(LearningTimes) +
-  aes(EndLearning) +
+learning_times_plot <- ggplot(StageTimes) +
+  aes(LearningTime, fill = Outlier) +
   geom_histogram(binwidth = 2.5, center = 1.25) +
-  scale_x_continuous("Time of learning stage", breaks = seq(0, 25, by = 5))
+  scale_x_continuous("Learning time (min)", breaks = seq(0, 25, by = 5)) +
+  ylab("Count") +
+  scale_fill_manual(values = t_$color_picker(c("blue", "orange"))) +
+  t_$base_theme +
+  theme(legend.position = "none")
 
 # Learning rates ----
-LearningRates <- left_join(Inheritances, LearningTimes)
+LearningRates <- left_join(Inheritances, StageTimes)
 
-learning_rates_mod <- lm(EndLearning ~ InheritanceSize, data = LearningRates)
+learning_rates_mod <- lm(LearningTime ~ InheritanceSize,
+                         data = filter(LearningRates, !Outlier))
 learning_rates_preds <- get_lm_mod_preds(learning_rates_mod) %>%
-  rename(EndLearning = fit, SE = se.fit)
+  rename(LearningTime = fit, SE = se.fit)
+
+t_$scale_shape_outlier <- scale_shape_manual(values = c(1, 4))
 
 learning_rates_plot <- ggplot(LearningRates) +
-  aes(InheritanceSize, EndLearning) +
-  geom_point(position = position_jitter(width = 0.1)) +
-  geom_smooth(aes(ymin = EndLearning-SE, ymax = EndLearning + SE),
-              stat = "identity", data = learning_rates_preds) +
-  scale_x_continuous("Number of items inherited") +
-  scale_y_continuous("Time of learning stage (min)", breaks = seq(0, 25, by = 5))
+  aes(InheritanceSize, LearningTime) +
+  geom_point(aes(shape = Outlier),
+             position = position_jitter(width = 0.1)) +
+  geom_smooth(aes(ymin = LearningTime-SE, ymax = LearningTime + SE),
+              stat = "identity", data = learning_rates_preds,
+              color = t_$diachronic_color) +
+  scale_x_continuous("Innovations inherited") +
+  scale_y_continuous("Learning time (min)", breaks = seq(0, 25, by = 5)) +
+  t_$scale_shape_outlier +
+  t_$base_theme +
+  guides(shape = "none")
+
+# Inherited and unique innovations ----
+CostOfInheritance <- left_join(Inheritances, StageTimes) %>%
+  inner_join(Innovations) %>%
+  mutate(NumUniqueInnovations = NumInnovations - InheritanceSize)
+
+innovations_created_and_inherited_plot <- ggplot(CostOfInheritance) +
+  aes(InheritanceSize, NumInnovations) +
+  geom_point(aes(shape = Outlier),
+             position = position_jitter(width = 0.2)) +
+  geom_abline(intercept = 0, slope = 1, linetype = 2, size = 0.5) +
+  scale_x_continuous("Innovations inherited") +
+  scale_y_continuous("Innovations created") +
+  t_$scale_shape_outlier +
+  t_$base_theme +
+  guides(shape = "none")
+
+unique_innovations_mod <- lmer(
+  NumUniqueInnovations ~ InheritanceSize + (1|AncestorInventoryID),
+  data = filter(CostOfInheritance, !Outlier)
+)
+unique_innovations_preds <- data_frame(InheritanceSize = 2:20) %>%
+  cbind(., predictSE(unique_innovations_mod, newdata = ., se = TRUE)) %>%
+  rename(NumUniqueInnovations = fit, SE = se.fit)
+
+unique_innovations_plot <- ggplot(CostOfInheritance) +
+  aes(InheritanceSize, NumUniqueInnovations) +
+  geom_smooth(aes(ymin = NumUniqueInnovations-SE, ymax = NumUniqueInnovations+SE),
+              stat = "identity", data = unique_innovations_preds,
+              color = t_$diachronic_color) +
+  geom_point(aes(shape = Outlier),
+             position = position_jitter(width = 0.2)) +
+  geom_hline(yintercept = 0, linetype = 2, size = 0.5) +
+  scale_x_continuous("Innovations inherited") +
+  scale_y_continuous("New innovations") +
+  t_$scale_shape_outlier +
+  guides(shape = "none") +
+  t_$base_theme
+
+# Playing time and unique innovations ----
+playing_time_mod <- lmer(
+  NumUniqueInnovations ~ PlayingTime + (1|AncestorInventoryID),
+  data = filter(CostOfInheritance, !Outlier)
+)
+playing_time_preds <- data_frame(PlayingTime = 5:23) %>%
+  cbind(., predictSE(playing_time_mod, newdata = ., se = TRUE)) %>%
+  rename(NumUniqueInnovations = fit, SE = se.fit)
+
+playing_time_plot <- ggplot(CostOfInheritance) +
+  aes(PlayingTime, NumUniqueInnovations) +
+  geom_smooth(aes(ymin = NumUniqueInnovations-SE, ymax = NumUniqueInnovations+SE),
+              stat = "identity", data = playing_time_preds,
+              color = t_$diachronic_color) +
+  geom_point(aes(shape = Outlier), position = position_jitter(height = 0.1)) +
+  xlab("Playing time (min)") +
+  ylab("New innovations") +
+  t_$scale_shape_outlier +
+  guides(shape = "none") +
+  t_$base_theme
 
 # Stages ----
 data("Guesses")

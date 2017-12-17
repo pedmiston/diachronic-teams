@@ -18,7 +18,6 @@ PlayerCounts <- Sessions %>%
       unique()
   ) %>%
   filter(
-    SessionStatus == "valid",
     SessionDuration %in% c(25, 50),
     !(Strategy == "Synchronic" & !(PlayersPerSession %in% c(2, 4)))
   ) %>%
