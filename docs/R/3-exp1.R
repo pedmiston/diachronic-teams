@@ -114,6 +114,7 @@ difficulty_score_by_generation_plot <- ggplot(DifficultyScores) +
                 color = t_$color_picker("blue"), width = 0.2, size = 1.5) +
   geom_point(stat = "summary", fun.y = "mean",
              color = t_$color_picker("green"), size = 3) +
+  scale_y_log10() +
   t_$base_theme +
   theme(
     panel.grid.minor.x = element_blank()

@@ -45,7 +45,8 @@ opts_chunk$set(
 )
 
 # Read all knitr chunks in files matching R/*.R
-sapply(list.files("R", "*.R", full.names = TRUE), read_chunk)
+chunks_dir <- "R"
+sapply(list.files(chunks_dir, "*.R", full.names = TRUE), read_chunk)
 
 # Read all the diagrams made with graphviz in the totems package
 chunks <- c(
