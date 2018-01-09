@@ -11,7 +11,13 @@ jitter_team_generation <- . %>%
 
 # Recode Generation poly
 recode_generation_quad <- . %>%
-  mutate(Generation_2 = Generation^2)
+  mutate(
+    GenerationSqr = Generation^2,
+    Generation0Sqr = Generation0^2
+  )
+
+recode_generation_base0 <- . %>%
+  mutate(Generation0 = Generation - 1)
 
 # Methods ----
 data("Sessions")
@@ -34,16 +40,22 @@ Innovations <- Guesses %>%
   ungroup() %>%
   left_join(Sessions) %>%
   jitter_team_generation() %>%
+  recode_generation_base0() %>%
   recode_generation_quad()
 
 innovations_by_generation_mod <- lmer(
-  NumInnovations ~ Generation + Generation_2 + (Generation + Generation_2|TeamID),
+  NumInnovations ~ Generation + (Generation|TeamID),
   data = Innovations
 )
 
+innovations_by_generation_quad_mod <- lmer(
+  NumInnovations ~ Generation0 + Generation0Sqr + (Generation0 + Generation0Sqr|TeamID),
+  data = Innovations
+)
 innovations_by_generation_preds <- data_frame(Generation = 1:4) %>%
+  recode_generation_base0() %>%
   recode_generation_quad() %>%
-  cbind(., predictSE(innovations_by_generation_mod, newdata = ., SE = TRUE)) %>%
+  cbind(., predictSE(innovations_by_generation_quad_mod, newdata = ., SE = TRUE)) %>%
   rename(NumInnovations = fit, SE = se.fit)
 
 innovations_by_generation_plot <- ggplot(Innovations) +
@@ -56,7 +68,7 @@ innovations_by_generation_plot <- ggplot(Innovations) +
                 data = innovations_by_generation_preds,
                 color = t_$color_picker("blue"), width = 0.2, size = 1.5) +
   geom_point(stat = "summary", fun.y = "mean",
-             color = t_$color_picker("green"), size = 3) +
+             color = t_$color_picker("green"), shape = 4, size = 3) +
   t_$scale_y_num_innovations +
   t_$base_theme +
   theme(
@@ -73,8 +85,8 @@ Difficulties <- InventoryInfo %>%
   transmute(
     PrevSessionInventoryID = ID,
     UniqueSessionResult = 1,
-    GuessDifficulty = (GuessDifficulty/max(GuessDifficulty))/NumAdjacent,
-    CombinationDifficulty = (CombinationDifficulty/max(CombinationDifficulty))/NumAdjacent
+    GuessDifficulty = (GuessDifficulty/max(GuessDifficulty)),
+    CombinationDifficulty = (CombinationDifficulty/max(CombinationDifficulty))
   )
 
 DifficultyScores <- Guesses %>%
@@ -98,10 +110,13 @@ difficulty_score_by_generation_preds <- data_frame(Generation = 1:4) %>%
   rename(DifficultyScore = fit, SE = se.fit)
 
 difficulty_score_by_generation_quad_mod <- lmer(
-  DifficultyScore ~ Generation + Generation_2 +
-    (Generation + Generation_2|TeamID),
+  DifficultyScore ~ Generation + GenerationSqr +
+    (Generation|TeamID),
   data = DifficultyScores
 )
+
+difficulty_score_by_generation_modcomp <- 
+  anova(difficulty_score_by_generation_mod, difficulty_score_by_generation_quad_mod)
 
 difficulty_score_by_generation_plot <- ggplot(DifficultyScores) +
   aes(Generation, DifficultyScore) +
@@ -113,8 +128,7 @@ difficulty_score_by_generation_plot <- ggplot(DifficultyScores) +
                 data = difficulty_score_by_generation_preds,
                 color = t_$color_picker("blue"), width = 0.2, size = 1.5) +
   geom_point(stat = "summary", fun.y = "mean",
-             color = t_$color_picker("green"), size = 3) +
-  scale_y_log10() +
+             color = t_$color_picker("green"), shape = 4, size = 3) +
   t_$base_theme +
   theme(
     panel.grid.minor.x = element_blank()

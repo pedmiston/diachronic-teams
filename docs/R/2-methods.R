@@ -58,11 +58,7 @@ report_lm_mod <- function(lm_mod, term, min_p_value = 0.001, p_value_only = FALS
   lm_summary <- broom::glance(lm_mod) %>% as.list()
   results$df <- lm_summary$df.residual
 
-  if (results$p.value < min_p_value) {
-    results$p_value_str <- "_p_ < 0.001"
-  } else {
-    results$p_value_str <- paste("_p_ = ", round(results$p.value, 3))
-  }
+  results$p_value_str <- compute_p_string(results$p.value)
 
   if (p_value_only == TRUE) {
     return(results$p_value_str)
@@ -82,4 +78,20 @@ report_beta <- function(mod, param, digits = 1) {
     filter(param == param_) %>%
     .$Estimate %>%
     round(digits = digits)
+}
+
+report_modcomp <- function(modcomp) {
+  modcomp <- as.list(modcomp[2, ])
+  p_string <- compute_p_string(modcomp$`Pr(>Chisq)`)
+  sprintf("_$X_2$(%i) = %.4f, %s", modcomp$`Chi Df`, modcomp$Chisq, p_string)
+}
+
+compute_p_string <- function(p_value) {
+  min_p_value <- 0.001
+  if (p_value < min_p_value) {
+    p_value_str <- "_p_ < 0.001"
+  } else {
+    p_value_str <- paste("_p_ = ", round(p_value, 3))
+  }
+  p_value_str
 }
