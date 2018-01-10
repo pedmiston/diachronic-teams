@@ -1,105 +1,65 @@
 source("docs/R/0-setup.R")
+source("docs/R/1-intro.R")
+source("docs/R/2-methods.R")
 # ---- exp3
 
-# Improvement over generations ----
-data("PlayerPerformance")
+# Methods ----
+data("Sessions")
 
-NumInnovationsByGeneration100 <- PlayerPerformance %>%
-  filter(
-    TeamStatus == "V",
-    Exp == "100LaborMinutes",
-    Strategy != "Synchronic"
-  ) %>%
-  recode_strategy() %>%
-  label_inheritance() %>%
-  recode_inheritance() %>%
-  recode_generation_type_100()
+Exp3Participants <- Sessions %>%
+  filter_exp3() %>%
+  select(Strategy, PlayerID) %>%
+  unique() %>%
+  count(Strategy) %>%
+  rename(N = n)
 
-ggplot(NumInnovationsByGeneration100) +
-  aes(Generation, NumInnovations, color = StrategyLabel) +
-  geom_line(aes(group = TeamID), size = 0.4, alpha = 0.6) +
-  geom_line(stat = "summary", fun.y = "mean", size = 1.4) +
-  t_$scale_y_num_innovations +
-  t_$scale_color_strategy +
-  t_$base_theme
+# Innovations by generation ----
+data("Guesses")
+data("Sessions")
 
-num_innovations_by_generation_100_mod <- lmer(
-  NumInnovations ~ Diachronic_v_Isolated * GenerationC + (1|TeamID),
-  data = NumInnovationsByGeneration100
+Innovations <- Guesses %>%
+  filter_exp3() %>%
+  recode_guess_type(unique_guess = "UniqueSessionGuess", unique_result = "UniqueSessionResult") %>%
+  group_by(SessionID) %>%
+  summarize(NumInnovations = sum(GuessType == "unique_item")) %>%
+  ungroup() %>%
+  left_join(Sessions) %>%
+  jitter_team_generation() %>%
+  recode_generation_base0() %>%
+  recode_generation_quad()
+
+innovations_by_generation_mod <- lmer(
+  NumInnovations ~ Generation + (Generation|TeamID),
+  data = Innovations
 )
 
-num_innovations_by_generation_100_preds <- expand.grid(
-  GenerationC = c(-0.5, 0.5),
-  Strategy = c("Diachronic", "Isolated"),
-  stringsAsFactors = FALSE
-) %>%
-  mutate(GenerationTypeLabel = c("Generation N", "Generation N+1", "Session N", "Session N+1")) %>%
-  recode_strategy() %>%
-  cbind(., predictSE(num_innovations_by_generation_100_mod, newdata = ., se = TRUE)) %>%
+innovations_by_generation_quad_mod <- lmer(
+  NumInnovations ~ Generation0 + Generation0Sqr + (Generation0 + Generation0Sqr|TeamID),
+  data = Innovations
+)
+innovations_by_generation_preds <- data_frame(Generation = 1:4) %>%
+  recode_generation_base0() %>%
+  recode_generation_quad() %>%
+  cbind(., predictSE(innovations_by_generation_quad_mod, newdata = ., SE = TRUE)) %>%
   rename(NumInnovations = fit, SE = se.fit)
 
-num_innovations_by_generation_100_plot <- ggplot(NumInnovationsByGeneration100) +
-  aes(GenerationTypeLabel, NumInnovations, color = StrategyLabel) +
-  geom_line(aes(group = interaction(TeamID, GenerationTypeGroup)), alpha = 0.4) +
-  geom_line(aes(group = 1), size = 1.5,
-            stat = "identity", data = num_innovations_by_generation_100_preds) +
-  geom_errorbar(aes(ymin = NumInnovations-SE, ymax = NumInnovations+SE),
-                data = num_innovations_by_generation_100_preds,
-                width = 0.1, size = 1.5) +
-  scale_x_discrete("") +
-  t_$scale_y_num_innovations +
-  scale_color_manual(values = t_$color_picker(c("orange", "blue"))) +
-  facet_wrap("Strategy", scales = "free_x") +
+innovations_by_generation_plot <- ggplot(Innovations) +
+  aes(Generation, NumInnovations) +
+  geom_line(aes(GenerationJittered, group = TeamID, color = Strategy),
+            alpha = 0.6) +
+  # geom_line(aes(group = 1), data = innovations_by_generation_preds,
+  #           color = t_$color_picker("blue"), size = 1.5) +
+  # geom_errorbar(aes(ymin = NumInnovations-SE, ymax = NumInnovations+SE),
+  #               data = innovations_by_generation_preds,
+  #               color = t_$color_picker("blue"), width = 0.2, size = 1.5) +
+  geom_point(stat = "summary", fun.y = "mean",
+             color = t_$color_picker("green"), shape = 4, size = 3) +
+  facet_wrap("Strategy") +
+  # t_$scale_y_num_innovations +
   t_$base_theme +
-  theme(legend.position = "none",
-        panel.grid.minor.x = element_blank())
-
-num_innovations_by_generation_100_plot_grouped <- ggplot(NumInnovationsByGeneration100) +
-  aes(GenerationTypeLabel, NumInnovations, color = StrategyLabel) +
-  # geom_line(aes(group = interaction(TeamID, GenerationTypeGroup)), alpha = 0.4) +
-  geom_line(aes(group = interaction(StrategyLabel, GenerationTypeGroup)), stat = "summary", fun.y = "mean")
-
-# Unique innovations by generation ----
-UniqueInnovations100 <- NumInnovationsByGeneration100 %>%
-  group_by(TeamID, GenerationTypeGroup) %>%
-  mutate(UniqueInnovations = ifelse(
-    GenerationC == -0.5, NumInnovations[GenerationC == -0.5],
-    NumInnovations[GenerationC == 0.5] - NumInnovations[GenerationC == -0.5]
+  theme(
+    panel.grid.minor.x = element_blank()
   )
-  ) %>%
-  ungroup()
-
-unique_innovations_100_mod <- lmer(
-  UniqueInnovations ~ Diachronic_v_Isolated * GenerationC + (1|TeamID),
-  data = UniqueInnovations100
-)
-
-unique_innovations_100_preds <- expand.grid(
-  GenerationC = c(-0.5, 0.5),
-  Strategy = c("Diachronic", "Isolated"),
-  stringsAsFactors = FALSE
-) %>%
-  mutate(GenerationTypeLabel = c("Generation N", "Generation N+1", "Session N", "Session N+1")) %>%
-  recode_strategy() %>%
-  cbind(., predictSE(unique_innovations_100_mod, newdata = ., se = TRUE)) %>%
-  rename(UniqueInnovations = fit, SE = se.fit)
-
-num_unique_innovations_100_plot <- ggplot(UniqueInnovations100) +
-  aes(GenerationTypeLabel, UniqueInnovations, color = StrategyLabel) +
-  geom_line(aes(group = interaction(TeamID, GenerationTypeGroup)), alpha = 0.4) +
-  geom_line(aes(group = 1), stat = "identity", size = 1.5,
-            data = unique_innovations_100_preds) +
-  geom_errorbar(aes(ymin = UniqueInnovations-SE, ymax = UniqueInnovations+SE),
-                data = unique_innovations_100_preds,
-                width = 0.1, size = 1.5) +
-  scale_x_discrete("") +
-  scale_y_continuous("Unique innovations", breaks = seq(-30, 30, by = 2)) +
-  scale_color_manual(values = t_$color_picker(c("orange", "blue"))) +
-  facet_wrap("Strategy", scales = "free_x") +
-  t_$base_theme +
-  theme(legend.position = "none",
-        panel.grid.minor.x = element_blank())
-
 
 # Cost by stage ----
 data("Guesses")

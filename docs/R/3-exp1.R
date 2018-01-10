@@ -3,22 +3,6 @@
 # List to hold descriptives for in-text citation
 exp1 <- list()
 
-# Jitter Generation by TeamID for plotting
-jitter_team_generation <- . %>%
-  group_by(TeamID) %>%
-  mutate(GenerationJittered = Generation + rnorm(1, mean = 0, sd = 0.05)) %>%
-  ungroup()
-
-# Recode Generation poly
-recode_generation_quad <- . %>%
-  mutate(
-    GenerationSqr = Generation^2,
-    Generation0Sqr = Generation0^2
-  )
-
-recode_generation_base0 <- . %>%
-  mutate(Generation0 = Generation - 1)
-
 # Methods ----
 data("Sessions")
 
@@ -85,8 +69,8 @@ Difficulties <- InventoryInfo %>%
   transmute(
     PrevSessionInventoryID = ID,
     UniqueSessionResult = 1,
-    GuessDifficulty = (GuessDifficulty/max(GuessDifficulty)),
-    CombinationDifficulty = (CombinationDifficulty/max(CombinationDifficulty))
+    GuessDifficulty = (UniqueGuesses/max(UniqueGuesses)),
+    CombinationDifficulty = (UniqueCombinations/max(UniqueCombinations))
   )
 
 DifficultyScores <- Guesses %>%

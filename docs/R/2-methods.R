@@ -1,4 +1,4 @@
-source("R/totems/0-setup.R")
+source("docs/R/0-setup.R")
 # ---- methods
 data("Teams")
 data("Sessions")
@@ -95,3 +95,19 @@ compute_p_string <- function(p_value) {
   }
   p_value_str
 }
+
+# Jitter Generation by TeamID for plotting
+jitter_team_generation <- . %>%
+  group_by(TeamID) %>%
+  mutate(GenerationJittered = Generation + rnorm(1, mean = 0, sd = 0.05)) %>%
+  ungroup()
+
+# Recode Generation poly
+recode_generation_quad <- . %>%
+  mutate(
+    GenerationSqr = Generation^2,
+    Generation0Sqr = Generation0^2
+  )
+
+recode_generation_base0 <- . %>%
+  mutate(Generation0 = Generation - 1)
