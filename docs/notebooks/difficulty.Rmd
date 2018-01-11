@@ -51,3 +51,14 @@ ggplot(Difficulties) +
   geom_point(alpha = 0.5) +
   facet_wrap("Type")
 ```
+
+(ref:difficulty-score-by-generation) Accumulated difficulty scores by
+generation. As in Fig. \@ref(fig:innovations-by-generation), each thin green
+line is a team, and the thick blue line is the model predictions with ±1
+standard error. The difficulty score represents a weighted value given to each
+innovation relative to the combinatorial complexity of the problem solvers
+inventory at the time the innovation was created.
+
+```{r difficulty-score-by-generation, fig.cap="(ref:difficulty-score-by-generation)"}
+difficulty_score_by_generation_plot
+```

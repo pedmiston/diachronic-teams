@@ -79,11 +79,11 @@ def reset(ctx, name, verbose=False):
     docs = get_available_docs(name)
 
     for doc in docs:
-        cache_dir = Path(doc.parent, '.cache.{}/'.format(doc.stem))
+        cache_dir = Path(doc.parent, '{}_cache/'.format(doc.stem))
         if cache_dir.isdir():
             cache_dir.rmtree()
 
-        figs_dir = Path(doc.parent, '{}-figs'.format(doc.stem))
+        figs_dir = Path(doc.parent, '{}_files'.format(doc.stem))
         if figs_dir.isdir():
             figs_dir.rmtree()
 

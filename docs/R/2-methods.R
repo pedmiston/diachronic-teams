@@ -39,14 +39,17 @@ ConditionCounts <- Teams %>%
 
 # Reporting model results ----
 
-report_lmer_mod <- function(lmer_mod, term) {
+report_lmer_mod <- function(lmer_mod, term, formats = NULL) {
   term_ <- term  # work around NSE in filter
   results <- broom::tidy(lmer_mod, effects = "fixed") %>%
     filter(term == term_) %>%
     as.list()
 
-  sprintf("_b_ = %.2f (SE = %.2f), _t_ = %.2f",
-          results$estimate, results$std.error, results$statistic)
+  fmt <- c(b=2, se=2, t=2)
+  if(!is.null(formats)) fmt[names(formats)] <- formats
+  
+  fstring <- sprintf("_b_ = %%.%sf (SE = %%.%sf), _t_ = %%.%sf", fmt["b"], fmt["se"], fmt["t"])
+  sprintf(fstring, results$estimate, results$std.error, results$statistic)
 }
 
 report_lm_mod <- function(lm_mod, term, min_p_value = 0.001, p_value_only = FALSE) {

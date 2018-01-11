@@ -399,74 +399,111 @@ kable(Exp1Participants, caption = "(ref:exp1-participants)")
 
 ### Innovations by generation
 
-Diachronic problem solvers were consistently able to exceed
-the number of innovations discovered by their predecessors
-(Fig. \@ref(innovations-by-generation)). Second generation
-participants tended to discover 
-`r report_beta(innovations_by_generation_quad_mod, "Generation0")`
-more innovations each generation,
-`r report_lmer_mod(innovations_by_generation_quad_mod, "Generation0")`.
-However, this linear effect was not constant over generations,
-and decreased by `r report_beta(innovations_by_generation_mod, "Generation_2")` innovations each generation. Does this diminishing return indicate
-that larger inheritances have a detrimental impact on problem
-solving ability? We consider one alternative explanation before
-testing this question directly.
+Diachronic problem solvers were consistently able to exceed the number of
+innovations discovered by their predecessors
+(Fig. \@ref(innovations-by-generation)).
+This result was obtained using Page's trend test, which is a
+repeated measure test for monotonicity. We used this test to measure whether
+the number of innovations increased within each team and over generations
+against the null hypothesis that the number of innovations did not increase
+from generation to generation within each team. We found evidence for cumulative
+increases in problem solving ability such that later generations of problem
+solvers were able to solve more problems in a single 25 minute session than
+their predecessors, `r exp1$page_test`.
 
-(ref:innovations-by-generation) Number of innovations discovered by each generation. Each of the thin green lines is a team. Means in each generation are shown as green X's. The thick blue line is the model predictions with ±1 standard error.
+We next measured the linear increase in innovations over generations by fitting
+a hierarchical regression model to the total innovations achieved in each
+generation with random effects (intercepts and slopes) for teams. On average,
+second generation participants were able to discover `r exp1$gen0_slope` more
+innovations than their ancestors, `r exp1$gen0_slope_stats`. This linear effect
+decreased for third and fourth generation participants by `r exp1$gen0sqr_slope`
+innovations each generation, `r exp1$gen0sqr_slope_stats`. A model comparison
+of hierarchical regression models fit with linear and quadratic components
+revealed that a quadratic fit was significantly better than a linear fit alone,
+`r exp1$quad_modcomp`.
+
+(ref:innovations-by-generation) Number of innovations discovered by each
+generation. Each of the thin green lines is a team. Means in each generation are
+shown as green X's. The thick blue line is the model predictions with ±1
+standard error.
 
 ```{r innovations-by-generation, fig.cap="(ref:innovations-by-generation)"}
 innovations_by_generation_plot
 ```
 
-The reason a slow down in problem solving rate is expected in this task is
-that, as innovations are accumulated, the total number of possible guesses than
-can be made from the accumulated items increases exponentially, so that later
-generations of problems are likely to be more difficult even if the overall
-problem solving rate has not changed. To control for combinatorial complexity,
-we created an alternative outcome measure that, rather than counting each
-innovation as equal, instead weighted each innovation relative to the size of
-the inventory at the time at which the innovation was discovered. By this
-measure, innovations from later generations are higher value because they
-require combinatorially more guesses in order to find.
+We consider three explanations for the diminishing return on accumulated
+inheritance. The explanation of most relevance to the current work is whether
+accumulated inheritance has an impact on future problem solving. In this case,
+we wanted to know whether inheritance had a possible detrimental effect on
+future problem solving such that larger inheritances were associated with fewer
+further innovations. We found that an increase in the number of innovations
+inherited is associated with a decrease in the number of new innovations
+discovered by diachronic problem solvers after the first generation,
+`r exp1$inheritance_size_slope_stats` (Fig. \@ref(fig:size-of-inheritance)).
+This finding suggests that inheritance does have an influence on problem
+solving---in this case a negative one, such that inheriting more innovations
+seems to _decrease_ problem solving ability. However, there are two
+other explanations that must be considered.
 
-Using the weighted outcome measure, problem solvers were still found to
-improve upon the innovations of their predecessors, `report_lmer_mod(difficulty_score_by_generations_mod, "Generation")`.
-But the addition of a quadratic term did not significantly improve
-model fit, `report_modcomp(difficulty_score_by_generation_modcomp)`,
-suggesting that, when taking combinatorial complexity into account,
-later generation problem solvers are not slowed down by a larger
-inheritance.
+(ref:size-of-inheritance) Innovations inherited and created. The left plot shows
+the relationship between inherited and created innovations. The dotted line
+is a reference line such that points above the line indicate future generations
+exceeding their ancestors. The right plot shows the relationship between
+inherited innovations and only the novel innovations. The line shows the predictions
+of the hierarchical regression model with ±1 standard error.
 
-(ref:difficulty-score-by-generation) Accumulated difficulty scores by
-generation. As in Fig. \@ref(fig:innovations-by-generation), each thin green
-line is a team, and the thick blue line is the model predictions with ±1
-standard error. The difficulty score represents a weighted value given to each
-innovation relative to the combinatorial complexity of the problem solvers
-inventory at the time the innovation was created.
-
-```{r difficulty-score-by-generation, fig.cap="(ref:difficulty-score-by-generation)"}
-difficulty_score_by_generation_plot
+```{r size-of-inheritance, fig.width=5, fig.height=3, fig.cap="(ref:size-of-inheritance)"}
+grid.arrange(
+  innovations_created_and_inherited_plot,
+  new_innovations_plot,
+  nrow = 1
+)
 ```
 
-To summarize, we find that participants are able to exceed the
-discoveries of their ancestors through 4 generations of diachronic
-problem solving. Later generation problem solvers do not
-discover as many new solutions as earlier generations, but some
-of this diminishing return is likely due to an increase in
-combinatorial complexity as solutions are accumulated and used
-again in future problems. Whether the number of inherited solutions
-has an impact on future problem solving is tested in the next
-section.
+One alternative explanation is simply that the task gets more difficult as more
+innovations are accumulated, meaning problem solving might slow down even
+without getting necessarily less efficient. As innovations are accumulated, the
+total number of possible guesses than can be made from the accumulated items
+increases exponentially, so that later generations of problems are less likely
+to stumble upon a correct solution by chance. To control for combinatorial
+complexity, we created an alternative outcome measure that, rather than counting
+all innovations equally, instead weighted each innovation relative to the size
+of the inventory at the time at which the innovation was discovered. By this
+measure, innovations from later generations are higher in value because they
+require combinatorially more guesses in order to find by chance alone.
 
-### Size of inheritance
+Fig. \@ref(fig:delta-difficulty-fig) shows the generation-over-generation
+change in accumulated difficulty score based on the number of innovations
+that were inherited. In contrast to the analysis that treated all
+innovations equally, when innovations are weighted by combinatorial complexity,
+the effects of inheritance and diachronic collaboration are beneficial.
+Diachronic problem solvers who inherit more innovations are better
+able to exceed the accumulated difficulty score of their ancestors than
+first generation diachronic problem solvers, `r exp1$delta_diff_slope_stats`.
 
-Problem solving with inheritance is divided into two stages: a learning
-stage, and a playing stage. Problem solvers begin in the learning stage,
-which is the time spent recreating the items whose recipe for construction
-had been inherited from a previous generation. On average, diachronic problem
-solvers after the first generation spent `r exp1$mean_learning_time_min` minutes
-of a 25 minute session (`r exp1$proportion_learning_time`%) in the learning
-stage (Fig. \@ref(fig:learning-times)A).
+(ref:delta-difficulty-fig): Change in accumulated difficulty score by
+inheritance. Accumulated difficulty scores are sums of innovations weighted by
+the combinatorial complexity of the possible choices available to the
+participant when the innovation was discovered. Shown on the y-axis is the
+difference between the accumulated difficulty scores of subsequent generations.
+The line shows the predictions of a hierarchical regression model with ±1 standard
+error.
+
+```{r delta-difficulty-fig, fig.cap="(ref:delta-difficulty-fig)"}
+delta_difficulty_plot
+```
+
+The remaining explanation for why later generation diachronic problem
+solvers performn differently than earlier generation problem solvers
+is simply that they do not have as much time to guess for new solutions.
+Diachronic problem solvers inherit the recipes for creating
+innovations, not the innovations themselves. Therefore, diachronic problem
+solvers who inherit solutions must start the experiment by recreating the
+innovations already discovered by their ancestors. On average, diachronic
+problem solvers after the first generation spent `r exp1$mean_learning_time_min`
+minutes of a 25 minute session (`r exp1$proportion_learning_time`%) recreating
+the inherited innovations in this **learning stage**
+(Fig. \@ref(fig:learning-times)A).
 
 The length of the learning stage depended on the number of items that were
 inherited. On average diachronic problem solvers inherited
@@ -474,10 +511,11 @@ inherited. On average diachronic problem solvers inherited
 length of the learning stage scaled linearly with the size of the inheritance,
 `r report_lm_mod(learning_rates_mod, "InheritanceSize")` (Fig. \@ref(fig:learning-times)B),
 but there were some exceptions; some participants took disproportionately
-long to recreate the items discovered by their ancestor. These participants
-were excluded from further analysis.
+long to recreate the items discovered by their ancestor.
 
-```{r learning-times, fig.height=3}
+(ref:learning-times) Learning times. **A.** The distribution of learning stage times, with outliers highlighted. **B.** Linear relationship between inheritance sizes and learning times. Outliers excluded from the regression are shown as X's.
+
+```{r learning-times, fig.height=3, fig.cap="(fig:learning-times)"}
 grid.arrange(
   learning_times_plot + ggtitle("A"),
   learning_rates_plot + ggtitle("B"),
@@ -485,32 +523,29 @@ grid.arrange(
 )
 ```
 
-To investigate the impact of the size of the inheritance on future problem solving, we look
-specifically at the problems solved in the playing stage.
-We found that larger inheritances are associated with fewer new innovations.
-However, larger inheritances are also associated with less time for playing.
+Problem solvers who spend more time in the learning stage conversely have less
+time in the **playing stage**, where new innovations are tried and discovered.
+Fig. \@ref(fig:diachronic-player-trjactories-plot) shows the problem solving
+rates for diachronic problem solvers in the learning and playing stages.
+By centering each problem solvers performance at the point at which the playing
+stage was entered, we were able to assess whether inheritance causes
+solve future problems differently.
 
-```{r size-of-inheritance, fig.width=8, fig.height=3}
-grid.arrange(
-  innovations_created_and_inherited_plot,
-  unique_innovations_plot,
-  playing_time_plot,
-  nrow = 1
-)
-```
+The results are shown in Fig. \@ref(fig:diachronic-player-trajectories-plot).
+The rate of problem solving in the playing stage depended in part on the
+number of innovations that were inherited, such that problem solvers
+who inherited more innovations were slower to discover new solutions,
+`r exp1$playing_rate_inter`.
 
-Rather than looking just at the number of new innovations,
-we really want to investigate the rate of new innovations
-in the playing stage.
+(ref:diachronic-player-trajectories-plot) Rate of discovery in learning and
+playing stages. Each line is a player. In the learning phase (left), problem
+solvers are recreating the innovations created by their ancestor. After having
+recreated the inventions of their ancestors, the problem solvers enter the
+playing stage (right), where they are tasked with discovering new solutions not
+discovered by their ancestor.
 
-```{r diachronic-player-trajectories-plot, fig.width=6}
+```{r diachronic-player-trajectories-plot, fig.width=6, fig.cap="(ref:diachronic-player-trajectories-plot)"}
 diachronic_player_trajectories_plot
-```
-
-(ref:guesses-per-item-by-inheritance) Guesses per innovation by inheritance condition.
-
-```{r guesses-per-item-by-inheritance, fig.cap="(ref:guesses-per-item-by-inheritance)"}
-guesses_per_item_by_inheritance_plot
 ```
 
 ### Guessing strategy
@@ -541,12 +576,12 @@ guess_types_prop_plot
 
 ## Discussion
 
-That a larger inheritance---more solutions inherited from a previous
-generation---results in more time saved not having to redundantly solve the same
-problems is a tautology. But does the amount of time saved scale linearly with
-the amount of time invested in creating the inheritance? To answer this
-question, the total amount of labor hours must be taken into account by
-including the first generation problem solvers in the analysis.
+Experiment 1 demonstrates that diachronic collaboration can result
+in cumulative improvements in problem solving. Fourth generation
+diachronic problem solvers were able to solve more problems in a single
+25 minute session than first generation problem solvers. This
+cumulative improvement is only possible because innovations can be
+inherited and extended by future generations of problem solvers.
 
 # Experiment 2
 
