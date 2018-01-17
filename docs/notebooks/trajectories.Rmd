@@ -1,10 +1,6 @@
 ---
 title: "Trajectories through the totems landscape"
-css: "style.css"
-bibliography: "diachronic-collaboration.bib"
-output:
-  html_document:
-    theme: flatly
+output: bookdown::html_document2
 ---
 
 ```{r config, include = FALSE}
@@ -25,74 +21,25 @@ opts_chunk$set(
 list.files("../R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
 ```
 
-```{r setup}
+```{r setup, include=FALSE}
 ```
 
-```{r data}
+```{r methods, include=FALSE}
 ```
 
-```{r}
-player_trajectories <- Guesses %>%
-  group_by(PlayerID, InventorySize, NumAdjacent) %>%
-  summarize(Guesses = n()) %>%
-  left_join(totems_players %>% select(-InventorySize))
-
-player_ixs <- totems_players %>%
-  group_by(ID_Group) %>%
-  transmute(IX_Player = 1:n()) %>%
-  ungroup()
-player_trajectories %<>% left_join(player_ixs)
-
-trajectories <- totems_workshops %>%
-  select(InventorySize, NumAdjacent) %>%
-  unique()
-
-trajectory_plot <- ggplot() +
-  aes(InventorySize, NumAdjacent) +
-  geom_point(data = trajectories, color = "gray", alpha = 0.6) +
-  geom_point(aes(size = Guesses, color = StrategyLabel)) +
-  geom_line(aes(color = StrategyLabel, group = ID_Player)) +
-  scale_x_continuous("Inventory size", breaks = c(6, seq(10, 40, by = 5))) +
-  t_["scale_color_strategy"] +
-  t_["base_theme"] +
-  theme(legend.position = "top")
-
-count_teams <- . %>% .$ID_Group %>% unique() %>% length()
-n_diachronic_teams <- totems_players %>%
-  filter(Strategy == "Diachronic") %>%
-  count_teams()
-n_synchronic_teams <- totems_players %>%
-  filter(Strategy == "Synchronic") %>%
-  count_teams()
-
-facet_row_height <- 2
+```{r exp1, include=FALSE}
 ```
 
-## Example trajectory plot
-
-```{r trajectories-individual}
-trajectory_plot %+% filter(player_trajectories, ID_Player == 12)
+```{r exp1-extra, include=FALSE}
 ```
 
-## Isolated individuals
+(ref:diachronic-player-trajectories-plot) Rate of discovery in learning and
+playing stages. Each line is a player. In the learning phase (left of midline), problem
+solvers are recreating the innovations created by their ancestor. After having
+recreated the inventions of their ancestors, the problem solvers enter the
+playing stage (right of midline), where they are tasked with discovering new solutions not
+discovered by their ancestor.
 
-```{r trajectories-isolated}
-(trajectory_plot %+% filter(player_trajectories, Strategy == "Isolated")) +
-  scale_color_manual("Strategy", values = t_[["isolated_color"]])
-```
-
-## Diachronic teams
-
-```{r trajectories-diachronic, fig.width=6, fig.height=facet_row_height*n_diachronic_teams}
-(trajectory_plot %+% filter(player_trajectories, Strategy == "Diachronic")) +
-  facet_grid(ID_Group ~ Generation) +
-  scale_color_manual("Strategy", values = t_[["diachronic_color"]])
-```
-
-## Synchronic teams
-
-```{r trajectories-synchronic, fig.width=6, fig.height=facet_row_height*n_synchronic_teams}
-(trajectory_plot %+% filter(player_trajectories, Strategy == "Synchronic")) +
-  facet_grid(ID_Group ~ IX_Player) +
-  scale_color_manual("Strategy", values = t_[["synchronic_color"]])
+```{r diachronic-player-trajectories-plot, fig.width=6, fig.cap="(ref:diachronic-player-trajectories-plot)"}
+diachronic_player_trajectories_plot
 ```
