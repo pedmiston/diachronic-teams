@@ -14,6 +14,15 @@ Exp1Participants <- Sessions %>%
   rename(N = n) %>%
   mutate(Inheritance = c("None", rep("Diachronic", 3)))
 
+n_teams <- Sessions %>%
+  filter_exp1() %>%
+  select(TeamID) %>%
+  unique() %>%
+  nrow()
+
+exp1$n_participants <- sum(Exp1Participants$N)
+exp1$n_teams <- n_teams
+
 # Data ----
 data("Guesses")
 data("InventoryInfo")
@@ -61,7 +70,7 @@ PerformanceMatrix <- Innovations %>%
 page_trend_test_results <- crank::page.trend.test(PerformanceMatrix, ranks = FALSE)
 page_trend_test_results$p_val_str <- compute_p_string(page_trend_test_results$px2)
 
-exp1$page_test <- sprintf("Page's L = %.0f, $X_2$ = %.0f, %s", page_trend_test_results$L, page_trend_test_results$x2L, page_trend_test_results$p_val_str)
+exp1$page_test <- cat(sprintf("Page's _L_ = %.0f, $\\chi^2$ = %.0f, %s", page_trend_test_results$L, page_trend_test_results$x2L, page_trend_test_results$p_val_str))
 
 # Innovations by generation ----
 data("Guesses")
@@ -173,7 +182,7 @@ OutliersByLearningTime <- StageTimes %>%
   transmute(SessionID, Outlier = LearningTime > 22)
 StageTimes %<>% left_join(OutliersByLearningTime)
 
-exp1$mean_learning_time_min <- round(mean(StageTimes$LearningTime)/60, 1)
+exp1$mean_learning_time_min <- round(mean(StageTimes$LearningTime), 1)
 exp1$proportion_learning_time <- round((exp1$mean_learning_time_min/25) * 100, 1)
 
 learning_times_plot <- ggplot(StageTimes) +
@@ -284,7 +293,7 @@ playing_time_mod <- lmer(
 )
 
 exp1$new_innovations_per_minute <- report_beta(playing_time_mod, "PlayingTime", digits = 2)
-exp1$minutes_per_new_innovation <- 1/report_beta(playing_time_mod, "PlayingTime", digits = 2)
+exp1$minutes_per_new_innovation <- round(1/report_beta(playing_time_mod, "PlayingTime", digits = 2), 1)
 exp1$playing_time_slope_stats <- report_lmer_mod(playing_time_mod, "PlayingTime")
 
 playing_time_by_inheritance_mod <- lmer(

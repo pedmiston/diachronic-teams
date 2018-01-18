@@ -1,79 +1,64 @@
+source("docs/R/0-setup.R")
+source("docs/R/2-methods.R")
 # ---- exp2
 
+# List to hold descriptives for in-text citation
 exp2 <- list()
 
 # Methods ----
-data("Teams")
 data("Sessions")
 
-TeamCounts50 <- Teams %>%
+Exp2Participants <- Sessions %>%
   filter_exp2() %>%
-  count(Strategy, SessionDuration, PlayersPerSession) %>%
-  rename(NumTeams = n)
+  count(Strategy) %>%
+  rename(`$N_{participants}$` = n)
 
-PlayerCounts50 <- Sessions %>%
+Exp2Teams <- Sessions %>%
   filter_exp2() %>%
-  left_join(
-    Teams %>%
-      filter_exp2() %>%
-      select(TeamID, SessionDuration, PlayersPerSession) %>%
-      unique()
-  ) %>%
-  select(PlayerID, Strategy, SessionDuration, PlayersPerSession) %>%
+  select(Strategy, TeamID) %>%
   unique() %>%
-  count(Strategy, SessionDuration, PlayersPerSession) %>%
-  rename(NumParticipants = n)
+  count(Strategy) %>%
+  rename(`$N_{teams}$` = n)
 
-ConditionCounts50 <- left_join(
-    TeamCounts50,
-    PlayerCounts50
-  ) %>%
-  mutate(TeamSize = ifelse(Strategy == "Isolated", 1, 2)) %>%
-  select(
-    Strategy, SessionDuration, TeamSize, PlayersPerSession, NumTeams, NumParticipants
-  ) %>%
-  rename(
-    `Duration` = SessionDuration,
-    `Team Size` = TeamSize,
-    `Session Size` = PlayersPerSession,
-    `Num Teams` = NumTeams,
-    `Num Participants` = NumParticipants
-  )
+Exp2N <- left_join(Exp2Participants, Exp2Teams)
 
-exp2$N <- sum(ConditionCounts50$`Num Participants`)
+exp2$n_participants <- sum(Exp2N$`$N_{participants}$`)
 
 # Number of innovations ----
 data("Guesses")
-data("Exp2Manifest")
 
-Exp2Sessions <- filter(Exp2Manifest, TeamStatus == "valid", SessionStatus == "valid") %>%
-  select(-(TeamStatus:Notes))
-
-PlayerPerformance50min <- Guesses %>%
+Innovations <- Guesses %>%
   filter_exp2() %>%
   recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
-  group_by(SessionID, GuessType) %>%
-  summarize(NumGuesses = n()) %>%
+  group_by(SessionID) %>%
+  summarize(NumInnovations = sum(GuessType == "unique_item")) %>%
   ungroup() %>%
-  left_join(Exp2Sessions) %>%
+  left_join(Sessions) %>%
   recode_strategy() %>%
   recode_session_type_50min() %>%
   label_inheritance()
 
 num_innovations_50min_mod <- lmer(
   NumInnovations ~ DG2_v_DG1 + DG2_v_I50 + DG2_v_S2 + (1|TeamID),
-  data = PlayerPerformance50min
+  data = Innovations
 )
+
+exp2$DG2_v_DG1 <- report_lmer_mod(num_innovations_50min_mod, "DG2_v_DG1", reverse_sign = TRUE)
+exp2$DG2_v_I50 <- report_lmer_mod(num_innovations_50min_mod, "DG2_v_I50", reverse_sign = TRUE)
+exp2$S2_v_DG2 <- report_lmer_mod(num_innovations_50min_mod, "DG2_v_S2", reverse_sign = FALSE)
 
 num_innovations_50min_teamwork_mod <- lmer(
   NumInnovations ~ DSvI + DvS + (1|TeamID),
-  data = filter(PlayerPerformance50min, SessionType != "DG1")
+  data = filter(Innovations, SessionType != "DG1")
 )
+
+exp2$teamwork_stats <- report_lmer_mod(num_innovations_50min_teamwork_mod, "DSvI", reverse_sign = TRUE)
+exp2$teamwork_residual <- report_lmer_mod(num_innovations_50min_teamwork_mod, "DvS")
 
 # Use lm mod for error on plot because lmer mod preds with AICcmodavg look too small
 num_innovations_50min_lm_mod <- lm(
   NumInnovations ~ DG2_v_DG1 + DG2_v_I50 + DG2_v_S2,
-  data = PlayerPerformance50min
+  data = Innovations
 )
 
 num_innovations_50min_preds <- recode_session_type_50min() %>%
@@ -84,7 +69,7 @@ num_innovations_50min_preds <- recode_session_type_50min() %>%
   label_inheritance()
 
 set.seed(432)
-num_innovations_50min_plot <- ggplot(PlayerPerformance50min) +
+num_innovations_50min_plot <- ggplot(Innovations) +
   aes(SessionTypeOrdered, NumInnovations) +
   geom_bar(aes(fill = StrategyLabel, alpha = Inheritance),
            stat = "identity", data = num_innovations_50min_preds) +
@@ -102,17 +87,13 @@ num_innovations_50min_plot <- ggplot(PlayerPerformance50min) +
   theme(
     legend.position = "none",
     panel.grid.major.x = element_blank()
-  ) +
-  ggtitle("Number of innovations discovered using each strategy")
+  )
 
 # Rate of innovation ----
 data("Sampled")
 
 Sampled50min <- Sampled %>%
-  filter(
-    TeamStatus == "V",
-    Exp == "50LaborMinutes"
-  ) %>%
+  filter_exp2() %>%
   recode_strategy() %>%
   label_inheritance() %>%
   mutate(NumInnovations = InventorySize - 6)
@@ -136,8 +117,8 @@ data("Guesses")
 data("AdjacentItems")
 data("Teams")
 
-SessionTypes50min <- Sessions%>%
-  filter(Exp == "50LaborMinutes", TeamStatus == "V") %>%
+SessionTypes50min <- Sessions %>%
+  filter_exp2() %>%
   recode_session_type_50min() %>%
 
   # Collapse Synchronic players into a single team,
@@ -146,7 +127,7 @@ SessionTypes50min <- Sessions%>%
   unique()
 
 GuessesPerItem50min <- Guesses %>%
-  filter(Exp == "50LaborMinutes", TeamStatus == "V") %>%
+  filter_exp2() %>%
 
   # Treat all Synchronic players as "playing" even if they are lagging.
   mutate(Stage = ifelse(Strategy == "Synchronic", "playing", Stage)) %>%
@@ -192,6 +173,7 @@ guesses_per_item_treatment_mod <- lmer(
   TotalGuesses ~ DG2_v_DG1 + DG2_v_S2 + DG2_v_I50 +
     (DG2_v_DG1 + DG2_v_S2 + DG2_v_I50|Adjacent),
   data = filter(CostPerItem50min, Discovered))
+
 guesses_per_item_treatment_preds <- recode_session_type_50min() %>%
   cbind(., predictSE(guesses_per_item_treatment_mod, newdata = ., se = TRUE)) %>%
   rename(TotalGuesses = fit, SE = se.fit)
@@ -262,44 +244,54 @@ guesses_per_new_item_by_inheritance_plot <- ggplot(CostPerItem50minPlaying) +
   t_$base_theme
 
 # Guess types ----
-data("PlayerPerformance")
-
-GuessTypes50min <- PlayerPerformance %>%
-  filter(TeamStatus == "V", Exp == "50LaborMinutes") %>%
+GuessTypes <- Guesses %>%
+  filter_exp2() %>%
+  recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
+  group_by(SessionID) %>%
+  summarize(
+    NumGuesses = n(),
+    NumRedundantGuesses = sum(GuessType == "redundant"),
+    NumRepeatedItems = sum(GuessType == "repeat_item"),
+    NumUniqueGuesses = sum(GuessType == "unique_guess"),
+    NumUniqueItems = sum(GuessType == "unique_item")
+  ) %>%
+  ungroup() %>%
+  left_join(Sessions) %>%
   recode_strategy() %>%
   recode_session_type_50min() %>%
   mutate(
     PropRedundantGuesses = NumRedundantGuesses/NumGuesses,
     PropRepeatedItems = NumRepeatedItems/NumGuesses,
     PropUniqueGuesses = NumUniqueGuesses/NumGuesses,
-    PropUniqueItems = NumInnovations/NumGuesses
+    PropUniqueItems = NumUniqueItems/NumGuesses
   )
 
 prop_redundant_guesses_mod <- lm(PropRedundantGuesses ~ DG2_v_DG1 + DG2_v_I50 + DG2_v_S2,
-                                 data = GuessTypes50min)
+                                 data = GuessTypes)
 
 prop_unique_guesses_mod <- lm(PropUniqueGuesses ~ DG2_v_DG1 + DG2_v_I50 + DG2_v_S2,
-                              data = GuessTypes50min)
+                              data = GuessTypes)
 
-GuessTypes50minSummary <- PlayerPerformance %>%
-  filter(TeamStatus == "V", Exp == "50LaborMinutes") %>%
-  recode_strategy() %>%
+GuessTypes50minSummary <- Guesses %>%
+  filter_exp2() %>%
+  recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
   recode_session_type_50min() %>%
   group_by(SessionTypeSimple) %>%
   summarize(
-    NumGuesses = sum(NumGuesses),
-    NumRedundantGuesses = sum(NumRedundantGuesses),
-    NumRepeatedItems = sum(NumRepeatedItems),
-    NumUniqueGuesses = sum(NumUniqueGuesses),
-    NumInnovations = sum(NumInnovations)
+    NumGuesses = n(),
+    NumRedundantGuesses = sum(GuessType == "redundant"),
+    NumRepeatedItems = sum(GuessType == "repeat_item"),
+    NumUniqueGuesses = sum(GuessType == "unique_guess"),
+    NumUniqueItems = sum(GuessType == "unique_item")
   ) %>%
   ungroup() %>%
   mutate(
     PropRedundantGuesses = NumRedundantGuesses/NumGuesses,
     PropRepeatedItems = NumRepeatedItems/NumGuesses,
     PropUniqueGuesses = NumUniqueGuesses/NumGuesses,
-    PropUniqueItems = NumInnovations/NumGuesses
+    PropUniqueItems = NumUniqueItems/NumGuesses
   ) %>%
+  recode_session_type_50min() %>%
   select(SessionTypeSimple, PropRedundantGuesses, PropRepeatedItems, PropUniqueGuesses, PropUniqueItems) %>%
   gather(PropGuessType, PropGuesses, -SessionTypeSimple) %>%
   recode_session_type_50min() %>%
@@ -312,4 +304,5 @@ prop_guess_types_50min_plot <- ggplot(GuessTypes50minSummary) +
   scale_y_continuous("Proportion of guesses", labels = scales::percent) +
   scale_fill_manual("Guess types",
                     values = t_$color_picker(c("green", "blue", "orange", "pink"))) +
-  t_$base_theme
+  t_$base_theme +
+  theme(panel.grid.major.x = element_blank())
