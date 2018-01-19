@@ -361,9 +361,9 @@ kable(ConditionCounts, caption = "Total participant and team recruitment.")
 ```
 
 In the first experiment, we measured the impact of inheritance on problem
-solving ability over four generations of diachronic problem solving (Fig.
-\@ref(fig:team-structures-exp1)). We answer the following questions about the
-impact of inheritance on problem solving. First, we determine whether and by how
+solving over four generations of diachronic problem solving (Fig.
+\@ref(fig:team-structures-exp1)). We answer the following questions about
+the achievements of diachronic teams. First, we determine whether and by how
 much future generations of problem solvers were able to recreate and exceed the
 solutions obtained by their ancestors. Second, we test whether the size of the
 inheritance influences the rate at which new problems were solved. Is a larger
@@ -382,10 +382,11 @@ solutions that were discovered by the previous generation.
 ## Methods
 
 Participants played the Totems game for a single 25-minute session. Each
-participant was assigned to a single generation in a single team. Participants
-in generations 2-4 began the problem solving task with the solutions that were
-discovered by the previous generation. The unique innovations of participants
-in generations 1-3 were inherited by one (and only one) future generation.
+participant was randomly assigned to a single generation in a single team.
+Participants in generations 2 through 4 began the problem solving task with the
+solutions that were discovered by the previous generation. The unique
+innovations of participants in generations 1-3 were inherited by one (and only
+one) future generation.
 
 ### Participants
 
@@ -402,16 +403,16 @@ kable(Exp1Participants, caption = "(ref:exp1-participants)")
 Diachronic problem solvers were consistently able to exceed the number of
 innovations discovered by their predecessors
 (Fig. \@ref(innovations-by-generation)).
-This result was obtained using Page's trend test, which is a
-repeated measure test for monotonicity. We used this test to measure whether
+This result was obtained using Page's trend test, which is test of
+monotonicity for repeated measures. We used this test to measure whether
 the number of innovations increased within each team and over generations
 against the null hypothesis that the number of innovations did not increase
 from generation to generation within each team. We found evidence for cumulative
 increases in problem solving ability such that later generations of problem
-solvers were able to solve more problems in a single 25 minute session than
-their predecessors, `r exp1$page_test`.
+solvers were able to discover more innovations in a single 25 minute session
+than their predecessors, `r exp1$page_test`.
 
-We next measured the linear increase in innovations over generations by fitting
+We next measured the linear increase in innovations by generations by fitting
 a hierarchical regression model to the total innovations achieved in each
 generation with random effects (intercepts and slopes) for teams. On average,
 second generation participants were able to discover `r exp1$gen0_slope` more
