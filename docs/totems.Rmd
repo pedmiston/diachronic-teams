@@ -2,21 +2,32 @@
 title: "The impact of inheritance on problem solving ability"
 author: "Pierce Edmiston, Max Derex, & Gary Lupyan"
 abstract: |
-  Human accumulate cultural products including tools and other technology like
-  no other species of animal. A consequence of accumulating generations of
-  solutions to problems is that new generations of problem solvers rarely have
-  to start from scratch when solving new problems, as demonstrated by the
-  widespread prevalence of reuse in the history of human technology. But what
-  is the impact of inheritance---starting off a problem solving task with
-  a partial solution that was created by someone else---on future problem
-  solving ability? Does inheriting solutions discovered by a previous
-  generation just save time in future problem solving, or does it affect
-  the rate at which new problems are solved? To answer this question, we
-  compared problem solving with inheritance to two alternative strategies for
-  solving the same set of problems without inheritance. Critically, we compare
-  these strategies while controlling for total labor time so that the
-  consequences of inheritance can be interpreted relative to both the cost of
-  creating it and the cost of not using an alternative problem solving strategy.
+  Human are able to pass on and inherit from others cultural products including
+  tools and other technology like no other species of animal. What is the
+  impact of inheritance---starting off a problem solving task with some of the
+  problems already solved---on future problem solving ability? In
+  Experiment 1, we demonstrate that future generations of problem solvers are
+  able to cumulatively improve upon inherited solutions, but were unable to
+  determine whether inheritance had an impact on problem solving ability. We
+  resolve this issue in Experiments 2-4 by comparing diachronic problem solving
+  to alternative strategies for solving the same set of problems but without
+  diachronic inheritance. In Experiment 2 we demonstrate that diachronic
+  inheritance results in fewer guesses per solution than problem solving
+  without inheritance, but this benefit does not extend to solutions that were
+  not inherited. In Experiment 3, we find that inheriting from oneself
+  over repeated sessions is more effective than diachronic inheritance from
+  someone else. However, we also find that diachronic inheritance can remediate
+  the potential costs of fixation on incorrect solutions, which for isolated
+  individuals can extend over multiple sessions. Experiment 4 includes
+  four-person synchronic teams and finds that the inefficiencies of two-person
+  synchronic teams are amplified for four-person teams such that diachronic
+  colloration becomes more effective relative to synchronic collaboration as
+  labor time increases. Together our results demonstrate cumulative gains
+  though diachronic collaboration in a lab-based experiment, and identify some
+  of the ways in which diachronic collaboration affords unique kinds of problem
+  solving relative to alternative strategies for problem solving, namely that
+  diachronic problem solving can remediate fixation effects and promote an
+  overall less redundant guessing strategy.
 csl: "theme/apa.csl"
 bibliography: "references.bib"
 output:
