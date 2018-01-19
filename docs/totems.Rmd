@@ -2,32 +2,34 @@
 title: "The impact of inheritance on problem solving ability"
 author: "Pierce Edmiston, Max Derex, & Gary Lupyan"
 abstract: |
-  Human are able to pass on and inherit from others cultural products including
-  tools and other technology like no other species of animal. What is the
-  impact of inheritance---starting off a problem solving task with some of the
-  problems already solved---on future problem solving ability? In
-  Experiment 1, we demonstrate that future generations of problem solvers are
-  able to cumulatively improve upon inherited solutions, but were unable to
-  determine whether inheritance had an impact on problem solving ability. We
-  resolve this issue in Experiments 2-4 by comparing diachronic problem solving
-  to alternative strategies for solving the same set of problems but without
-  diachronic inheritance. In Experiment 2 we demonstrate that diachronic
-  inheritance results in fewer guesses per solution than problem solving
-  without inheritance, but this benefit does not extend to solutions that were
-  not inherited. In Experiment 3, we find that inheriting from oneself
-  over repeated sessions is more effective than diachronic inheritance from
-  someone else. However, we also find that diachronic inheritance can remediate
-  the potential costs of fixation on incorrect solutions, which for isolated
-  individuals can extend over multiple sessions. Experiment 4 includes
-  four-person synchronic teams and finds that the inefficiencies of two-person
-  synchronic teams are amplified for four-person teams such that diachronic
-  colloration becomes more effective relative to synchronic collaboration as
-  labor time increases. Together our results demonstrate cumulative gains
-  though diachronic collaboration in a lab-based experiment, and identify some
-  of the ways in which diachronic collaboration affords unique kinds of problem
-  solving relative to alternative strategies for problem solving, namely that
-  diachronic problem solving can remediate fixation effects and promote an
-  overall less redundant guessing strategy.
+  Human are able to use and improve solutions to problems including tools and
+  other technology that were created by other people like no other species of
+  animal. What is the impact of inheritance---starting off a problem solving
+  task with some of the problems already solved---on future problem solving
+  ability? Does inheritance provide a shortcut to individual learning, or
+  does it affect the rate or way in which future problems are solved?
+  In Experiment 1, we demonstrate that future generations of problem
+  solvers are able to cumulatively improve upon the solutions they inherited,
+  but were unable to determine whether inheritance had an impact on problem solving
+  ability. We resolve this issue in Experiments 2-4 by comparing diachronic
+  problem solving to alternative strategies for solving the same set of
+  problems but without diachronic inheritance. In Experiment 2 we demonstrate
+  that diachronic inheritance results in fewer guesses per solution than
+  problem solving without inheritance, but this benefit does not extend to
+  solutions that were not inherited. In Experiment 3, we find that inheriting
+  from oneself over repeated sessions is more effective than diachronic
+  inheritance from someone else. However, we also find that diachronic
+  inheritance can remediate the potential costs of fixation on incorrect
+  solutions, which for isolated individuals can extend over multiple sessions.
+  Experiment 4 includes four-person synchronic teams and finds that the
+  inefficiencies of two-person synchronic teams are amplified for four-person
+  teams such that diachronic colloration becomes more effective relative to
+  synchronic collaboration as labor time increases. Together our results
+  demonstrate cumulative gains though diachronic collaboration in a lab
+  experiment, and identify some of the ways in which diachronic collaboration
+  affords unique kinds of problem solving relative to alternative strategies
+  for solving the same set of problems, namely that diachronic problem solving
+  can remediate fixation effects and promote a more efficient guessing strategy.
 csl: "theme/apa.csl"
 bibliography: "references.bib"
 output:
@@ -87,12 +89,11 @@ solvers gain from inheriting solutions created by others? Do problem solvers
 gain a head start on future problem solving, or does inheriting an existing
 solution to a problem affect the way in which future problems are solved? We
 attempt to answer this question by studying the problem solving ability of
-individuals who inherit solutions created by a previous generation at the start
-of a problem solving task. This type of collaboration, organized around
-inheritance, is referred to as **diachronic collaboration**
-(Fig. \@ref(fig:team-structures)). To understand how inheritance impacts problem
-solving ability, we compared the effectiveness of diachronic collaboration to
-two alternative strategies for solving the same set of problems in the same
+individuals who inherit solutions created by a previous generation of
+problem solver at the start of a problem solving task. We refer to this
+type of collaboration, organized around inheritance, as **diachronic collaboration**
+(Fig. \@ref(fig:team-structures)). We compared the effectiveness of diachronic
+collaboration to two alternative strategies for solving the same set of problems in the same
 amount of time but without diachronic inheritance: **synchronic collaboration**,
 where team members begin with nothing and collaborate in parallel, and
 **isolated individuals**, given the most time for individual learning
@@ -113,7 +114,7 @@ begin at the same starting point.
 ```{r team-structures, engine="dot", fig.width=1.5, fig.cap="(ref:team-structures)"}
 ```
 
-The focus in this research is on diachronic collaboration and the impact of
+This research focuses on diachronic collaboration and the impact of
 inheritance on problem solving ability among diachronic collaborators.
 Diachronic collaboration exemplifies an important process in human cultural
 evolution: the iterative improvement of tools and other solutions to problems
@@ -124,22 +125,67 @@ generations of problem solvers rather than attempting to solve the same problems
 through independent and individual learning. Models of the cultural evolutionary
 process demonstrate that social learning is adaptive relative to individual
 learning when the environment is stable and individual learning is costly
-[@Boyd:1988cu]. A population of smart individual learners who are unable to
-learn from each other are limited in what they can accomplish in a single
+[@Boyd:1988cu]. A population of smart individuals who are unable to
+learn from each other are limited to what they can accomplish in a single
 lifetime, as their accomplishments cannot be inherited by any future problem
 solvers. Thus, social learning is believed to provide a valuable shortcut to
-individual learning. The goal of this research is to quantify this shortcut. We
-measure how much time is saved by inheriting existing solutions to problems,
-and how inheritance impacts future problem solving.
+individual learning that causes improvements to accumulate over generations.
+However, few attempts have been made to quantify the shortcut gained from
+inheritance.
+
+Part of the reason is that models of the cultural evolution process assume that
+inheritance is an all-or-none process, meaning that if an innovation is
+successful inherited, a shortcut to individual learning is guaranteed. This of
+course does not guarantee that all innovations are inherited. If
+the likelihood of successfully inheriting an innovation is low, for example,
+a complex innovation, such as how to create a fishing net, the population of
+effective replicators must be sufficiently large enough or else the loss of
+technological complexity may ensue [@Henrich:2004ht]. In addition,
+cumulative gains in technological complexity require that
+individuals know how to filter the better innovations from maladaptive ones
+[@Enquist:2010gw]. In contrast, others have argued that inheritance is
+not an all-or-none process. inheritance often involves the transformation
+of socially learned information [@Sperber:1996exc], and the successful
+transmission of skilled behaviors can take years before becoming efficient
+[@Sterelny:2012ea]. As a result, the capacity for inheritance does not
+guarantee that diachronic collaboration will result in cumulative improvements.
+Our study accounts for this problem by measuring the effect of inheritance
+relative to the cost of creating it, and relative to the effectiveness of
+altnerative forms of problem solving.
 
 Previous efforts to understand diachronic collaboration in a problem solving
-context have focused on the capacity to inherit solutions from others
+context have focused on our capacity to inherit solutions from others
 rather than the effectiveness of diachronic collaboration as a problem solving
-strategy. For example, @Tennie:2009gaa argue that humans as compared to nonhuman
+strategy. For example, @Tennie:2009gaa argued that humans as compared to nonhuman
 primates are uniquely able to inherit solutions to problems that they would be
 unable to discover on their own. @Caldwell:2008gf demonstrated the capacity
 of diachronic teams to cumulatively improve performance in tasks such as
-paper airplane flying and spaghetti tower building.
+paper airplane flying and spaghetti tower building, but did not include
+any control conditions that could have demonstrated the effects of diachronic
+collaboration compared to other strategies, such as an individual given the
+same total amount of time for individual learning. Such an experiment
+has been performed on pigeons, where diachronic interactions between pairs
+of pigeons were found to improve the efficiency of flight paths more than
+individual birds and pairs of birds given the same total number of flights.
+However, control conditions for transmission chain design experiments are
+rarely employed [@Mesoudi:2008kr].
+
+Previous efforts to understanding the impact of inheritance on problem solving
+have compared problem solving in groups, where individuals can learn socially
+from others, to problem solving as individuals. Although the benefit to
+problem solving in groups is known to vary based on the problem being solved,
+for problems that require cumulative increases in the complexity of the solutions,
+groups of problem solvers are able to discover solutions they
+would have been unlikely to discover on their own [@Derex:2015cbb]. However,
+this approach of comparing group problem solving to individual problem solving
+does not directly test the impact of diachronic inheritance on problem
+solving because all problem solvers, even in a group, begin the problem
+solving task at the start starting point and with no existing solutions. Here
+we extend Derex et. al.'s paradigm in two ways. First, we include a diachronic
+condition, where problem solvers start off the problem solving task by inheriting
+the solutions discovered by a previous generation, and second, we compare a
+diachronic strategy to alternative strategies that do not involve diachronic
+inheritance while controlling for labor time, as opposed to calendar time.
 
 The synchronic and isolated strategies serve as control conditions in these
 experiments: ways of solving the same set of problems without diachronic
