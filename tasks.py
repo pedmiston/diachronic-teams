@@ -17,9 +17,9 @@ TOTEMS_RAW_DATA = Path(R_PKG, 'data-raw/totems')
 
 
 @task
-def env(ctx):
+def configure(ctx):
     """Create environment file from a template."""
-    dst = '.env'
+    dst = '.environment'
     template = jinja2.Template(open('environment.j2', 'r').read())
     with open(dst, 'w') as f:
         f.write(template.render())

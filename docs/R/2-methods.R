@@ -39,11 +39,16 @@ ConditionCounts <- Teams %>%
 
 # Reporting model results ----
 
-report_lmer_mod <- function(lmer_mod, term, formats = NULL) {
+report_lmer_mod <- function(lmer_mod, term, formats = NULL, reverse_sign = FALSE) {
   term_ <- term  # work around NSE in filter
   results <- broom::tidy(lmer_mod, effects = "fixed") %>%
     filter(term == term_) %>%
     as.list()
+  
+  if(reverse_sign) {
+    results$estimate <- -results$estimate
+    results$statistic <- -results$statistic
+  }
 
   fmt <- c(b=2, se=2, t=2)
   if(!is.null(formats)) fmt[names(formats)] <- formats
@@ -86,7 +91,7 @@ report_beta <- function(mod, param, digits = 1) {
 report_modcomp <- function(modcomp) {
   modcomp <- as.list(modcomp[2, ])
   p_string <- compute_p_string(modcomp$`Pr(>Chisq)`)
-  sprintf("_$X_2$(%i) = %.4f, %s", modcomp$`Chi Df`, modcomp$Chisq, p_string)
+  cat(sprintf("$\\chi^2$(%i) = %.4f, %s", modcomp$`Chi Df`, modcomp$Chisq, p_string))
 }
 
 compute_p_string <- function(p_value) {
