@@ -1,0 +1,5 @@
+---
+title: "Cumulative improvements in problem solutions over generations of diachronic collaboration"
+author: "Pierce Edmiston"
+---
+
