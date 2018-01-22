@@ -1,5 +1,59 @@
 ---
-title: "Cumulative improvements in problem solutions over generations of diachronic collaboration"
+title: "Cumulative improvements in iterated problem solving"
 author: "Pierce Edmiston"
 ---
+```{r totems, include=FALSE}
+library(knitr)
+library(crotchet)
+
+opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  results = "hide",
+  fig.width = 3,
+  fig.height = 3,
+  dpi = 96,
+  cache = TRUE
+)
+
+# Read all knitr chunks in .R files
+chunks_dir <- "R"
+sapply(list.files(chunks_dir, "*.R", full.names = TRUE), read_chunk)
+
+# Read all the diagrams made with graphviz in the totems package
+chunks <- c(
+  "team-structures-exp1",
+)
+sapply(chunks, read_graphviz_chunk, package = "totems")
+```
+
+```{r setup, include=FALSE, cache=FALSE}
+```
+
+# Introduction
+
+# Methods
+
+(ref:team-structures-exp1) Diachronic problem solving examined in
+Experiment 1. Participants were assigned to four-person diachronic teams.
+Each participant completed the same problem solving task for 25 minutes.
+Participants in generations 2-4 began the problem solving task with the
+solutions that had been discovered by the previous generation.
+
+```{r team-structures-exp1, engine="dot", fig.cap="(ref:team-structures-exp1)"}
+```
+
+## Materials
+
+## Participants
+
+## Procedure
+
+# Results
+
+```{r exp1, include=FALSE}
+```
+
+# Discussion
 
