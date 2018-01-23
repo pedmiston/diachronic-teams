@@ -281,7 +281,7 @@ delta_difficulty_plot <- ggplot(DeltaDifficulty) +
              position = position_jitter(width = 0.2)) +
   geom_hline(yintercept = 0, linetype = 2, size = 0.5) +
   scale_x_continuous("Innovations inherited") +
-  scale_y_continuous("∆ Difficulty score") +
+  scale_y_continuous("Change in difficulty score") +
   t_$scale_shape_outlier +
   guides(shape = "none") +
   t_$base_theme

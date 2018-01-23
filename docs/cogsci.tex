@@ -1,0 +1,357 @@
+% Template for Cogsci submission with R Markdown
+
+% Stuff changed from original Markdown PLOS Template
+\documentclass[10pt, letterpaper]{article}
+
+\usepackage{cogsci}
+\usepackage{pslatex}
+\usepackage{float}
+\usepackage{caption}
+
+% amsmath package, useful for mathematical formulas
+\usepackage{amsmath}
+
+% amssymb package, useful for mathematical symbols
+\usepackage{amssymb}
+
+% hyperref package, useful for hyperlinks
+\usepackage{hyperref}
+
+% graphicx package, useful for including eps and pdf graphics
+% include graphics with the command \includegraphics
+\usepackage{graphicx}
+
+% Sweave(-like)
+\usepackage{fancyvrb}
+\DefineVerbatimEnvironment{Sinput}{Verbatim}{fontshape=sl}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{}
+\DefineVerbatimEnvironment{Scode}{Verbatim}{fontshape=sl}
+\newenvironment{Schunk}{}{}
+\DefineVerbatimEnvironment{Code}{Verbatim}{}
+\DefineVerbatimEnvironment{CodeInput}{Verbatim}{fontshape=sl}
+\DefineVerbatimEnvironment{CodeOutput}{Verbatim}{}
+\newenvironment{CodeChunk}{}{}
+
+% cite package, to clean up citations in the main text. Do not remove.
+\usepackage{cite}
+
+\usepackage{color}
+
+% Use doublespacing - comment out for single spacing
+%\usepackage{setspace}
+%\doublespacing
+
+
+% % Text layout
+% \topmargin 0.0cm
+% \oddsidemargin 0.5cm
+% \evensidemargin 0.5cm
+% \textwidth 16cm
+% \textheight 21cm
+
+\title{Cumulative improvements in iterated problem solving}
+
+
+\author{{\large \bf Pierce Edmiston} \\ \texttt{pedmiston@wisc.edu} \\ Department of Psychology \\ University of Wisconsin-Madison
+\And {\large \bf Maxime Derex} \\ \texttt{max@uni.edu} \\ Department of Psychology \\ Some University
+\And {\large \bf Gary Lupyan} \\ \texttt{lupyan@wisc.edu} \\ Department of Psychology \\ University of Wisconsin-Madison}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+The abstract should be one paragraph, indented 1/8 inch on both sides,
+in 9 point font with single spacing. The heading Abstract should be 10
+point, bold, centered, with one line space below it. This one-paragraph
+abstract section is required only for standard spoken papers and
+standard posters (i.e., those presentations that will be represented by
+six page papers in the Proceedings).
+
+\textbf{Keywords:}
+cultural evoltuion; transmission chain; iterated problem solving
+\end{abstract}
+
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+\hypertarget{methods}{%
+\section{Methods}\label{methods}}
+
+We used a transmission chain design where participants are assigned to
+chains and generations (Fig. @ref(fig:team-structures-exp1)). To
+emphasize that participants in each chain are working together
+cooperatively on a shared goal, as opposed to studying unguided
+repetition (cf. Bartlett, 1932; Edmiston, Lupyan, \& Perlman, 2017), we
+will refer to transmission chains instead as diachronic teams. Our
+experiment tested the problem solving ability of diachronic teams over
+four generations of problem solving in order to understand the impact of
+inherited solutions on problem solving ability.
+
+(ref:team-structures-exp1) Diachronic problem solving. Participants were
+assigned to four-person teams. Each participant completed the problem
+solving task for 25 minutes. Participants in generations 2-4 began the
+problem solving task with the solutions that had been discovered by the
+teammate from the previous generation.
+
+\begin{CodeChunk}
+\begin{figure*}[h!]
+
+{\centering \includegraphics[width=0.9\linewidth]{cogsci_files/figure-latex/team-structures-exp1-1} 
+
+}
+
+\caption[Diachronic problem solving]{Diachronic problem solving. Participants were assigned to four-person teams. Each participant completed the problem solving task for 25 minutes. Participants in generations 2-4 began the problem solving task with the solutions that had been discovered by the teammate from the previous generation.}\label{fig:team-structures-exp1}
+\end{figure*}
+\end{CodeChunk}
+
+\hypertarget{participants}{%
+\subsection{Participants}\label{participants}}
+
+Participants were recruited from the UW-Madison student body and
+received course credit in exchange for participation. Each participant
+was assigned to a four-person team (Table @ref(tab:exp1-participants)).
+Data was collected for a total of 42 complete teams.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{rrrl}
+  \hline
+ & Generation & N & Inheritance \\ 
+  \hline
+1 & 1.00 &  42 & None \\ 
+  2 & 2.00 &  42 & Diachronic \\ 
+  3 & 3.00 &  42 & Diachronic \\ 
+  4 & 4.00 &  42 & Diachronic \\ 
+   \hline
+\end{tabular}
+\caption{Participants in the Experiment.} 
+\end{table}
+
+\hypertarget{materials-and-procedure}{%
+\subsection{Materials and Procedure}\label{materials-and-procedure}}
+
+Participants played a computer-based puzzle game requiring them to
+create new tools by recombining existing ones all for the sake of
+building ``a sacred totem to appease the gods'' (Derex \& Boyd, 2015).
+To build a totem, participants first needed to construct an axe out of
+three independently discovered items: a refined stick used as a handle,
+a sharpened rock for the blade, and string wound from bark fibers for
+binding (Fig. @ref(fig:totems-game)B). In the game, more advanced tools
+produce larger and more intricate totems, resulting in higher
+performance scores.
+
+\begin{CodeChunk}
+\begin{figure*}[tb]
+\includegraphics{cogsci_files/figure-latex/totems-game-1} \caption[The Totems game]{The Totems game. Left. The Totems gameplay interface. Participants generated guesses by dragging items into the Workshop and selecting the Try button. If the guess created an item, it could be dragged into the Stock panel, and used again. Once segments of a totem were made through cutting, carving, and painting, they could be dragged into the Totem panel for scoring. Right. A sample of the solution landscape. The top row of 6 items are the initial resources available to problem solvers at the start of the session. These resources must be combined to build the first generation of tools, including a refined rock, a club derived from an antler, and a small branch of a tree. The first 6 generations of possible tools are shown. The axe is required to construct the first totem pole.}\label{fig:totems-game}
+\end{figure*}
+\end{CodeChunk}
+
+Participants solved problems by guessing through trial-and-error
+different combinations of items they believed would yield new tools. To
+generate new guesses, participants dragged items into a workshop panel
+(Fig. @ref(fig:totems-game)A). Of all the valid combinations of items
+that could be made, only a small percentage successfully yielded new
+items. The 6 initial resources can be combined with between 1 and 4
+other items with replacement for a total of 1554 unique guesses, only
+three of which yield any new tools: a branch can be broken off a tree,
+an antler refined into a club, and two rocks can be combined to yield a
+shaped stone. As the number of items increases, so does the
+combinatorial complexity of the problem space, such that the creation of
+later generation tools is less likely to happen by chance.
+
+Once an item was discovered, the recipe for its creation was recorded in
+the history panel. Participants could review their item history and see
+the recipes for their previous innovations, even items they had
+discarded. In addition to an individual history, the history pane also
+had other tabs for diachronic participants after the first generation.
+These participants began with a tab that could be selected to show all
+item recipes discovered by the previous generation. \textbf{This was the
+mechanism by which solutions to problems were inherited by future
+generations.}
+
+\hypertarget{results}{%
+\section{Results}\label{results}}
+
+Diachronic problem solvers were consistently able to exceed the number
+of innovations discovered by their predecessors (Fig.
+@ref(fig:innovations-by-generation)). This result was obtained using
+Page's trend test, which is a repeated measure test for monotonicity. We
+used this test to measure whether the number of innovations increased
+within each team and over generations against the null hypothesis that
+the number of innovations did not change from generation to generation.
+We found evidence for cumulative increases in problem solving ability
+such that later generations of problem solvers were able to discover
+more innovations in a single 25 minute session than their predecessors,
+.
+
+We next measured the linear increase in innovations over generations
+within each team by fitting a hierarchical regression model to the total
+innovations achieved in each generation with nested effects (intercepts
+and slopes) for teams. On average, second generation participants were
+able to discover 3.3 more innovations than first generation
+participants, \emph{b} = 3.27 (SE = 0.65), \emph{t} = 5.04. This linear
+effect decreased by -0.4 each generation for third and fourth generation
+participants, \emph{b} = -0.39 (SE = 0.20), \emph{t} = -2.00. A model
+comparison of hierarchical regression models fit with linear and
+quadratic components revealed that a quadratic fit was significantly
+better than a linear fit alone, . This result suggests that accumulated
+inheritance had a diminishing return on future problem solving.
+
+(ref:innovations-by-generation) Number of innovations discovered by each
+generation. Each of the thin green lines is a team. Means in each
+generation are shown as green X's. The thick blue line is the model
+predictions with ±1 standard error.
+
+\begin{CodeChunk}
+\begin{figure}[tb]
+\includegraphics{cogsci_files/figure-latex/innovations-by-generation-1} \caption[(ref:innovations-by-generation)]{(ref:innovations-by-generation)}\label{fig:innovations-by-generation}
+\end{figure}
+\end{CodeChunk}
+
+We next consider different explanations for the diminishing return of
+inheritance on future problem solving. First, we tested whether a larger
+inheritance had a detrimental effect on future problem solving. We found
+that an increase in the number of inherited innovations is negatively
+associated with a decrease in the number of new innovations discovered
+by future generations of problem solvers, \emph{b} = -0.13 (SE = 0.07),
+\emph{t} = -1.91 (Fig. @ref(fig:size-of-inheritance)). This finding is
+in line with the current proposal that inheritance has an influence on
+future problem solving beyond simply providing a shortcut to individual
+learning. In this case, the impact is negative, such that inheriting
+more innovations appears to \emph{decrease} problem solving ability.
+
+\begin{CodeChunk}
+\begin{figure*}[tb]
+\includegraphics{cogsci_files/figure-latex/size-of-inheritance-1} \caption[Number of innovations created relative to those inherited]{Number of innovations created relative to those inherited. A. The relationship between created and inherited innovations. The dotted line is a reference with slope=1 such that points above the line indicate future generations exceeding their ancestors. B. The relationship between created innovations controlling for those inherited. The same reference line as in A is now horizontal. The line shows the predictions of the hierarchical regression model with ±1 standard error.}\label{fig:size-of-inheritance}
+\end{figure*}
+\end{CodeChunk}
+
+However, an alternative explanation, not having to do with inheritance
+affecting problem solving ability, is that as more innovations are
+accumulated, the task gets more difficult, such that problem solving
+might slow down irregardless of what was inherited. In the Totems game,
+as innovations are accumulated, the total number of possible guesses
+than can be made from the accumulated items increases exponentially, so
+that later generations of problems are less likely to stumble upon a
+correct solution by chance. To control for combinatorial complexity, we
+created an alternative outcome measure that, rather than counting all
+innovations equally, instead weighted each innovation relative to the
+size of the inventory at the time at which the innovation was
+discovered. By this measure, innovations from later generations are
+expected to be more difficult because they require combinatorially more
+guesses in order to find by chance alone.
+
+Fig. @ref(fig:delta-difficulty-fig) shows the change in accumulated
+difficulty score based on the number of innovations that were inherited.
+In contrast to the analysis that treated all innovations equally, when
+innovations are weighted by combinatorial complexity, the effects of
+inheritance and diachronic collaboration appear to be beneficial.
+Diachronic problem solvers who inherit more innovations are better able
+to exceed the accumulated difficulty score of their ancestors than first
+generation diachronic problem solvers, \emph{b} = 0.0047 (SE = 0.0015),
+\emph{t} = 3.22.
+
+\begin{CodeChunk}
+\begin{figure}[tb]
+\includegraphics{cogsci_files/figure-latex/delta-difficulty-fig-1} \caption[Change in accumulated difficulty score by inheritance]{Change in accumulated difficulty score by inheritance. Accumulated difficulty scores are sums of discovered innovations weighted by the combinatorial complexity of the possible choices available to the participant when the innovation was discovered. The outcome measure is the difference between the accumulated difficulty scores of subsequent generations. The line shows the predictions of a hierarchical regression model with ±1 standard error.}\label{fig:delta-difficulty-fig}
+\end{figure}
+\end{CodeChunk}
+
+The final explanation we consider regarding whether inheritance affected
+problem solving ability is that larger inheritances take more time to
+recreate, thus leaving less time for future problem solving. Even if
+inheritance did not affect problem solving ability, participants who
+inherit more innovations may not discover as many future innovations
+simply because they used up most of their time recreating the items that
+were inherted. To investigate, we looked at problem solving rates
+controlling for the amount of time spent recreating the inherited items.
+
+Diachronic problem solvers after the first generation inherit the
+recipes for creating innovations in the Totems game, not the innovations
+themselves. Thus, diachronic problem solvers who inherit solutions must
+start the experiment by recreating the innovations already discovered by
+their ancestors. On average, diachronic problem solvers after the first
+generation spent 8.2 minutes of a 25 minute session (32.8\%) recreating
+the innovations that were inherted (Fig. @ref(fig:learning-times)A). We
+refer to to this stage as the \textbf{learning stage}.
+
+The length of the learning stage depended on the number of innovations
+that were inherited. On average diachronic problem solvers inherited 8.7
+innovations (SD=4.9). The length of the learning stage scaled linearly
+with the size of the inheritance, \emph{b} = 0.63 (SE = 0.08),
+\emph{t}(113.0) = 8.30, \emph{p} \textless{} 0.001 (Fig.
+@ref(fig:learning-times)B), but there were some exceptions; some
+participants took disproportionately long to recreate the items
+discovered by their ancestors. Participants who spent over 80\% of the
+session in the learning stage were considered outliers, and excluded
+from analysis.
+
+\begin{CodeChunk}
+\begin{figure*}[tb]
+\includegraphics{cogsci_files/figure-latex/learning-times-1} \caption[Learning times]{Learning times. A. The distribution of learning times, with outliers highlighted. B. Linear relationship between inheritance sizes and learning times. Outliers excluded from the regression are shown as X's.}\label{fig:learning-times}
+\end{figure*}
+\end{CodeChunk}
+
+Problem solvers who spend more time in the learning stage conversely
+have less time in the \textbf{playing stage}, where new innovations are
+tried and discovered. Fig. @ref(fig:playing-time-plot) shows the problem
+solving rates for diachronic problem solvers based on the length of the
+playing stage. The overall rate of problem solving in the playing stage
+was 8.3 minutes per new innovation (0.12 innovations per minute),
+\emph{b} = 0.12 (SE = 0.07), \emph{t} = 1.77. This rate was not found to
+vary based on the size of the inheritance, as revealed by a model
+comparison comparing a model predicting unique innovations from playing
+time alone to one predicting unique innovations from the interaction
+between playing time and inheritance size, . This result suggests that
+inheriting more items did not have an effect on the rate at which new
+problems are solved when playing time is controlled.
+
+\begin{CodeChunk}
+\begin{figure}[tb]
+\includegraphics{cogsci_files/figure-latex/playing-time-plot-1} \caption[Problem solving rate in the playing stage]{Problem solving rate in the playing stage. Playing time is the amount of time out of a 25 minute session dedicated to discovering new innovations that were not discovered by an ancestor. The line shows the predictions of the hierarchical regression model with ±1 standard error. The slope of this line did not significantly vary based on the size of the inheritance.}\label{fig:playing-time-plot}
+\end{figure}
+\end{CodeChunk}
+
+\hypertarget{discussion}{%
+\section{Discussion}\label{discussion}}
+
+In Experiment 1, we measured the problem solving ability of four-person
+diachronic teams, and found that diachronic problem solvers were
+consistently able to cumulatively improve upon the solutions they
+inherited. Although this finding is not surprising given that
+participants started a problem solving task with some of the problems
+already solved, it is important to highlight that solving new problems
+first required recreating all of the inherited solutions, which took
+time and effort. Once recreated, some participants were unable to solve
+any new problems. Others were unable to recreate all of their inherited
+solutions in the 25-minute session---although this behavior is likely
+attributable to non-compliant behavior or a misunderstanding of the
+task. Nonetheless, the presence of these outliers simply highlights that
+diachronic problem solving, as measured in this paradigm, is not
+guaranteed to improve cumulatively, and explains why it is important to
+first establish that performance does indeed accumulate in diachronic
+teams.
+
+\hypertarget{references}{%
+\section{References}\label{references}}
+
+\setlength{\parindent}{-0.1in} 
+\setlength{\leftskip}{0.125in}
+
+\noindent
+
+\hypertarget{refs}{}
+\leavevmode\hypertarget{ref-Bartlett:1933remembering}{}%
+Bartlett, F. C. (1932). \emph{Remembering: A study in experimental and
+social psychology}. Cambridge University Press.
+
+\leavevmode\hypertarget{ref-Derex:2015cbb}{}%
+Derex, M., \& Boyd, R. (2015). The foundations of the human cultural
+niche. \emph{Nature Communications}, \emph{6}, 1--7.
+
+\leavevmode\hypertarget{ref-Edmiston:2017jx}{}%
+Edmiston, P., Lupyan, G., \& Perlman, M. (2017). The emergence of words
+from vocal imitations. \emph{bioRxiv}, 1--23.
+
+\end{document}
