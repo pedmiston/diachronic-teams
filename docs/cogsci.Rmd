@@ -4,8 +4,8 @@ author-information: |
     \author{{\large \bf Pierce Edmiston} \\ \texttt{pedmiston@wisc.edu} \\ Department of Psychology \\ University of Wisconsin-Madison
     \And {\large \bf Maxime Derex} \\ \texttt{maxime.derex@gmail.com} \\ Human Behaviour and Cultural Evolution Group \\ University of Exeter
     \And {\large \bf Gary Lupyan} \\ \texttt{lupyan@wisc.edu} \\ Department of Psychology \\ University of Wisconsin-Madison}
-bibliography: references.bib
-csl: apa6.csl
+bibliography: "references.bib"
+csl: "theme/apa.csl"
 document-params: "10pt, letterpaper"
 abstract: |
   The abstract should be one paragraph, indented 1/8 inch on both sides,
@@ -15,7 +15,9 @@ abstract: |
   papers and standard posters (i.e., those presentations that will be
   represented by six page papers in the Proceedings).
 keywords: "cultural evoltuion; transmission chain; iterated problem solving"
-output: cogsci2016::cogsci_paper
+output:
+  cogsci2016::cogsci_paper:
+    keep_tex: yes
 ---
 
 ```{r totems, include=FALSE}

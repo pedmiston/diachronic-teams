@@ -88,9 +88,11 @@ def reset(ctx, name, verbose=False):
             figs_dir.rmtree()
 
         code_str = Path(doc.parent, 'code*')
-        ctx.run('rm -rf {} {} {}'.format(cache_dir, figs_dir, code_str),
+        ctx.run('cd {} && rm -rf {} {} {}'.format(doc.parent, cache_dir, figs_dir, code_str),
                 echo=verbose)
-
+        
+        # Remove random latex crud
+        ctx.run('cd {} && rm -f *synctex.gz *.log *.tex'.format(doc.parent), echo=verbose)
 
 @task(help=dict(name='If name is "list", list available figure names.'))
 def img(ctx, name, output=None, ext='png', dpi=300):
