@@ -455,16 +455,9 @@ kable(Exp1Participants, caption = "(ref:exp1-participants)")
 ## Results
 
 Diachronic problem solvers were consistently able to exceed the number of
-innovations discovered by their predecessors
-<<<<<<< HEAD
-(Fig. \@ref(innovations-by-generation)).
-This result was obtained using Page's trend test, which is test of
-monotonicity for repeated measures. We used this test to measure whether
-=======
-(Fig. \@ref(fig:innovations-by-generation)).
+innovations discovered by their predecessors (Fig. \@ref(fig:innovations-by-generation)).
 This result was obtained using Page's trend test, which is a
 repeated measure test for monotonicity. We used this test to measure whether
->>>>>>> b114f01f1950caa2e236519f5d1acfcaeb65345e
 the number of innovations increased within each team and over generations
 against the null hypothesis that the number of innovations did not change
 from generation to generation. We found evidence for cumulative
@@ -472,18 +465,6 @@ increases in problem solving ability such that later generations of problem
 solvers were able to discover more innovations in a single 25 minute session
 than their predecessors, `r exp1$page_test`.
 
-<<<<<<< HEAD
-We next measured the linear increase in innovations by generations by fitting
-a hierarchical regression model to the total innovations achieved in each
-generation with random effects (intercepts and slopes) for teams. On average,
-second generation participants were able to discover `r exp1$gen0_slope` more
-innovations than their ancestors, `r exp1$gen0_slope_stats`. This linear effect
-decreased for third and fourth generation participants by `r exp1$gen0sqr_slope`
-innovations each generation, `r exp1$gen0sqr_slope_stats`. A model comparison
-of hierarchical regression models fit with linear and quadratic components
-revealed that a quadratic fit was significantly better than a linear fit alone,
-`r exp1$quad_modcomp`.
-=======
 We next measured the linear increase in innovations over generations
 within each team by fitting a hierarchical regression model to the total
 innovations achieved in each generation with nested effects (intercepts
@@ -496,7 +477,6 @@ regression models fit with linear and quadratic components revealed
 that a quadratic fit was significantly better than a linear fit alone,
 `r exp1$quad_modcomp`. This result suggests that accumulated inheritance had a
 diminishing return on future problem solving.
->>>>>>> b114f01f1950caa2e236519f5d1acfcaeb65345e
 
 (ref:innovations-by-generation) Number of innovations discovered by each
 generation. Each of the thin green lines is a team. Means in each generation are
