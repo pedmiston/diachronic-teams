@@ -1,6 +1,11 @@
 ---
 title: "Cumulative improvements in iterated problem solving"
 author: "Pierce Edmiston"
+bibliography: references.bib
+csl: "theme/apa.csl"
+output:
+  bookdown::pdf_document2:
+    toc: no
 ---
 ```{r totems, include=FALSE}
 library(knitr)
@@ -21,39 +26,284 @@ opts_chunk$set(
 chunks_dir <- "R"
 sapply(list.files(chunks_dir, "*.R", full.names = TRUE), read_chunk)
 
-# Read all the diagrams made with graphviz in the totems package
-chunks <- c(
-  "team-structures-exp1",
-)
+# Read diagrams made with graphviz in the totems package
+chunks <- c("team-structures-exp1")
 sapply(chunks, read_graphviz_chunk, package = "totems")
 ```
 
 ```{r setup, include=FALSE, cache=FALSE}
 ```
 
-# Introduction
-
-# Methods
-
-(ref:team-structures-exp1) Diachronic problem solving examined in
-Experiment 1. Participants were assigned to four-person diachronic teams.
-Each participant completed the same problem solving task for 25 minutes.
-Participants in generations 2-4 began the problem solving task with the
-solutions that had been discovered by the previous generation.
-
-```{r team-structures-exp1, engine="dot", fig.cap="(ref:team-structures-exp1)"}
+```{r methods, include=FALSE}
 ```
-
-## Materials
-
-## Participants
-
-## Procedure
-
-# Results
 
 ```{r exp1, include=FALSE}
 ```
 
+# Introduction
+
+# Methods
+
+We used a transmission chain design where participants are assigned to chains
+and generations (Fig. \@ref(fig:team-structures-exp1)). To emphasize that
+participants in each chain are working together cooperatively on a shared goal,
+as opposed to studying unguided repetition [cf. @Bartlett:1933remembering;
+@Edmiston:2017jx], we will refer to transmission chains instead as diachronic
+teams. Our experiment tested the problem solving ability of diachronic teams
+over four generations of problem solving in order to understand the impact of
+inherited solutions on problem solving ability.
+
+(ref:team-structures-exp1) Diachronic problem solving. Participants were
+assigned to four-person teams. Each participant completed the problem
+solving task for 25 minutes. Participants in generations 2-4 began the problem
+solving task with the solutions that had been discovered by the teammate
+from the previous generation.
+
+```{r team-structures-exp1, engine="dot", fig.cap="(ref:team-structures-exp1)"}
+```
+
+## Participants
+
+Participants were recruited from the UW-Madison student body and received course
+credit in exchange for participation. Each participant was assigned to a
+four-person team (Table \@ref(tab:exp1-participants)). Data was collected for
+a total of `r exp1$n_teams` complete teams.
+
+(ref:exp1-participants) Participants in the Experiment.
+
+```{r exp1-participants, results="asis"}
+kable(Exp1Participants, caption = "(ref:exp1-participants)")
+```
+
+## Materials and Procedure
+
+Participants played a computer-based puzzle game requiring them to create new
+tools by recombining existing ones all for the sake of building "a sacred totem
+to appease the gods" [@Derex:2015cbb]. To build a totem, participants first
+needed to construct an axe out of three independently discovered items: a
+refined stick used as a handle, a sharpened rock for the blade, and string wound
+from bark fibers for binding (Fig. \@ref(fig:totems-game)B). In the game,
+more advanced tools produce larger and more intricate totems, resulting in
+higher performance scores.
+
+(ref:totems-game) The Totems game. **Left.** The Totems gameplay interface.
+Participants generated guesses by dragging items into the Workshop and selecting
+the Try button. If the guess created an item, it could be dragged into the Stock
+panel, and used again. Once segments of a totem were made through cutting,
+carving, and painting, they could be dragged into the Totem panel for scoring.
+**Right**. A sample of the solution landscape. The top row of 6 items are the
+initial resources available to problem solvers at the start of the session.
+These resources must be combined to build the first generation of tools,
+including a refined rock, a club derived from an antler, and a small branch of a
+tree. The first 6 generations of possible tools are shown. The axe is required
+to construct the first totem pole.
+
+```{r totems-game, fig.width=8, fig.cap="(ref:totems-game)"}
+grid.arrange(
+  read_image("gameplay", "totems"),
+  read_image("landscape-sample.gv", "totems"),
+  widths = c(0.6, 0.4)
+)
+```
+
+Participants solved problems by guessing through trial-and-error different
+combinations of items they believed would yield new tools. To generate new
+guesses, participants dragged items into a workshop panel (Fig.
+\@ref(fig:totems-game)A). Of all the valid combinations of items that could be made, only a small
+percentage successfully yielded new items. The 6 initial resources can be
+combined with between 1 and 4 other items with replacement for a total of
+`r count_unique_guesses(6)` unique guesses, only three of which
+yield any new tools: a branch can be broken off a tree, an antler refined into
+a club, and two rocks can be combined to yield a shaped stone. As the number
+of items increases, so does the combinatorial complexity of the problem space,
+such that the creation of later generation tools is less likely to happen by
+chance.
+
+Once an item was discovered, the recipe for its creation was recorded in the
+history panel. Participants could review their item history and see the recipes
+for their previous innovations, even items they had discarded. In addition to an
+individual history, the history pane also had other tabs for diachronic participants
+after the first generation. These participants began with a tab that could be
+selected to show all item recipes discovered by the previous generation. **This
+was the mechanism by which solutions to problems were inherited by future
+generations.**
+
+# Results
+
+Diachronic problem solvers were consistently able to exceed the number of
+innovations discovered by their predecessors (Fig. \@ref(fig:innovations-by-generation)).
+This result was obtained using Page's trend test, which is a
+repeated measure test for monotonicity. We used this test to measure whether
+the number of innovations increased within each team and over generations
+against the null hypothesis that the number of innovations did not change
+from generation to generation. We found evidence for cumulative
+increases in problem solving ability such that later generations of problem
+solvers were able to discover more innovations in a single 25 minute session
+than their predecessors, `r exp1$page_test`.
+
+We next measured the linear increase in innovations over generations
+within each team by fitting a hierarchical regression model to the total
+innovations achieved in each generation with nested effects (intercepts
+and slopes) for teams. On average, second generation participants were
+able to discover `r exp1$gen0_slope` more innovations than first generation
+participants, `r exp1$gen0_slope_stats`. This linear effect decreased by
+`r exp1$gen0sqr_slope` each generation for third and fourth generation
+participants, `r exp1$gen0sqr_slope_stats`. A model comparison of hierarchical
+regression models fit with linear and quadratic components revealed
+that a quadratic fit was significantly better than a linear fit alone,
+`r exp1$quad_modcomp`. This result suggests that accumulated inheritance had a
+diminishing return on future problem solving.
+
+(ref:innovations-by-generation) Number of innovations discovered by each
+generation. Each of the thin green lines is a team. Means in each generation are
+shown as green X's. The thick blue line is the model predictions with ±1
+standard error.
+
+```{r innovations-by-generation, fig.cap="(ref:innovations-by-generation)"}
+innovations_by_generation_plot
+```
+
+We next consider different explanations for the diminishing return of inheritance on
+future problem solving. First, we tested whether a larger inheritance had a detrimental
+effect on future problem solving. We found that an increase in the number of
+inherited innovations is negatively associated with a decrease in the number of
+new innovations discovered by future generations of problem solvers,
+`r exp1$inheritance_size_slope_stats` (Fig. \@ref(fig:size-of-inheritance)).
+This finding is in line with the current proposal that inheritance has an
+influence on future problem solving beyond simply providing a shortcut
+to individual learning. In this case, the impact is negative, such
+that inheriting more innovations appears to _decrease_ problem solving ability.
+
+(ref:size-of-inheritance) Number of innovations created relative to those
+inherited. **A.** The relationship between created and inherited innovations.
+The dotted line is a reference with slope=1 such that points above the line
+indicate future generations exceeding their ancestors. **B.** The relationship
+between created innovations controlling for those inherited. The same reference
+line as in A is now horizontal. The line shows the predictions of the
+hierarchical regression model with ±1 standard error.
+
+```{r size-of-inheritance, fig.width=6, fig.height=4, fig.cap="(ref:size-of-inheritance)"}
+grid.arrange(
+  innovations_created_and_inherited_plot + ggtitle("A"),
+  new_innovations_plot + ggtitle("B"),
+  nrow = 1
+)
+```
+
+However, an alternative explanation, not having to do with inheritance affecting
+problem solving ability, is that as more innovations are accumulated, the task
+gets more difficult, such that problem solving might slow down irregardless of
+what was inherited. In the Totems game, as innovations are accumulated, the total
+number of possible guesses than can be made from the accumulated items increases
+exponentially, so that later generations of problems are less likely to stumble
+upon a correct solution by chance. To control for combinatorial complexity, we
+created an alternative outcome measure that, rather than counting all
+innovations equally, instead weighted each innovation relative to the size of
+the inventory at the time at which the innovation was discovered. By this
+measure, innovations from later generations are expected to be more difficult
+because they require combinatorially more guesses in order to find by chance
+alone.
+
+Fig. \@ref(fig:delta-difficulty-fig) shows the
+change in accumulated difficulty score based on the number of innovations
+that were inherited. In contrast to the analysis that treated all
+innovations equally, when innovations are weighted by combinatorial complexity,
+the effects of inheritance and diachronic collaboration appear to be beneficial.
+Diachronic problem solvers who inherit more innovations are better
+able to exceed the accumulated difficulty score of their ancestors than
+first generation diachronic problem solvers, `r exp1$delta_diff_slope_stats`.
+
+(ref:delta-difficulty-fig) Change in accumulated difficulty score by
+inheritance. Accumulated difficulty scores are sums of discovered innovations
+weighted by the combinatorial complexity of the possible choices available to
+the participant when the innovation was discovered. The outcome measure is the
+difference between the accumulated difficulty scores of subsequent generations.
+The line shows the predictions of a hierarchical regression model with ±1
+standard error.
+
+```{r delta-difficulty-fig, fig.cap="(ref:delta-difficulty-fig)"}
+delta_difficulty_plot
+```
+
+The final explanation we consider regarding whether inheritance affected problem
+solving ability is that larger inheritances take more time to recreate, thus
+leaving less time for future problem solving. Even if inheritance did not affect
+problem solving ability, participants who inherit more innovations may not
+discover as many future innovations simply because they used up most of their
+time recreating the items that were inherted. To investigate, we looked at
+problem solving rates controlling for the amount of time spent recreating the
+inherited items.
+
+Diachronic problem solvers after the first generation inherit the recipes
+for creating innovations in the Totems game, not the innovations themselves.
+Thus, diachronic problem solvers who inherit solutions must start the
+experiment by recreating the innovations already discovered by their
+ancestors. On average, diachronic problem solvers after the first generation
+spent `r exp1$mean_learning_time_min` minutes of a 25 minute session
+(`r exp1$proportion_learning_time`%) recreating the innovations that were
+inherted (Fig. \@ref(fig:learning-times)A). We refer to to this stage
+as the **learning stage**.
+
+The length of the learning stage depended on the number of innovations that were
+inherited. On average diachronic problem solvers inherited
+`r exp1$mean_inheritance_size` innovations (SD=`r exp1$sd_inheritance_size`). The
+length of the learning stage scaled linearly with the size of the inheritance,
+`r report_lm_mod(learning_rates_mod, "InheritanceSize")` (Fig. \@ref(fig:learning-times)B),
+but there were some exceptions; some participants took disproportionately
+long to recreate the items discovered by their ancestors. Participants
+who spent over 80% of the session in the learning stage were considered outliers,
+and excluded from analysis.
+
+(ref:learning-times) Learning times. **A.** The distribution of learning times,
+with outliers highlighted. **B.** Linear relationship between inheritance sizes
+and learning times. Outliers excluded from the regression are shown as X's.
+
+```{r learning-times, fig.width=6, fig.height=4, fig.cap="(ref:learning-times)"}
+grid.arrange(
+  learning_times_plot + ggtitle("A"),
+  learning_rates_plot + ggtitle("B"),
+  nrow = 1
+)
+```
+
+Problem solvers who spend more time in the learning stage conversely have less
+time in the **playing stage**, where new innovations are tried and discovered.
+Fig. \@ref(fig:playing-time-plot) shows the problem solving
+rates for diachronic problem solvers based on the length of the playing stage.
+The overall rate of problem solving in the playing stage was
+`r exp1$minutes_per_new_innovation` minutes per new innovation
+(`r exp1$new_innovations_per_minute` innovations per minute),
+`r exp1$playing_time_slope_stats`. This rate was not found to vary based
+on the size of the inheritance, as revealed by a model comparison comparing
+a model predicting unique innovations from playing time alone to one predicting
+unique innovations from the interaction between playing time and inheritance size,
+`r exp1$playing_time_modcomp`. This result suggests that inheriting more
+items did not have an effect on the rate at which new problems are solved
+when playing time is controlled.
+
+(ref:playing-time-plot) Problem solving rate in the playing stage. Playing time
+is the amount of time out of a 25 minute session dedicated to discovering new
+innovations that were not discovered by an ancestor. The line shows the predictions
+of the hierarchical regression model with ±1 standard error. The slope of this
+line did not significantly vary based on the size of the inheritance.
+
+```{r playing-time-plot, fig.cap="(ref:playing-time-plot)"}
+playing_time_plot
+```
+
 # Discussion
 
+In Experiment 1, we measured the problem solving ability of four-person
+diachronic teams, and found that diachronic problem solvers were consistently
+able to cumulatively improve upon the solutions they inherited. Although this
+finding is not surprising given that participants started a problem solving task
+with some of the problems already solved, it is important to highlight that
+solving new problems first required recreating all of the inherited solutions,
+which took time and effort. Once recreated, some participants were unable to
+solve any new problems. Others were unable to recreate all of their inherited
+solutions in the 25-minute session---although this behavior is likely
+attributable to non-compliant behavior or a misunderstanding of the task.
+Nonetheless, the presence of these outliers simply highlights that diachronic
+problem solving, as measured in this paradigm, is not guaranteed to improve
+cumulatively, and explains why it is important to first establish that
+performance does indeed accumulate in diachronic teams.
