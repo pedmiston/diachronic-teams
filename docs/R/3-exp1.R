@@ -12,7 +12,7 @@ Exp1Participants <- Sessions %>%
   filter_exp1() %>%
   count(Generation) %>%
   rename(N = n) %>%
-  mutate(Inheritance = c("None", rep("Diachronic", 3)))
+  mutate(Inheritance = c("None", rep("Inheritance", 3)))
 
 n_teams <- Sessions %>%
   filter_exp1() %>%
@@ -22,6 +22,9 @@ n_teams <- Sessions %>%
 
 exp1$n_participants <- sum(Exp1Participants$N)
 exp1$n_teams <- n_teams
+
+exp1$n_unique_guesses_6 <- count_unique_guesses(6)
+exp1$n_unique_guesses_6_pct <- round(3/exp1$n_unique_guesses_6 * 100, 1)
 
 # Data ----
 data("Guesses")
