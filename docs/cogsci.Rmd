@@ -9,31 +9,29 @@ csl: "theme/apa.csl"
 document-params: "10pt, letterpaper"
 abstract: |
   Humans are able to use and improve solutions to problems including tools and
-  other technology that were created by others like no other species of animal.
-  What is the impact of inheritance---starting off a problem solving task
-  with partial solutions inherited from someone else---on future
-  problem solving ability? Does inheritance provide a reliable shortcut to
-  individual learning without affecting underlying problem solving ability, or
-  does inheritance change the way future problems are solved? To begin to
-  answer these questions, we used an iterated learning paradigm to measure
-  changes in problem solving ability over four generations of iterated
-  problem solving, where the solutions discovered by one generation are
-  inherited to be used and improved by the next generation. We find that through four
-  generations of iterated problem solving, problem solvers were consistently
-  able to solve more problems in a single 25 minute session than their
-  predecessors, even as problems became more difficult to solve. We
-  investigated whether the size of the inheritance had an impact on future
-  problem solving ability, and found mixed results: larger inheritances were
-  harder to exceed, but they also allowed individuals to solve more difficult
-  problems that they would have been likely to solve on their own. We also
-  found no evidence that a larger inheritance had a negative impact on the rate
-  of future problem solving, beyond what was inherited. Although more work on
-  this topic is clearly required, we believe extending the iterated learning
-  paradigm to answer questions about the impact of inheritance on problem
-  solving is a valuable step.
+  other technology that were inherited from others like no other species of
+  animal. What is the impact of inheritance---starting off a problem solving
+  task with partial solutions inherited from someone else---on future problem
+  solving ability? Does inheritance provide a reliable shortcut to individual
+  learning without affecting underlying problem solving ability, or does
+  inheritance change the way future problems are solved? To begin to answer
+  these questions, we measured changes in problem solving ability over four
+  generations of iterated problem solving, where the solutions discovered by
+  one generation are inherited to be used and improved by the next generation.
+  We found that through four generations of iterated problem solving, problem
+  solvers were consistently able to solve more problems in a single 25 minute
+  session than their predecessors, even as problems became more difficult to
+  solve. We investigated whether the size of the inheritance had an impact on
+  future problem solving ability, and found mixed results: larger inheritances
+  were harder to exceed, but they also allowed individuals to solve more
+  difficult problems than they would have on their own. We also found no
+  evidence that a larger inheritance had a negative impact on the rate at which
+  new problems were solved. We discuss the limitations of this work, and
+  motivate future directions.
 keywords: "cultural evolution; transmission chain; iterated learning"
 output:
-  cogsci2016::cogsci_paper:
+  pdf_document:
+    template: templates/cogsci2016.tex
     keep_tex: yes
 ---
 ```{r totems, include=FALSE}
@@ -89,27 +87,34 @@ effect [@Tomasello:1993vh; @Tennie:2009gaa]. I refer to the type of
 collaboration that enables ratcheting as **diachronic collaboration** (Fig. 1).
 In diachronic collaboration, the products of labor, such as a tool designed to
 solve some problem, are shared with or inherited by future generations of
-problem solvers. The purpose of our experiment is to help understand why
+problem solvers. The purpose of this research is understand why
 diachronic collaboration may be crucial to human cultural evolution by
 assessing its effectiveness as a problem solving strategy.
 
 ```{r fig1, engine="dot", fig.env="figure*", fig.pos="b", fig.width=6, fig.height=2, fig.cap="In diachronic collaboration, the product of one generation of problem solving is inherited to be used and improved by the next generation of problem solvers. The ability to engage in diachronic collaboration---to improve something that was created by someone else---is required in order to observe the ratcheting of technological complexity in a culture."}
 ```
 
-The inheritance of tools and other solutions to problems occurs via social
-learning, or what @Thorndike:1898 called "from an act witnessed, learn to do an
-act" (p. 50). Thorndike's failed experiments on social learning in chicks,
-cats, and dogs made him and many others skeptical that social learning was
-a widespread phenomenon among animals, but since then, evidence has supplanted
-this view, identifying a growing number of species that appear to be able to
-inherit behaviors from the observation of others. This includes ethnographic
-evidence of cultural traditions sustained through social learning in primates,
-monkeys, cetaceans, and birds, as well as experimental evidence of social
-learning in some of the same species and others, including rats, fish, and even
-some insects. Given that social learning is present in diverse taxa, it is
-surprising that only a few species have demonstrated a capacity for
-cumulative improvements in inherited innovations, namely crows [@Hunt:2003df],
-chimpanzees [@Sanz:2009ja], and perhaps pigeons [@Sasaki:2017ha].
+The ability to inherit a tool or other solution to a problem stems from our
+ability to socially learn from the observation and interaction with others, or
+what @Thorndike:1898 called "from an act witnessed, learn to do an act" (p.
+50). Thorndike's failed experiments on social learning in chicks, cats, and
+dogs made him and many others skeptical that social learning was a widespread
+phenomenon among animals. Since then, evidence has accumulated supplanting this view,
+and identifying a growing number of species that appear able to inherit behaviors
+from the observation of others. Some primates, monkeys,
+cetaceans, and birds have been argued to demonstrate the ability to sustain
+cultural traditions through social learning. Lab experiments have demonstrated
+social learning abilities in some of these animals and others, including rats,
+fish, and even some insects.
+
+Given that social learning is present in diverse taxa, it is
+surprising that only a few cases have been argued for any capacity for cumulative
+cultural inheritance in non-human animals, namely crows [@Hunt:2003df], chimpanzees
+[@Sanz:2009ja], and perhaps pigeons [@Sasaki:2017ha]. The signature
+of cumulative cultural evolution is monotonic gains in some measure of
+improvement.
+
+
 
 # Methods
 
@@ -336,6 +341,10 @@ of which are already underway. We argue that the only way to truly understand
 whether inheritance impacts future problem solving is to compare diachronic
 problem solving based around inheritance to alternative strategies for
 solving the same set of problems, but without diachronic inheritance.
+
+Although more work on this topic is clearly required, we believe extending
+the iterated learning paradigm to answer questions about the impact of
+inheritance on problem solving is a valuable contribution.
 
 # References
 
