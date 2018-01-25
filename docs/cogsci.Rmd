@@ -55,10 +55,6 @@ opts_chunk$set(
 # Read all knitr chunks in .R files
 chunks_dir <- "R"
 sapply(list.files(chunks_dir, "*.R", full.names = TRUE), read_chunk)
-
-# Read diagrams made with graphviz in the totems package
-chunks <- c("diachronic-collaboration")
-sapply(chunks, read_graphviz_chunk, package = "totems")
 ```
 
 ```{r setup, include=FALSE, cache=FALSE}
@@ -93,23 +89,60 @@ problem solvers. The purpose of our experiment is to help understand why
 diachronic collaboration may be crucial to human cultural evolution by
 assessing its effectiveness as a problem solving strategy.
 
-```{r fig1, engine="dot", fig.env="figure*", fig.pos="b", fig.width=6, fig.height=2, fig.cap="In diachronic collaboration, the product of one generation of problem solving is inherited to be used and improved by the next generation of problem solvers. The ability to engage in diachronic collaboration---to improve something that was created by someone else---is required in order to observe the ratcheting of technological complexity in a culture."}
+```{r fig1, fig.env="figure*", fig.pos="h", fig.width=6, fig.height=2, fig.align="center", fig.cap="In diachronic collaboration, the product of one generation of problem solving is inherited to be used and improved by the next generation of problem solvers. The ability to engage in diachronic collaboration---to improve something that was created by someone else---is required in order to observe the ratcheting of technological complexity in a culture."}
+draw_graphviz("diachronic-collaboration", package = "totems")
 ```
 
-The inheritance of tools and other solutions to problems occurs via social
+The inheritance of tools and other solutions to problems occurs through social
 learning, or what @Thorndike:1898 called "from an act witnessed, learn to do an
-act" (p. 50). Thorndike's failed experiments on social learning in chicks,
-cats, and dogs made him and many others skeptical that social learning was
-a widespread phenomenon among animals, but since then, evidence has supplanted
-this view, identifying a growing number of species that appear to be able to
-inherit behaviors from the observation of others. This includes ethnographic
-evidence of cultural traditions sustained through social learning in primates,
-monkeys, cetaceans, and birds, as well as experimental evidence of social
-learning in some of the same species and others, including rats, fish, and even
-some insects. Given that social learning is present in diverse taxa, it is
-surprising that only a few species have demonstrated a capacity for
-cumulative improvements in inherited innovations, namely crows [@Hunt:2003df],
-chimpanzees [@Sanz:2009ja], and perhaps pigeons [@Sasaki:2017ha].
+act" (p. 50). Thorndike's failed experiments on social learning in chicks, cats,
+and dogs made him and many others skeptical that social learning was a
+widespread phenomenon among animals, but since then, a growing number of species
+have been argued to show evidence of the ability to inherit skilled behaviors
+from the observation of others. This includes ethnographic evidence of cultural
+traditions sustained through social learning in primates, monkeys, cetaceans,
+and birds, as well as experimental evidence of social learning in some of the
+same species and others, including rats, fish, and even some insects. Given that
+social learning is present in such diverse taxa, it is surprising that only a
+few species (namely crows [@Hunt:2003dj], chimpanzees [@Sanz:2009ja], and
+perhaps pigeons [@Sasaki:2017ha]) have demonstrated a capacity for cumulative
+improvements in inherited innovations. In contrast, the ability to accumulate
+beneficial variants in solutions to problems is endemic to human culture and
+specifically the history of human technology [@Basalla:1989wq]. As a result,
+many researchers have concluded that the difference between human social
+learning and social learning exhibited in other animals is not qualitative, but
+the gap is quantitatively vast.
+
+Cultural inheritance via social learning mechanisms is believed to benefit
+learners by providing a reliable shortcut to individual learning.
+Computational models of the cultural evolutionary process show how social
+learning can be evolutionarily advantageous as compared to investing in more
+advanced individual learning capacities when the environment is stable and
+individual learning is costly [@Boyd:1985cu]. Under these conditions, the
+ability to copy the behaviors of others saves future generations the time
+already invested by the previous generations, allowing cultures to discover
+innovations that no individual would be likely to discover on their own
+[@Derex:2015cbb]. Additional modeling work has demonstrated the importance of
+being able to filter among possible variants in order to reliably accumulate
+beneficial variants [@Enquist:2010gw]. However, this view presupposes
+that behaviors learned socially are functionally equivalent to behaviors
+learned through individual learning. Successful transmission either
+happens and future generations pick up directly where the previous generation
+left off, or it does not and future generations are unable to benefit from the
+progress of the previous generation. But inheritance is not believed
+to impact underlying problem solving ability, only the starting point
+for future problem solving.
+
+- Justify why inheritance may affect problem solving ability.
+  * Cultural transmission is a process of transformation, not replication [@Sperber:1996exc].
+  * Mentoring and creating a cultural niche for problem solving [@Sterelny:2012ea].
+
+- Explain the goals of the experiment.
+  * Use an iterated learning paradigm to measure the effectiveness of problem solving
+    organized around inheritance.
+  * Investigate whether the solutions that were inherited impact future problem
+    solving against the null hypothesis that problem solving is constant,
+    and unaffected by inheritance.
 
 # Methods
 
@@ -162,11 +195,13 @@ accumulate solutions, the combinatorial complexity of the problem space increase
 exponentially such that the discovery of more complex tools is less likely to
 happen by chance.
 
-Once a tool was discovered, the recipe for its creation was recorded in the History panel (Fig. 2A). Participants could review their history and see the recipes for their previous discoveries, even items they had discarded. The History panel was also
-how diachronic inheritance was implemented. Diachronic problem solvers after the
-first generation began the problem solving task with an additional tab in the
-History panel that, when selected, listed all of the recipes for the items
-created by the previous generation.
+Once a tool was discovered, the recipe for its creation was recorded in the
+History panel (Fig. 2A). Participants could review their history and see the
+recipes for their previous discoveries, even items they had discarded. The
+History panel was also how diachronic inheritance was implemented. Diachronic
+problem solvers after the first generation began the problem solving task with
+an additional tab in the History panel that, when selected, listed all of the
+recipes for the items created by the previous generation.
 
 ```{r fig2, fig.width=8, fig.env="figure*", fig.cap="The Totems game. Left. The Totems gameplay interface. Participants generated guesses by dragging items into the Workshop and selecting the Try button. If the guess created an item, it could be dragged into the Stock panel, and used again. Once segments of a totem were made through cutting, carving, and painting, they could be dragged into the Totem panel for scoring. Right. A sample of the solution landscape. The top row of 6 items are the initial resources available to problem solvers at the start of the session. These resources must be combined to build the first generation of tools, including a refined rock, a club derived from an antler, and a small branch of a tree. The first 6 generations of possible tools are shown. The axe is required to construct the first totem pole."}
 grid.arrange(
@@ -188,6 +223,12 @@ from generation to generation. We found evidence for cumulative
 increases in problem solving ability such that later generations of problem
 solvers were able to discover more innovations in a single 25 minute session
 than their predecessors, `r exp1$page_test`.
+
+<!--
+Not every participant was able to exceed their inherited discoveries.
+# Dichotomous outcome variable, same innovations as inherited or more.
+# glm predicting likelihood of increasing innovations.
+-->
 
 We next measured the linear increase in innovations over generations
 within each team by fitting a hierarchical regression model to the total
