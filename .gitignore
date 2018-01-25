@@ -15,6 +15,7 @@ __pycache__/
 docs/*.md
 docs/*.pdf
 docs/*.tex
+docs/code*
 
 # editor
 *.swp
