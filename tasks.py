@@ -59,14 +59,16 @@ def make(ctx, name, clear_cache=False, open_after=False, verbose=False):
     for doc in docs:
         if clear_cache:
             clean(ctx, doc, verbose=verbose)
-        
+
         result = ctx.run(cmd.format(str(doc)), echo=verbose, warn=True)
 
         if not result.ok:
             failed.append(str(doc))
             if doc.stem == 'cogsci':
-                ctx.run(f'cd {doc.parent} && pdflatex {doc.stem}.tex',
-                        echo=True)
+                second_result = ctx.run(f'cd {doc.parent} && pdflatex {doc.stem}.tex',
+                                 echo=True, warn=True)
+                if second_result.ok:
+                    ctx.run(f'cd {doc.parent} && rm -f *.log *.synctex.gz *.aux *.out', echo=True)
 
         if open_after and result.ok:
             output_file = Path(doc.parent, '{}.html'.format(doc.stem))

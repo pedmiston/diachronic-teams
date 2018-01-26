@@ -95,7 +95,7 @@ problem solvers. The purpose of this research is understand why
 diachronic collaboration may be crucial to human cultural evolution by
 assessing its effectiveness as a problem solving strategy.
 
-```{r fig1, fig.pos="h", fig.height=2, fig.align="center", fig.cap="Iterated problem solving. Participants were assigned to four-person teams. Each participant completed the same problem solving task for 25 minutes. Participants in generations after the first began the problem solving task with the solutions that were discovered by the previous generation."}
+```{r fig1, fig.pos="h", fig.align="center", fig.cap="Iterated problem solving. Participants were assigned to four-person teams. Each participant completed the same problem solving task for 25 minutes. Participants in generations after the first began the problem solving task with the solutions that were discovered by the previous generation."}
 draw_graphviz("iterated-problem-solving", package = "totems")
 ```
 
