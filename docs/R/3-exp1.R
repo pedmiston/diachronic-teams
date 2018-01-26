@@ -12,7 +12,7 @@ Exp1Participants <- Sessions %>%
   filter_exp1() %>%
   count(Generation) %>%
   rename(N = n) %>%
-  mutate(Inheritance = c("None", rep("Inheritance", 3)))
+  mutate(Inheritance = c("No", rep("Yes", 3)))
 
 n_teams <- Sessions %>%
   filter_exp1() %>%
@@ -27,9 +27,47 @@ exp1$n_unique_guesses_6 <- count_unique_guesses(6)
 exp1$n_unique_guesses_6_pct <- round(3/exp1$n_unique_guesses_6 * 100, 1)
 
 # Data ----
+data("Sessions")
 data("Guesses")
 data("InventoryInfo")
 
+Innovations <- Guesses %>%
+  filter_exp1() %>%
+  recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
+  group_by(SessionID) %>%
+  summarize(NumInnovations = sum(GuessType == "unique_item")) %>%
+  ungroup() %>%
+  left_join(Sessions) %>%
+  jitter_team_generation() %>%
+  recode_generation_base0() %>%
+  recode_generation_quad()
+
+# Link each player to their ancestor
+AncestorMap <- Sessions %>%
+  filter_exp1() %>%
+  group_by(TeamID) %>%
+  arrange(Generation) %>%
+  mutate(AncestorID = lag(SessionID)) %>%
+  ungroup() %>%
+  filter(Generation > 1) %>%
+  select(SessionID, AncestorID)
+
+# Get the final inventory id achieved by each session
+InheritedInventoryIDs <- Guesses %>%
+  filter_exp1() %>%
+  group_by(SessionID) %>%
+  summarize(AncestorInventoryID = PrevSessionInventoryID[SessionTime == max(SessionTime)]) %>%
+  rename(AncestorID = SessionID)
+
+InheritedInnovations <- Guesses %>%
+  filter_exp1() %>%
+  filter(Generation < 4) %>%
+  group_by(SessionID) %>%
+  summarize(InheritanceSize = max(SessionInventorySize) - 6) %>%
+  rename(AncestorID = SessionID) %>%
+  left_join(AncestorMap, .)
+
+# Create map of innovations to difficulty scores
 Difficulties <- InventoryInfo %>%
   transmute(
     PrevSessionInventoryID = ID,
@@ -49,20 +87,130 @@ DifficultyScores <- Guesses %>%
   recode_generation_base0() %>%
   recode_generation_quad()
 
+InheritedDifficulties <- DifficultyScores %>%
+  filter(Generation < 4) %>%
+  select(AncestorID = SessionID, InheritedDifficulty = DifficultyScore) %>%
+  left_join(AncestorMap, .)
+
+Inheritances <- left_join(AncestorMap, InheritedInventoryIDs) %>%
+  left_join(InheritedInnovations) %>%
+  left_join(InheritedDifficulties)
+
+StageTimes <- Guesses %>%
+  filter_exp1() %>%
+  filter(Generation > 1) %>%
+  group_by(SessionID) %>%
+  summarize(LearningTime = max(SessionTime[Stage == "learning"])) %>%
+  mutate(PlayingTime = 25 - LearningTime)
+
+OutliersByLearningTime <- StageTimes %>%
+  transmute(SessionID, Outlier = LearningTime > 22)
+StageTimes %<>% left_join(OutliersByLearningTime)
+exp1$n_outliers <- sum(OutliersByLearningTime$Outlier)
+
+exp1$mean_inheritance_size <- round(mean(Inheritances$InheritanceSize), 1)
+exp1$sd_inheritance_size <- round(sd(Inheritances$InheritanceSize), 1)
+
+# Learning times ----
+exp1$mean_learning_time_min <- round(mean(StageTimes$LearningTime), 1)
+exp1$proportion_learning_time <- round((exp1$mean_learning_time_min/25) * 100, 1)
+
+learning_times_plot <- ggplot(StageTimes) +
+  aes(LearningTime, fill = Outlier) +
+  geom_histogram(binwidth = 2.5, center = 1.25) +
+  scale_x_continuous("Learning time (min)", breaks = seq(0, 25, by = 5)) +
+  ylab("Count") +
+  scale_fill_manual(values = t_$color_picker(c("blue", "orange"))) +
+  t_$base_theme +
+  theme(legend.position = "none")
+
+# Learning rates ----
+LearningRates <- left_join(Inheritances, StageTimes)
+
+learning_rates_mod <- lm(LearningTime ~ 0 + InheritanceSize,
+                         data = filter(LearningRates, !Outlier))
+learning_rates_preds <- get_lm_mod_preds(learning_rates_mod) %>%
+  rename(LearningTime = fit, SE = se.fit)
+
+t_$scale_shape_outlier <- scale_shape_manual(values = c(1, 4))
+
+learning_rates_plot <- ggplot(LearningRates) +
+  aes(InheritanceSize, LearningTime) +
+  geom_point(aes(shape = Outlier),
+             position = position_jitter(width = 0.1)) +
+  geom_ribbon(aes(ymin = LearningTime-SE, ymax = LearningTime + SE),
+              stat = "identity", data = learning_rates_preds,
+              fill = t_$diachronic_color, alpha = 0.4) +
+  scale_x_continuous("Innovations inherited") +
+  scale_y_continuous("Learning time (min)", breaks = seq(0, 25, by = 5)) +
+  t_$scale_shape_outlier +
+  t_$base_theme +
+  guides(shape = "none")
+
+# New innovations ----
+NewInnovations <- left_join(Inheritances, StageTimes) %>%
+  inner_join(Innovations) %>%
+  mutate(
+    NumUniqueInnovations = NumInnovations - InheritanceSize,
+    ExceededAncestor = (NumUniqueInnovations > 0),
+    InheritanceSizeC = InheritanceSize - mean(InheritanceSize)
+  )
+
+exp1$n_did_not_exceed <- with(NewInnovations, sum(NumUniqueInnovations == 0))
+exp1$n_did_exceed <- with(NewInnovations, sum(NumUniqueInnovations > 0))
+exp1$pct_did_exceed <- round(
+  (exp1$n_did_exceed/(exp1$n_did_not_exceed + exp1$n_did_exceed)) * 100,
+  digits = 1
+)
+
+exceed_ancestor_mod <- glm(
+  ExceededAncestor ~ 1,
+  family = "binomial",
+  data = filter(NewInnovations, !Outlier)
+)
+exp1$odds_of_exceeding <- report_beta(exceed_ancestor_mod, "(Intercept)", transform = exp)
+exp1$logodds_of_exceeding <- report_glm_mod(exceed_ancestor_mod, "(Intercept)")
+
+innovations_created_and_inherited_plot <- ggplot(NewInnovations) +
+  aes(InheritanceSize, NumInnovations) +
+  geom_point(aes(shape = Outlier),
+             position = position_jitter(width = 0.2)) +
+  geom_abline(intercept = 0, slope = 1, linetype = 2, size = 0.5) +
+  scale_x_continuous("Innovations inherited") +
+  scale_y_continuous("Innovations created") +
+  t_$scale_shape_outlier +
+  t_$base_theme +
+  guides(shape = "none")
+
+new_innovations_mod <- lmer(
+  NumUniqueInnovations ~ InheritanceSize + (1|AncestorInventoryID),
+  data = filter(NewInnovations, !Outlier)
+)
+exp1$inheritance_size_slope_stats <- report_lmer_mod(new_innovations_mod, "InheritanceSize")
+
+new_innovations_preds <- data_frame(InheritanceSize = 2:20) %>%
+  cbind(., predictSE(new_innovations_mod, newdata = ., se = TRUE)) %>%
+  rename(NumUniqueInnovations = fit, SE = se.fit)
+
+new_innovations_plot <- ggplot(NewInnovations) +
+  aes(InheritanceSize, NumUniqueInnovations) +
+  geom_smooth(aes(ymin = NumUniqueInnovations-SE, ymax = NumUniqueInnovations+SE),
+              stat = "identity", data = new_innovations_preds,
+              color = t_$diachronic_color) +
+  geom_point(aes(shape = Outlier),
+             position = position_jitter(width = 0.2)) +
+  geom_hline(yintercept = 0, linetype = 2, size = 0.5) +
+  scale_x_continuous("Innovations inherited") +
+  scale_y_continuous("New innovations") +
+  t_$scale_shape_outlier +
+  guides(shape = "none") +
+  t_$base_theme
+
 # Page's trend test ----
 data("Guesses")
 data("Sessions")
 
-Innovations <- Guesses %>%
-  filter_exp1() %>%
-  recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
-  group_by(SessionID) %>%
-  summarize(NumInnovations = sum(GuessType == "unique_item")) %>%
-  ungroup() %>%
-  left_join(Sessions) %>%
-  jitter_team_generation() %>%
-  recode_generation_base0() %>%
-  recode_generation_quad()
+
 
 PerformanceMatrix <- Innovations %>%
   select(TeamID, Generation, NumInnovations) %>%
@@ -129,96 +277,6 @@ innovations_by_generation_plot <- ggplot(Innovations) +
   theme(
     panel.grid.minor.x = element_blank()
   )
-
-# Inheritances ----
-data("Sessions")
-data("Guesses")
-
-# Link each player to their ancestor
-AncestorMap <- Sessions %>%
-  filter_exp1() %>%
-  group_by(TeamID) %>%
-  arrange(Generation) %>%
-  mutate(AncestorID = lag(SessionID)) %>%
-  ungroup() %>%
-  filter(Generation > 1) %>%
-  select(SessionID, AncestorID)
-
-# Get the final inventory id achieved by each session
-InheritedInventoryIDs <- Guesses %>%
-  filter_exp1() %>%
-  group_by(SessionID) %>%
-  summarize(AncestorInventoryID = PrevSessionInventoryID[SessionTime == max(SessionTime)]) %>%
-  rename(AncestorID = SessionID)
-
-InheritedInnovations <- Guesses %>%
-  filter_exp1() %>%
-  filter(Generation < 4) %>%
-  group_by(SessionID) %>%
-  summarize(InheritanceSize = max(SessionInventorySize) - 6) %>%
-  rename(AncestorID = SessionID) %>%
-  left_join(AncestorMap, .)
-
-InheritedDifficulties <- DifficultyScores %>%
-  filter(Generation < 4) %>%
-  select(AncestorID = SessionID, InheritedDifficulty = DifficultyScore) %>%
-  left_join(AncestorMap, .)
-
-Inheritances <- left_join(AncestorMap, InheritedInventoryIDs) %>%
-  left_join(InheritedInnovations) %>%
-  left_join(InheritedDifficulties)
-
-exp1$mean_inheritance_size <- round(mean(Inheritances$InheritanceSize), 1)
-exp1$sd_inheritance_size <- round(sd(Inheritances$InheritanceSize), 1)
-
-# Learning times ----
-data("Guesses")
-
-StageTimes <- Guesses %>%
-  filter_exp1() %>%
-  filter(Generation > 1) %>%
-  group_by(SessionID) %>%
-  summarize(LearningTime = max(SessionTime[Stage == "learning"])) %>%
-  mutate(PlayingTime = 25 - LearningTime)
-
-OutliersByLearningTime <- StageTimes %>%
-  transmute(SessionID, Outlier = LearningTime > 22)
-StageTimes %<>% left_join(OutliersByLearningTime)
-
-exp1$mean_learning_time_min <- round(mean(StageTimes$LearningTime), 1)
-exp1$proportion_learning_time <- round((exp1$mean_learning_time_min/25) * 100, 1)
-
-learning_times_plot <- ggplot(StageTimes) +
-  aes(LearningTime, fill = Outlier) +
-  geom_histogram(binwidth = 2.5, center = 1.25) +
-  scale_x_continuous("Learning time (min)", breaks = seq(0, 25, by = 5)) +
-  ylab("Count") +
-  scale_fill_manual(values = t_$color_picker(c("blue", "orange"))) +
-  t_$base_theme +
-  theme(legend.position = "none")
-
-# Learning rates ----
-LearningRates <- left_join(Inheritances, StageTimes)
-
-learning_rates_mod <- lm(LearningTime ~ InheritanceSize,
-                         data = filter(LearningRates, !Outlier))
-learning_rates_preds <- get_lm_mod_preds(learning_rates_mod) %>%
-  rename(LearningTime = fit, SE = se.fit)
-
-t_$scale_shape_outlier <- scale_shape_manual(values = c(1, 4))
-
-learning_rates_plot <- ggplot(LearningRates) +
-  aes(InheritanceSize, LearningTime) +
-  geom_point(aes(shape = Outlier),
-             position = position_jitter(width = 0.1)) +
-  geom_smooth(aes(ymin = LearningTime-SE, ymax = LearningTime + SE),
-              stat = "identity", data = learning_rates_preds,
-              color = t_$diachronic_color) +
-  scale_x_continuous("Innovations inherited") +
-  scale_y_continuous("Learning time (min)", breaks = seq(0, 25, by = 5)) +
-  t_$scale_shape_outlier +
-  t_$base_theme +
-  guides(shape = "none")
 
 # New innovations ----
 NewInnovations <- left_join(Inheritances, StageTimes) %>%

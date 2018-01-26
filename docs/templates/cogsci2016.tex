@@ -7,6 +7,23 @@
 \usepackage{pslatex}
 \usepackage{float}
 \usepackage{caption}
+\usepackage{natbib}
+
+% Configure figure label to "Fig. #"
+\DeclareCaptionLabelFormat{fig}{#1#2}
+\captionsetup[figure]{labelformat=fig,labelfont=bf,labelsep=period,name=Figure\ }
+
+\DeclareCaptionLabelFormat{tab}{#1#2}
+\captionsetup[table]{labelformat=tab,labelfont=bf,labelsep=period,name=Table\ }
+
+% Tighter grouping of figures.
+\renewcommand{\textfraction}{0.15}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.70}
+\renewcommand{\floatpagefraction}{0.66}
+% \setlength{\abovecaptionskip}{0pt}
+% \setlength{\belowcaptionskip}{0pt}
+
 
 % amsmath package, useful for mathematical formulas
 \usepackage{amsmath}
@@ -16,6 +33,9 @@
 
 % hyperref package, useful for hyperlinks
 \usepackage{hyperref}
+\hypersetup{
+  hidelinks 
+}
 
 % graphicx package, useful for including eps and pdf graphics
 % include graphics with the command \includegraphics
@@ -37,9 +57,6 @@
 
 \usepackage{color}
 
-% Use doublespacing - comment out for single spacing
-%\usepackage{setspace}
-%\doublespacing
 
 
 % % Text layout
@@ -63,7 +80,7 @@ $endfor$
     $author.university$
     $if(author.last)$
     $else$
-    \AND
+    \And
     $endif$
   $endfor$
 }
@@ -80,5 +97,8 @@ $keywords$
 \end{abstract}
 
 $body$
+
+\bibliographystyle{apa}
+\bibliography{references}
 
 \end{document}

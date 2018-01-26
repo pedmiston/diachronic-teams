@@ -68,15 +68,16 @@ def make(ctx, name, clear_cache=False, open_after=False, verbose=False):
                 second_result = ctx.run(f'cd {doc.parent} && pdflatex {doc.stem}.tex',
                                  echo=True, warn=True)
                 if second_result.ok:
-                    ctx.run(f'cd {doc.parent} && rm -f *.log *.synctex.gz *.aux *.out', echo=True)
+                    ctx.run(f'cd {doc.parent} && rm -f *.bbl *.log *.synctex.gz *.aux *.out', echo=True)
 
         if open_after and result.ok:
             output_file = Path(doc.parent, '{}.html'.format(doc.stem))
             ctx.run('open {}'.format(output_file), echo=verbose)
 
-    print('The following docs had errors:')
-    for doc in failed:
-        print(' - {}'.format(doc))
+    if failed:
+        print('The following docs had errors:')
+        for doc in failed:
+            print(' - {}'.format(doc))
 
 @task
 def clean(ctx, name, verbose=False):
@@ -88,7 +89,7 @@ def clean(ctx, name, verbose=False):
                   '*_cache/ *_files/ '
                   'code* '
                   '*.pdf *.docx *.html *.md '
-                  '*.tex *.aux *.out *.log *.synctex.gz'),
+                  '*.tex *.aux *.out *.log *.synctex.gz *.bbl'),
                   echo=verbose)
 
 @task(help=dict(name='If name is "list", list available figure names.'))

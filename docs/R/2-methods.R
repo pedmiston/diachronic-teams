@@ -76,16 +76,32 @@ report_lm_mod <- function(lm_mod, term, min_p_value = 0.001, p_value_only = FALS
           results$estimate, results$std.error, results$df, results$statistic, results$p_value_str)
 }
 
-report_beta <- function(mod, param, digits = 1) {
+report_glm_mod <- function(glm_mod, term, min_p_value = 0.001, p_value_only = FALSE) {
+  term_ <- term  # work around NSE in call to filter
+  results <- broom::tidy(glm_mod) %>%
+    filter(term == term_) %>%
+    as.list()
+  
+  glm_summary <- broom::glance(glm_mod) %>% as.list()
+  results$df <- glm_summary$df.residual
+  
+  results$p_value_str <- compute_p_string(results$p.value)
+  
+  sprintf("_b_ = %.2f logodds (SE = %.2f), _z_ = %.2f, %s",
+          results$estimate, results$std.error, results$statistic, results$p_value_str)
+}
+
+report_beta <- function(mod, param, digits = 1, transform = NULL) {
   param_ <- param # prevent masking in NSE
-  mod %>%
+  estimate <- mod %>%
     summary %>%
     .$coefficients %>%
     as.data.frame() %>%
     rownames_to_column("param") %>%
     filter(param == param_) %>%
-    .$Estimate %>%
-    round(digits = digits)
+    .$Estimate
+  if(!is.null(transform)) estimate <- transform(estimate)
+  round(estimate, digits = digits)
 }
 
 report_modcomp <- function(modcomp) {
