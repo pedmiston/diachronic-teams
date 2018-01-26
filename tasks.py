@@ -64,14 +64,9 @@ def make(ctx, name, clear_cache=False, open_after=False, verbose=False):
 
         if not result.ok:
             failed.append(str(doc))
-            if doc.stem == 'cogsci':
-                second_result = ctx.run(f'cd {doc.parent} && pdflatex {doc.stem}.tex',
-                                 echo=True, warn=True)
-                if second_result.ok:
-                    ctx.run(f'cd {doc.parent} && rm -f *.bbl *.log *.synctex.gz *.aux *.out', echo=True)
 
         if open_after and result.ok:
-            output_file = Path(doc.parent, '{}.html'.format(doc.stem))
+            output_file = Path(doc.parent, '{}.pdf'.format(doc.stem))
             ctx.run('open {}'.format(output_file), echo=verbose)
 
     if failed:

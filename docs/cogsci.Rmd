@@ -2,15 +2,15 @@
 title: Cumulative improvements in iterated problem solving
 author:
   - name: Pierce Edmiston
-    email: \texttt{pedmiston@wisc.edu}
+    email: pedmiston@wisc.edu
     department: Department of Psychology
     university: University of Wisconsin-Madison
   - name: Maxime Derex
-    email: \texttt{maxime.derex@gmail.com}
+    email: maxime.derex@gmail.com
     department: Biosciences Department
     university: University of Exeter
   - name: Gary Lupyan
-    email: \texttt{lupyan@wisc.edu}
+    email: lupyan@wisc.edu
     department: Department of Psychology
     university: University of Wisconsin-Madison
     last: yes
