@@ -1,39 +1,45 @@
 ---
-title: "Cumulative improvements in iterated problem solving"
-author-information: |
-    \author{{\large \bf Pierce Edmiston} \\ \texttt{pedmiston@wisc.edu} \\ Department of Psychology \\ University of Wisconsin-Madison
-    \And {\large \bf Maxime Derex} \\ \texttt{maxime.derex@gmail.com} \\ Biosciences Department \\ University of Exeter
-    \And {\large \bf Gary Lupyan} \\ \texttt{lupyan@wisc.edu} \\ Department of Psychology \\ University of Wisconsin-Madison}
-bibliography: "references.bib"
-csl: "theme/apa.csl"
-document-params: "10pt, letterpaper"
+title: Cumulative improvements in iterated problem solving
+author:
+  - name: Pierce Edmiston
+    email: \texttt{pedmiston@wisc.edu}
+    department: Department of Psychology
+    university: University of Wisconsin-Madison
+  - name: Maxime Derex
+    email: \texttt{maxime.derex@gmail.com}
+    department: Biosciences Department
+    university: University of Exeter
+  - name: Gary Lupyan
+    email: \texttt{lupyan@wisc.edu}
+    department: Department of Psychology
+    university: University of Wisconsin-Madison
+    last: yes
+bibliography: references.bib
 abstract: |
   Humans are able to use and improve solutions to problems including tools and
-  other technology that were created by others like no other species of animal.
-  What is the impact of inheritance---starting off a problem solving task
-  with partial solutions inherited from someone else---on future
-  problem solving ability? Does inheritance provide a reliable shortcut to
-  individual learning without affecting underlying problem solving ability, or
-  does inheritance change the way future problems are solved? To begin to
-  answer these questions, we used an iterated learning paradigm to measure
-  changes in problem solving ability over four generations of iterated
-  problem solving, where the solutions discovered by one generation are
-  inherited to be used and improved by the next generation. We find that through four
-  generations of iterated problem solving, problem solvers were consistently
-  able to solve more problems in a single 25 minute session than their
-  predecessors, even as problems became more difficult to solve. We
-  investigated whether the size of the inheritance had an impact on future
-  problem solving ability, and found mixed results: larger inheritances were
-  harder to exceed, but they also allowed individuals to solve more difficult
-  problems that they would have been likely to solve on their own. We also
-  found no evidence that a larger inheritance had a negative impact on the rate
-  of future problem solving, beyond what was inherited. Although more work on
-  this topic is clearly required, we believe extending the iterated learning
-  paradigm to answer questions about the impact of inheritance on problem
-  solving is a valuable step.
+  other technology that were inherited from others like no other species of
+  animal. What is the impact of inheritance---starting off a problem solving
+  task with partial solutions inherited from someone else---on future problem
+  solving ability? Does inheritance provide a reliable shortcut to individual
+  learning without affecting underlying problem solving ability, or does
+  inheritance change the way future problems are solved? To begin to answer
+  these questions, we measured changes in problem solving ability over four
+  generations of iterated problem solving, where the solutions discovered by
+  one generation are inherited to be used and improved by the next generation.
+  We found that through four generations of iterated problem solving, problem
+  solvers were consistently able to solve more problems in a single 25 minute
+  session than their predecessors, even as problems became more difficult to
+  solve. We investigated whether the size of the inheritance had an impact on
+  future problem solving ability, and found mixed results: larger inheritances
+  were harder to exceed, but they also allowed individuals to solve more
+  difficult problems than they would have on their own. We also found no
+  evidence that a larger inheritance had a negative impact on the rate at which
+  new problems were solved. We discuss the limitations of this work, and
+  motivate future directions.
 keywords: "cultural evolution; transmission chain; iterated learning"
 output:
-  cogsci2016::cogsci_paper:
+  pdf_document:
+    template: templates/cogsci2016.tex
     keep_tex: yes
 ---
 ```{r totems, include=FALSE}
@@ -85,12 +91,12 @@ effect [@Tomasello:1993vh; @Tennie:2009gaa]. I refer to the type of
 collaboration that enables ratcheting as **diachronic collaboration** (Fig. 1).
 In diachronic collaboration, the products of labor, such as a tool designed to
 solve some problem, are shared with or inherited by future generations of
-problem solvers. The purpose of our experiment is to help understand why
+problem solvers. The purpose of this research is understand why
 diachronic collaboration may be crucial to human cultural evolution by
 assessing its effectiveness as a problem solving strategy.
 
-```{r fig1, fig.env="figure*", fig.pos="h", fig.width=6, fig.height=2, fig.align="center", fig.cap="In diachronic collaboration, the product of one generation of problem solving is inherited to be used and improved by the next generation of problem solvers. The ability to engage in diachronic collaboration---to improve something that was created by someone else---is required in order to observe the ratcheting of technological complexity in a culture."}
-draw_graphviz("diachronic-collaboration", package = "totems")
+```{r fig1, fig.pos="h", fig.height=2, fig.align="center", fig.cap="Iterated problem solving. Participants were assigned to four-person teams. Each participant completed the same problem solving task for 25 minutes. Participants in generations after the first began the problem solving task with the solutions that were discovered by the previous generation."}
+draw_graphviz("team-structures-exp1", package = "totems")
 ```
 
 The inheritance of tools and other solutions to problems occurs through social
@@ -203,12 +209,8 @@ problem solvers after the first generation began the problem solving task with
 an additional tab in the History panel that, when selected, listed all of the
 recipes for the items created by the previous generation.
 
-```{r fig2, fig.width=8, fig.env="figure*", fig.cap="The Totems game. Left. The Totems gameplay interface. Participants generated guesses by dragging items into the Workshop and selecting the Try button. If the guess created an item, it could be dragged into the Stock panel, and used again. Once segments of a totem were made through cutting, carving, and painting, they could be dragged into the Totem panel for scoring. Right. A sample of the solution landscape. The top row of 6 items are the initial resources available to problem solvers at the start of the session. These resources must be combined to build the first generation of tools, including a refined rock, a club derived from an antler, and a small branch of a tree. The first 6 generations of possible tools are shown. The axe is required to construct the first totem pole."}
-grid.arrange(
-  read_image("gameplay", "totems"),
-  read_image("landscape-sample.gv", "totems"),
-  widths = c(0.6, 0.4)
-)
+```{r fig2, fig.height=6, fig.cap="A sample of the solution landscape. The top row of 6 items are the initial resources available to problem solvers at the start of the session. These resources must be combined to build the first generation of tools, including a refined rock, a club derived from an antler, and a small branch of a tree. The first 6 generations of possible tools are shown. The axe is required to construct the first totem pole."}
+draw_image("landscape-sample.gv", package = "totems")
 ```
 
 # Results
@@ -243,7 +245,7 @@ that a quadratic fit was significantly better than a linear fit alone,
 `r exp1$quad_modcomp`. This result suggests that accumulated inheritance had a
 diminishing return on future problem solving.
 
-```{r fig3, fig.env="figure", fig.cap="Number of innovations discovered by each generation. Each of the thin green lines is a team. Means in each generation are shown as green X's. The thick blue line is the model predictions with ±1 standard error."}
+```{r fig3, fig.cap="Number of innovations discovered by each generation. Each of the thin green lines is a team. Means in each generation are shown as green X's. The thick blue line is the model predictions with ±1 standard error."}
 innovations_by_generation_plot
 ```
 
@@ -258,12 +260,8 @@ simply providing a shortcut to individual learning. In this case, the impact
 appears to be negative, such that inheriting more solutions appears to
 _decrease_ problem solving ability.
 
-```{r fig4, fig.width=6, fig.height=4, fig.env="figure*", fig.cap="Number of innovations created relative to those inherited. A. The relationship between created and inherited innovations. The dotted line is a reference with slope=1 such that points above the line indicate future generations exceeding their ancestors. B. The relationship between created innovations controlling for those inherited. The same reference line as in A is now horizontal. The line shows the predictions of the hierarchical regression model with ±1 standard error."}
-grid.arrange(
-  innovations_created_and_inherited_plot + ggtitle("A"),
-  new_innovations_plot + ggtitle("B"),
-  nrow = 1
-)
+```{r fig4, fig.cap="Number of innovations created relative to those inherited. The dotted line is a reference with slope=1 such that points above the line indicate future generations exceeding their ancestors."}
+innovations_created_and_inherited_plot
 ```
 
 However, an alternative explanation, not having to do with inheritance
@@ -282,7 +280,7 @@ the effect of inheritance does not decrease over time, such that
 larger inheritances result in higher accumulated difficulty scores,
 `r exp1$delta_diff_slope_stats`.
 
-```{r fig5, fig.env="figure", fig.cap="Change in accumulated difficulty score by inheritance. Accumulated difficulty scores are sums of discovered innovations weighted by the combinatorial complexity of the possible choices available to the participant when the innovation was discovered. The outcome measure is the difference between the accumulated difficulty scores of subsequent generations. The line shows the predictions of a hierarchical regression model with ±1 standard error."}
+```{r fig5, fig.cap="Change in accumulated difficulty score by inheritance. Accumulated difficulty scores are sums of discovered innovations weighted by the combinatorial complexity of the possible choices available to the participant when the innovation was discovered. The outcome measure is the difference between the accumulated difficulty scores of subsequent generations. The line shows the predictions of a hierarchical regression model with ±1 standard error."}
 delta_difficulty_plot
 ```
 
@@ -313,11 +311,11 @@ long to recreate the items discovered by their ancestors. Participants
 who spent over 80% of the session in the learning stage were considered outliers,
 and excluded from analysis.
 
-```{r fig6, fig.width=6, fig.height=4, fig.env="figure*", fig.cap="Learning times. A. The distribution of learning times, with outliers highlighted. B. Linear relationship between inheritance sizes and learning times. Outliers excluded from the regression are shown as X's."}
+```{r fig6, fig.height=6, fig.cap="Learning times. A. The distribution of learning times, with outliers highlighted. B. Linear relationship between inheritance sizes and learning times. Outliers excluded from the regression are shown as X's."}
 grid.arrange(
   learning_times_plot + ggtitle("A"),
   learning_rates_plot + ggtitle("B"),
-  nrow = 1
+  ncol = 1
 )
 ```
 
@@ -377,6 +375,10 @@ of which are already underway. We argue that the only way to truly understand
 whether inheritance impacts future problem solving is to compare diachronic
 problem solving based around inheritance to alternative strategies for
 solving the same set of problems, but without diachronic inheritance.
+
+Although more work on this topic is clearly required, we believe extending
+the iterated learning paradigm to answer questions about the impact of
+inheritance on problem solving is a valuable contribution.
 
 # References
 
