@@ -58,7 +58,7 @@ def make(ctx, name, clear_cache=False, open_after=False, verbose=False):
     cmd = 'Rscript -e "rmarkdown::render({!r})"'
     for doc in docs:
         if clear_cache:
-            reset(ctx, doc, verbose=verbose)
+            clean(ctx, doc, verbose=verbose)
 
         result = ctx.run(cmd.format(str(doc)), echo=verbose, warn=True)
 
@@ -74,25 +74,17 @@ def make(ctx, name, clear_cache=False, open_after=False, verbose=False):
         print(' - {}'.format(doc))
 
 @task
-def reset(ctx, name, verbose=False):
-    """Clear the cache and outputs of RMarkdown reports."""
+def clean(ctx, name, verbose=False):
+    """Clean the cache and intermediate outputs of RMarkdown reports."""
     docs = get_available_docs(name)
 
     for doc in docs:
-        cache_dir = Path(doc.parent, '{}_cache/'.format(doc.stem))
-        if cache_dir.isdir():
-            cache_dir.rmtree()
-
-        figs_dir = Path(doc.parent, '{}_files'.format(doc.stem))
-        if figs_dir.isdir():
-            figs_dir.rmtree()
-
-        code_str = Path(doc.parent, 'code*')
-        ctx.run('cd {} && rm -rf {} {} {}'.format(doc.parent, cache_dir, figs_dir, code_str),
-                echo=verbose)
-        
-        # Remove random latex crud
-        ctx.run('cd {} && rm -f *synctex.gz *.log *.tex'.format(doc.parent), echo=verbose)
+        ctx.run((f'cd {doc.parent} && rm -rf '
+                  '*_cache/ *_files/ '
+                  'code* '
+                  '*.html *.md '
+                  '*.tex *.log *.synctex.gz'),
+                  echo=verbose)
 
 @task(help=dict(name='If name is "list", list available figure names.'))
 def img(ctx, name, output=None, ext='png', dpi=300):
