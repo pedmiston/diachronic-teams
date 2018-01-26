@@ -1,11 +1,20 @@
 ---
 title: "Cumulative improvements in iterated problem solving"
-author-information: |
-    \author{{\large \bf Pierce Edmiston} \\ \texttt{pedmiston@wisc.edu} \\ Department of Psychology \\ University of Wisconsin-Madison
-    \And {\large \bf Maxime Derex} \\ \texttt{maxime.derex@gmail.com} \\ Biosciences Department \\ University of Exeter
-    \And {\large \bf Gary Lupyan} \\ \texttt{lupyan@wisc.edu} \\ Department of Psychology \\ University of Wisconsin-Madison}
+author:
+  - name: Pierce Edmiston
+    email: pedmiston@wisc.edu
+    department: Department of Psychology
+    university: University of Wisconsin-Madison
+  - name: Maxime Derex
+    email: maxime.derex@gmail.com
+    department: Biosciences Department
+    university: University of Exeter
+  - name: Gary Lupyan
+    email: lupyan@wisc.edu
+    department: Department of Psychology
+    university: University of Wisconsin-Madison
+    last: yes
 bibliography: "references.bib"
-csl: "theme/apa.csl"
 document-params: "10pt, letterpaper"
 abstract: |
   Humans are able to use and improve solutions to problems including tools and
@@ -56,7 +65,7 @@ sapply(list.files(chunks_dir, "*.R", full.names = TRUE), read_chunk)
 
 # Read diagrams made with graphviz in the totems package
 chunks <- c("diachronic-collaboration")
-sapply(chunks, read_graphviz_chunk, package = "totems")
+sapply(chunks, read_graphviz_chunk, package = "totems", new_name = "fig1")
 ```
 
 ```{r setup, include=FALSE, cache=FALSE}
@@ -91,7 +100,7 @@ problem solvers. The purpose of this research is understand why
 diachronic collaboration may be crucial to human cultural evolution by
 assessing its effectiveness as a problem solving strategy.
 
-```{r fig1, engine="dot", fig.env="figure*", fig.pos="b", fig.width=6, fig.height=2, fig.cap="In diachronic collaboration, the product of one generation of problem solving is inherited to be used and improved by the next generation of problem solvers. The ability to engage in diachronic collaboration---to improve something that was created by someone else---is required in order to observe the ratcheting of technological complexity in a culture."}
+```{r fig1, engine="dot", fig.pos="h", fig.height=2, fig.cap="In diachronic collaboration, the product of one generation of problem solving is inherited to be used and improved by the next generation of problem solvers. The ability to engage in diachronic collaboration---to improve something that was created by someone else---is required in order to observe the ratcheting of technological complexity in a culture."}
 ```
 
 The ability to inherit a tool or other solution to a problem stems from our

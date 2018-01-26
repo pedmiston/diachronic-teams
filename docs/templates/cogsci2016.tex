@@ -1,7 +1,7 @@
 % Template for Cogsci submission with R Markdown
 
 % Stuff changed from original Markdown PLOS Template
-\documentclass[$document-params$]{article}
+\documentclass[10pt, letterpaper]{article}
 
 \usepackage{cogsci}
 \usepackage{pslatex}
@@ -54,6 +54,18 @@
 $for(header-includes)$
 $header-includes$
 $endfor$
+
+\author{
+  $for(author)$
+    {\large \bf $author.name$ ($author.email$)} \\
+    $author.department$ \\
+    $author.university$
+    $if(author.last)$
+    $else$
+    \AND
+    $endif$
+  $endfor$
+}
 
 $for(author-information)$
 $author-information$
