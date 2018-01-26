@@ -59,11 +59,14 @@ def make(ctx, name, clear_cache=False, open_after=False, verbose=False):
     for doc in docs:
         if clear_cache:
             clean(ctx, doc, verbose=verbose)
-
+        
         result = ctx.run(cmd.format(str(doc)), echo=verbose, warn=True)
 
         if not result.ok:
             failed.append(str(doc))
+            if doc.stem == 'cogsci':
+                ctx.run(f'cd {doc.parent} && pdflatex {doc.stem}.tex',
+                        echo=True)
 
         if open_after and result.ok:
             output_file = Path(doc.parent, '{}.html'.format(doc.stem))
@@ -82,8 +85,8 @@ def clean(ctx, name, verbose=False):
         ctx.run((f'cd {doc.parent} && rm -rf '
                   '*_cache/ *_files/ '
                   'code* '
-                  '*.html *.md '
-                  '*.tex *.log *.synctex.gz'),
+                  '*.pdf *.docx *.html *.md '
+                  '*.tex *.aux *.out *.log *.synctex.gz'),
                   echo=verbose)
 
 @task(help=dict(name='If name is "list", list available figure names.'))

@@ -96,7 +96,7 @@ diachronic collaboration may be crucial to human cultural evolution by
 assessing its effectiveness as a problem solving strategy.
 
 ```{r fig1, fig.pos="h", fig.height=2, fig.align="center", fig.cap="Iterated problem solving. Participants were assigned to four-person teams. Each participant completed the same problem solving task for 25 minutes. Participants in generations after the first began the problem solving task with the solutions that were discovered by the previous generation."}
-draw_graphviz("team-structures-exp1", package = "totems")
+draw_graphviz("iterated-problem-solving", package = "totems")
 ```
 
 The inheritance of tools and other solutions to problems occurs through social
@@ -139,16 +139,18 @@ progress of the previous generation. But inheritance is not believed
 to impact underlying problem solving ability, only the starting point
 for future problem solving.
 
-- Justify why inheritance may affect problem solving ability.
-  * Cultural transmission is a process of transformation, not replication [@Sperber:1996exc].
-  * Mentoring and creating a cultural niche for problem solving [@Sterelny:2012ea].
+<!--
+Justify why inheritance may affect problem solving ability.
+* Cultural transmission is a process of transformation, not replication [@Sperber:1996exc].
+* Mentoring and creating a cultural niche for problem solving [@Sterelny:2012ea].
 
-- Explain the goals of the experiment.
-  * Use an iterated learning paradigm to measure the effectiveness of problem solving
-    organized around inheritance.
-  * Investigate whether the solutions that were inherited impact future problem
-    solving against the null hypothesis that problem solving is constant,
-    and unaffected by inheritance.
+Explain the goals of the experiment.
+* Use an iterated learning paradigm to measure the effectiveness of problem solving
+  organized around inheritance.
+* Investigate whether the solutions that were inherited impact future problem
+  solving against the null hypothesis that problem solving is constant,
+  and unaffected by inheritance.
+-->
 
 # Methods
 
