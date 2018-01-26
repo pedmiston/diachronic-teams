@@ -57,7 +57,7 @@ $endfor$
 
 \author{
   $for(author)$
-    {\large \bf $author.name$ ($author.email$)} \\
+    {\large \bf $author.name$} $author.email$ \\
     $author.department$ \\
     $author.university$
     $if(author.last)$
@@ -66,10 +66,6 @@ $endfor$
     $endif$
   $endfor$
 }
-
-$for(author-information)$
-$author-information$
-$endfor$
 
 \begin{document}
 
