@@ -90,98 +90,91 @@ improving cultural products including tools and other solutions to problems
 that were first created by other people, a phenomena generally known as the
 ratchet effect [@Tomasello:1993vh; @Tennie:2009gaa]. The purpose of this
 research was to better understand the human propensity for cumulative
-improvement using an iterated problem solving paradigm (Fig. 1).
+cultural inheritance using an iterated problem solving paradigm (Fig. 1).
 
 ```{r fig1, fig.pos="b", fig.align="center", fig.width=3.5, fig.cap="Iterated problem solving paradigm. Participants were assigned to four-person teams. Each participant completed the same problem solving task for 25 minutes. Participants in generations after the first began the problem solving task with the solutions that were discovered by the previous generation."}
 draw_graphviz("iterated-problem-solving", package = "totems")
 ```
 
-Cumulative cultural evolution is believed to require both the ability to copy
-the innovations of others and the ability to adapt these innovations to improve
-them in some way. These abilities are often distinguished as the products of
-social learning and individual learning, respectively. Computational models of
-the cultural evolutionary process have demonstrated many of the conditions
-under which social learning is more advantageous than individual learning: when
-the environment is stable and individual learning is costly [@Boyd:1983cu],
-when social learners are able to filter among possible parents [@Enquist:2010gw].
+Cumulative cultural evolution requires both the ability to copy the innovations
+of others as well as the ability to adapt these innovations to improve them in
+some way. These abilities are often distinguished as the products of social
+learning and individual learning, respectively. Computational models of the
+cultural evolutionary process demonstrate that social learning is evolutionarily
+advantageous as compared to adaptions that improve individual learning
+capacities when the environment is stable, so that innovations that are
+beneficial in one generation are likely to continue to be beneficial in the next
+generation, and individual learning is costly; under these conditions, social
+learning provides a valuable shortcut to individual learning [@Boyd:1985cu;
+@Rendell:2010go; @Thompson:2016ca]. Additional constraints on the benefits to
+social learning include knowing who to copy [@Enquist:2010gw; @Rendell:2011gk]
+and having high-fidelity transmission mechanisms [@Lewis:2012jg].
 
-; under these conditions, social learning provides
-a valuable shortcut to individual learning [@Boyd:1983cu]. In this research
-we seek to understand and quantify this shortcut so as to better understand
-
-
-stipulate that the same
-
-
-animals, since then a growing number of species have been identified as showing
-evidence of the ability to inherit learned behaviors from the observation of
+Although social learning is widely considered to be an important aspect of what
+allows human cultures to accumulate improvements in technologies and other
+solutions to problems [@Dean:2013dp], social learning is not unique to humans,
+and a growing number of species have been identified as showing evidence of the
+ability to inherit learned behaviors from the observation or interaction with
 others. Cultural traditions sustained through social learning have been
-identified in primates, monkeys, cetaceans, and birds. Experimental evidence of
-social learning has been observed in a wider array of species, including rats,
-fish, and even some insects. Given that social learning is at least possible in
-diverse taxa, it is somewhat surprising that only a few cases have been
-identified as showing any accumulation or improvement in inherited innovations.
-New Caledonian crows have been argued to have improved the design plans for the
+identified in primates, monkeys, dolphins, whales, and birds [see @Whiten:2017ix
+for a recent review]. Experimental evidence of social learning has been observed
+in a wider array of species, including rats, fish, and even some insects [see
+@Laland:2017dar]. Given that social learning is at least possible in diverse
+taxa, it is somewhat surprising that only a few cases have been argued to show
+any evidence of accumulation or improvement in inherited innovations. New
+Caledonian crows have been argued to have improved the design plans for the
 grub-skewers they cut out from pandanus leaves [@Hunt:2003dj], and at least one
 population of chimpanzees has evolved a more advanced termite probe
-[@Sanz:2009ja]. 
+[@Sanz:2009ja]. For the most part, however, tool use in animals has remained largely
+unchanged [@Mercader:2007fd].
 
-For the most part, tool use in animals has remained largely
-unchanged for recorded history [@Mercader:2007fd], while over the same
-period human technology has changed dramatically.
+Humans, in contrast, have demonstrated a remarkable ability to reproduce, adapt,
+and improve the innovations of others, so much so that the history of human
+technology has been argued to be better understood as a process of continual
+refinement and repurposing rather than a story of individual geniuses inventing
+solutions without precedent [@Basalla:1989wq; @Sole:2013cm]. Moore's Law, the
+observation and prediction that computer chip efficiency would double every two
+years [-@Moore:1965uj], is a well-known example of regular and monotonic growth
+in a technological domain, but there are many other examples, such as
+improvements in information storage, bandwidth, and processing speed, most of
+which have even steeper growth curves than Moore's integrated circuits
+[@Nagy:2011cq]. Of course, superexponential growth has not been true for all of human
+history, as demonstrated by the period of nearly 1.5 million years known as the
+Acheulean tradition during which our ancestors were seemingly unable to invent
+more complicated stone tools than simple handaxes, and yet even during this
+time, incremental improvement have been argued to have occured as the handaxes
+grew more symmetrical in design [@Lycett:2008di]. What these observations
+suggest is that, more than our ability to learn socially from others, our
+ability to improve upon existing innovations, in however small an increment,
+characterizes human problem solving.
 
+Experimental models of the cumulative cultural evolutionary process have
+demonstrated that incremental improvements can accrue through a variety
+of social learning mechanisms. @Caldwell:2008gf found that chains of
+problem solvers could iteratively improve the distance flown
+by paper airplanes and the height of towers constructed from dry spaghetti
+noodles and modeling clay. Interestingly, improvements were equally
+likely to accrue whether social transmission occured via imitation,
+emulation, or guided instruction of one generation to the next [@Caldwell:2009fl].
 
-
-The accumulation of technological complexity in humans but no other animals 
-
-As a result, many have
-concluded that one of the primary factors driving human cultural evolution
-is our ability to learn from 
-
-
-
-
-(namely crows [@Hunt:2003dj], chimpanzees [@Sanz:2009ja], and perhaps
-pigeons [@Sasaki:2017ha]) have demonstrated a capacity for cumulative
-improvements in inherited innovations. In contrast, the ability to accumulate
-beneficial variants in solutions to problems is endemic to human culture and
-specifically the history of human technology [@Basalla:1989wq]. As a result,
-many researchers have concluded that the difference between human social
-learning and social learning exhibited in other animals is not qualitative, but
-the gap is quantitatively vast.
-
-Cultural inheritance via social learning mechanisms is believed to benefit
-learners by providing a reliable shortcut to individual learning.
-Computational models of the cultural evolutionary process show how social
-learning can be evolutionarily advantageous as compared to investing in more
-advanced individual learning capacities when the environment is stable and
-individual learning is costly [@Boyd:1985cu]. Under these conditions, the
-ability to copy the behaviors of others saves future generations the time
-already invested by the previous generations, allowing cultures to discover
-innovations that no individual would be likely to discover on their own
-[@Derex:2015cbb]. Additional modeling work has demonstrated the importance of
-being able to filter among possible variants in order to reliably accumulate
-beneficial variants [@Enquist:2010gw]. However, this view presupposes
-that behaviors learned socially are functionally equivalent to behaviors
-learned through individual learning. Successful transmission either
-happens and future generations pick up directly where the previous generation
-left off, or it does not and future generations are unable to benefit from the
-progress of the previous generation. But inheritance is not believed
-to impact underlying problem solving ability, only the starting point
-for future problem solving.
-
-<!--
-Justify why inheritance may affect problem solving ability.
-* Cultural transmission is a process of transformation, not replication [@Sperber:1996exc].
-* Mentoring and creating a cultural niche for problem solving [@Sterelny:2012ea].
-
-Explain the goals of the experiment.
-* Use an iterated learning paradigm to measure the effectiveness of problem solving
-  organized around inheritance.
-* Investigate whether the solutions that were inherited impact future problem
-  solving against the null hypothesis that problem solving is constant,
-  and unaffected by inheritance.
--->
+Our research adds to these efforts to understand cumulative cultural
+evolution specifically by striving to understand the impact of
+inheritance on future problem solving. We used an iterated learning
+paradigm to measure the effectiveness of problem solving
+organized around inheritance. Specifically, we were interested
+in understanding how the solutions inherited from previous
+generations impacted future problem solving ability. To preface our
+findings, we found that problem solving based around inheritance
+was able to cumulatively improve the number of problems each generation
+could solve in a 25 minute session, even as the problems became
+more difficult. As for whether this inheritance had an impact on
+future problem solving, we found that larger inheritances were
+harder to exceed, but they allowed individuals to solve more
+difficult problems than they would have been likely to solve on
+their own. We also did not find any evidence that larger inheritances
+had a detrimental effect on future problem solving. From these results,
+we motivate future research aimed at more directly understanding the
+impact of inheritance on problem solving.
 
 # Methods
 
@@ -198,14 +191,14 @@ the previous generation.
 
 The problem solving task that participants completed was adapted from
 @Derex:2015cbb. In this computer game, called the Totems game, participants are
-required to build tools with the ultimate goal of creating "a sacred totem to
-appease the gods." To build a totem, participants first needed to construct an
-axe out of three independently discovered tools: a refined stick used as
-a handle, a sharpened rock for the blade, and a string wound from bark fibers
-for binding (Fig. 2B). In the game, more advanced tools produce larger and more
-intricate totems, resulting in higher performance scores. Diachronic problem
-solvers after the first generation began the problem solving task with access
-to the solutions discovered by the previous generation.
+required to discover how to build tools with the ultimate goal of creating "a
+sacred totem to appease the gods." To build a totem, participants first needed
+to construct an axe out of three independently discovered tools: a refined stick
+used as a handle, a sharpened rock for the blade, and a string wound from bark
+fibers for binding (Fig. 2). In the game, more advanced tools produce larger and
+more intricate totems, resulting in higher performance scores. Diachronic
+problem solvers after the first generation began the problem solving task with
+access to the solutions discovered by the previous generation.
 
 ## Participants
 
@@ -222,23 +215,22 @@ Exp1Participants %>%
 ## Procedure
 
 Participants played the Totems game for 25 minutes. To play the game,
-participants generated guesses (combinations of items) by dragging items into
-the Workshop panel and selecting "Try" (Fig. 2A). Guesses were between one and
-four items in length with replacement, meaning the initial six resources could be
-combined for a total of `r exp1$n_unique_guesses_6`  unique guesses. Of the
-possible combinations, very few resulted in new items. For example, of all the
-guesses that could be formed from the initial items, only three
-(`r exp1$n_unique_guesses_6_pct`%) yielded new tools (Fig. 2B). As problem solvers
-accumulate solutions, the combinatorial complexity of the problem space increases
-exponentially such that the discovery of more complex tools is less likely to
-happen by chance.
+participants generated guesses (combinations of items) by dragging items one
+at a time into a workshop panel. The panel had space for four items (with
+replacement), meaning the initial six resources could be combined for a total of
+`r exp1$n_unique_guesses_6` unique guesses. Of the possible combinations, very
+few resulted in new items. For example, of all the guesses that could be formed
+from the initial items, only three (`r exp1$n_unique_guesses_6_pct`%) yielded
+new tools (Fig. 2). As problem solvers accumulate solutions, the combinatorial
+complexity of the problem space increases exponentially such that the discovery
+of more complex tools is less likely to happen by chance.
 
-Once a tool was discovered, the recipe for its creation was recorded in the
-History panel (Fig. 2A). Participants could review their history and see the
+Once a tool was discovered, the recipe for its creation was recorded in a
+separate history panel. Participants could review their history and see the
 recipes for their previous discoveries, even items they had discarded. The
-History panel was also how diachronic inheritance was implemented. Diachronic
+history panel was also how diachronic inheritance was implemented. Diachronic
 problem solvers after the first generation began the problem solving task with
-an additional tab in the History panel that, when selected, listed all of the
+an additional tab in the history panel that, when selected, listed all of the
 recipes for the items created by the previous generation.
 
 ```{r fig2, fig.height=6, fig.cap="A sample of the solution landscape. The axe is required to construct the first totem pole."}
@@ -277,7 +269,7 @@ in the number of problems that could be solved in 25 minutes
 innovations_created_and_inherited_plot
 ```
 
-```{r fig5, fig.cap="Number of innovations discovered by each generation. Each of the thin green lines is a team. Means in each generation are shown as green X's. The thick blue line is the model predictions with ±1 standard error."}
+```{r fig5, fig.cap="Number of innovations discovered by each generation. Each of the thin green lines is a team. The thick blue line is the model predictions with ±1 standard error."}
 innovations_by_generation_plot
 ```
 
@@ -297,7 +289,7 @@ diminishing return on future problem solving.
 We next consider explanations for the diminishing return of diachronic
 inheritance on problem solving. First, we tested whether larger inheritances had
 a detrimental effect on future problem solving. We found that an increase in the
-number of inherited innovations is negatively associated with a decrease in the
+number of inherited innovations was negatively associated with a decrease in the
 number of new innovations discovered by future generations of problem solvers,
 `r exp1$inheritance_size_slope_stats` (Fig. 4). This finding preliminarily
 suggests that inheritance has a measurable influence on problem solving beyond
@@ -307,18 +299,18 @@ _decrease_ problem solving ability.
 
 However, an alternative explanation, not having to do with inheritance
 negatively affecting problem solving ability, is that as more items are
-accumulated, further items are less likely to be discovered by chance,
+accumulated, additional items are less likely to be discovered by chance,
 meaning we would expect problem solving slow down regardless of what was
 inherited. To control for combinatorial complexity, we created an alternative
 outcome measure that, rather than counting all innovations equally, instead
 weighted each innovation relative to the number of guesses that could be
-made from the inventory size at the time at which the innovation was discovered.
+made out of the items present at the time at which the innovation was discovered.
 
-Fig. 6 shows the change in accumulated difficulty score based on the number of innovations
-that were inherited. In contrast to the analysis that treated all
+Fig. 6 shows the change in accumulated difficulty score based on the number of
+innovations that were inherited. In contrast to the analysis that treated all
 innovations equally, when innovations are weighted by combinatorial complexity,
-the effect of inheritance does not decrease over time, such that
-larger inheritances result in higher accumulated difficulty scores,
+the effect of inheritance does not decrease over time, such that larger
+inheritances result in higher accumulated difficulty scores,
 `r exp1$delta_diff_slope_stats`.
 
 ```{r fig6, fig.cap="Change in accumulated difficulty score by inheritance. Accumulated difficulty scores are sums of discovered innovations weighted by the combinatorial complexity of the possible choices available to the participant when the innovation was discovered. The outcome measure is the difference between the accumulated difficulty scores of subsequent generations. The line shows the predictions of a hierarchical regression model with ±1 standard error."}
@@ -335,10 +327,10 @@ problem solving rates controlling for the amount of time spent recreating the
 inherited items.
 
 Problem solvers who spend more time in the learning stage conversely have less
-time in the **playing stage**, where new innovations are tried and discovered.
+time in the **discovery stage**, where new innovations are tried and discovered.
 Fig. 7 shows the problem solving
-rates for diachronic problem solvers based on the length of the playing stage.
-The overall rate of problem solving in the playing stage was
+rates for diachronic problem solvers based on the length of the discovery stage.
+The overall rate of problem solving in the discovery stage was
 `r exp1$minutes_per_new_innovation` minutes per new innovation
 (`r exp1$new_innovations_per_minute` innovations per minute),
 `r exp1$playing_time_slope_stats`. This rate was not found to vary based
@@ -347,9 +339,9 @@ a model predicting unique innovations from playing time alone to one predicting
 unique innovations from the interaction between playing time and inheritance size,
 `r exp1$playing_time_modcomp`. This result suggests that inheriting more
 items did not have an effect on the rate at which new problems are solved
-when playing time is controlled.
+when discovery time is controlled.
 
-```{r fig7, fig.env="figure", fig.cap="Problem solving rate in the playing stage. Playing time is the amount of time out of a 25 minute session dedicated to discovering new innovations that were not discovered by an ancestor. The line shows the predictions of the hierarchical regression model with ±1 standard error. The slope of this line did not significantly vary based on the size of the inheritance."}
+```{r fig7, fig.env="figure", fig.cap="Problem solving rate in the discovery stage. Discovery time is the amount of time out of a 25 minute session dedicated to discovering new innovations that were not discovered by an ancestor. The line shows the predictions of the hierarchical regression model with ±1 standard error. The slope of this line did not significantly vary based on the size of the inheritance."}
 playing_time_plot
 ```
 
@@ -357,11 +349,11 @@ playing_time_plot
 
 We measured the problem solving ability of four-person diachronic teams, and
 found that diachronic problem solvers were consistently able to cumulatively
-improve upon the solutions they inherited. Although this finding is not
+improve upon the solutions they inherited. Although this finding is perhaps not
 surprising, given that participants basically started of a problem solving task
-with some of the problems already solved, it is exactly this ability that is
-believed to be rare among non-human animals, and fundamental to human cultural
-evolution.
+with some of the problems already solved, it is exactly this ability,
+so easy for humans to engage in, that is believed to be rare or non-existent
+among non-human animals, and fundamental to human cultural evolution.
 
 In our experiment, problem solvers who benefited from inheritance first had to
 recreate all of the inherited solutions, which took time and effort. Once
@@ -370,7 +362,8 @@ unable even to recreate all of their inherited solutions in the 25-minute
 session---although this behavior is likely attributable to non-compliant
 behavior or a misunderstanding of the task. Nonetheless, the presence of these
 outliers highlights that in our experiment, performance is not guaranteed to
-improve cumulatively, which is why it is important to establish that it does.
+improve cumulatively, which is why we first establish that performance
+does reliably accumulate.
 
 We also attempted to determine whether inheritance had a measurable impact
 on future problem solving ability. We primarily tested this question in
@@ -378,19 +371,18 @@ this experiment by investigating the relationship between inheritance size
 and the number of unique innovations contributed by each generation. We
 found multiple, conflicting results. The impact of inheritance on problem
 solving appeared to diminish such that later generation problem solvers
-were less able to exceed the accomplishments of their ancestors, but if
-the combinatorial complexity of the solutions was taken into account, the
-effect of inheritance was not found to decrease. If the amount of time
-problem solvers have to solve new problems not solved by their ancestors
-is taken into account, future generations of problem solvers progress
-at the same rate regardless of the number of items inherited.
+were less able to exceed the number of solutions discovered by their ancestors,
+but if the combinatorial complexity of the solutions was taken into account, the
+effect of inheritance was not found to decrease. If the amount of time problem
+solvers have to solve new problems not solved by their ancestors is taken into
+account, future generations of problem solvers progress at the same rate
+regardless of the number of items inherited.
 
 In the face of conflicting results, we propose better experiments, some
 of which are already underway. We argue that the only way to truly understand
 whether inheritance impacts future problem solving is to compare diachronic
 problem solving based around inheritance to alternative strategies for
 solving the same set of problems, but without diachronic inheritance.
-
 Although more work on this topic is clearly required, we believe extending
 the iterated learning paradigm to answer questions about the impact of
 inheritance on problem solving is a valuable contribution.

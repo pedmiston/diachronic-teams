@@ -270,8 +270,6 @@ innovations_by_generation_plot <- ggplot(Innovations) +
   geom_errorbar(aes(ymin = NumInnovations-SE, ymax = NumInnovations+SE),
                 data = innovations_by_generation_preds,
                 color = t_$color_picker("blue"), width = 0.2, size = 1.5) +
-  geom_point(stat = "summary", fun.y = "mean",
-             color = t_$color_picker("green"), shape = 4, size = 3) +
   t_$scale_y_num_innovations +
   t_$base_theme +
   theme(
@@ -375,7 +373,7 @@ playing_time_plot <- ggplot(NewInnovations) +
               stat = "identity", data = playing_time_preds,
               color = t_$diachronic_color) +
   geom_point(aes(shape = Outlier), position = position_jitter(height = 0.1)) +
-  xlab("Playing time (min)") +
+  xlab("Discovery time (min)") +
   ylab("New innovations") +
   t_$scale_shape_outlier +
   guides(shape = "none") +
