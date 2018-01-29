@@ -39,7 +39,7 @@ abstract: |
 keywords: "cultural evolution; transmission chain; iterated learning"
 output:
   pdf_document:
-    template: templates/cogsci2016.tex
+    template: templates/cogsci.tex
     citation_package: natbib
     keep_tex: yes
 ---
