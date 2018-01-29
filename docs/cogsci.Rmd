@@ -33,7 +33,7 @@ abstract: |
   future problem solving ability, and found mixed results: larger inheritances
   were harder to exceed, but they also allowed individuals to solve more
   difficult problems than they would have on their own. We also found no
-  evidence that a larger inheritance had a negative impact on the rate at which
+  evidence that a larger inheritance negatively impacted the rate at which
   new problems were solved. We discuss the limitations of this work, and
   motivate future directions.
 keywords: "cultural evolution; transmission chain; iterated learning"
@@ -85,34 +85,64 @@ One answer to this question is that our system of cultural inheritance, more
 than our ability to solve problems as individuals, explains how humans are able
 to solve the problems necessary for survival in diverse habitats
 [@Richerson:2008not; @Henrich:2015srt; @Boyd:2017diff]. As problem solvers,
-humans are particularly adept at using, reproducing, and, in some cases, improving
-cultural products including tools and other solutions to problems that were
-first created by other people, a phenomena generally known as the ratchet
-effect [@Tomasello:1993vh; @Tennie:2009gaa]. I refer to the type of
-collaboration that enables ratcheting as **diachronic collaboration** (Fig. 1).
-In diachronic collaboration, the products of labor, such as a tool designed to
-solve some problem, are shared with or inherited by future generations of
-problem solvers. The purpose of this research is understand why
-diachronic collaboration may be crucial to human cultural evolution by
-assessing its effectiveness as a problem solving strategy.
+humans are particularly adept at using, reproducing, and, in some cases,
+improving cultural products including tools and other solutions to problems
+that were first created by other people, a phenomena generally known as the
+ratchet effect [@Tomasello:1993vh; @Tennie:2009gaa]. The purpose of this
+research was to better understand the human propensity for cumulative
+improvement using an iterated problem solving paradigm (Fig. 1).
 
-```{r fig1, fig.pos="b", fig.align="center", fig.width=3.5, fig.cap="Iterated problem solving. Participants were assigned to four-person teams. Each participant completed the same problem solving task for 25 minutes. Participants in generations after the first began the problem solving task with the solutions that were discovered by the previous generation."}
+```{r fig1, fig.pos="b", fig.align="center", fig.width=3.5, fig.cap="Iterated problem solving paradigm. Participants were assigned to four-person teams. Each participant completed the same problem solving task for 25 minutes. Participants in generations after the first began the problem solving task with the solutions that were discovered by the previous generation."}
 draw_graphviz("iterated-problem-solving", package = "totems")
 ```
 
-The inheritance of tools and other solutions to problems occurs through social
-learning, or what @Thorndike:1898 called "from an act witnessed, learn to do an
-act" (p. 50). Thorndike's failed experiments on social learning in chicks, cats,
-and dogs made him and many others skeptical that social learning was a
-widespread phenomenon among animals, but since then, a growing number of species
-have been argued to show evidence of the ability to inherit skilled behaviors
-from the observation of others. This includes ethnographic evidence of cultural
-traditions sustained through social learning in primates, monkeys, cetaceans,
-and birds, as well as experimental evidence of social learning in some of the
-same species and others, including rats, fish, and even some insects. Given that
-social learning is present in such diverse taxa, it is surprising that only a
-few species (namely crows [@Hunt:2003dj], chimpanzees [@Sanz:2009ja], and
-perhaps pigeons [@Sasaki:2017ha]) have demonstrated a capacity for cumulative
+Cumulative cultural evolution is believed to require both the ability to copy
+the innovations of others and the ability to adapt these innovations to improve
+them in some way. These abilities are often distinguished as the products of
+social learning and individual learning, respectively. Computational models of
+the cultural evolutionary process have demonstrated many of the conditions
+under which social learning is more advantageous than individual learning: when
+the environment is stable and individual learning is costly [@Boyd:1983cu],
+when social learners are able to filter among possible parents [@Enquist:2010gw].
+
+; under these conditions, social learning provides
+a valuable shortcut to individual learning [@Boyd:1983cu]. In this research
+we seek to understand and quantify this shortcut so as to better understand
+
+
+stipulate that the same
+
+
+animals, since then a growing number of species have been identified as showing
+evidence of the ability to inherit learned behaviors from the observation of
+others. Cultural traditions sustained through social learning have been
+identified in primates, monkeys, cetaceans, and birds. Experimental evidence of
+social learning has been observed in a wider array of species, including rats,
+fish, and even some insects. Given that social learning is at least possible in
+diverse taxa, it is somewhat surprising that only a few cases have been
+identified as showing any accumulation or improvement in inherited innovations.
+New Caledonian crows have been argued to have improved the design plans for the
+grub-skewers they cut out from pandanus leaves [@Hunt:2003dj], and at least one
+population of chimpanzees has evolved a more advanced termite probe
+[@Sanz:2009ja]. 
+
+For the most part, tool use in animals has remained largely
+unchanged for recorded history [@Mercader:2007fd], while over the same
+period human technology has changed dramatically.
+
+
+
+The accumulation of technological complexity in humans but no other animals 
+
+As a result, many have
+concluded that one of the primary factors driving human cultural evolution
+is our ability to learn from 
+
+
+
+
+(namely crows [@Hunt:2003dj], chimpanzees [@Sanz:2009ja], and perhaps
+pigeons [@Sasaki:2017ha]) have demonstrated a capacity for cumulative
 improvements in inherited innovations. In contrast, the ability to accumulate
 beneficial variants in solutions to problems is endemic to human culture and
 specifically the history of human technology [@Basalla:1989wq]. As a result,
