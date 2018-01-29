@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -x
+title="EdmistonDerexLupyan-IteratedProblemSolving"
+function rename {
+    basename=$(basename "$1")
+    ext=${basename##*.}
+    cp $1 ${title}.${ext}
+}
+rename docs/cogsci.Rmd
+rename docs/cogsci.pdf
+rename docs/cogsci.docx
+
+zip -j cogsci ${title}*
+rm ${title}*
