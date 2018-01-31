@@ -25,10 +25,10 @@ abstract: |
   generations of problem solving. We found that problem solvers were
   consistently able to solve more problems in a 25 minute session than their
   ancestors. In investigating whether the number of inherited solutions had an
-  impact on future problem solving ability, we found that larger inheritances
-  were harder to exceed, but they also allowed individuals to solve more
-  complex problems than they would have solved on their own. We discuss
-  the limitations of this work, and motivate future directions.
+  impact on future problem solving performance, we found that larger
+  inheritances were harder to exceed, but they also allowed individuals to
+  solve more complex problems than they would have solved on their own. We
+  discuss the limitations of this work, and motivate future directions.
 keywords: "cultural evolution; transmission chain; iterated learning"
 output:
   pdf_document:
@@ -77,9 +77,9 @@ ability to inherit knowledge from others than our ability to solve problems as
 individuals [@Richerson:2008not; @Henrich:2015srt; @Boyd:2017diff]. Cultural
 inheritance enables problem solving to extend over generations, far longer than
 any single lifetime, allowing future generations of problem solvers to benefit
-from solutions to problems that they could not have invented on their own.
+from solutions to problems that they could not have discovered on their own.
 However, what is unclear is how effectively individual problem solvers are
-able to benefit from inherited solutions at much shorter timescales. To
+able to benefit from inherited solutions at shorter timescales. To
 better understand the extent to which future generations of problem solvers are
 able to benefit from inherited problem solving knowledge, we investigated the
 accumulation of problem solving knowledge over generations of problem solving.
@@ -95,98 +95,116 @@ struggling to solve a problem on their own through trial-and-error learning,
 social learners can inherit solutions that have already been discovered by
 others, saving them the time it would have taken to solve the same problems
 independently. Over generations, these shortcuts accumulate, giving populations
-of social learners to get a head start on future problem solving, and allowing
-them to solve problems that no individual learner would be able to solve on
-their own and in a single lifetime.
+of social learners a head start on future problem solving, and allowing
+them to work on problems that no individual would be able to solve on
+their own in a single lifetime.
 
-However, the ability to learn socially from others is not sufficient to explain
-cumulative cultural evolution. Although social learning was once thought to be
-rare in the animal kingdom [e.g., @Thorndike:1898], it has now been documented
-in a range of species from chimps [@Whiten:1999cic] to fish [@Laland:1997ts]
-and even bees [@Alem:2016fu]. If cumulative cultural evolution depends simply
-on social learning, we might expect these species to likewise show evidence of
-cumulative cultural evolution, yet such evidence is notably lacking
-[@Dean:2012gv; Tennie:2009gaa]. There are a few exceptions: New Caledonian
-crows have been argued to have improved the grub-skewers they craft from
-pandanus leaves [@Hunt:2003dj], and at least one population of chimpanzees has
-evolved a more advanced termite probe [@Sanz:2009ja], but for the most part
+However, the ability to learn socially from others may not be sufficient to
+explain cumulative cultural evolution. Although social learning was once
+thought to be rare in the animal kingdom [e.g., @Thorndike:1898], it has now
+been documented in a range of species from chimps [@Whiten:1999cic] to fish
+[@Laland:1997ts] and even bees [@Alem:2016fu]. If cumulative cultural evolution
+depends simply on social learning, we might expect these species to likewise
+show evidence of cumulative cultural evolution, yet such evidence is notably
+lacking [@Dean:2012gv; Tennie:2009gaa]. There are a few exceptions: New
+Caledonian crows have been argued to have improved the grub-skewers they craft
+from pandanus leaves [@Hunt:2003dj], and at least one population of chimpanzees
+has evolved a more advanced termite probe [@Sanz:2009ja], but for the most part
 tool use in animals has remained largely unchanged [cf. @Mercader:2007fd].
 
 Humans, in contrast, have demonstrated a remarkable ability to reproduce,
 adapt, and improve the innovations of others, so much so that the history of
 human technology has been argued to be better understood as a process of
-continual refinement and repurposing rather than periods of relative stasis
-punctuated by the discoveries of rare geniuses [@Basalla:1989wq; @Sole:2013cm].
-Rapid improvement of inherited innovations has not always been the case over
-the course of human history, as demonstrated by long periods in the
-archaeological record of relative stagnation in stone tool design, raising the
-question of what it was that allowed our ancestors to begin to develop more
-complex tools. The answer that has been proposed is that humans evolved more
-high-fidelity ways of transmitting problem solving knowledge to the next
-generation, allowing future generations of problem solvers to more quickly
-learn the skills honed by their ancestors, and thus giving them more time to
-make improvements to those technologies.
+continual refinement and repurposing rather than punctuated advances brought by
+the discoveries of rare geniuses [@Basalla:1989wq; @Sole:2013cm]. Rapid
+refinement of inherited innovations has not always been the case over the
+course of human history, as demonstrated by the long periods in the
+archaeological record of slow or stagnant growth in stone tool complexity
+[@Torre:2011jl; @Lycett:2008di], raising the question of what it was that
+allowed our ancestors to begin to develop more complex tools. An answer that
+has been proposed is that humans evolved more robust ways of transmitting
+problem solving knowledge to the next generation, allowing future generations
+of problem solvers to more quickly learn the skills honed by their ancestors,
+and thus giving them more time to make improvements to those technologies. This
+raises the question of how effectively human problem solvers are able to
+accumulate problem solving knowledge over generations of problem solving. Is
+cumulative cultural evolution only visible at the levels of populations and
+human lifetimes, or are human problem solvers able to accumulate problem
+solving knowledge effectively even at shorter timescales?
 
-Although this ability to accumulate problem solving knowledge over generations
-of problem solvers is widely believed to be fundamental to the story of human
-history, we do not fully understand how effectively problem solving knowledge
-can be transferred and improved by future generations. To further our
-understanding of the human propensity to engage in cumulative cultural
-inheritance, we designed an experiment to measure the accumulation of problem
-solving knowledge along transmission chains. In addition to establishing that
-future generations of problem solvers are able to inherit and exceed their
-ancestors, we also sought to understand whether inheriting solutions from
-a previous generation had any influence on future problem solving ability. Does
-inheritance affect the way in which future problems are solved, and if so, does
-it increase or decrease problem solving abilities of future generations?
+Previous investigations of the accumulation of problem solving knowledge via
+vertical transmission have found that problem solvers benefit the most from
+previous generations when high fidelity transmission mechanisms such as verbal
+instruction are available [@Morgan:2015hu]. However, although verbal
+instruction improves the fidelity of the transmission process, vertical
+transmission alone is not guaranteed to result in the cumulative improvement in
+problem solving performance. Therefore, it remains an open question as to the
+minimal requirements for observing reliable improvements in problem solving
+knowledge over generations.
+
+Here we investigated the accumulation of problem solving knowledge with high
+fidelity transmission in place, such that the solutions generated by one
+generation are precisely transmitted to the next generation. Our experiment was
+designed to test the hypothesis that high fidelity vertical transmission
+is sufficient to allow for the accumulation of problem solving knowledge. More
+importantly than demonstrating that problem solving knowledge can accumulate,
+we also sought to determine how effectively future generations can capitalize
+on the advancements of the previous generation. Finally, we also sought
+to understand whether inheriting solutions from a previous generation had any
+influence on future problem solving ability. Does inheritance affect the way in
+which future problems are solved, and if so, does it increase or decrease
+problem solving abilities of future generations?
 
 # Methods
 
 To understand how problem solving knowledge accumulates through vertical
 transmission, we used a transmission chain paradigm where participants were
-assigned to a single generation within a four-generation chain. Each participant
-attempted the same problem solving task for 25 minutes. The solutions that each
-participant had discovered by the end of the session were passed on to be
-inherited by the participant in the next generation of the chain. Thus,
-participants assigned to generations after the first began the problem solving
-task with the solutions inherited from the previous generation.
+assigned to a single generation within a four-generation chain. Each
+participant attempted the same problem solving task for 25 minutes. The
+solutions that each participant had discovered by the end of the session were
+passed on to be inherited by a participant in the next generation of the
+chain. Thus, participants assigned to generations after the first began the
+problem solving task with solutions inherited from the previous generation.
 
 Participants played the "Totems" game adapted from @Derex:2015cbb. Their task
 was to discover how to build tools with the ultimate goal of creating "a sacred
 totem to appease the gods." To build a totem, participants first needed to
 construct an axe out of three independently discovered tools: a refined stick
 used as a handle, a sharpened rock for the blade, and a string wound from bark
-fibers for binding (Fig. 2). More advanced tools produce larger and more
+fibers for binding (Fig. 1). More advanced tools produce larger and more
 intricate totems, resulting in higher performance scores.
 
-```{r fig2, fig.height=6, fig.cap="A sample of the solution landscape. New items could be produced through the combinations of different items (more than one arrow points to the item) or through the refinement of a single item (a single arrow points to the item).  The axe is required to construct the first totem pole."}
+```{r fig1, fig.height=6, fig.cap="A sample of the solution landscape. The top row of 6 items were available to problem solvers at the start of the game. New items could be produced through the combination of different items (more than one arrow points to the item) or through the refinement of a single item (a single arrow points to the item). The axe is required to construct the first totem pole."}
 draw_image("landscape-sample.gv", package = "totems")
 ```
 
 Participants discovered new tools by combining existing items. Participants
-could combine up to four items at a time (with replacement), meaning the initial
-six items could form a total of `r exp1$n_unique_guesses_6` combinations.
-Of all possible combinations, very few resulted in new items. For example,
-of all the guesses that could be formed from the initial items, only three
-(`r exp1$n_unique_guesses_6_pct`%) yielded new tools (Fig. 2). As participants
-accumulate solutions, the combinatorial complexity of the problem space
-increases exponentially such that the discovery of more complex tools is less
-likely to happen by chance.
+could combine up to four items at a time (with replacement), meaning the
+initial six items could form a total of `r exp1$n_unique_guesses_6`
+combinations. Of all possible combinations, very few resulted in new items. For
+example, of all the guesses that could be formed from the initial items, only
+three (`r exp1$n_unique_guesses_6_pct`%) yielded new tools (Fig. 1). As
+participants accumulate solutions, the combinatorial complexity of the problem
+space increases exponentially such that the discovery of more complex tools is
+less likely to happen by chance.
 
-Once a tool was discovered, the recipe for its creation was recorded in an
+Once a tool was discovered, the recipe for its creation---a list of the items
+that had to be combined in order to create the tool---was recorded in an
 innovation record. Participants could review their past innovations and see the
-recipes for their previous discoveries. Participants assigned to generations
+recipes for their previous discoveries. **Participants assigned to generations
 after the first inherited the innovation record of the previous generation
-participant. Thus, they could review the recipes for all the innovations that had
-been discovered by their ancestor. In order use these tools in futher
-combinations, the tools and all of their constituent parts first had to be recreated.
+participant.** From the beginning of the experiment, these participants could
+review the recipes for all the innovations that had been discovered by their
+ancestor. Note that the participants inherited the recipes, but not the tools
+themselves. In order use these tools in futher combinations, the tools and all
+of their constituent parts first had to be recreated.
 
 ## Participants
 
 Participants were recruited from the UW-Madison student body and received
 course credit in exchange for participation. Each participant was assigned to
-a single generation of a four-person team (Table 1). Data was collected for
-a total of `r exp1$n_teams` teams (N=`r exp1$n_participants` participants).
+a single generation of a four-generation chain (Table 1). Data was collected
+for a total of `r exp1$n_teams` teams (N=`r exp1$n_participants` participants).
 
 ```{r tab1, results="asis"}
 Exp1Participants %>%
