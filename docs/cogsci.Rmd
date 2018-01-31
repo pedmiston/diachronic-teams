@@ -16,18 +16,19 @@ author:
     last: yes
 bibliography: references.bib
 abstract: |
-  Humans are able to use and improve tools and other solutions to problems that
-  were created by others like no other species of animal. We sought to
+  As compared to other animals, humans are particularly skilled at using and
+  improving tools and other solutions to problems that were first discovered by
+  other people. Although the human capacity for cumulative cultural evolution
+  is well-known, the effectiveness of inheritance as a form of problem solving
+  is an area in need of further research. We report an experiment designed to
   understand how effectively problem solving knowledge accumulates over
-  generations of problem solving using an iterated problem solving paradigm. We
-  found that problem solvers were consistently able to solve more problems in a
-  25 minute session than their ancestors. In investigating whether amount of
-  inherited cultural information had an impact on future problem solving
-  ability, we found that larger inheritances were harder to exceed, but that
-  they also allowed individuals to solve more complex problems than they would
-  have likely solved on their own. We also found that larger inheritances did
-  not affect the rate at which new problems were solved. We discuss the
-  limitations of this work, and motivate future directions.
+  generations of problem solving. We found that problem solvers were
+  consistently able to solve more problems in a 25 minute session than their
+  ancestors. In investigating whether the number of inherited solutions had an
+  impact on future problem solving ability, we found that larger inheritances
+  were harder to exceed, but they also allowed individuals to solve more
+  complex problems than they would have solved on their own. We discuss
+  the limitations of this work, and motivate future directions.
 keywords: "cultural evolution; transmission chain; iterated learning"
 output:
   pdf_document:
@@ -70,53 +71,74 @@ sapply(list.files(chunks_dir, "*.R", full.names = TRUE), read_chunk)
 Humans are effective problem solvers, having solved a wide range of problems
 related to foraging, hunting, and preparing food, while surviving predators,
 each other, and a large range of terrestrial environments [@Boyd:2017diff;
-@Fernandez:2001civ]. What has enabled our success in being able to solve such a
-diverse set of problems? One suggestion is that the answer lies more in our
+@Fernandez:2001civ]. What has enabled our success in being able to solve such
+a diverse set of problems? One suggestion is that the answer lies more in our
 ability to inherit knowledge from others than our ability to solve problems as
-individuals [@Richerson:2008not; @Henrich:2015srt; @Boyd:2017diff].
+individuals [@Richerson:2008not; @Henrich:2015srt; @Boyd:2017diff]. Cultural
+inheritance enables problem solving to extend over generations, far longer than
+any single lifetime, allowing future generations of problem solvers to benefit
+from solutions to problems that they could not have invented on their own.
+However, what is unclear is how effectively individual problem solvers are
+able to benefit from inherited solutions at much shorter timescales. To
+better understand the extent to which future generations of problem solvers are
+able to benefit from inherited problem solving knowledge, we investigated the
+accumulation of problem solving knowledge over generations of problem solving.
 
-The ability to inherit knowledge from others, also known as social learning, has
-been argued to benefit problem solvers primarily by providing a reliable
-shortcut to individual or asocial learning [@Boyd:1985cu]. Rather than
-individuals struggling to solve a problem on their own through trial-and-error
-learning, social learners can inherit solutions that have already been
-discovered by others, saving them the time it would have taken to solve the same
-problems independently. Over generations, these shortcuts accumulate, allowing
-populations of social learners to solve problems that no individual learner
-would be able to solve on their own and in a single lifetime.
+The accumulation of problem solving knowledge is believed to be enabled by
+a number of social learning abilities that facilitate the high fidelity
+transmission of problem solving knowledge across individuals. These include
+teaching through verbal instruction, prosociality, and advanced imitation
+abilities [@Dean:2012gv]. These skills for high fidelity social learning are
+argued to benefit problem solvers by providing a reliable shortcut to
+individual (asocial) learning [@Boyd:1985cu]. Rather than individuals
+struggling to solve a problem on their own through trial-and-error learning,
+social learners can inherit solutions that have already been discovered by
+others, saving them the time it would have taken to solve the same problems
+independently. Over generations, these shortcuts accumulate, giving populations
+of social learners to get a head start on future problem solving, and allowing
+them to solve problems that no individual learner would be able to solve on
+their own and in a single lifetime.
 
 However, the ability to learn socially from others is not sufficient to explain
 cumulative cultural evolution. Although social learning was once thought to be
 rare in the animal kingdom [e.g., @Thorndike:1898], it has now been documented
-in a range of species from chimps [@Whiten:1999cic] to fish [@Laland:1997ts] and
-even bees [@Alem:2016fu]. If cumulative cultural evolution depends simply on
-social learning, we might expect these species to likewise show evidence of
+in a range of species from chimps [@Whiten:1999cic] to fish [@Laland:1997ts]
+and even bees [@Alem:2016fu]. If cumulative cultural evolution depends simply
+on social learning, we might expect these species to likewise show evidence of
 cumulative cultural evolution, yet such evidence is notably lacking
-[@Dean:2012gv; Tennie:2009gaa]. There are a few exceptions: New Caledonian crows
-have been argued to have improved the grub-skewers they craft from pandanus
-leaves [@Hunt:2003dj], and at least one population of chimpanzees has evolved a
-more advanced termite probe [@Sanz:2009ja], but for the most part tool use in
-animals has remained largely unchanged [cf. @Mercader:2007fd].
+[@Dean:2012gv; Tennie:2009gaa]. There are a few exceptions: New Caledonian
+crows have been argued to have improved the grub-skewers they craft from
+pandanus leaves [@Hunt:2003dj], and at least one population of chimpanzees has
+evolved a more advanced termite probe [@Sanz:2009ja], but for the most part
+tool use in animals has remained largely unchanged [cf. @Mercader:2007fd].
 
-Humans, in contrast, have demonstrated a remarkable ability to reproduce, adapt,
-and improve the innovations of others, so much so that the history of human
-technology has been argued to be better understood as a process of continual
-refinement and repurposing rather than periods of relative stasis punctuated by
-the discoveries of rare geniuses [@Basalla:1989wq; @Sole:2013cm]. The
-accumulation of problem solving knowledge is believed to be enabled by the
-evolution of a number of high fidelity transmission mechanisms including
-language [@Dean:2012gv; @Lewis:2012jg; @Morgan:2015hu].
+Humans, in contrast, have demonstrated a remarkable ability to reproduce,
+adapt, and improve the innovations of others, so much so that the history of
+human technology has been argued to be better understood as a process of
+continual refinement and repurposing rather than periods of relative stasis
+punctuated by the discoveries of rare geniuses [@Basalla:1989wq; @Sole:2013cm].
+Rapid improvement of inherited innovations has not always been the case over
+the course of human history, as demonstrated by long periods in the
+archaeological record of relative stagnation in stone tool design, raising the
+question of what it was that allowed our ancestors to begin to develop more
+complex tools. The answer that has been proposed is that humans evolved more
+high-fidelity ways of transmitting problem solving knowledge to the next
+generation, allowing future generations of problem solvers to more quickly
+learn the skills honed by their ancestors, and thus giving them more time to
+make improvements to those technologies.
 
-To further our understanding of the human propensity to engage in
-cumulative cultural inheritance, we measured the accumulation of
-problem solving knowledge along transmission chains. In addition
-to establishing that future generations of problem solvers are able
-to inherit and exceed their ancestors, we also sought to understand
-whether inheriting solutions from a previous generation had any
-influence on future problem solving ability. Does inheritance
-affect the way in which future problems are solved, and if so,
-does it increase or decrease problem solving abilities of future
-generations?
+Although this ability to accumulate problem solving knowledge over generations
+of problem solvers is widely believed to be fundamental to the story of human
+history, we do not fully understand how effectively problem solving knowledge
+can be transferred and improved by future generations. To further our
+understanding of the human propensity to engage in cumulative cultural
+inheritance, we designed an experiment to measure the accumulation of problem
+solving knowledge along transmission chains. In addition to establishing that
+future generations of problem solvers are able to inherit and exceed their
+ancestors, we also sought to understand whether inheriting solutions from
+a previous generation had any influence on future problem solving ability. Does
+inheritance affect the way in which future problems are solved, and if so, does
+it increase or decrease problem solving abilities of future generations?
 
 # Methods
 
@@ -215,7 +237,7 @@ each generation for third and fourth generation participants,
 this result, we also found that an increase in the
 number of inherited tools was associated with a decrease in the
 number of new tools discovered by future generations of problem solvers,
-`r exp1$inheritance_size_slope_stats` (Fig. 4). Together, these findings 
+`r exp1$inheritance_size_slope_stats` (Fig. 4). Together, these findings
 suggest that inheritance has a measurable influence on problem solving beyond
 providing a shortcut to individual learning. In this case, the impact
 appears to be negative, such that inheriting more solutions appears to
