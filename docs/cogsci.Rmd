@@ -72,7 +72,7 @@ Humans are effective problem solvers, having solved a wide range of problems
 related to foraging, hunting, and preparing food, while surviving predators,
 each other, and a large range of terrestrial environments [@Boyd:2017diff;
 @Fernandez:2001civ]. What has enabled our success in being able to solve such
-a diverse set of problems? One suggestion is that the answer lies more in our
+a diverse set of problems? Some have suggested that the answer lies more in our
 ability to inherit knowledge from others than our ability to solve problems as
 individuals [@Richerson:2008not; @Henrich:2015srt; @Boyd:2017diff]. Cultural
 inheritance enables problem solving to extend over generations, far longer than
@@ -84,17 +84,15 @@ better understand the extent to which future generations of problem solvers are
 able to benefit from inherited problem solving knowledge, we investigated the
 accumulation of problem solving knowledge over generations of problem solving.
 
-The accumulation of problem solving knowledge is believed to be enabled by
-a number of social learning abilities that facilitate the high fidelity
-transmission of problem solving knowledge across individuals. These include
+The accumulation of problem solving knowledge is thought to be enabled by
+a number of social learning abilities that facilitate transmission of problem solving knowledge with high fidelity across individuals. These include
 teaching through verbal instruction, prosociality, and advanced imitation
 abilities [@Dean:2012gv]. These skills for high fidelity social learning are
 argued to benefit problem solvers by providing a reliable shortcut to
-individual (asocial) learning [@Boyd:1985cu]. Rather than individuals
-struggling to solve a problem on their own through trial-and-error learning,
+individual (asocial) learning [@Boyd:1985cu]. Rather than having individuals
+struggle to solve a problem on their own through trial-and-error learning,
 social learners can inherit solutions that have already been discovered by
-others, saving them the time it would have taken to solve the same problems
-independently. Over generations, these shortcuts accumulate, giving populations
+others. Over generations, these shortcuts accumulate, giving populations
 of social learners to get a head start on future problem solving, and allowing
 them to solve problems that no individual learner would be able to solve on
 their own and in a single lifetime.
@@ -103,10 +101,10 @@ However, the ability to learn socially from others is not sufficient to explain
 cumulative cultural evolution. Although social learning was once thought to be
 rare in the animal kingdom [e.g., @Thorndike:1898], it has now been documented
 in a range of species from chimps [@Whiten:1999cic] to fish [@Laland:1997ts]
-and even bees [@Alem:2016fu]. If cumulative cultural evolution depends simply
+and even bees [@Alem:2016fu]. If cumulative cultural evolution depended simply
 on social learning, we might expect these species to likewise show evidence of
 cumulative cultural evolution, yet such evidence is notably lacking
-[@Dean:2012gv; Tennie:2009gaa]. There are a few exceptions: New Caledonian
+[@Dean:2012gv; @Tennie:2009gaa]. There are a few exceptions: New Caledonian
 crows have been argued to have improved the grub-skewers they craft from
 pandanus leaves [@Hunt:2003dj], and at least one population of chimpanzees has
 evolved a more advanced termite probe [@Sanz:2009ja], but for the most part
@@ -121,7 +119,7 @@ Rapid improvement of inherited innovations has not always been the case over
 the course of human history, as demonstrated by long periods in the
 archaeological record of relative stagnation in stone tool design, raising the
 question of what it was that allowed our ancestors to begin to develop more
-complex tools. The answer that has been proposed is that humans evolved more
+complex tools. One proposed answer is that humans evolved more
 high-fidelity ways of transmitting problem solving knowledge to the next
 generation, allowing future generations of problem solvers to more quickly
 learn the skills honed by their ancestors, and thus giving them more time to
