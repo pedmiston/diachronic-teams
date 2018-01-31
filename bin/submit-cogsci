@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -x
-title="EdmistonDerexLupyan-IteratedProblemSolving"
+
+title="EdmistonDerexLupyan-IteratedProblemSolving$1"
 function rename {
     basename=$(basename "$1")
     ext=${basename##*.}
@@ -10,5 +11,5 @@ rename docs/cogsci.Rmd
 rename docs/cogsci.pdf
 rename docs/cogsci.docx
 
-zip -j cogsci ${title}*
+zip -j cogsci$1 ${title}*
 rm ${title}*
