@@ -82,7 +82,12 @@ However, what is unclear is how effectively individual problem solvers are
 able to benefit from inherited solutions at shorter timescales. To
 better understand the extent to which future generations of problem solvers are
 able to benefit from inherited problem solving knowledge, we investigated the
-accumulation of problem solving knowledge over generations of problem solving.
+accumulation of problem solving knowledge over generations of problem solving
+(Fig. 1).
+
+```{r fig1, fig.pos="b", fig.align="center", fig.width=3.5, fig.cap="Iterated problem solving paradigm. Participants were assigned to generations within chains. Each participant completed the same problem solving task for 25 minutes. Participants in generations after the first began the problem solving task with the solutions that were discovered by the previous generation."}
+draw_graphviz("iterated-problem-solving", package = "totems")
+```
 
 The accumulation of problem solving knowledge is thought to be enabled by
 a number of social learning abilities that facilitate transmission of problem solving knowledge with high fidelity across individuals. These include
@@ -169,10 +174,10 @@ was to discover how to build tools with the ultimate goal of creating "a sacred
 totem to appease the gods." To build a totem, participants first needed to
 construct an axe out of three independently discovered tools: a refined stick
 used as a handle, a sharpened rock for the blade, and a string wound from bark
-fibers for binding (Fig. 1). More advanced tools produce larger and more
+fibers for binding (Fig. 2). More advanced tools produce larger and more
 intricate totems, resulting in higher performance scores.
 
-```{r fig1, fig.height=6, fig.cap="A sample of the solution landscape. The top row of 6 items were available to problem solvers at the start of the game. New items could be produced through the combination of different items (more than one arrow points to the item) or through the refinement of a single item (a single arrow points to the item). The axe is required to construct the first totem pole."}
+```{r fig2, fig.height=6, fig.cap="A sample of the solution landscape. The top row of 6 items were available to problem solvers at the start of the game. New items could be produced through the combination of different items (more than one arrow points to the item) or through the refinement of a single item (a single arrow points to the item). The axe is required to construct the first totem pole."}
 draw_image("landscape-sample.gv", package = "totems")
 ```
 
@@ -181,7 +186,7 @@ could combine up to four items at a time (with replacement), meaning the
 initial six items could form a total of `r exp1$n_unique_guesses_6`
 combinations. Of all possible combinations, very few resulted in new items. For
 example, of all the guesses that could be formed from the initial items, only
-three (`r exp1$n_unique_guesses_6_pct`%) yielded new tools (Fig. 1). As
+three (`r exp1$n_unique_guesses_6_pct`%) yielded new tools (Fig. 2). As
 participants accumulate solutions, the combinatorial complexity of the problem
 space increases exponentially such that the discovery of more complex tools is
 less likely to happen by chance.
@@ -201,13 +206,8 @@ of their constituent parts first had to be recreated.
 
 Participants were recruited from the UW-Madison student body and received
 course credit in exchange for participation. Each participant was assigned to
-a single generation of a four-generation chain (Table 1). Data was collected
+a single generation of a four-generation chain. Data was collected
 for a total of `r exp1$n_teams` teams (N=`r exp1$n_participants` participants).
-
-```{r tab1, results="asis"}
-Exp1Participants %>%
-  kable(caption = "Participants.", format = "latex")
-```
 
 # Results
 
@@ -216,33 +216,26 @@ took on average `r exp1$mean_learning_time_min` minutes of the 25 minute
 session (`r exp1$proportion_learning_time`%) to recreate the inherited tools---
 a portion of the experiment we refer to as the learning period. The length of
 the learning period correlated positively with the number of inherited tools,
-`r report_lm_mod(learning_rates_mod, "InheritanceSize")` (Fig. 2). A small
+`r report_lm_mod(learning_rates_mod, "InheritanceSize")` (Fig. 3). A small
 group of participants (N=`r exp1$n_outliers`) took disproportionately long to
 recreate the tools they inherited perhaps because they were confused by the game
 interface. These participants are identified by X's in all figures and are not
 included in any statistical analyses.
 
-```{r fig2, fig.cap="Learning rates. Correlation between the number of tools inherited and the time it took to recreate the inherited items. Outliers who were unwilling or unable to recreate the inherited items are shown as X's, and excluded from analysis."}
+```{r fig3, fig.cap="Learning rates. Correlation between the number of tools inherited and the time it took to recreate the inherited items. Outliers who were unwilling or unable to recreate the inherited items are shown as X's, and excluded from analysis."}
 learning_rates_plot
 ```
 
 After recreating all inherited tools, participants attempted to
 discover new tools not discovered by their ancestor. Most participants
 (`r exp1$pct_did_exceed`%) were able to exceed the number of tools that they
-inherited `r exp1$logodds_of_exceeding` (Fig. 3). Using Page's trend test (a
+inherited `r exp1$logodds_of_exceeding` (Fig. 4). Using Page's trend test (a
 repeated measures test for monotonicity) we found that iterated problem solving
 resulted in cumulative improvements in the number of tools that could be
-discovered in 25 minutes along each transmission chain, `r exp1$page_test` (Fig. 4).
+discovered in 25 minutes along each transmission chain, `r exp1$page_test`
+(Fig. 5).
 
-```{r fig3, fig.height=6, fig.cap="Number of innovations created relative to those inherited. The dotted line is a reference with slope=1 such that points above the line indicate future generations exceeding their ancestors."}
-grid.arrange(
-  innovations_created_and_inherited_plot + ggtitle("A"),
-  new_innovations_plot + ggtitle("B"),
-  ncol = 1
-)
-```
-
-```{r fig4, fig.cap="Number of innovations discovered by each generation. Each of the thin green lines is a team. The thick blue line is the model predictions with ±1 standard error."}
+```{r fig4, fig.cap="Number of innovations discovered by each generation. Each of the thin green lines is a chain. The thick blue line is the model predictions with ±1 standard error."}
 innovations_by_generation_plot
 ```
 
@@ -262,6 +255,14 @@ providing a shortcut to individual learning. In this case, the impact
 appears to be negative, such that inheriting more solutions appears to
 _decrease_ problem solving ability.
 
+```{r fig5, fig.height=6, fig.cap="A. Number of tools created relative to those inherited. The dotted line is a reference with slope=1 such that points above the line indicate future generations exceeding their ancestors. B. Number of new tools relative to those inherited. The same reference line is now shown horizontally. The error range specifies the model predictions ±1 standard error. The thin gray line shows the regression line when outliers, shown as X's, are included."}
+grid.arrange(
+  innovations_created_and_inherited_plot + ggtitle("A"),
+  new_innovations_plot + ggtitle("B"),
+  ncol = 1
+)
+```
+
 However, an alternative explanation, not having to do with inheritance
 negatively affecting problem solving ability, is that as more tools are
 accumulated, additional tools are less likely to be discovered by chance,
@@ -277,7 +278,7 @@ inheriting more tools was associated with an ever-larger improvement in
 total complexity score than inheriting fewer tools,
 `r exp1$delta_diff_slope_stats`.
 
-```{r fig5, fig.cap="Change in accumulated complexity score by inheritance. Accumulated complexity scores are sums of discovered tools weighted by the combinatorial complexity of the possible choices available to the participant when the tool was discovered. The outcome measure is the difference between the accumulated complexity scores of subsequent generations. The line shows the predictions of a hierarchical regression model with ±1 standard error."}
+```{r fig6, fig.cap="Change in accumulated complexity score by inheritance. Accumulated complexity scores are sums of discovered tools weighted by the combinatorial complexity of the possible choices available to the participant when the tool was discovered. The outcome measure is the difference between the accumulated complexity scores of subsequent generations. The line shows the predictions of a hierarchical regression model with ±1 standard error."}
 delta_difficulty_plot
 ```
 
@@ -299,14 +300,14 @@ innovations from the interaction between playing time and inheritance size,
 `r exp1$playing_time_modcomp`. This suggests that the number of
 inherited tools did not meaningly influence the rate of future discovery.
 
-```{r fig6, fig.env="figure", fig.cap="Problem solving rate in the discovery stage. Discovery time is the amount of time out of a 25 minute session dedicated to discovering new innovations that were not discovered by an ancestor. The line shows the predictions of the hierarchical regression model with ±1 standard error. The slope of this line did not significantly vary based on the size of the inheritance."}
+```{r fig7, fig.env="figure", fig.cap="Problem solving rate in the discovery stage. Discovery time is the amount of time out of a 25 minute session dedicated to discovering new innovations that were not discovered by an ancestor. The line shows the predictions of the hierarchical regression model with ±1 standard error. The slope of this line did not significantly vary based on the size of the inheritance."}
 playing_time_plot
 ```
 
 # Discussion
 
 The ability to accumulate a body of socially learned problem solving knowledge
-is visible in all human cultures [@Boyd:2017diff; @Fernandez:2001]. Although
+is visible in all human cultures [@Boyd:2017diff; @Fernandez:2001civ]. Although
 the capacity for cumulative improvement is believed to be integral to human
 cultural evolution, we do not fully understand how effectively problem solving
 knowledge can be utilized by future generations of problem solvers. How

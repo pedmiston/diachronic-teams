@@ -192,18 +192,24 @@ new_innovations_preds <- data_frame(InheritanceSize = 2:20) %>%
   cbind(., predictSE(new_innovations_mod, newdata = ., se = TRUE)) %>%
   rename(NumUniqueInnovations = fit, SE = se.fit)
 
+scale_alpha_outlier <- scale_alpha_manual(values = c(1, 0.5))
+filter_lm_range <- . %>% filter(InheritanceSize >= 2, InheritanceSize <= 20)
+
 new_innovations_plot <- ggplot(NewInnovations) +
   aes(InheritanceSize, NumUniqueInnovations) +
-  geom_smooth(aes(ymin = NumUniqueInnovations-SE, ymax = NumUniqueInnovations+SE),
+  geom_ribbon(aes(ymin = NumUniqueInnovations-SE, ymax = NumUniqueInnovations+SE),
               stat = "identity", data = new_innovations_preds,
-              color = t_$diachronic_color) +
-  geom_point(aes(shape = Outlier),
+              fill = t_$diachronic_color, alpha = 0.8) +
+  geom_smooth(data = filter_lm_range(NewInnovations),
+              method = "lm", se = FALSE, color = "gray", size = 0.4) +
+  geom_point(aes(shape = Outlier, alpha = Outlier),
              position = position_jitter(width = 0.2)) +
   geom_hline(yintercept = 0, linetype = 2, size = 0.5) +
+  scale_alpha_outlier + 
   scale_x_continuous("Tools inherited") +
   scale_y_continuous("New tools discovered") +
   t_$scale_shape_outlier +
-  guides(shape = "none") +
+  guides(shape = "none", alpha = "none") +
   t_$base_theme
 
 # Page's trend test ----
@@ -217,9 +223,7 @@ PerformanceMatrix <- Innovations %>%
   as.matrix()
 
 page_trend_test_results <- crank::page.trend.test(PerformanceMatrix, ranks = FALSE)
-page_trend_test_results$p_val_str <- compute_p_string(page_trend_test_results$px2)
-
-exp1$page_test <- cat(sprintf("Page's _L_ = %.0f, $\\chi^2$ = %.0f, %s", page_trend_test_results$L, page_trend_test_results$x2L, page_trend_test_results$p_val_str))
+exp1$page_test <- report_page_test(page_trend_test_results)
 
 # Innovations by generation ----
 data("Guesses")
@@ -291,16 +295,19 @@ delta_difficulty_preds <- data_frame(InheritanceSize = 2:20) %>%
 
 delta_difficulty_plot <- ggplot(DeltaDifficulty) +
   aes(InheritanceSize, DifficultyDelta) +
-  geom_smooth(aes(ymin = DifficultyDelta-SE, ymax = DifficultyDelta+SE),
+  geom_ribbon(aes(ymin = DifficultyDelta-SE, ymax = DifficultyDelta+SE),
               stat = "identity", data = delta_difficulty_preds,
-              color = t_$diachronic_color) +
-  geom_point(aes(shape = Outlier),
+              fill = t_$diachronic_color) +
+  geom_smooth(data = filter_lm_range(DeltaDifficulty),
+              method = "lm", se = FALSE, color = "gray", size = 0.5) +
+  geom_point(aes(shape = Outlier, alpha = Outlier),
              position = position_jitter(width = 0.2)) +
   geom_hline(yintercept = 0, linetype = 2, size = 0.5) +
   scale_x_continuous("New tools inherited") +
   scale_y_continuous("Change in complexity score") +
   t_$scale_shape_outlier +
-  guides(shape = "none") +
+  scale_alpha_outlier +
+  guides(shape = "none", alpha = "none") +
   t_$base_theme
 
 # Playing time ----
@@ -327,12 +334,17 @@ playing_time_preds <- data_frame(PlayingTime = 5:23) %>%
 
 playing_time_plot <- ggplot(NewInnovations) +
   aes(PlayingTime, NumUniqueInnovations) +
-  geom_smooth(aes(ymin = NumUniqueInnovations-SE, ymax = NumUniqueInnovations+SE),
+  geom_ribbon(aes(ymin = NumUniqueInnovations-SE, ymax = NumUniqueInnovations+SE),
               stat = "identity", data = playing_time_preds,
-              color = t_$diachronic_color) +
-  geom_point(aes(shape = Outlier), position = position_jitter(height = 0.1)) +
+              fill = t_$diachronic_color) +
+  geom_smooth(data = filter_lm_range(NewInnovations),
+              method = "lm", se = FALSE,
+              color = "gray", size = 0.5) +
+  geom_point(aes(shape = Outlier, alpha = Outlier),
+             position = position_jitter(height = 0.1)) +
   xlab("Discovery period (min)") +
   ylab("New tools discovered") +
+  scale_alpha_outlier +
   t_$scale_shape_outlier +
-  guides(shape = "none") +
+  guides(shape = "none", alpha = "none") +
   t_$base_theme

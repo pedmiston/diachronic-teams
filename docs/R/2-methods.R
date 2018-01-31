@@ -107,7 +107,15 @@ report_beta <- function(mod, param, digits = 1, transform = NULL) {
 report_modcomp <- function(modcomp) {
   modcomp <- as.list(modcomp[2, ])
   p_string <- compute_p_string(modcomp$`Pr(>Chisq)`)
-  cat(sprintf("$\\chi^2$(%i) = %.4f, %s", modcomp$`Chi Df`, modcomp$Chisq, p_string))
+  print(sprintf("$\\chi^2$(%i) = %.4f, %s", modcomp$`Chi Df`, modcomp$Chisq, p_string))
+}
+
+report_page_test <- function(page_trend_test_results) {
+  page_trend_test_results$p_val_str <- compute_p_string(page_trend_test_results$px2)
+  print(sprintf("Page's _L_ = %.0f, $\\chi^2$ = %.0f, %s",
+              page_trend_test_results$L,
+              page_trend_test_results$x2L,
+              page_trend_test_results$p_val_str))
 }
 
 compute_p_string <- function(p_value) {
