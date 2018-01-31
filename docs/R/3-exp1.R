@@ -118,7 +118,7 @@ exp1$proportion_learning_time <- round((exp1$mean_learning_time_min/25) * 100, 1
 learning_times_plot <- ggplot(StageTimes) +
   aes(LearningTime, fill = Outlier) +
   geom_histogram(binwidth = 2.5, center = 1.25) +
-  scale_x_continuous("Learning time (min)", breaks = seq(0, 25, by = 5)) +
+  scale_x_continuous("Learning period (min)", breaks = seq(0, 25, by = 5)) +
   ylab("Count") +
   scale_fill_manual(values = t_$color_picker(c("blue", "orange"))) +
   t_$base_theme +
@@ -141,7 +141,7 @@ learning_rates_plot <- ggplot(LearningRates) +
   geom_ribbon(aes(ymin = LearningTime-SE, ymax = LearningTime + SE),
               stat = "identity", data = learning_rates_preds,
               fill = t_$diachronic_color, alpha = 0.4) +
-  scale_x_continuous("Innovations inherited") +
+  scale_x_continuous("Tools inherited") +
   scale_y_continuous("Learning time (min)", breaks = seq(0, 25, by = 5)) +
   t_$scale_shape_outlier +
   t_$base_theme +
@@ -176,8 +176,8 @@ innovations_created_and_inherited_plot <- ggplot(NewInnovations) +
   geom_point(aes(shape = Outlier),
              position = position_jitter(width = 0.2)) +
   geom_abline(intercept = 0, slope = 1, linetype = 2, size = 0.5) +
-  scale_x_continuous("Innovations inherited") +
-  scale_y_continuous("Innovations created") +
+  scale_x_continuous("Tools inherited") +
+  scale_y_continuous("Tools created") +
   t_$scale_shape_outlier +
   t_$base_theme +
   guides(shape = "none")
@@ -200,8 +200,8 @@ new_innovations_plot <- ggplot(NewInnovations) +
   geom_point(aes(shape = Outlier),
              position = position_jitter(width = 0.2)) +
   geom_hline(yintercept = 0, linetype = 2, size = 0.5) +
-  scale_x_continuous("Innovations inherited") +
-  scale_y_continuous("New innovations") +
+  scale_x_continuous("Tools inherited") +
+  scale_y_continuous("New tools discovered") +
   t_$scale_shape_outlier +
   guides(shape = "none") +
   t_$base_theme
@@ -209,8 +209,6 @@ new_innovations_plot <- ggplot(NewInnovations) +
 # Page's trend test ----
 data("Guesses")
 data("Sessions")
-
-
 
 PerformanceMatrix <- Innovations %>%
   select(TeamID, Generation, NumInnovations) %>%
@@ -276,46 +274,6 @@ innovations_by_generation_plot <- ggplot(Innovations) +
     panel.grid.minor.x = element_blank()
   )
 
-# New innovations ----
-NewInnovations <- left_join(Inheritances, StageTimes) %>%
-  inner_join(Innovations) %>%
-  mutate(NumUniqueInnovations = NumInnovations - InheritanceSize)
-
-innovations_created_and_inherited_plot <- ggplot(NewInnovations) +
-  aes(InheritanceSize, NumInnovations) +
-  geom_point(aes(shape = Outlier),
-             position = position_jitter(width = 0.2)) +
-  geom_abline(intercept = 0, slope = 1, linetype = 2, size = 0.5) +
-  scale_x_continuous("Innovations inherited") +
-  scale_y_continuous("Innovations created") +
-  t_$scale_shape_outlier +
-  t_$base_theme +
-  guides(shape = "none")
-
-new_innovations_mod <- lmer(
-  NumUniqueInnovations ~ InheritanceSize + (1|AncestorInventoryID),
-  data = filter(NewInnovations, !Outlier)
-)
-exp1$inheritance_size_slope_stats <- report_lmer_mod(new_innovations_mod, "InheritanceSize")
-
-new_innovations_preds <- data_frame(InheritanceSize = 2:20) %>%
-  cbind(., predictSE(new_innovations_mod, newdata = ., se = TRUE)) %>%
-  rename(NumUniqueInnovations = fit, SE = se.fit)
-
-new_innovations_plot <- ggplot(NewInnovations) +
-  aes(InheritanceSize, NumUniqueInnovations) +
-  geom_smooth(aes(ymin = NumUniqueInnovations-SE, ymax = NumUniqueInnovations+SE),
-              stat = "identity", data = new_innovations_preds,
-              color = t_$diachronic_color) +
-  geom_point(aes(shape = Outlier),
-             position = position_jitter(width = 0.2)) +
-  geom_hline(yintercept = 0, linetype = 2, size = 0.5) +
-  scale_x_continuous("Innovations inherited") +
-  scale_y_continuous("New innovations") +
-  t_$scale_shape_outlier +
-  guides(shape = "none") +
-  t_$base_theme
-
 # Delta difficulty ----
 DeltaDifficulty <- left_join(Inheritances, StageTimes) %>%
   inner_join(DifficultyScores) %>%
@@ -339,8 +297,8 @@ delta_difficulty_plot <- ggplot(DeltaDifficulty) +
   geom_point(aes(shape = Outlier),
              position = position_jitter(width = 0.2)) +
   geom_hline(yintercept = 0, linetype = 2, size = 0.5) +
-  scale_x_continuous("Innovations inherited") +
-  scale_y_continuous("Change in difficulty score") +
+  scale_x_continuous("New tools inherited") +
+  scale_y_continuous("Change in complexity score") +
   t_$scale_shape_outlier +
   guides(shape = "none") +
   t_$base_theme
@@ -373,8 +331,8 @@ playing_time_plot <- ggplot(NewInnovations) +
               stat = "identity", data = playing_time_preds,
               color = t_$diachronic_color) +
   geom_point(aes(shape = Outlier), position = position_jitter(height = 0.1)) +
-  xlab("Discovery time (min)") +
-  ylab("New innovations") +
+  xlab("Discovery period (min)") +
+  ylab("New tools discovered") +
   t_$scale_shape_outlier +
   guides(shape = "none") +
   t_$base_theme
