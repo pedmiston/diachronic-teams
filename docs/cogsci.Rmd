@@ -229,11 +229,11 @@ learning_rates_plot
 After recreating all inherited tools, participants attempted to
 discover new tools not discovered by their ancestor. Most participants
 (`r exp1$pct_did_exceed`%) were able to exceed the number of tools that they
-inherited `r exp1$logodds_of_exceeding` (Fig. 4). Using Page's trend test (a
+inherited `r exp1$logodds_of_exceeding` (Fig. 5A). Using Page's trend test (a
 repeated measures test for monotonicity) we found that iterated problem solving
 resulted in cumulative improvements in the number of tools that could be
 discovered in 25 minutes along each transmission chain, `r exp1$page_test`
-(Fig. 5).
+(Fig. 4).
 
 ```{r fig4, fig.cap="Number of innovations discovered by each generation. Each of the thin green lines is a chain. The thick blue line is the model predictions with ±1 standard error."}
 innovations_by_generation_plot
@@ -249,7 +249,7 @@ each generation for third and fourth generation participants,
 this result, we also found that an increase in the
 number of inherited tools was associated with a decrease in the
 number of new tools discovered by future generations of problem solvers,
-`r exp1$inheritance_size_slope_stats` (Fig. 3B). Together, these findings
+`r exp1$inheritance_size_slope_stats` (Fig. 5B). Together, these findings
 suggest that inheritance has a measurable influence on problem solving beyond
 providing a shortcut to individual learning. In this case, the impact
 appears to be negative, such that inheriting more solutions appears to
@@ -271,7 +271,7 @@ inherited. To control for combinatorial complexity, we created an alternative
 outcome measure that, rather than counting all tools equally, instead
 weighted each tool relative to the number of guesses that could be
 made out of the items present at the time at which the tool was discovered.
-Fig. 5 shows the change in accumulated complexity score based on the number of
+Fig. 6 shows the change in accumulated complexity score based on the number of
 tools that were inherited. In contrast to the analysis that treated all
 tools equally, when tools are weighted by combinatorial complexity,
 inheriting more tools was associated with an ever-larger improvement in
@@ -283,13 +283,13 @@ delta_difficulty_plot
 ```
 
 Participants who inherited more tools also took longer to recreate
-those tools (Fig. 2), leaving less time to discover new tools,
+those tools (Fig. 3), leaving less time to discover new tools,
 To determine whether inheriting more tools had an impact on
 the rate at which new tools were discovered, we first report
 overall rates of new tool discovery, and then test whether
 the discovery rate is influenced by the number of inherited tools.
 
-Fig. 6 shows problem solving rates based on the
+Fig. 7 shows problem solving rates based on the
 length of the discovery period. The overall rate of problem solving 
 was `r exp1$minutes_per_new_innovation` minutes per new
 innovation (`r exp1$new_innovations_per_minute` innovations per minute),

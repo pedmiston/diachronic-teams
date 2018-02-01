@@ -328,7 +328,7 @@ playing_time_by_inheritance_mod <- lmer(
 playing_time_modcomp <-
   anova(playing_time_mod, playing_time_by_inheritance_mod)
 
-playing_time_preds <- data_frame(PlayingTime = 5:23) %>%
+playing_time_preds <- data_frame(PlayingTime = 4:23) %>%
   cbind(., predictSE(playing_time_mod, newdata = ., se = TRUE)) %>%
   rename(NumUniqueInnovations = fit, SE = se.fit)
 
@@ -337,9 +337,6 @@ playing_time_plot <- ggplot(NewInnovations) +
   geom_ribbon(aes(ymin = NumUniqueInnovations-SE, ymax = NumUniqueInnovations+SE),
               stat = "identity", data = playing_time_preds,
               fill = t_$diachronic_color) +
-  geom_smooth(data = filter_lm_range(NewInnovations),
-              method = "lm", se = FALSE,
-              color = "gray", size = 0.5) +
   geom_point(aes(shape = Outlier, alpha = Outlier),
              position = position_jitter(height = 0.1)) +
   xlab("Discovery period (min)") +
