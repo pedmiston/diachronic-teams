@@ -332,6 +332,7 @@ playing_time_by_inheritance_mod <- lmer(
 
 playing_time_modcomp <-
   anova(playing_time_mod, playing_time_by_inheritance_mod)
+exp1$playing_time_modcomp <- report_modcomp(playing_time_modcomp)
 
 playing_time_preds <- data_frame(PlayingTime = 4:23) %>%
   cbind(., predictSE(playing_time_mod, newdata = ., se = TRUE)) %>%
@@ -400,10 +401,10 @@ guesses_per_item_by_inheritance_plot <- ggplot(CostPerItem50min) +
             size = 0.8) +
   geom_line(aes(group = 1),
             stat = "identity", data = guesses_per_item_by_inheritance_preds,
-            size = 1.2) +
+            size = 0.8) +
   geom_errorbar(aes(ymin = TotalGuesses-SE, ymax = TotalGuesses+SE),
                 data = guesses_per_item_by_inheritance_preds,
-                width = 0.05, size = 1.2) +
+                width = 0.05, size = 0.8) +
   scale_x_discrete("", labels = c("No inheritance", "Inheritance")) +
   scale_y_continuous("Guesses per tool") +
   t_$base_theme
@@ -440,7 +441,7 @@ guesses_per_new_item_by_inheritance_preds <- recode_inheritance() %>%
   cbind(., predictSE(guesses_per_new_item_by_inheritance_mod, newdata = ., se = TRUE)) %>%
   rename(TotalGuesses = fit, SE = se.fit)
 
-exp1$guesses_per_new_item <- report_lmer_mod(guesses_per_new_item_by_inheritance_mod, "Diachronic_v_NoInheritance")
+exp1$guesses_per_new_item_by_inheritance_mod <- report_lmer_mod(guesses_per_new_item_by_inheritance_mod, "Diachronic_v_NoInheritance")
 
 guesses_per_new_item_by_inheritance_plot <- ggplot(CostPerItem50minPlaying) +
   aes(InheritanceLabel, TotalGuesses) +
@@ -449,10 +450,10 @@ guesses_per_new_item_by_inheritance_plot <- ggplot(CostPerItem50minPlaying) +
             size = 0.8) +
   geom_line(aes(group = 1),
             stat = "identity", data = guesses_per_new_item_by_inheritance_preds,
-            size = 1.2) +
+            size = 0.8) +
   geom_errorbar(aes(ymin = TotalGuesses-SE, ymax = TotalGuesses+SE),
                 data = guesses_per_new_item_by_inheritance_preds,
-                width = 0.05, size = 1.2) +
+                width = 0.05, size = 0.8) +
   scale_x_discrete("", labels = c("No inheritance", "Inheritance")) +
   scale_y_continuous("Guesses per novel tool") +
   t_$base_theme

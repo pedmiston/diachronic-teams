@@ -28,7 +28,7 @@ abstract: |
   but the ones they did solve were more complex. We also found that participants
   who inherited solutions tended to generate less redundant guesses, suggesting
   a potential downstream consquence to iterated problem solving. We discuss the
-  limitations of thiswork, and motivate future directions.
+  limitations of this work, and motivate future directions.
 keywords: "cultural evolution; transmission chain; iterated learning"
 output:
   pdf_document:
@@ -76,7 +76,7 @@ diverse set of problems? Some have suggested that the answer lies more in our
 ability to inherit knowledge from others than our ability to make discoveries by
 ourselves [@Richerson:2008not; @Henrich:2015srt; @Boyd:2017diff]. Humans possess
 a number of advanced social learning abilities including teaching through verbal
-instruction and imitation that provide reliable ways of transfering problem
+instruction and imitation that provide reliable ways of transferring problem
 solving knowledge across individuals [@Dean:2012gv]. If problem solving
 knowledge can be acquired via social learning, then future generations can adapt
 and improve it, allowing cultures to accumulate technological complexity over
@@ -95,8 +95,8 @@ pandanus leaves [@Hunt:2003dj], and at least one population of chimpanzees has
 evolved a more advanced termite probe [@Sanz:2009ja], but for the most part
 tool use in animals has remained largely unchanged [cf. @Mercader:2007fd].
 
-Humans, in contrast, have demonstrated a remarkable ability to reproduce, adapt,
-and improve the tools and other innovations of others. The
+Humans, in contrast, have demonstrated a remarkable ability to adapt
+and improve the tools and other innovations discovered by others. The
 history of human technology is argued to be better understood as a process
 of gradual refinement and repurposing rather than punctuated advances brought by
 the discoveries of rare geniuses [@Basalla:1989wq; @Sole:2013cm]. Rapid
@@ -112,6 +112,10 @@ improvements to those technologies [@Sterelny:2012ea]. On this view,
 human cultural evolution has been defined not by our ability to inherit the
 skills of our ancestors, but by the ability to exceed and improve them.
 
+```{r fig1, fig.pos="b", fig.align="center", fig.width=3.5, fig.cap="Transmission of problem solving knowledge. Participants were assigned to generations within chains. Each participant completed the same problem solving task for 25 minutes. Participants in generations after the first began the problem solving task with the solutions that were discovered by the previous generation."}
+draw_graphviz("iterated-problem-solving", package = "totems")
+```
+
 We investigated the human propensity to exceed our ancestors in a problem
 solving task using a transmission chain paradigm (Fig. 1). Previous research
 using this paradigm has found that problem solving performance for simple tasks
@@ -123,10 +127,6 @@ crucial for successful transmission of skilled behaviors along chains. Here we
 controlled for successful transmission by allowing future generations to
 inherit the discoveries made by the previous generation, and measured the
 ability of participants to exceed the solutions they inherited.
-
-```{r fig1, fig.pos="b", fig.align="center", fig.width=3.5, fig.cap="Transmission of problem solving knowledge. Participants were assigned to generations within chains. Each participant completed the same problem solving task for 25 minutes. Participants in generations after the first began the problem solving task with the solutions that were discovered by the previous generation."}
-draw_graphviz("iterated-problem-solving", package = "totems")
-```
 
 # Methods
 
@@ -177,15 +177,11 @@ of their constituent parts first had to be recreated.
 Participants were recruited from the UW-Madison student body and received
 course credit in exchange for participation. Each participant was assigned to
 a single generation of a four-generation chain. Data was collected
-for a total of `r exp1$n_teams` teams (N=`r exp1$n_participants` participants).
+for a total of `r exp1$n_teams` complete chains (N=`r exp1$n_participants` participants).
 
 # Results
 
 ## Performance by generation
-
-```{r fig3, fig.cap="Performance by generation. Each of the thin green lines is a chain. The thick blue line is the model predictions with ±1 standard error."}
-innovations_by_generation_plot
-```
 
 We found that problem solving knowledge accumulated over generations such that
 participants in later generations were able to solve more problems in the same
@@ -201,6 +197,10 @@ tools than first generation participants, `r exp1$gen0_slope_stats`. This
 effect decreased by `r exp1$gen0sqr_slope` each generation for third and fourth
 generation participants, `r exp1$gen0sqr_slope_stats`. This diminishing return
 suggests that future generations have a harder time exceeding their ancestors.
+
+```{r fig3, fig.cap="Performance by generation. Each of the thin green lines is a chain. The thick blue line is the model predictions with ±1 standard error."}
+innovations_by_generation_plot
+```
 
 Although later generation participants made fewer new discoveries, the
 discoveries they made were often more complex. We measured complexity as the
@@ -222,20 +222,19 @@ grid.arrange(
 )
 ```
 
-Looking at problem solving performance relative to the number of tools that
-were inherted rather than the generation of the participant revealed similar
-results (Fig. 4). As the number of inherited tools increased, the number of new
-tools discovered decreased, `r exp1$inheritance_size_slope_stats` (Fig. 4B).
-As expected from the analysis of performance over generations reported above,
-the ability of participants to exceed their ancestors decreased with larger
-inheritances. However, when tools are weighted by combinatorial complexity,
-the amount by which participants are able to exceed their ancestors actually
-increases for larger inheritance sizes, `r exp1$delta_diff_slope_stats` (Fig.
-4C), though we are hesitant to draw strong conclusions from this finding as it
-may be explanable by the characteristics of the solution landscape, a point we
-return to in the Discussion.
-
-## Rate of discovery
+Because there is no difference between a second generation participant
+who inherits 10 tools and a fourth generation participant who inherits
+the same tools, we also looked at problem solving performance relative
+to the number of tools that were inherited (Fig. 4). As the number of
+inherited tools increased, the number of new tools discovered decreased,
+`r exp1$inheritance_size_slope_stats` (Fig. 4B). That participants who
+inherited more items had a harder time exceeding them is expected based on the
+analysis of performance over generations reported above. However, when tools
+are weighted by combinatorial complexity, the amount by which participants are
+able to exceed their ancestors actually increases for larger inheritance sizes,
+`r exp1$delta_diff_slope_stats` (Fig. 4C), though we are hesitant to draw strong
+conclusions from this finding as it may be explanable by the characteristics of
+the solution landscape, a point we return to in the Discussion.
 
 We next asked whether inheriting more tools had an impact on the rate of new
 tool discovery. To answer this question, we first needed to identify the length
@@ -318,7 +317,7 @@ over generations of problem solving.
 In contrast to previous research that has investigated how social learning
 strategies such as verbal instruction play a role in high fidelity transmission
 of problem solving knowledge, here we examined the likelihood that problem
-solving knowledge would accumulate given that problem solving knowledge could be
+solving knowledge would accumulate given that solutions could be
 effectively transferred to the next generation. Participants in our study
 inherited the solutions that had been discovered by their ancestor, and we
 measured their ability to recreate and extend this body of problem solving
