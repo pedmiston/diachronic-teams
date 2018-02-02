@@ -136,7 +136,7 @@ t_$scale_shape_outlier <- scale_shape_manual(values = c(1, 4))
 
 learning_rates_plot <- ggplot(LearningRates) +
   aes(InheritanceSize, LearningTime, shape = Outlier) +
-  geom_point(position = position_jitter(width = 0.1), shape = 1) +
+  geom_point(position = position_jitter(width = 0.1)) +
   # geom_ribbon(aes(ymin = LearningTime-SE, ymax = LearningTime + SE),
   #             stat = "identity", data = learning_rates_preds,
   #             fill = t_$diachronic_color, alpha = 0.4) +
