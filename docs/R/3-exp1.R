@@ -128,19 +128,18 @@ learning_times_plot <- ggplot(StageTimes) +
 LearningRates <- left_join(Inheritances, StageTimes)
 
 learning_rates_mod <- lm(LearningTime ~ 0 + InheritanceSize,
-                         data = filter(LearningRates, !Outlier))
+                         data = LearningRates)
 learning_rates_preds <- get_lm_mod_preds(learning_rates_mod) %>%
   rename(LearningTime = fit, SE = se.fit)
 
 t_$scale_shape_outlier <- scale_shape_manual(values = c(1, 4))
 
 learning_rates_plot <- ggplot(LearningRates) +
-  aes(InheritanceSize, LearningTime) +
-  geom_point(aes(shape = Outlier),
-             position = position_jitter(width = 0.1)) +
-  geom_ribbon(aes(ymin = LearningTime-SE, ymax = LearningTime + SE),
-              stat = "identity", data = learning_rates_preds,
-              fill = t_$diachronic_color, alpha = 0.4) +
+  aes(InheritanceSize, LearningTime, shape = Outlier) +
+  geom_point(position = position_jitter(width = 0.1), shape = 1) +
+  # geom_ribbon(aes(ymin = LearningTime-SE, ymax = LearningTime + SE),
+  #             stat = "identity", data = learning_rates_preds,
+  #             fill = t_$diachronic_color, alpha = 0.4) +
   scale_x_continuous("Tools inherited") +
   scale_y_continuous("Learning time (min)", breaks = seq(0, 25, by = 5)) +
   t_$scale_shape_outlier +
@@ -166,25 +165,23 @@ exp1$pct_did_exceed <- round(
 exceed_ancestor_mod <- glm(
   ExceededAncestor ~ 1,
   family = "binomial",
-  data = filter(NewInnovations, !Outlier)
+  data = NewInnovations
 )
 exp1$odds_of_exceeding <- report_beta(exceed_ancestor_mod, "(Intercept)", transform = exp)
 exp1$logodds_of_exceeding <- report_glm_mod(exceed_ancestor_mod, "(Intercept)")
 
 innovations_created_and_inherited_plot <- ggplot(NewInnovations) +
   aes(InheritanceSize, NumInnovations) +
-  geom_point(aes(shape = Outlier),
-             position = position_jitter(width = 0.2)) +
+  geom_point(position = position_jitter(width = 0.2), shape = 1) +
   geom_abline(intercept = 0, slope = 1, linetype = 2, size = 0.5) +
   scale_x_continuous("Tools inherited") +
   scale_y_continuous("Tools created") +
-  t_$scale_shape_outlier +
   t_$base_theme +
   guides(shape = "none")
 
 new_innovations_mod <- lmer(
   NumUniqueInnovations ~ InheritanceSize + (1|AncestorInventoryID),
-  data = filter(NewInnovations, !Outlier)
+  data = NewInnovations
 )
 exp1$inheritance_size_slope_stats <- report_lmer_mod(new_innovations_mod, "InheritanceSize")
 
@@ -200,15 +197,11 @@ new_innovations_plot <- ggplot(NewInnovations) +
   geom_ribbon(aes(ymin = NumUniqueInnovations-SE, ymax = NumUniqueInnovations+SE),
               stat = "identity", data = new_innovations_preds,
               fill = t_$diachronic_color, alpha = 0.8) +
-  geom_smooth(data = filter_lm_range(NewInnovations),
-              method = "lm", se = FALSE, color = "gray", size = 0.4) +
-  geom_point(aes(shape = Outlier, alpha = Outlier),
-             position = position_jitter(width = 0.2)) +
+  geom_point(position = position_jitter(width = 0.2), shape = 1) +
   geom_hline(yintercept = 0, linetype = 2, size = 0.5) +
   scale_alpha_outlier + 
   scale_x_continuous("Tools inherited") +
   scale_y_continuous("New tools discovered") +
-  t_$scale_shape_outlier +
   guides(shape = "none", alpha = "none") +
   t_$base_theme
 
@@ -272,11 +265,26 @@ innovations_by_generation_plot <- ggplot(Innovations) +
   geom_errorbar(aes(ymin = NumInnovations-SE, ymax = NumInnovations+SE),
                 data = innovations_by_generation_preds,
                 color = t_$color_picker("blue"), width = 0.2, size = 1.5) +
-  t_$scale_y_num_innovations +
+  t_$scale_y_num_tools +
   t_$base_theme +
   theme(
     panel.grid.minor.x = element_blank()
   )
+
+# Difficulty by generations ----
+difficulty_by_generation_mod <- lmer(
+  DifficultyScore ~ Generation0 + (Generation0 + Generation0Sqr|TeamID),
+  data = DifficultyScores
+)
+difficulty_by_generation_quad_mod <- lmer(
+  DifficultyScore ~ Generation0 + Generation0Sqr + (Generation0 + Generation0Sqr|TeamID),
+  data = DifficultyScores
+)
+difficulty_by_generation_modcomp <-
+  anova(difficulty_by_generation_mod, difficulty_by_generation_quad_mod)
+
+exp1$difficulty_by_generation_mod_slope_stats <- report_lmer_mod(difficulty_by_generation_mod, "Generation0")
+exp1$difficulty_by_generation_quad_mod_slope_stats <- report_lmer_mod(difficulty_by_generation_quad_mod, formats = c(b=4, se=4), "Generation0Sqr")
 
 # Delta difficulty ----
 DeltaDifficulty <- left_join(Inheritances, StageTimes) %>%
@@ -285,7 +293,7 @@ DeltaDifficulty <- left_join(Inheritances, StageTimes) %>%
 
 delta_difficulty_mod <- lmer(
   DifficultyDelta ~ InheritanceSize + (1|AncestorInventoryID),
-  data = filter(DeltaDifficulty, !Outlier)
+  data = DeltaDifficulty
 )
 exp1$delta_diff_slope_stats <- report_lmer_mod(delta_difficulty_mod, "InheritanceSize", formats = c(b=4, se=4))
 
@@ -298,12 +306,9 @@ delta_difficulty_plot <- ggplot(DeltaDifficulty) +
   geom_ribbon(aes(ymin = DifficultyDelta-SE, ymax = DifficultyDelta+SE),
               stat = "identity", data = delta_difficulty_preds,
               fill = t_$diachronic_color) +
-  geom_smooth(data = filter_lm_range(DeltaDifficulty),
-              method = "lm", se = FALSE, color = "gray", size = 0.5) +
-  geom_point(aes(shape = Outlier, alpha = Outlier),
-             position = position_jitter(width = 0.2)) +
+  geom_point(position = position_jitter(width = 0.2), shape = 1) +
   geom_hline(yintercept = 0, linetype = 2, size = 0.5) +
-  scale_x_continuous("New tools inherited") +
+  scale_x_continuous("Tools inherited") +
   scale_y_continuous("Change in complexity score") +
   t_$scale_shape_outlier +
   scale_alpha_outlier +
@@ -313,7 +318,7 @@ delta_difficulty_plot <- ggplot(DeltaDifficulty) +
 # Playing time ----
 playing_time_mod <- lmer(
   NumUniqueInnovations ~ PlayingTime + (1|AncestorInventoryID),
-  data = filter(NewInnovations, !Outlier)
+  data = NewInnovations
 )
 
 exp1$new_innovations_per_minute <- report_beta(playing_time_mod, "PlayingTime", digits = 2)
@@ -322,7 +327,7 @@ exp1$playing_time_slope_stats <- report_lmer_mod(playing_time_mod, "PlayingTime"
 
 playing_time_by_inheritance_mod <- lmer(
   NumUniqueInnovations ~ PlayingTime * InheritanceSize + (1|AncestorInventoryID),
-  data = filter(NewInnovations, !Outlier)
+  data = NewInnovations
 )
 
 playing_time_modcomp <-
@@ -336,12 +341,188 @@ playing_time_plot <- ggplot(NewInnovations) +
   aes(PlayingTime, NumUniqueInnovations) +
   geom_ribbon(aes(ymin = NumUniqueInnovations-SE, ymax = NumUniqueInnovations+SE),
               stat = "identity", data = playing_time_preds,
-              fill = t_$diachronic_color) +
-  geom_point(aes(shape = Outlier, alpha = Outlier),
-             position = position_jitter(height = 0.1)) +
+              fill = t_$diachronic_color, alpha = 0.8) +
+  geom_point(position = position_jitter(height = 0.1), shape = 1) +
   xlab("Discovery period (min)") +
   ylab("New tools discovered") +
-  scale_alpha_outlier +
-  t_$scale_shape_outlier +
   guides(shape = "none", alpha = "none") +
   t_$base_theme
+
+# Guesses per item ----
+data("Guesses")
+data("AdjacentItems")
+data("Teams")
+
+SessionTypes50min <- Sessions %>%
+  filter_exp1()
+
+GuessesPerItem50min <- Guesses %>%
+  filter_exp1() %>%
+  # Copy guesses for each adjacent item
+  left_join(AdjacentItems, by = c("PrevSessionInventoryID" = "ID"))
+
+CostPerItem50min <- GuessesPerItem50min %>%
+  group_by(TeamID, Generation, Adjacent) %>%
+  summarize(
+    TotalGuesses = n(),
+    TotalTime = sum(GuessTime, na.rm = TRUE),
+    Discovered = any(Result == Adjacent)
+  ) %>%
+  ungroup() %>%
+  
+  # Re-label summarized data
+  left_join(SessionTypes50min) %>%
+  recode_strategy() %>%
+  recode_discovered() %>%
+  label_inheritance() %>%
+  recode_inheritance()
+
+# Guesses per item by inheritance.
+# Determine the impact of inheritance on guessing ability
+# by comparing guessing rates for each item discovered
+# by Diachronic players.
+guesses_per_item_by_inheritance_mod <- lmer(
+  TotalGuesses ~ Diachronic_v_NoInheritance +
+    (Diachronic_v_NoInheritance|Adjacent),
+  data = filter(CostPerItem50min, Discovered))
+
+exp1$guesses_per_item_by_inheritance <- report_lmer_mod(guesses_per_item_by_inheritance_mod, "Diachronic_v_NoInheritance")
+
+guesses_per_item_by_inheritance_preds <- recode_inheritance() %>%
+  filter(Inheritance != "individual_inheritance") %>%
+  cbind(., predictSE(guesses_per_item_by_inheritance_mod, newdata = ., se = TRUE)) %>%
+  rename(TotalGuesses = fit, SE = se.fit)
+
+guesses_per_item_by_inheritance_plot <- ggplot(CostPerItem50min) +
+  aes(InheritanceLabel, TotalGuesses) +
+  geom_line(aes(group = Adjacent), color = t_$color_picker("blue"),
+            stat = "summary", fun.y = "mean",
+            size = 0.8) +
+  geom_line(aes(group = 1),
+            stat = "identity", data = guesses_per_item_by_inheritance_preds,
+            size = 1.2) +
+  geom_errorbar(aes(ymin = TotalGuesses-SE, ymax = TotalGuesses+SE),
+                data = guesses_per_item_by_inheritance_preds,
+                width = 0.05, size = 1.2) +
+  scale_x_discrete("", labels = c("No inheritance", "Inheritance")) +
+  scale_y_continuous("Guesses per tool") +
+  t_$base_theme
+
+# Guesses per item: Playing ----
+CostPerItem50minPlaying <- GuessesPerItem50min %>%
+  filter(Stage == "playing") %>%
+  group_by(TeamID, Generation, Adjacent) %>%
+  summarize(
+    TotalGuesses = n(),
+    TotalTime = sum(GuessTime, na.rm = TRUE),
+    Discovered = any(Result == Adjacent)
+  ) %>%
+  ungroup() %>%
+  
+  # Re-label summarized data
+  left_join(SessionTypes50min) %>%
+  recode_strategy() %>%
+  recode_discovered() %>%
+  label_inheritance() %>%
+  recode_inheritance()
+
+# Guesses per item by inheritance.
+# Determine the impact of inheritance on guessing ability
+# by comparing guessing rates for each item discovered
+# by Diachronic players.
+guesses_per_new_item_by_inheritance_mod <- lmer(
+  TotalGuesses ~ Diachronic_v_NoInheritance +
+    (Diachronic_v_NoInheritance|Adjacent),
+  data = filter(CostPerItem50minPlaying, Discovered))
+
+guesses_per_new_item_by_inheritance_preds <- recode_inheritance() %>%
+  filter(Inheritance != "individual_inheritance") %>%
+  cbind(., predictSE(guesses_per_new_item_by_inheritance_mod, newdata = ., se = TRUE)) %>%
+  rename(TotalGuesses = fit, SE = se.fit)
+
+exp1$guesses_per_new_item <- report_lmer_mod(guesses_per_new_item_by_inheritance_mod, "Diachronic_v_NoInheritance")
+
+guesses_per_new_item_by_inheritance_plot <- ggplot(CostPerItem50minPlaying) +
+  aes(InheritanceLabel, TotalGuesses) +
+  geom_line(aes(group = Adjacent), color = t_$color_picker("blue"),
+            stat = "summary", fun.y = "mean",
+            size = 0.8) +
+  geom_line(aes(group = 1),
+            stat = "identity", data = guesses_per_new_item_by_inheritance_preds,
+            size = 1.2) +
+  geom_errorbar(aes(ymin = TotalGuesses-SE, ymax = TotalGuesses+SE),
+                data = guesses_per_new_item_by_inheritance_preds,
+                width = 0.05, size = 1.2) +
+  scale_x_discrete("", labels = c("No inheritance", "Inheritance")) +
+  scale_y_continuous("Guesses per novel tool") +
+  t_$base_theme
+
+# Guess types ----
+GuessTypes <- Guesses %>%
+  filter_exp1() %>%
+  recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
+  group_by(SessionID) %>%
+  summarize(
+    NumGuesses = n(),
+    NumRedundantGuesses = sum(GuessType == "redundant"),
+    NumRepeatedItems = sum(GuessType == "repeat_item"),
+    NumUniqueGuesses = sum(GuessType == "unique_guess"),
+    NumUniqueItems = sum(GuessType == "unique_item")
+  ) %>%
+  ungroup() %>%
+  left_join(Sessions) %>%
+  recode_strategy() %>%
+  mutate(
+    PropRedundantGuesses = NumRedundantGuesses/NumGuesses,
+    PropRepeatedItems = NumRepeatedItems/NumGuesses,
+    PropUniqueGuesses = NumUniqueGuesses/NumGuesses,
+    PropUniqueItems = NumUniqueItems/NumGuesses
+  ) %>%
+  label_inheritance() %>%
+  recode_inheritance()
+
+num_redundant_guesses_mod <- lm(NumRedundantGuesses ~ Diachronic_v_NoInheritance,
+                                data = GuessTypes)
+exp1$num_redundant_guesses <- report_lm_mod(num_redundant_guesses_mod, "Diachronic_v_NoInheritance")
+
+prop_redundant_guesses_mod <- lm(PropRedundantGuesses ~ Diachronic_v_NoInheritance,
+                                 data = GuessTypes)
+exp1$prop_redundant_guesses <- report_lm_mod(prop_redundant_guesses_mod, "Diachronic_v_NoInheritance")
+
+prop_unique_guesses_mod <- lm(PropUniqueGuesses ~ Diachronic_v_NoInheritance,
+                              data = GuessTypes)
+
+GuessTypes50minSummary <- Guesses %>%
+  filter_exp1() %>%
+  label_inheritance() %>%
+  recode_inheritance() %>%
+  recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
+  group_by(Inheritance) %>%
+  summarize(
+    NumGuesses = n(),
+    NumRedundantGuesses = sum(GuessType == "redundant"),
+    NumRepeatedItems = sum(GuessType == "repeat_item"),
+    NumUniqueGuesses = sum(GuessType == "unique_guess"),
+    NumUniqueItems = sum(GuessType == "unique_item")
+  ) %>%
+  ungroup() %>%
+  mutate(
+    PropRedundantGuesses = NumRedundantGuesses/NumGuesses,
+    PropRepeatedItems = NumRepeatedItems/NumGuesses,
+    PropUniqueGuesses = NumUniqueGuesses/NumGuesses,
+    PropUniqueItems = NumUniqueItems/NumGuesses
+  ) %>%
+  select(Inheritance, PropRedundantGuesses, PropRepeatedItems, PropUniqueGuesses, PropUniqueItems) %>%
+  gather(PropGuessType, PropGuesses, -Inheritance) %>%
+  recode_prop_guess_type_total() %>%
+  recode_inheritance()
+
+prop_guess_types_50min_plot <- ggplot(GuessTypes50minSummary) +
+  aes(InheritanceLabel, PropGuesses, fill = PropGuessTypeLabel) +
+  geom_bar(stat = "identity") +
+  scale_x_discrete("", labels = c("No inheritance", "Inheritance")) +
+  scale_y_continuous("Proportion of guesses", labels = scales::percent) +
+  scale_fill_manual("Guess types",
+                    values = t_$color_picker(c("green", "blue", "orange", "pink"))) +
+  t_$base_theme +
+  theme(panel.grid.major.x = element_blank())
