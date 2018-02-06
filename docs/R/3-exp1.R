@@ -340,10 +340,11 @@ playing_time_plot <- ggplot(NewInnovations) +
   geom_ribbon(aes(ymin = NumUniqueInnovations-SE, ymax = NumUniqueInnovations+SE),
               stat = "identity", data = playing_time_preds,
               fill = t_$diachronic_color, alpha = 0.8) +
-  geom_point(position = position_jitter(height = 0.1), shape = 1) +
+  geom_point(aes(shape = Outlier), position = position_jitter(height = 0.1)) +
   xlab("Discovery period (min)") +
   ylab("New tools discovered") +
   guides(shape = "none", alpha = "none") +
+  t_$scale_shape_outlier +
   t_$base_theme
 
 # Guesses per item ----
