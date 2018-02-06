@@ -36,9 +36,10 @@ abstract: |
 bibliography: "references.bib"
 csl: "templates/plos-one.csl"
 output:
-  pdf_document:
+  bookdown::pdf_document2:
     template: templates/plos_latex_template.tex
     keep_tex: yes
+    number_sections: no
 ---
 ```{r totems, include=FALSE}
 library(knitr)
@@ -51,7 +52,7 @@ opts_chunk$set(
   results = "hide",
   fig.width = 3,
   fig.height = 3,
-  dpi = 96,
+  dpi = 300,
   cache = TRUE
 )
 
@@ -164,7 +165,7 @@ in groups of 2 or 4 individuals, each participating for 25 minutes. Synchronic
 participants collaborated in parallel, sharing solutions with all team members
 as they were discovered.
 
-```{r team-structures-all, engine="dot", out.width="40%", fig.cap="(ref:team-structures-all)"}
+```{r team-structures-all, engine="dot", out.width="50%", fig.cap="(ref:team-structures-all)"}
 ```
 
 Participants played the "Totems" game adapted from @Derex:2015cbb. Their task
@@ -259,7 +260,7 @@ Each participant completed the same problem solving task for 25 minutes.
 Participants in generations 2-4 began the problem solving task with the
 solutions that were discovered by the previous generation.
 
-```{r team-structures-exp1, engine="dot", fig.cap="(ref:team-structures-exp1)"}
+```{r team-structures-exp1, engine="dot", out.width="25%", fig.cap="(ref:team-structures-exp1)"}
 ```
 
 ## Methods
