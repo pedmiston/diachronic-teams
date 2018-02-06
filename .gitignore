@@ -19,6 +19,8 @@ docs/*.tex
 docs/code*
 docs/*.bbl
 
+docs/templates/*.pdf
+
 # editor
 *.swp
 
