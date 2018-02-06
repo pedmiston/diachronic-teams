@@ -1,44 +1,28 @@
 ---
-title: "The impact of inheritance on problem solving ability"
+title: "The impact of inheritance on problem solving"
 author: "Pierce Edmiston, Max Derex, & Gary Lupyan"
 abstract: |
-  Human are able to use and improve solutions to problems including tools and
-  other technology that were created by other people like no other species of
-  animal. What is the impact of inheritance---starting off a problem solving
-  task with some of the problems already solved---on future problem solving
-  ability? Does inheritance provide a shortcut to individual learning, or
-  does it affect the rate or way in which future problems are solved?
-  In Experiment 1, we demonstrate that future generations of problem
-  solvers are able to cumulatively improve upon the solutions they inherited,
-  but were unable to determine whether inheritance had an impact on problem solving
-  ability. We resolve this issue in Experiments 2-4 by comparing diachronic
-  problem solving to alternative strategies for solving the same set of
-  problems but without diachronic inheritance. In Experiment 2 we demonstrate
-  that diachronic inheritance results in fewer guesses per solution than
-  problem solving without inheritance, but this benefit does not extend to
-  solutions that were not inherited. In Experiment 3, we find that inheriting
-  from oneself over repeated sessions is more effective than diachronic
-  inheritance from someone else. However, we also find that diachronic
-  inheritance can remediate the potential costs of fixation on incorrect
-  solutions, which for isolated individuals can extend over multiple sessions.
-  Experiment 4 includes four-person synchronic teams and finds that the
-  inefficiencies of two-person synchronic teams are amplified for four-person
-  teams such that diachronic colloration becomes more effective relative to
-  synchronic collaboration as labor time increases. Together our results
-  demonstrate cumulative gains though diachronic collaboration in a lab
-  experiment, and identify some of the ways in which diachronic collaboration
-  affords unique kinds of problem solving relative to alternative strategies
-  for solving the same set of problems, namely that diachronic problem solving
-  can remediate fixation effects and promote a more efficient guessing strategy.
+  Humans are able to accumulate tools and other solutions to problems like no
+  other species of animal. A consequence of our system of cultural inheritance
+  is that future generations rarely have to start from scratch when solving new
+  problems, as demonstrated by the prevalence of reuse in the history of human
+  technology. We investigated how inheriting solutions from a previous
+  generation impacted problem solving by comparing the performance of teams who
+  share solutions across generations to alternative strategies for solving the
+  same set of problems but without inheritance. We found that inheritance was
+  effective in that participants were reliably able to solve more problems than
+  their ancestors, and that the benefits of inheritance were similar to
+  individuals given the same total amount of time and teams working in parallel.
+  We also found that inheritance caused participants to engage in a more
+  efficient guessing strategy, and as a consequence were less likely to become
+  fixated on incorrect solutions. These results suggest that human cultural
+  inheritance does more than give future generations a head start on problem
+  solving, and may actually change the way new problems are solved.
 csl: "theme/apa.csl"
 bibliography: "references.bib"
 output:
-  bookdown::html_document2:
-    toc: yes
-    toc_depth: 2
-    toc_float: yes
-    css: theme/style.css
-    keep_md: yes
+  bookdown::pdf_document2:
+    toc: no
     number_sections: no
 ---
 ```{r totems, include=FALSE}
@@ -80,219 +64,76 @@ sapply(chunks, read_graphviz_chunk, package = "totems")
 ```{r intro, include=FALSE}
 ```
 
-Humans are effective problem solvers. Part of this effectiveness comes from the
-ability to reuse and adapt solutions to problems that were first created by
-other people. Inventors rarely create inventions with no precursors, and
-commonly use and adapt inventions that were first created by other people
-[@Basalla:1989wq; @Valverde:2007fs]. But what do innovators and other problem
-solvers gain from inheriting solutions created by others? Do problem solvers
-gain a head start on future problem solving, or does inheriting an existing
-solution to a problem affect the way in which future problems are solved? We
-attempt to answer this question by studying the problem solving ability of
-individuals who inherit solutions created by a previous generation of
-problem solver at the start of a problem solving task. We refer to this
-type of collaboration, organized around inheritance, as **diachronic collaboration**
-(Fig. \@ref(fig:team-structures)). We compared the effectiveness of diachronic
-collaboration to two alternative strategies for solving the same set of problems in the same
-amount of time but without diachronic inheritance: **synchronic collaboration**,
-where team members begin with nothing and collaborate in parallel, and
-**isolated individuals**, given the most time for individual learning
-(Fig. \@ref(fig:team-structures)).
+Humans are effective problem solvers, having solved a wide range of problems
+related to foraging, hunting, and preparing food, while surviving predators,
+each other, and a large range of terrestrial environments [@Boyd:2017diff;
+@Fernandez:2001civ]. What has enabled our success in being able to solve such a
+diverse set of problems? Some have suggested that the answer lies more in our
+ability to inherit knowledge from others than our ability to make discoveries by
+ourselves [@Richerson:2008not; @Henrich:2015srt; @Boyd:2017diff]. Humans possess
+a number of advanced social learning abilities including teaching through verbal
+instruction and imitation that provide reliable ways of transferring problem
+solving knowledge across individuals [@Dean:2012gv]. If problem solving
+knowledge can be acquired via social learning, then future generations can adapt
+and improve it, allowing cultures to accumulate technological complexity over
+generations.
 
-(ref:team-structures) Problem solving strategies. Each node is a single problem
-solver. Edge lengths represent labor hours spent solving a set of problems. In
-diachronic collaboration, first generation problem solvers work on solutions to
-problems before passing them on to be inherited by the next generation. The
-impact of inheritance on problem solving is measured as the problem solving
-ability of diachronic problem solvers after the first generation. Isolated
-individuals do not inherit solutions from other problem solvers, but are given
-the most time for individual learning. In synchronic collaboration, multiple
-problem solvers work in parallel, sharing their progress, but synchronic teams
-do not benefit from diachronic inheritance because all problem solvers
-begin at the same starting point.
+However, the ability to learn socially from others is not sufficient to explain
+cumulative cultural evolution. Although social learning was once thought to be
+rare in the animal kingdom [e.g., @Thorndike:1898], it has now been documented
+in a range of species from chimps [@Whiten:1999cic] to fish [@Laland:1997ts]
+and even bees [@Alem:2016fu]. If cumulative cultural evolution depended simply
+on social learning, we might expect these species to likewise show evidence of
+cumulative cultural evolution, yet such evidence is notably lacking
+[@Dean:2012gv; @Tennie:2009gaa]. There are a few exceptions: New Caledonian
+crows have been argued to have improved the grub-skewers they craft from
+pandanus leaves [@Hunt:2003dj], and at least one population of chimpanzees has
+evolved a more advanced termite probe [@Sanz:2009ja], but for the most part
+tool use in animals has remained largely unchanged [cf. @Mercader:2007fd].
 
-```{r team-structures, engine="dot", fig.width=1.5, fig.cap="(ref:team-structures)"}
-```
+Humans, in contrast, have demonstrated a remarkable ability to adapt
+and improve the tools and other innovations discovered by others. The
+history of human technology is argued to be better understood as a process
+of gradual refinement and repurposing rather than punctuated advances brought by
+the discoveries of rare geniuses [@Basalla:1989wq; @Sole:2013cm]. Rapid
+refinement of inherited innovations has not always been the case over the course
+of human history, as demonstrated by the long periods in the archaeological
+record of slow or stagnant growth in stone tool complexity [@Torre:2011jl;
+@Lycett:2008di]. As to what it was that allowed our ancestors to begin to
+develop more complex tools, an answer that has been proposed is that humans
+evolved more robust ways of transmitting cultural information to the next
+generation, allowing future generations of problem solvers to more quickly learn
+the skills honed by their ancestors, and thus giving them more time to make
+improvements to those technologies [@Sterelny:2012ea]. On this view,
+human cultural evolution has been defined not by our ability to inherit the
+skills of our ancestors, but by the ability to exceed them.
 
-This research focuses on diachronic collaboration and the impact of
-inheritance on problem solving ability among diachronic collaborators.
-Diachronic collaboration exemplifies an important process in human cultural
-evolution: the iterative improvement of tools and other solutions to problems
-over generations of problem solving generally known as ratcheting
-[@Tennie:2009gaa; @Tomasello:1993vh]. Diachronic collaboration is enabled by
-social learning mechanisms that allow problem solvers to learn from previous
-generations of problem solvers rather than attempting to solve the same problems
-through independent and individual learning. Models of the cultural evolutionary
-process demonstrate that social learning is adaptive relative to individual
-learning when the environment is stable and individual learning is costly
-[@Boyd:1988cu]. A population of smart individuals who are unable to
-learn from each other are limited to what they can accomplish in a single
-lifetime, as their accomplishments cannot be inherited by any future problem
-solvers. Thus, social learning is believed to provide a valuable shortcut to
-individual learning that causes improvements to accumulate over generations.
-However, few attempts have been made to quantify the shortcut gained from
-inheritance.
-
-Part of the reason is that models of the cultural evolution process assume that
-inheritance is an all-or-none process, meaning that if an innovation is
-successful inherited, a shortcut to individual learning is guaranteed. This of
-course does not guarantee that all innovations are inherited. If
-the likelihood of successfully inheriting an innovation is low, for example,
-a complex innovation, such as how to create a fishing net, the population of
-effective replicators must be sufficiently large enough or else the loss of
-technological complexity may ensue [@Henrich:2004ht]. In addition,
-cumulative gains in technological complexity require that
-individuals know how to filter the better innovations from maladaptive ones
-[@Enquist:2010gw]. In contrast, others have argued that inheritance is
-not an all-or-none process. inheritance often involves the transformation
-of socially learned information [@Sperber:1996exc], and the successful
-transmission of skilled behaviors can take years before becoming efficient
-[@Sterelny:2012ea]. As a result, the capacity for inheritance does not
-guarantee that diachronic collaboration will result in cumulative improvements.
-Our study accounts for this problem by measuring the effect of inheritance
-relative to the cost of creating it, and relative to the effectiveness of
-altnerative forms of problem solving.
-
-Previous efforts to understand diachronic collaboration in a problem solving
-context have focused on our capacity to inherit solutions from others
-rather than the effectiveness of diachronic collaboration as a problem solving
-strategy. For example, @Tennie:2009gaa argued that humans as compared to nonhuman
-primates are uniquely able to inherit solutions to problems that they would be
-unable to discover on their own. @Caldwell:2008gf demonstrated the capacity
-of diachronic teams to cumulatively improve performance in tasks such as
-paper airplane flying and spaghetti tower building, but did not include
-any control conditions that could have demonstrated the effects of diachronic
-collaboration compared to other strategies, such as an individual given the
-same total amount of time for individual learning. Such an experiment
-has been performed on pigeons, where diachronic interactions between pairs
-of pigeons were found to improve the efficiency of flight paths more than
-individual birds and pairs of birds given the same total number of flights.
-However, control conditions for transmission chain design experiments are
-rarely employed [@Mesoudi:2008kr].
-
-Previous efforts to understanding the impact of inheritance on problem solving
-have compared problem solving in groups, where individuals can learn socially
-from others, to problem solving as individuals. Although the benefit to
-problem solving in groups is known to vary based on the problem being solved,
-for problems that require cumulative increases in the complexity of the solutions,
-groups of problem solvers are able to discover solutions they
-would have been unlikely to discover on their own [@Derex:2015cbb]. However,
-this approach of comparing group problem solving to individual problem solving
-does not directly test the impact of diachronic inheritance on problem
-solving because all problem solvers, even in a group, begin the problem
-solving task at the start starting point and with no existing solutions. Here
-we extend Derex et. al.'s paradigm in two ways. First, we include a diachronic
-condition, where problem solvers start off the problem solving task by inheriting
-the solutions discovered by a previous generation, and second, we compare a
-diachronic strategy to alternative strategies that do not involve diachronic
-inheritance while controlling for labor time, as opposed to calendar time.
-
-The synchronic and isolated strategies serve as control conditions in these
-experiments: ways of solving the same set of problems without diachronic
-inheritance. Synchronic and isolated problem solvers begin the problem solving
-task at the same starting point, i.e. with no existing solutions. Only
-diachronic problem solvers after the first generation inherit solutions from
-the previous generation to learn from at the start of the experiment.
-
-The diachronic condition will be referred to as the inheritance condition, but
-other types of inheritance that do not influence the starting point of a problem
-solver beginning a problem solving task are included in the control conditions.
-Synchronic problem solvers share solutions with one another throughout the
-problem solving task. What distinguishes diachronic and synchronic inheritance
-is the time at which the solutions are shared. For diachronic problem solvers,
-solutions are inherited once, at the start of the problem solving task. For
-synchronic problem solvers, solutions are inherited intermittently, throughout
-the task. A comparison of diachronic and synchronic problem solving (Exps. 2,4)
-will reveal whether diachronic-generational or synchronic-intermittent
-inheritance mechanisms result in more effective problem solving.
-
-A third type of inheritance, individual inheritance, is introduced in Experiment
-3. Individual inheritance is when the products of one's own problem solving are
-resumed in independent problem solving sessions. Individual inheritance
-involves inheriting from oneself, as opposed to inheriting from someone else.
-Experiment 3 investigates how diachronic inheritance, the inheritance of partial
-solutions at the start of a problem solving task, impacts problem solving
-ability differently than an isolated individual, resuming problem solving in
-subsequent sessions.
-
-In order to fully understand the impact of inheritance on problem solving
-ability, it is necessary to account for both the cost of creating the
-inheritance as well as the consequences of inheritance on future problem
-solving. In this study the cost and consequence of inheritance is controlled by
-allotting a fixed number of labor hours to diachronic teams. The other
-strategies investigated in this research are compared given the same number of
-labor hours. Labor hours can be contrasted by two other measures of time that
-are not controlled in these experiments: calendar hours and individual learning
-hours (Fig. \@ref(fig:types-of-time)).
-
-(ref:types-of-time) Types of time. **Left.** A key showing the problem solving
-strategies for reference. See Fig. \@ref(fig:team-structures). **Middle.**
-Relationship between calendar hours and labor hours. Synchronic collaboration
-consumes a fixed amount of labor time more rapidly (per calendar hour) than
-either the diachronic or isolated strategies. **Right.** Amount of individual
-learning time in each strategy. An isolated strategy maximizes the amount of
-time for individual learning relative to both diachronic and synchronic
-strategies.
-
-```{r types-of-time, fig.width=8, fig.height=3, fig.cap="(ref:types-of-time)"}
-grid.arrange(
-  read_graphviz("team-structures", "totems"),
-  gg_time,
-  gg_person,
-  nrow = 1,
-  widths = c(0.2, 0.4, 0.4)
-)
-```
+We investigated the human propensity to exceed our ancestors in a problem
+solving task using a transmission chain paradigm (Fig. \@ref(fig:team-structures-all)).
+Previous research using this paradigm has found that problem solving performance
+for simple tasks like folding paper airplanes and building tours out of
+spaghetti can accumulate over generations [@Caldwell:2008gf], although the
+mechanisms are unclear [@Caldwell:2009fl]. @Morgan:2015hu more carefully
+manipulated the mechanisms of transmission, and found that teaching, and
+especially verbal instruction, was crucial for successful transmission of
+skilled behaviors along chains. Here we controlled for successful transmission
+by allowing future generations to inherit the discoveries made by the previous
+generation, and measured the ability of participants to exceed the solutions
+they inherited.
 
 # Methods
 
 ```{r methods, include=FALSE}
 ```
 
-Participants solved as many problems as they could in a fixed amount of time. To
-solve each problem, participants had to guess combinations of items that would
-result in new items being created. The new items, created from combinations of
-previous items, are referred to as innovations, and each innovation is the
-solution to a single problem amid the larger set of problems in the problem
-solving task. The context of the problem solving task is that participants are
-accumulating innovations like axes, stone knives, and paintbrushes in service of
-creating "a sacred totem pole to appease the gods." As participants accumulate
-more complex innovations, they can then create more intricate and elaborate
-totem poles, and receive higher performance scores as a result.
-
-Participants were randomly assigned to either the diachronic condition (the
-treatment condition) or one of the control conditions: isolated or synchronic.
-Participants in the diachronic condition either participated as a first
-generation problem solver, or began the problem solving task with the solutions
-discovered by a previous generation. Each participant was assigned to a single
-generation in a single team; the innovations of each diachronic problem solver
-were only inherited by, at most, one future generation problem solver.
-
-Participants in the synchronic condition collaborated in parallel via separate
-computers. Team membership was not revealed to the participants either before or
-after the experiment, and no interaction, other than through the computer
-interface, was allowed. The only interaction that was allowed was the sharing of
-innovations with all members of a synchronic team. Once an innovation was
-discovered by a synchronic participant, the recipe for the creation of that
-innovation became available for all members of the synchronic team.
-
-Participants in the isolated condition participated in a single 50 minute
-session, or alternately returned for four 25 minute sessions, spaced at least
-one day apart. When isolated participants returned for later sessions, they
-inherited the tools they had discovered in the previous session.
-
-The data generated using these methods are reported in four experiments.
-Experiment 1 investigates the result of accumulated inheritance over four
-generations of diachronic problem solving. The analyses explore the differences
-between first generation problem solvers and problem solvers who benefit from
-inheritance, defined as diachronic problem solvers after the first generation.
-In Experiment 2, we compare the simplest form of diachronic inheritance, a
-two-person diachronic team, to a two-person synchronic strategy, and an isolated
-individual given 50 minutes. In Experiment 3, diachronic inheritance from
-someone else is compared to inheriting from oneself: isolated participants
-returning for multiple sessions. Experiment 4 compares the three main strategies
-(diachronic, isolated, and synchronic) given 100 minutes, including a
-four-person synchronic strategy.
+To understand how problem solving knowledge accumulates through vertical
+transmission, we used a transmission chain paradigm where participants were
+assigned to a single generation within a four-generation chain. Each
+participant attempted the same problem solving task for 25 minutes. The
+solutions that each participant had discovered by the end of the session were
+passed on to be inherited by a participant in the next generation of the
+chain. Thus, participants assigned to generations after the first began the
+problem solving task with solutions inherited from the previous generation.
 
 (ref:team-structures-all) All experimental conditions. The **Diachronic**
 condition is the treatment condition: problem solving with inheritance. First
@@ -308,67 +149,43 @@ in groups of 2 or 4 individuals, each participating for 25 minutes. Synchronic
 participants collaborated in parallel, sharing solutions with all team members
 as they were discovered.
 
-```{r team-structures-all, engine="dot", fig.cap="(ref:team-structures-all)", fig.width=1}
+```{r team-structures-all, engine="dot", fig.cap='(ref:team-structures-all)'}
 ```
 
-## Materials and Procedure
-
-**The Totems game**. Participants played a computer game, first reported in
-@Derex:2015cbb, requiring players to iteratively solve problems related to
-creating new tools out of existing items for the purposes of building "a sacred
+Participants played the "Totems" game adapted from @Derex:2015cbb. Their task
+was to discover how to build tools with the ultimate goal of creating "a sacred
 totem to appease the gods." To build a totem, participants first needed to
-construct an axe out of three independently discovered items: a refined stick
-used as a handle, a sharpened rock for the blade, and string wound from bark
-fibers for binding (Fig. \@ref(fig:landscape-sample)). In the game, more
-advanced tools produce larger and more intricate totems, resulting in higher
-performance scores.
+construct an axe out of three independently discovered tools: a refined stick
+used as a handle, a sharpened rock for the blade, and a string wound from bark
+fibers for binding (Fig. \@ref(fig:landscape-sample)). More advanced tools produce larger and more
+intricate totems, resulting in higher performance scores.
 
-(ref:landscape-sample) A sample of the solution landscape. The top row of 6
-items are the initial resources available to problem solvers at the start of the
-session. Resources must be combined to build the first generation of
-innovations, including a refined rock, a club derived from an antler, and a
-small branch of a tree. The first 6 generations of possible innovations are
-shown. The axe is required to construct the first totem pole.
+(ref:landscape-sample) A sample of the solution landscape. The top row of 6 items were available to problem solvers at the start of the game. New items could be produced through the combination of different items (more than one arrow points to the item) or through the refinement of a single item (a single arrow points to the item). The axe is required to construct the first totem pole.
 
-```{r landscape-sample, fig.cap="(ref:landscape-sample)"}
-# draw_graphviz_with_images("landscape-sample", "totems")
-draw_image("landscape-sample.gv", "totems")
+```{r landscape-sample, fig.height=6, fig.cap="(ref:landscape-sample)"}
+draw_image("landscape-sample.gv", package = "totems")
 ```
 
-**Guesses.** Participants solved problems by trial-and-error guessing of different
-combinations of items they believed would yield new tools. To generate new
-guesses, participants dragged items into a workshop panel (Fig.
-\@ref(fig:interface)).
+Participants discovered new tools by combining existing items. Participants
+could combine up to four items at a time (with replacement), meaning the
+initial six items could form a total of `r methods$n_unique_guesses_6`
+combinations. Of all possible combinations, very few resulted in new items. For
+example, of all the guesses that could be formed from the initial items, only
+three (`r methods$n_unique_guesses_6_pct`%) yielded new tools (Fig. 2). As
+participants accumulate solutions, the combinatorial complexity of the problem
+space increases exponentially such that the discovery of more complex tools is
+less likely to happen by chance.
 
-Of all the valid combinations of items that could be made, only a small
-percentage successfully yielded new items. The 6 initial resources can be
-combined with between 1 and 4 other items with replacement for a total of
-`r count_unique_guesses(6)` unique guesses, only three of which
-yield any new tools: a branch can be broken off a tree, an antler refined into
-a club, and two rocks can be combined to yield a shaped stone. As the number
-of items available to each problem solver increased, so did the combinatorial
-complexity of the problem space. Thus, problems became more difficult
-over time.
-
-**Stock.** If a guess yielded an item, it could be stored in a stock panel. A maximum of 12
-items could be stored in the stock panel at any given time. Items could be
-discarded if space was needed in the stock panel for new items, or if an item
-was not needed for any reason.
-
-**Recipes.** Once an item was discovered, the recipe for its creation was recorded in the
-history panel. Participants could review their item history and see the recipes
-for their previous innovations, even items they had discarded.
-
-In addition to an individual history, the history pane also had other tabs,
-depending on which strategy each participant was assigned. Diachronic
-participants after the first generation began with a tab that could be selected
-to show all item recipes discovered by the previous generation. This was the way
-in which solutions to previous problems were shared with future generations.
-Isolated participants, if returning for multiple sessions, had a tab with the
-solutions they had come up with during their previous session. Synchronic
-participants had tabs for other synchronic problem solvers on their team.
-The tab displayed the current score of each player, so synchronic were notified
-that a discovery had been made by seeing a change in their teammates' score.
+Once a tool was discovered, the recipe for its creation---a list of the items
+that had to be combined in order to create the tool---was recorded in an
+innovation record. Participants could review their past innovations and see the
+recipes for their previous discoveries. **Participants assigned to generations
+after the first inherited the innovation record of the previous generation
+participant.** From the beginning of the experiment, these participants could
+review the recipes for all the innovations that had been discovered by their
+ancestor. Note that the participants inherited the recipes, but not the tools
+themselves. In order use these tools in further combinations, the tools and all
+of their constituent parts first had to be recreated.
 
 (ref:interface) The Totems gameplay interface. Participants generated guesses
 by dragging items into the Workshop and selecting the Try button. If the guess
@@ -379,11 +196,6 @@ dragged into the Totem panel for scoring.
 ```{r interface, fig.cap="(ref:interface)"}
 draw_image("gameplay", "totems")
 ```
-
-**Post experiment survey.** After the experiment was completed, participants
-completed a brief post experiment survey assessing their understanding of the
-task, their experience with games like the Totems game, and whether they used
-any particular strategy for guessing.
 
 ## Participants
 
@@ -454,165 +266,125 @@ kable(Exp1Participants, caption = "(ref:exp1-participants)")
 
 ## Results
 
-Diachronic problem solvers were consistently able to exceed the number of
-innovations discovered by their predecessors (Fig. \@ref(fig:innovations-by-generation)).
-This result was obtained using Page's trend test, which is a
-repeated measure test for monotonicity. We used this test to measure whether
-the number of innovations increased within each team and over generations
-against the null hypothesis that the number of innovations did not change
-from generation to generation. We found evidence for cumulative
-increases in problem solving ability such that later generations of problem
-solvers were able to discover more innovations in a single 25 minute session
-than their predecessors, `r exp1$page_test`.
+### Performance by generation
 
-We next measured the linear increase in innovations over generations
-within each team by fitting a hierarchical regression model to the total
-innovations achieved in each generation with nested effects (intercepts
-and slopes) for teams. On average, second generation participants were
-able to discover `r exp1$gen0_slope` more innovations than first generation
-participants, `r exp1$gen0_slope_stats`. This linear effect decreased by
-`r exp1$gen0sqr_slope` each generation for third and fourth generation
-participants, `r exp1$gen0sqr_slope_stats`. A model comparison of hierarchical
-regression models fit with linear and quadratic components revealed
-that a quadratic fit was significantly better than a linear fit alone,
-`r exp1$quad_modcomp`. This result suggests that accumulated inheritance had a
-diminishing return on future problem solving.
+We found that problem solving knowledge accumulated over generations such that
+participants in later generations were able to solve more problems in the same
+amount of time than their ancestors (Fig. 3). We tested this in multiple ways.
+First, we used Page's trend test (a repeated measures test for monotonicity),
+and found evidence that the number of tools discovered within each chain
+increased over generations `r exp1$page_test`. Next, we tested whether the
+extent to which participants were able to exceed their ancestors changed over
+generation. We fit a hierarchical regression model to the number of tools
+discovered in each generation with these effects nested by chain. On average,
+second generation participants were able to discover `r exp1$gen0_slope` more
+tools than first generation participants, `r exp1$gen0_slope_stats`. This
+effect decreased by `r exp1$gen0sqr_slope` each generation for third and fourth
+generation participants, `r exp1$gen0sqr_slope_stats`. This diminishing return
+suggests that future generations have a harder time exceeding their ancestors.
 
-(ref:innovations-by-generation) Number of innovations discovered by each
-generation. Each of the thin green lines is a team. Means in each generation are
-shown as green X's. The thick blue line is the model predictions with ±1
-standard error.
-
-```{r innovations-by-generation, fig.cap="(ref:innovations-by-generation)"}
+```{r fig3, fig.cap="Performance by generation. Each of the thin green lines is a chain. The thick blue line is the model predictions with ±1 standard error."}
 innovations_by_generation_plot
 ```
 
-We next consider different explanations for the diminishing return of inheritance on
-future problem solving. First, we tested whether a larger inheritance had a detrimental
-effect on future problem solving. We found that an increase in the number of
-inherited innovations is negatively associated with a decrease in the number of
-new innovations discovered by future generations of problem solvers,
-`r exp1$inheritance_size_slope_stats` (Fig. \@ref(fig:size-of-inheritance)).
-This finding is in line with the current proposal that inheritance has an
-influence on future problem solving beyond simply providing a shortcut
-to individual learning. In this case, the impact is negative, such
-that inheriting more innovations appears to _decrease_ problem solving ability.
+Although later generation participants made fewer new discoveries, the
+discoveries they made were often more complex. We measured complexity as the
+combinatorial complexity of the number of items in the participants' inventories
+at the time a discovery was made. We found that when discoveries were weighted
+by combinatorial complexity, participants solved more complex problems
+with each generation, `r exp1$difficulty_by_generation_mod_slope_stats`,
+and this benefit did not diminish for later generations,
+`r exp1$difficulty_by_generation_quad_mod_slope_stats`.
 
-(ref:size-of-inheritance) Number of innovations created relative to those
-inherited. **A.** The relationship between created and inherited innovations.
-The dotted line is a reference with slope=1 such that points above the line
-indicate future generations exceeding their ancestors. **B.** The relationship
-between created innovations controlling for those inherited. The same reference
-line as in A is now horizontal. The line shows the predictions of the
-hierarchical regression model with ±1 standard error.
+### Performance by inheritance size
 
-```{r size-of-inheritance, fig.width=6, fig.height=4, fig.cap="(ref:size-of-inheritance)"}
+```{r fig4, fig.height=8, fig.cap="Performance by inheritance size. A. Number of tools created relative to those inherited. The dotted line is a reference with slope=1 such that points above the line indicate future generations exceeding their ancestors. B. Number of new tools relative to those inherited. The same reference line is now shown horizontally. C. Change in accumulated difficulty score. Analogous to B, but with innovations weighted by complexity. In B and C, the error ranges specify the model predictions with ±1 standard error."}
 grid.arrange(
   innovations_created_and_inherited_plot + ggtitle("A"),
   new_innovations_plot + ggtitle("B"),
-  nrow = 1
+  delta_difficulty_plot + ggtitle("C"),
+  ncol = 1
 )
 ```
 
-However, an alternative explanation, not having to do with inheritance affecting
-problem solving ability, is that as more innovations are accumulated, the task
-gets more difficult, such that problem solving might slow down irregardless of
-what was inherited. In the Totems game, as innovations are accumulated, the total
-number of possible guesses than can be made from the accumulated items increases
-exponentially, so that later generations of problems are less likely to stumble
-upon a correct solution by chance. To control for combinatorial complexity, we
-created an alternative outcome measure that, rather than counting all
-innovations equally, instead weighted each innovation relative to the size of
-the inventory at the time at which the innovation was discovered. By this
-measure, innovations from later generations are expected to be more difficult
-because they require combinatorially more guesses in order to find by chance
-alone.
+Because there is no difference between a second generation participant
+who inherits 10 tools and a fourth generation participant who inherits
+the same tools, we also looked at problem solving performance relative
+to the number of tools that were inherited (Fig. 4). As the number of
+inherited tools increased, the number of new tools discovered decreased,
+`r exp1$inheritance_size_slope_stats` (Fig. 4B). That participants who
+inherited more items had a harder time exceeding them is expected based on the
+analysis of performance over generations reported above. However, when tools
+are weighted by combinatorial complexity, the amount by which participants are
+able to exceed their ancestors actually increases for larger inheritance sizes,
+`r exp1$delta_diff_slope_stats` (Fig. 4C), though we are hesitant to draw strong
+conclusions from this finding as it may be explanable by the characteristics of
+the solution landscape, a point we return to in the Discussion.
 
-Fig. \@ref(fig:delta-difficulty-fig) shows the
-change in accumulated difficulty score based on the number of innovations
-that were inherited. In contrast to the analysis that treated all
-innovations equally, when innovations are weighted by combinatorial complexity,
-the effects of inheritance and diachronic collaboration appear to be beneficial.
-Diachronic problem solvers who inherit more innovations are better
-able to exceed the accumulated difficulty score of their ancestors than
-first generation diachronic problem solvers, `r exp1$delta_diff_slope_stats`.
+We next asked whether inheriting more tools had an impact on the rate of new
+tool discovery. To answer this question, we first needed to identify the length
+of time spent recreating inherited tools as opposed to discovering new ones.
+Participants took on average `r exp1$mean_learning_time_min` minutes of the 25
+minute session (`r exp1$proportion_learning_time`%) to recreate the inherited
+tools---a portion of the experiment we refer to as the learning period. The
+length of the learning period correlated positively with the number of inherited
+tools (Fig. 5).
 
-(ref:delta-difficulty-fig) Change in accumulated difficulty score by
-inheritance. Accumulated difficulty scores are sums of discovered innovations
-weighted by the combinatorial complexity of the possible choices available to
-the participant when the innovation was discovered. The outcome measure is the
-difference between the accumulated difficulty scores of subsequent generations.
-The line shows the predictions of a hierarchical regression model with ±1
-standard error.
-
-```{r delta-difficulty-fig, fig.cap="(ref:delta-difficulty-fig)"}
-delta_difficulty_plot
+```{r fig5, fig.cap="Learning rates. Correlation between the number of tools inherited and the time it took to recreate the inherited items. Outliers who were appear unwilling or unable to recreate the inherited items are shown as X's, but included in all analyses."}
+learning_rates_plot
 ```
 
-The final explanation we consider regarding whether inheritance affected problem
-solving ability is that larger inheritances take more time to recreate, thus
-leaving less time for future problem solving. Even if inheritance did not affect
-problem solving ability, participants who inherit more innovations may not
-discover as many future innovations simply because they used up most of their
-time recreating the items that were inherted. To investigate, we looked at
-problem solving rates controlling for the amount of time spent recreating the
-inherited items.
+We then calculated discovery rates for each participant: the number of
+novel discoveries relative to the amount of time out of the 25 minute
+session spent discovering new tools (Fig. 6). The overall rate of
+problem solving was `r exp1$minutes_per_new_innovation` minutes per new
+innovation (`r exp1$new_innovations_per_minute` innovations per minute),
+`r exp1$playing_time_slope_stats`. This rate was not found to vary based on
+the number of inherited tools, as revealed by comparing a model predicting
+unique innovations from playing time alone to one predicting unique
+innovations from the interaction between playing time and inheritance size,
+`r exp1$playing_time_modcomp`. This suggests that inheriting more tools did not
+meaningfully diminish the rate of future problem solving.
 
-Diachronic problem solvers after the first generation inherit the recipes
-for creating innovations in the Totems game, not the innovations themselves.
-Thus, diachronic problem solvers who inherit solutions must start the
-experiment by recreating the innovations already discovered by their
-ancestors. On average, diachronic problem solvers after the first generation
-spent `r exp1$mean_learning_time_min` minutes of a 25 minute session
-(`r exp1$proportion_learning_time`%) recreating the innovations that were
-inherted (Fig. \@ref(fig:learning-times)A). We refer to to this stage
-as the **learning stage**.
-
-The length of the learning stage depended on the number of innovations that were
-inherited. On average diachronic problem solvers inherited
-`r exp1$mean_inheritance_size` innovations (SD=`r exp1$sd_inheritance_size`). The
-length of the learning stage scaled linearly with the size of the inheritance,
-`r report_lm_mod(learning_rates_mod, "InheritanceSize")` (Fig. \@ref(fig:learning-times)B),
-but there were some exceptions; some participants took disproportionately
-long to recreate the items discovered by their ancestors. Participants
-who spent over 80% of the session in the learning stage were considered outliers,
-and excluded from analysis.
-
-(ref:learning-times) Learning times. **A.** The distribution of learning times,
-with outliers highlighted. **B.** Linear relationship between inheritance sizes
-and learning times. Outliers excluded from the regression are shown as X's.
-
-```{r learning-times, fig.width=6, fig.height=4, fig.cap="(ref:learning-times)"}
-grid.arrange(
-  learning_times_plot + ggtitle("A"),
-  learning_rates_plot + ggtitle("B"),
-  nrow = 1
-)
-```
-
-Problem solvers who spend more time in the learning stage conversely have less
-time in the **playing stage**, where new innovations are tried and discovered.
-Fig. \@ref(fig:playing-time-plot) shows the problem solving
-rates for diachronic problem solvers based on the length of the playing stage.
-The overall rate of problem solving in the playing stage was
-`r exp1$minutes_per_new_innovation` minutes per new innovation
-(`r exp1$new_innovations_per_minute` innovations per minute),
-`r exp1$playing_time_slope_stats`. This rate was not found to vary based
-on the size of the inheritance, as revealed by a model comparison comparing
-a model predicting unique innovations from playing time alone to one predicting
-unique innovations from the interaction between playing time and inheritance size,
-`r exp1$playing_time_modcomp`. This result suggests that inheriting more
-items did not have an effect on the rate at which new problems are solved
-when playing time is controlled.
-
-(ref:playing-time-plot) Problem solving rate in the playing stage. Playing time
-is the amount of time out of a 25 minute session dedicated to discovering new
-innovations that were not discovered by an ancestor. The line shows the predictions
-of the hierarchical regression model with ±1 standard error. The slope of this
-line did not significantly vary based on the size of the inheritance.
-
-```{r playing-time-plot, fig.cap="(ref:playing-time-plot)"}
+```{r fig6, fig.cap="Problem solving rate in the discovery stage. Discovery time is the amount of time out of a 25 minute session dedicated to discovering new innovations that were not discovered by an ancestor. The line shows the predictions of the hierarchical regression model with ±1 standard error. The slope of this line did not significantly vary based on the size of the inheritance."}
 playing_time_plot
+```
+
+### Performance by inheritance
+
+Next we compared performance in the first generation, where participants did
+not benefit from any previous ancestor, to performance in generations 2-4.
+We found that participants who benefited from inheritance on average made
+fewer guesses per item than when the same items were attempted in the first
+generation, `r exp1$guesses_per_item_by_inheritance`. As expected, this effect
+is especially pronounced for the items that were inherited. We did not find
+any evidence that inheritance had an affect on the number of guesses per novel
+item, `r exp1$guesses_per_new_item_by_inheritance_mod` (Fig. 7). This finding
+suggests that although inheritance benefits participants in recreating inherited
+solutions, it does not confer any benefits to future problem solving.
+
+```{r fig7, fig.height=6, fig.cap="Guesses per tool by inheritance condition. Each line is the average number of guesses it took to discover a particular tool in either inheritance condition. Error bars show ±1 standard of the model predictions. A. Overall guesses per tool, including those inherited. B. Guesses per novel tool."}
+grid.arrange(
+  guesses_per_item_by_inheritance_plot + ggtitle("A"),
+  guesses_per_new_item_by_inheritance_plot + ggtitle("B"),
+  ncol = 1
+)
+```
+
+Finally, we analyzed the overall guessing strategy employed by participants
+who inherited from an ancestor versus those who did not. Guesses were
+categorized into one of four types: redundant guesses, repeat items,
+unique guesses, and unique items. The overall proportion of guesses
+made by participants based on their inheritance condition is shown in
+Fig. 8. We found that participants who inherited solutions at the start
+tended to make fewer redundant guesses than first generation participants,
+`r exp1$num_redundant_guesses`, a difference of 12%, `r exp1$prop_redundant_guesses`.
+This result suggests that starting off the problem solving task with
+solutions inherited from a previous generation influenced the way
+in which future guesses are generated.
+
+```{r fig8, fig.width=4, fig.cap="Guessing strategies by inheritance condition. Redundant guesses were incorrect guesses made once before. Repeat items were recreated tools. Unique guesses were incorrect guesses never made. Unique items were unique guesses that created a new tool."}
+prop_guess_types_50min_plot
 ```
 
 ## Discussion

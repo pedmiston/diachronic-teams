@@ -3,6 +3,10 @@ source("docs/R/0-setup.R")
 data("Teams")
 data("Sessions")
 
+methods <- list()  # Store vars for in-text reference
+methods$n_unique_guesses_6 <- count_unique_guesses(6)
+methods$n_unique_guesses_6_pct <- round(3/methods$n_unique_guesses_6 * 100, 1)
+
 TeamCounts <- Teams %>%
   filter(
     SessionDuration %in% c(25, 50),
