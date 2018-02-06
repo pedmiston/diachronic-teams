@@ -17,7 +17,7 @@ def run(ctx, experiment, output_dir=None, verbose=False, analyze_after=False):
     Examples:
 
       $ inv bots.run list  # list all experiments
-      $ inv bots.run all
+      $ inv bots.run all   # run all experiments
 
     """
     experiments = determine_experiments(experiment)
