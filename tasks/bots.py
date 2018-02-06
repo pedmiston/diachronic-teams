@@ -1,26 +1,34 @@
 import sys
 import json
+from pathlib import Path
 
 from invoke import task
 import pandas
-from unipath import Path
 
-import simulations
-import graph
-from tasks.paths import R_PKG
+import bots
+import graphdb
+from tasks.config import R_PKG
 
 
 @task
 def run(ctx, experiment, output_dir=None, verbose=False, analyze_after=False):
-    """Simulate robotic players playing the totems game."""
+    """Simulate robotic players playing the totems game.
+
+    Examples:
+
+      $ inv bots.run list  # list all experiments
+      $ inv bots.run all
+
+    """
     experiments = determine_experiments(experiment)
     for experiment_yaml in experiments:
-        output_dir = Path(output_dir or Path(R_PKG, 'data-raw/simulations'))
-        if not output_dir.isdir():
-            output_dir.mkdir(True)
+        if output_dir is None:
+            output_dir = R_PKG / 'data-raw/bots'
+        if not output_dir.is_dir():
+            output_dir.mkdir(parents=True)
         output = Path(output_dir, experiment_yaml.stem + '.csv')
         print('Running experiment { %s }' % experiment_yaml.stem)
-        simulations.run_experiment(experiment_yaml, output=output, verbose=verbose)
+        bots.run_experiment(experiment_yaml, output=output, verbose=verbose)
 
     if analyze_after:
         analyze(ctx, experiment)
@@ -38,16 +46,16 @@ def analyze(ctx, experiment):
 def determine_experiments(experiment):
     if experiment == 'list':
         print('Available experiments:')
-        for experiment in simulations.paths.EXPERIMENTS.listdir('*.yaml'):
+        for experiment in bots.paths.EXPERIMENTS.listdir('*.yaml'):
             print(' - ' + experiment.stem)
         sys.exit()
     elif experiment == 'all':
-        experiments = simulations.paths.EXPERIMENTS.listdir('*.yaml')
+        experiments = bots.paths.EXPERIMENTS.listdir('*.yaml')
     elif Path(experiment).exists():
         experiments = [Path(experiment)]
         output_dir = output_dir or Path(experiment).parent
     else:
-        experiment = Path(simulations.paths.EXPERIMENTS, experiment + '.yaml')
+        experiment = Path(bots.paths.EXPERIMENTS, experiment + '.yaml')
         assert experiment.exists(), 'experiment %s not found' % experiment
         experiments = [experiment]
 
@@ -60,7 +68,7 @@ def adjacent(inventories):
     results = pandas.read_csv(inventories_csv)
     inventories = results.inventory.apply(json.loads)
 
-    landscape = graph.Landscape()
+    landscape = graphdb.Landscape()
     results['n_adjacent'] = \
         (inventories.apply(landscape.adjacent_possible)
                     .apply(len))
@@ -82,8 +90,8 @@ def find_simulations_csv(inventories):
 def expand(ctx, experiment):
     """Show the simulation vars used in an experiment."""
     if not Path(experiment).exists():
-        experiment = Path(simulations.paths.EXPERIMENTS, experiment + '.yaml')
+        experiment = Path(bots.paths.EXPERIMENTS, experiment + '.yaml')
         assert experiment.exists(), 'experiment %s not found' % experiment
-    experiment = simulations.read_experiment_yaml(experiment)
+    experiment = bots.read_experiment_yaml(experiment)
     simulations = experiment.expand_all()
     simulations.to_csv(sys.stdout, index=False)
