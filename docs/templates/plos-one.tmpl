@@ -24,7 +24,7 @@
 
 % ligatures disabled
 \usepackage{microtype}
-\DisableLigatures[f]{encoding = *, family = * }
+\DisableLigatures[f]{encoding = *, family = *}
 
 % color can be used to apply background shading to table cells only
 \usepackage[table]{xcolor}
@@ -51,13 +51,13 @@
 
 
 % Remove comment for double spacing
-%\usepackage{setspace} 
+%\usepackage{setspace}
 %\doublespacing
 
 % Text layout
 \raggedright
 \setlength{\parindent}{0.5cm}
-\textwidth 5.25in 
+\textwidth 5.25in
 \textheight 8.75in
 
 % Bold the 'Figure #' in the caption and separate it from the title/caption with a period
@@ -108,19 +108,19 @@
 \newline
 % Insert author names, affiliations and corresponding author email (do not include titles, positions, or degrees).
 \\
-$for(author)$$author.name$\textsuperscript{$author.affiliation$}$sep$, $endfor$
+$for(author)$$author.name$\textsuperscript{$author.affiliation_id$}$sep$, $endfor$
 \\
 
 \bigskip
 $for(affiliation)$
-\textbf{$affiliation.n$} $affiliation.department$, $affiliation.university$
+\textbf{$affiliation.id$} $affiliation.department$, $affiliation.university$
 \\
 $endfor$
 \bigskip
 
 % Current address notes
 \textcurrency Current Address: $address$ % change symbol to "\textcurrency a" if more than one current address note
-% \textcurrency b Insert second current address 
+% \textcurrency b Insert second current address
 % \textcurrency c Insert third current address
 
 % Use the asterisk to denote corresponding authorship and provide email address in note below.

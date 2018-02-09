@@ -2,44 +2,43 @@
 title: "The impact of inheritance on problem solving"
 author:
   - name: Pierce Edmiston
-    affiliation: 1
+    affiliation_id: 1
   - name: Maxime Derex
-    affiliation: 2
+    affiliation_id: 2
   - name: Gary Lupyan
-    affiliation: 1
+    affiliation_id: 1
 affiliation:
-  - n: 1
+  - id: 1
     department: Department of Psychology
     university: University of Wisconsin-Madison
-  - n: 2
+  - id: 2
     department: Biosciences Department
     university: University of Exeter
 email: pedmiston\@wisc.edu
-address: 1202 W. Johnson Street, Department of Psychology, University of Wisconsin-Madison, Madison, WI 53703.
+address: 1202 W. Johnson St., Department of Psychology, University of Wisconsin, Madison, WI 53703.
 abstract: |
   Humans are able to accumulate tools and other solutions to problems like no
   other species of animal. A consequence of our system of cultural inheritance
   is that future generations rarely have to start from scratch when solving new
   problems, as demonstrated by the prevalence of reuse in the history of human
-  technology. We investigated how inheriting solutions from a previous
+  technology. We examined how inheriting solutions from a previous
   generation impacted problem solving by comparing the performance of teams who
   share solutions across generations to alternative strategies for solving the
   same set of problems but without inheritance. We found that inheritance was
   effective in that participants were reliably able to solve more problems than
   their ancestors, and that the benefits of inheritance were similar to
-  individuals given the same total amount of time and teams working in parallel.
-  We also found that inheritance caused participants to engage in a more
-  efficient guessing strategy, and as a consequence were less likely to become
-  fixated on incorrect solutions. These results suggest that human cultural
-  inheritance does more than give future generations a head start on problem
-  solving, and may actually change the way new problems are solved.
+  individuals given the same total amount of time and teams working in
+  parallel. We also found that inheritance caused participants to engage in
+  a more efficient guessing strategy, and as a consequence were less likely to
+  become fixated on incorrect solutions. These results suggest that human
+  cultural inheritance does more than give future generations a head start on
+  problem solving, and may actually change the way new problems are solved.
 bibliography: "references.bib"
 csl: "templates/plos-one.csl"
 output:
   bookdown::pdf_document2:
-    template: templates/plos_latex_template.tex
+    template: templates/plos-one.tmpl
     keep_tex: yes
-    number_sections: no
 ---
 ```{r totems, include=FALSE}
 library(knitr)
@@ -75,7 +74,7 @@ sapply(chunks, read_graphviz_chunk, package = "totems")
 ```{r setup, include=FALSE, cache=FALSE}
 ```
 
-# Introduction
+# Introduction {-}
 
 ```{r intro, include=FALSE}
 ```
@@ -137,7 +136,7 @@ by allowing future generations to inherit the discoveries made by the previous
 generation, and measured the ability of participants to exceed the solutions
 they inherited.
 
-# Methods
+# Methods {-}
 
 ```{r methods, include=FALSE}
 ```
@@ -240,7 +239,7 @@ because they experienced errors in the computer game. Others
 kable(ConditionCounts, caption = "Total participant and team recruitment.")
 ```
 
-# Experiment 1
+# Experiment 1 {-}
 
 ```{r exp1, include=FALSE}
 ```
@@ -412,7 +411,7 @@ We next asked whether the size of the inheritance had an impact on the likelihoo
 
 We believe the source of these conflicting interpretations is an underlying inability to understand the impact of inheritance on problem solving without comparison to a control condition. In Experiment 2, we attempt to understand the impact of inheritance on problem solving relative to the benefits that may accrue from individual learning over four separate 25-minute sessions.
 
-# Experiment 2
+# Experiment 2 {-}
 
 ```{r exp2, include=FALSE}
 ```
@@ -528,7 +527,7 @@ prop_guess_types_50min_plot
 
 ## Discussion
 
-# Experiment 3
+# Experiment 3 {-}
 
 (ref:team-structures-exp3) Problem solving strategies compared in Experiment 3.
 
@@ -541,7 +540,7 @@ prop_guess_types_50min_plot
 
 ## Discussion
 
-# Experiment 4
+# Experiment 4 {-}
 
 (ref:team-structures-exp4) Problem solving strategies compared in Experiment 4.
 
@@ -554,9 +553,9 @@ prop_guess_types_50min_plot
 
 ## Discussion
 
-# Discussion
+# Discussion {-}
 
-# References
+# References {-}
 
 \setlength{\parindent}{-0.1in}
 \setlength{\leftskip}{0.15in}

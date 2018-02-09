@@ -35,7 +35,8 @@ def install(ctx):
     ctx.run('cd {} && Rscript -e "devtools::install()"'.format(R_PKG))
 
 @task
-def make(ctx, name, clear_cache=False, open_after=False, verbose=False, output_format="pdf_document"):
+def make(ctx, name, clear_cache=False, open_after=False, verbose=False,
+         output_format="bookdown::pdf_document2"):
     """Compile RMarkdown documents.
 
     Examples:
@@ -43,7 +44,7 @@ def make(ctx, name, clear_cache=False, open_after=False, verbose=False, output_f
       $ inv make list      # see available reports
       $ inv make all       # run all reports
       $ inv make totems -o # make totems.Rmd and open output after
-      $ inv make plos-one -u "bookdown::pdf_document2"
+      $ inv make plos-one
 
     """
     if name == 'list':
