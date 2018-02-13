@@ -309,11 +309,11 @@ num_innovations_50min_preds <- recode_session_type_50min() %>%
 
 set.seed(432)
 num_innovations_50min_plot <- ggplot(Innovations) +
-  aes(SessionTypeOrdered, NumInnovations) +
+  aes(SessionTypeSimple, NumInnovations) +
   geom_bar(aes(fill = StrategyLabel, alpha = Inheritance),
            stat = "identity", data = num_innovations_50min_preds) +
   geom_point(aes(color = StrategyLabel),
-             position = position_jitter(width = 0.3)) +
+             position = position_jitter(width = 0.3), shape = 1) +
   geom_linerange(aes(ymin = NumInnovations-SE, ymax = NumInnovations+SE),
                  data = num_innovations_50min_preds) +
   t_$scale_color_strategy +
@@ -325,7 +325,8 @@ num_innovations_50min_plot <- ggplot(Innovations) +
   t_$base_theme +
   theme(
     legend.position = "none",
-    panel.grid.major.x = element_blank()
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.y = element_blank()
   )
 
 # * Rate of innovation ----
@@ -337,19 +338,25 @@ Sampled50min <- Sampled %>%
   label_inheritance() %>%
   mutate(NumInnovations = InventorySize - 6)
 
+labels <- recode_session_type_50min() %>%
+  mutate(TeamTime = c(12.5, 43.75, 43.75, 43.75),
+         NumInnovations = c(4.5, 8.5, 6.8, 9.8)) %>%
+  recode_strategy()
+
 innovation_rate_50min_plot <- ggplot(Sampled50min) +
   aes(TeamTime, NumInnovations) +
   geom_line(aes(color = StrategyLabel,
                 group = interaction(StrategyLabel, Generation),
                 size = Inheritance),
             stat = "summary", fun.y = "mean") +
+  geom_text(aes(label = SessionTypeSimple, color = StrategyLabel), data = labels, fontface = "bold", size = 2.5) +
   t_$scale_x_team_time +
   t_$scale_color_strategy +
   scale_size_manual(values = c(1.8, 1.0)) +
   t_$scale_y_num_innovations +
   guides(linetype = "none", size = "none") +
   t_$base_theme +
-  theme(legend.position = c(0.2, 0.8))
+  theme(legend.position = "none")
 
 # * Guesses per item ----
 data("Guesses")
@@ -395,19 +402,6 @@ CostPerItem50min <- GuessesPerItem50min %>%
   recode_inheritance()
 
 # Guesses per item by inheritance.
-# Determine the impact of inheritance on guessing ability
-# by comparing guessing rates for each item discovered
-# by Diachronic players.
-guesses_per_item_by_inheritance_mod <- lmer(
-  TotalGuesses ~ Diachronic_v_NoInheritance +
-    (Diachronic_v_NoInheritance|Adjacent),
-  data = filter(CostPerItem50min, Discovered))
-
-guesses_per_item_by_inheritance_preds <- recode_inheritance() %>%
-  filter(Inheritance != "individual_inheritance") %>%
-  cbind(., predictSE(guesses_per_item_by_inheritance_mod, newdata = ., se = TRUE)) %>%
-  rename(TotalGuesses = fit, SE = se.fit)
-
 guesses_per_item_treatment_mod <- lmer(
   TotalGuesses ~ DG2_v_DG1 + DG2_v_S2 + DG2_v_I50 +
     (DG2_v_DG1 + DG2_v_S2 + DG2_v_I50|Adjacent),
@@ -415,22 +409,24 @@ guesses_per_item_treatment_mod <- lmer(
 
 guesses_per_item_treatment_preds <- recode_session_type_50min() %>%
   cbind(., predictSE(guesses_per_item_treatment_mod, newdata = ., se = TRUE)) %>%
-  rename(TotalGuesses = fit, SE = se.fit)
+  rename(TotalGuesses = fit, SE = se.fit) %>%
+  recode_strategy()
 
-guesses_per_item_by_inheritance_plot <- ggplot(CostPerItem50min) +
-  aes(InheritanceLabel, TotalGuesses) +
-  geom_line(aes(group = Adjacent), color = t_$color_picker("blue"),
-            stat = "summary", fun.y = "mean",
-            size = 0.8) +
-  geom_line(aes(group = 1),
-            stat = "identity", data = guesses_per_item_by_inheritance_preds,
-            size = 1.2) +
-  geom_errorbar(aes(ymin = TotalGuesses-SE, ymax = TotalGuesses+SE),
-                data = guesses_per_item_by_inheritance_preds,
-                width = 0.05, size = 1.2) +
+guesses_per_item_treatment_plot <- ggplot(CostPerItem50min) +
+  aes(SessionTypeOrdered, TotalGuesses) +
+  geom_point(aes(group = Adjacent, color = StrategyLabel), position = position_jitter(width = 0.2),
+             stat = "summary", fun.y = "mean", shape = 1) +
+  geom_errorbar(aes(ymin = TotalGuesses-SE, ymax = TotalGuesses+SE, color = StrategyLabel),
+                data = guesses_per_item_treatment_preds,
+                width = 0.1, size = 1.2) +
   xlab("") +
-  scale_y_continuous("Guesses per item") +
-  t_$base_theme
+  scale_y_continuous("Guesses per innovation", breaks = seq(0, 300, by = 50)) +
+  t_$scale_color_strategy +
+  t_$base_theme +
+  theme(
+    legend.position = "none",
+    panel.grid.major.x = element_blank()
+  )
 
 # * Guesses per item: Playing ----
 CostPerItem50minPlaying <- GuessesPerItem50min %>%

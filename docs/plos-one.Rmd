@@ -142,11 +142,11 @@ draw_image("gameplay", "totems")
 
 ## Participants {-}
 
-Participants (N=`n_recruited`) were students at the University of
-Wisconsin-Madison who completed the experiment in exchange for course credit.
-Students received credit for each completed session based on the duration of the
-session, 25 minutes or 50 minutes. Participants in the Isolated, multi-session
-experiment who completed all four sessions were awarded additional credit.
+Participants were students at the University of Wisconsin-Madison who completed
+the experiment in exchange for course credit. Students received credit based on
+the duration of each completed session, 25 minutes or 50 minutes. Participants
+assigned to the Isolated, multi-session condition who completed all four
+sessions were awarded additional credit.
 
 Participants were recruited until there were at least 40 teams in each strategy.
 Most strategies, other than four-person synchronic teams, ended up receiving
@@ -157,14 +157,10 @@ remaining participants were run as a combination of diachronic and
 two-person synchronic participants, resulting in a higher-than-expected
 number of participants in those conditions.
 
-Data from individual participants (N=`n_excluded`) were excluded from the final
-analyses for the following reasons. Most of these (N=`n_errors`) were excluded
-because they experienced errors in the computer game. Others
-(N=`n_noncomplaint`) were noncomplaint, giving up on the problem solving task
-(N=`n_gave_up`).
+(ref:condition-counts) Total participant and team recruitment.
 
 ```{r counts-table, results="asis"}
-kable(ConditionCounts, caption = "Total participant and team recruitment.")
+kable(ConditionCounts, caption = "(ref:condition-counts)")
 ```
 
 # Experiment 1 {-}
@@ -179,7 +175,7 @@ sychronic teams (Fig. \@ref(fig:team-structures-exp2)).
 
 (ref:team-structures-exp2) Problem solving strategies compared in Experiment 2.
 
-```{r team-structures-exp2, engine="dot", fig.cap="(ref:team-structures-exp2)"}
+```{r team-structures-exp2, engine="dot", out.width="50%", fig.cap="(ref:team-structures-exp2)"}
 ```
 
 ## Methods {-}
@@ -216,12 +212,12 @@ even when controlling for labor hours, instead of calendar hours.
 Rate of innovation by labor hours. **B.** Final innovations by strategy. Bars with
 errors show model predictions with ±1 standard error.
 
-```{r innovations-50min, fig.width=6, fig.height=4, fig.cap="(ref:innovations-50min)"}
+```{r innovations-50min, fig.width=5, fig.height=3, fig.cap="(ref:innovations-50min)"}
 grid.arrange(
   innovation_rate_50min_plot + ggtitle("A"),
   num_innovations_50min_plot + ggtitle("B"),
   nrow = 1,
-  widths = c(0.6, 0.4)
+  widths = c(0.55, 0.45)
 )
 ```
 
@@ -242,12 +238,10 @@ generation. Comparing the number of guesses per item only for items that
 were newly discovered by the second generation diachronic problem solvers
 did not reveal a benefit to inheritance (Fig. \@ref(fig:guesses-per-item)B).
 
-```{r guesses-per-item, fig.width=6, fig.height=4}
-grid.arrange(
-  guesses_per_item_by_inheritance_plot + ggtitle("A"),
-  guesses_per_new_item_by_inheritance_plot + ggtitle("B"),
-  nrow = 1
-)
+(ref:guesses-per-innovation) Average guesses per innovation.
+
+```{r guesses-per-innovation, fig.width=5}
+guesses_per_item_treatment_plot
 ```
 
 Finally we investigated the guessing strategy employed in each strategy.
@@ -255,7 +249,7 @@ We were interested in whether inheritance caused second generation
 diachronic problem solvers to guess differently than players in
 the other strategies. Our results are shown in Fig. \@ref(fig:guess-types).
 
-```{r guess-types, fig.width=6}
+```{r guess-types, fig.width=5}
 prop_guess_types_50min_plot
 ```
 
@@ -265,7 +259,7 @@ prop_guess_types_50min_plot
 
 (ref:team-structures-exp3) Problem solving strategies compared in Experiment 3.
 
-```{r team-structures-exp3, engine="dot", fig.cap="(ref:team-structures-exp3)"}
+```{r team-structures-exp3, engine="dot", out.width="70%", fig.cap="(ref:team-structures-exp3)"}
 ```
 
 ## Methods {-}
@@ -278,7 +272,7 @@ prop_guess_types_50min_plot
 
 (ref:team-structures-exp4) Problem solving strategies compared in Experiment 4.
 
-```{r team-structures-exp4, engine="dot", fig.cap="(ref:team-structures-exp4)"}
+```{r team-structures-exp4, engine="dot", out.width="50%", fig.cap="(ref:team-structures-exp4)"}
 ```
 
 ## Methods {-}
