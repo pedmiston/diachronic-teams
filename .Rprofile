@@ -1,5 +1,12 @@
 #!/usr/bin/Rscript --vanilla
 .First <- function() {
   library(grDevices)
-  source("docs/R/0-setup.R")
+  library(magrittr)
+  library(broom)
+  library(lme4)
+  library(AICcmodavg)
+  library(gridExtra)
+  library(crotchet)
+  library(totems)
+  library(tidyverse) # Load tidyverse after totems to prevent dplyr::filter from being masked
 }

@@ -54,16 +54,10 @@ opts_chunk$set(
 
 # Read all knitr chunks in .R files
 chunks_dir <- "R"
-sapply(list.files(chunks_dir, "*.R", full.names = TRUE), read_chunk)
+read_chunk(file.path(chunks_dir, "cogsci.R"))
 ```
 
-```{r setup, include=FALSE, cache=FALSE}
-```
-
-```{r methods, include=FALSE}
-```
-
-```{r exp1, include=FALSE}
+```{r cogsci, include=FALSE}
 ```
 
 # Introduction
