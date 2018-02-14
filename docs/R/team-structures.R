@@ -816,3 +816,6 @@ innovation_rate_50min_plot <- ggplot(Sampled50min) +
   guides(linetype = "none", size = "none") +
   t_$base_theme +
   theme(legend.position = c(0.2, 0.8))
+
+# TeamSizeSimulations ----
+data("BotsPlayers")

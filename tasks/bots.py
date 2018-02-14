@@ -1,9 +1,9 @@
 import sys
 import json
+from pathlib import Path
 
 from invoke import task
 import pandas
-from unipath import Path
 
 import bots
 import graphdb
@@ -16,7 +16,7 @@ def run(ctx, experiment, output_dir=None, verbose=False, analyze_after=False):
     experiments = determine_experiments(experiment)
     for experiment_yaml in experiments:
         output_dir = Path(output_dir or Path(R_PKG, 'data-raw/bots'))
-        if not output_dir.isdir():
+        if not output_dir.is_dir():
             output_dir.mkdir(True)
         output = Path(output_dir, experiment_yaml.stem + '.csv')
         print('Running experiment { %s }' % experiment_yaml.stem)
