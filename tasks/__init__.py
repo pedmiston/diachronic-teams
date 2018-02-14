@@ -1,4 +1,5 @@
 import sys
+from os import environ
 from pathlib import Path
 
 import jinja2
@@ -15,8 +16,13 @@ def configure(ctx):
     """Create environment file from a template."""
     dst = '.environment'
     template = jinja2.Template(open('environment.j2', 'r').read())
+
+    neo4j_password = environ.get('NEO4J_PASSWORD')
+    if neo4j_password is None:
+        neo4j_password = input('Enter Neo4j password: ')
+
     with open(dst, 'w') as f:
-        f.write(template.render())
+        f.write(template.render(neo4j_password=neo4j_password))
 
 
 @task
