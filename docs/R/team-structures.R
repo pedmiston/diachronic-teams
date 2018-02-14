@@ -819,3 +819,28 @@ innovation_rate_50min_plot <- ggplot(Sampled50min) +
 
 # TeamSizeSimulations ----
 data("BotsPlayers")
+
+# BotsPlayers ----
+data("BotsPlayers")
+
+sim_vars <- c("strategy", "n_guesses", "n_players", "seed", "player_memory", "team_memory")
+filter_final_round <- . %>%
+  group_by_(.dots = sim_vars) %>%
+  filter(round == max(round)) %>%
+  ungroup()
+
+min_players <- min(BotsPlayers$n_players)
+max_players <- max(BotsPlayers$n_players)
+min_guesses <- min(BotsPlayers$n_guesses)
+max_guesses <- max(BotsPlayers$n_guesses)
+
+BotsPlayersFinal <- BotsPlayers %>%
+  filter((n_players == min_players & n_guesses == min_guesses) | (n_players == max_players & n_guesses == max_guesses)) %>%
+  filter_final_round() %>%
+  mutate(num_innovations = inventory_size - 6)
+
+ggplot(BotsPlayersFinal) +
+  aes(strategy, num_innovations) +
+  geom_bar(aes(fill = strategy), stat = "summary", fun.y = "mean", alpha = 0.6) +
+  geom_point(aes(color = strategy), shape = 1, position = position_jitter(width = 0.2)) +
+  facet_wrap("n_players")
