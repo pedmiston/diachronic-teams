@@ -1,5 +1,5 @@
-import sys
 from glob import glob
+from pathlib import Path
 
 from invoke import task, Collection
 from unipath import Path
@@ -7,6 +7,8 @@ import jinja2
 
 import graphdb
 from bots import tasks as bots_tasks
+
+from tasks.config import PROJ
 
 
 PROJ = Path(__file__).absolute().parent
@@ -94,34 +96,22 @@ def clean(ctx, name, verbose=False):
     ctx.run(cmd.format(parent=parent, stem=stem), echo=verbose)
 
 
-@task(help=dict(name='If name is "list", list available figure names.'))
-def img(ctx, name, output=None, ext='png', dpi=300):
-    """Create an image and put it in the "img/" dir."""
-    EXTDATA = Path(R_PKG, 'inst/extdata/')
-    if name == 'list':
-        print('\n'.join(EXTDATA.listdir('*.gv', names_only=True)))
-        return
-    src = Path(EXTDATA, '{}.gv'.format(name))
-    dst = Path('img/{}.{}'.format(output or name, ext))
-    ctx.run('dot -T{} -Gdpi={} -o {} {}'.format(ext, dpi, dst, src))
-
-
 def get_available_docs(name=''):
     available_docs = [Path(rmd) for rmd in
                       glob('{proj}/docs/**/*.Rmd'.format(proj=PROJ),
                            recursive=True)
-                      if Path(rmd).isfile()]
+                      if Path(rmd).is_file()]
 
     if name == '':
         rmds = available_docs
-    elif Path(name).isfile():
+    elif Path(name).is_file():
         rmds = [Path(name)]
     else:
         # name is a glob
         rmds = [Path(rmd) for rmd in
                 glob('{proj}/docs/**/{name}*.Rmd'.format(proj=PROJ, name=name),
                      recursive=True)
-                if Path(rmd).isfile()]
+                if Path(rmd).is_file()]
 
     return rmds
 
