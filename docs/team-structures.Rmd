@@ -1,5 +1,5 @@
 ---
-title: "The impact of inheritance on problem solving"
+title: "The impact of team structure on problem solving performance"
 author:
   - name: Pierce Edmiston
     affiliation_id: 1
@@ -26,7 +26,7 @@ output:
     keep_tex: yes
     number_sections: no
 ---
-```{r plos-one, include=FALSE}
+```{r team-structures-config, include=FALSE}
 library(knitr)
 library(crotchet)
 
@@ -46,7 +46,7 @@ opts_chunk$set(
 
 # Read all knitr chunks in .R files
 chunks_dir <- "R"
-read_chunk(file.path(chunks_dir, "plos-one.R"))
+read_chunk(file.path(chunks_dir, "team-structures.R"))
 
 # Read all the diagrams made with graphviz in the totems package
 chunks <- c(
@@ -67,9 +67,14 @@ sapply(chunks, read_graphviz_chunk, package = "totems")
 ```{r intro, include=FALSE}
 ```
 
-(ref:types-of-time) Types of time.
+# Methods {-}
 
-```{r types-of-time, fig.width=5, fig.height=2, fig.cap="(ref:types-of-time)"}
+```{r methods, include=FALSE}
+```
+
+(ref:types-of-time) Team structures controlling for labor time. **Left.** Team structures. Each node is a person. **Middle.** Relationship between labor time and calendar time. Sychronic teams spend labor time more quickly than the other strategies. **Right.** Learning times by strategy, showing that an isolated strategy provides the most time for individual learning.
+
+```{r types-of-time, fig.width=5, fig.height=2, fig.pos="b", out.extra="", fig.cap="(ref:types-of-time)"}
 grid.arrange(
   read_graphviz("team-structures", package = "totems"),
   gg_time,
@@ -77,11 +82,6 @@ grid.arrange(
   nrow = 1,
   widths = c(0.25, 0.375, 0.375)
 )
-```
-
-# Methods {-}
-
-```{r methods, include=FALSE}
 ```
 
 (ref:team-structures-all) All experimental conditions.
@@ -136,7 +136,7 @@ created an item, it could be dragged into the Stock panel, and used again. Once
 segments of a totem were made through cutting, carving, and painting, they could be
 dragged into the Totem panel for scoring.
 
-```{r interface, fig.cap="(ref:interface)"}
+```{r interface, fig.cap="(ref:interface)", out.width="100%"}
 draw_image("gameplay", "totems")
 ```
 
@@ -173,20 +173,10 @@ two-person diachronic team---to two alternative strategies for allocating the
 same 50 minutes of labor: isolated individuals working alone and two-person
 sychronic teams (Fig. \@ref(fig:team-structures-exp2)).
 
-(ref:team-structures-exp2) Problem solving strategies compared in Experiment 2.
+(ref:team-structures-exp2) Problem solving strategies compared in Experiment 1.
 
 ```{r team-structures-exp2, engine="dot", out.width="50%", fig.cap="(ref:team-structures-exp2)"}
 ```
-
-## Methods {-}
-
-(ref:exp1-participants) Participants in Experiment 1.
-
-```{r exp1-participants, results="asis"}
-kable(Exp1N, caption = "(ref:exp1-participants)")
-```
-
-## Results {-}
 
 Diachronic problem solvers with inheritance
 significantly exceeded the number of innovations discovered in a single
@@ -257,27 +247,25 @@ prop_guess_types_50min_plot
 
 # Experiment 2 {-}
 
-(ref:team-structures-exp3) Problem solving strategies compared in Experiment 3.
+(ref:team-structures-exp3) Problem solving strategies compared in Experiment 2.
 
-```{r team-structures-exp3, engine="dot", out.width="70%", fig.cap="(ref:team-structures-exp3)"}
+```{r team-structures-exp3, engine="dot", out.width="70%", fig.cap="(ref:team-structures-exp2)"}
 ```
-
-## Methods {-}
-
-## Results {-}
-
-## Discussion {-}
 
 # Experiment 3 {-}
 
-(ref:team-structures-exp4) Problem solving strategies compared in Experiment 4.
+(ref:team-structures-exp4) Problem solving strategies compared in Experiment 3.
 
-```{r team-structures-exp4, engine="dot", out.width="50%", fig.cap="(ref:team-structures-exp4)"}
+```{r team-structures-exp4, engine="dot", out.width="80%", fig.cap="(ref:team-structures-exp3)"}
 ```
 
-## Methods {-}
+```{r max-innovations-by-teamsize, fig.width=5}
+max_innovations_by_teamsize_plot
+```
 
-## Results {-}
+```{r bots-teamsize, fig.width=5}
+
+```
 
 ## Discussion {-}
 

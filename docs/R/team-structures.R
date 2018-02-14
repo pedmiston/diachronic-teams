@@ -340,7 +340,7 @@ Sampled50min <- Sampled %>%
 
 labels <- recode_session_type_50min() %>%
   mutate(TeamTime = c(12.5, 43.75, 43.75, 43.75),
-         NumInnovations = c(4.5, 8.5, 6.8, 9.8)) %>%
+         NumInnovations = c(4.5, 8.7, 6.8, 10)) %>%
   recode_strategy()
 
 innovation_rate_50min_plot <- ggplot(Sampled50min) +
@@ -413,7 +413,7 @@ guesses_per_item_treatment_preds <- recode_session_type_50min() %>%
   recode_strategy()
 
 guesses_per_item_treatment_plot <- ggplot(CostPerItem50min) +
-  aes(SessionTypeOrdered, TotalGuesses) +
+  aes(SessionTypeSimple, TotalGuesses) +
   geom_point(aes(group = Adjacent, color = StrategyLabel), position = position_jitter(width = 0.2),
              stat = "summary", fun.y = "mean", shape = 1) +
   geom_errorbar(aes(ymin = TotalGuesses-SE, ymax = TotalGuesses+SE, color = StrategyLabel),
@@ -533,7 +533,7 @@ GuessTypes50minSummary <- Guesses %>%
   recode_prop_guess_type_total()
 
 prop_guess_types_50min_plot <- ggplot(GuessTypes50minSummary) +
-  aes(SessionTypeOrdered, PropGuesses, fill = PropGuessTypeLabel) +
+  aes(SessionTypeSimple, PropGuesses, fill = PropGuessTypeLabel) +
   geom_bar(stat = "identity") +
   xlab("") +
   scale_y_continuous("Proportion of guesses", labels = scales::percent) +
@@ -711,53 +711,85 @@ first_discovery_by_generation_plot <- ggplot(FirstDiscovery) +
 # ---- teamsize
 # TeamSize ----
 # * Methods ----
-data("PlayerPerformance")
 
-PlayerPerformance100min <- PlayerPerformance %>%
-  filter(TeamStatus == "V", Exp == "100LaborMinutes") %>%
+# * Number of innovations ----
+data("Guesses")
+
+drop_isolated <- . %>% filter(Strategy != "Isolated")
+
+Innovations50min <- Guesses %>%
+  filter_50min() %>%
+  drop_isolated() %>%
+  recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
+  group_by(SessionID) %>%
+  summarize(NumInnovations = sum(GuessType == "unique_item")) %>%
+  ungroup() %>%
+  left_join(Sessions) %>%
   recode_strategy() %>%
-  recode_session_type_100() %>%
-  label_inheritance()
+  mutate(NumPlayers = 2)
 
-num_innovations_50min_mod <- lmer(
-  NumInnovations ~ DG4_v_DG1 + DG4_v_DG2 + DG4_v_DG3 + DG4_v_IS1 + DG4_v_IS2 + DG4_v_IS3 + DG4_v_IS4 + DG4_v_S4 + (1|TeamID),
-  data = PlayerPerformance100min
-)
+Innovations100min <- Guesses %>%
+  filter_teamsize() %>%
+  drop_isolated() %>%
+  recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
+  group_by(SessionID) %>%
+  summarize(NumInnovations = sum(GuessType == "unique_item")) %>%
+  ungroup() %>%
+  left_join(Sessions) %>%
+  recode_strategy() %>%
+  mutate(NumPlayers = 4)
 
-# Use lm mod for error on plot because lmer mod preds with AICcmodavg look too small
-num_innovations_100min_lm_mod <- lm(
-  NumInnovations ~ DG4_v_DG1 + DG4_v_DG2 + DG4_v_DG3 + DG4_v_IS1 + DG4_v_IS2 + DG4_v_IS3 + DG4_v_IS4 + DG4_v_S4,
-  data = PlayerPerformance100min
-)
+recode_team_size <- function(frame) {
+  team_size_labels <- c("Two person teams", "Four person teams")
+  team_size_map <- data_frame(
+    NumPlayers = c(2, 4),
+    NumPlayersLabel = factor(team_size_labels, levels = team_size_labels)
+  )
+  if(missing(frame)) return(team_size_map)
+  left_join(frame, team_size_map)
+}
 
-num_innovations_100min_preds <- recode_session_type_100() %>%
-  cbind(., predict(num_innovations_100min_lm_mod, newdata = ., se = TRUE)) %>%
+Innovations <- bind_rows(Innovations50min, Innovations100min) %>%
+  group_by(Strategy, NumPlayers, TeamID) %>%
+  summarize(NumInnovations = max(NumInnovations)) %>%
+  ungroup() %>%
+  recode_strategy() %>%
+  recode_team_size()
+
+max_innovations_by_teamsize_mod <- lmer(
+  NumInnovations ~ Diachronic_v_Synchronic * NumPlayers + (1|TeamID),
+  data = Innovations)
+max_innovations_by_teamsize_preds <- expand.grid(
+  Strategy = c("Diachronic", "Synchronic"),
+  NumPlayers = c(2, 4),
+  stringsAsFactors = FALSE
+) %>%
+  recode_strategy() %>%
+  cbind(., predictSE(max_innovations_by_teamsize_mod, newdata = ., se = TRUE)) %>%
   rename(NumInnovations = fit, SE = se.fit) %>%
-  recode_strategy() %>%
-  recode_session_type_100() %>%
-  highlight_inheritance_100()
+  recode_team_size()
 
 set.seed(432)
-num_innovations_100min_plot <- ggplot(PlayerPerformance100min) +
-  aes(SessionTypeOrdered, NumInnovations) +
-  geom_bar(aes(fill = StrategyLabel, alpha = Inheritance),
-           stat = "identity", data = num_innovations_100min_preds) +
-  geom_point(aes(color = StrategyLabel),
-             position = position_jitter(width = 0.3)) +
+max_innovations_by_teamsize_plot <- ggplot(Innovations) +
+  aes(StrategyLabel, NumInnovations) +
+  geom_bar(aes(fill = StrategyLabel), stat = "identity", alpha = 0.6,
+           data = max_innovations_by_teamsize_preds) +
   geom_linerange(aes(ymin = NumInnovations-SE, ymax = NumInnovations+SE),
-                 data = num_innovations_100min_preds) +
-  t_$scale_color_strategy +
-  t_$scale_fill_strategy +
-  scale_alpha_manual(values = c(0.7, 0.4, 0.4)) +
-  xlab("") +
-  t_$scale_y_num_innovations +
-  scale_shape_manual(values = c(16, 1)) +
+                 data = max_innovations_by_teamsize_preds) +
+  geom_point(aes(color = StrategyLabel), shape = 1,
+             position = position_jitter(width = 0.2, height = 0)) +
+  facet_wrap("NumPlayersLabel") +
+  scale_fill_manual(values = c(t_$synchronic_color, t_$diachronic_color)) +
+  scale_color_manual(values = c(t_$synchronic_color, t_$diachronic_color)) +
   t_$base_theme +
+  scale_y_continuous("Number of innovations", breaks = seq(0, 30, by = 2), expand = c(0, 0), limits = c(0, 27)) +
+  # coord_cartesian(ylim)
+  guides(color = "none", fill = "none") +
   theme(
-    legend.position = "none",
-    panel.grid.major.x = element_blank()
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.y = element_blank()
   ) +
-  ggtitle("Number of innovations discovered using each strategy")
+  xlab("")
 
 # * Rate of innovation ----
 data("Sampled")

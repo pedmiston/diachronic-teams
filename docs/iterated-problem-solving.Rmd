@@ -31,12 +31,12 @@ abstract: |
   limitations of this work, and motivate future directions.
 keywords: "cultural evolution; transmission chain; iterated learning"
 output:
-  pdf_document:
+  bookdown::pdf_document2:
     template: templates/cogsci.tmpl
     citation_package: natbib
     keep_tex: yes
 ---
-```{r totems, include=FALSE}
+```{r iterated-problem-solving-config, include=FALSE}
 library(knitr)
 library(crotchet)
 
@@ -54,10 +54,10 @@ opts_chunk$set(
 
 # Read all knitr chunks in .R files
 chunks_dir <- "R"
-read_chunk(file.path(chunks_dir, "cogsci.R"))
+read_chunk(file.path(chunks_dir, "iterated-problem-solving.R"))
 ```
 
-```{r cogsci, include=FALSE}
+```{r iterated-problem-solving, include=FALSE}
 ```
 
 # Introduction

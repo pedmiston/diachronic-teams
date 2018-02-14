@@ -1,11 +1,12 @@
 import sys
 from glob import glob
 
-from invoke import task
+from invoke import task, Collection
 from unipath import Path
 import jinja2
 
 import graphdb
+from bots import tasks as bots_tasks
 
 
 PROJ = Path(__file__).absolute().parent
@@ -43,8 +44,7 @@ def make(ctx, name, clear_cache=False, open_after=False, verbose=False,
 
       $ inv make list      # see available reports
       $ inv make all       # run all reports
-      $ inv make totems -o # make totems.Rmd and open output after
-      $ inv make plos-one
+      $ inv make {stem} -o # make {stem}.Rmd and open after
 
     """
     if name == 'list':
@@ -79,15 +79,20 @@ def make(ctx, name, clear_cache=False, open_after=False, verbose=False,
 @task
 def clean(ctx, name, verbose=False):
     """Clean the cache and intermediate outputs of RMarkdown reports."""
-    docs = get_available_docs(name)
+    if name == 'all':
+        parent = f'{PROJ}/docs/'
+        stem = '*'
+    else:
+        doc = get_available_docs(name)[0]
+        parent = doc.parent
+        stem = doc.stem
 
-    for doc in docs:
-        ctx.run((f'cd {doc.parent} && rm -rf '
-                  '*_cache/ *_files/ '
-                  'code* '
-                  '*.pdf *.docx *.html *.md '
-                  '*.tex *.aux *.out *.log *.synctex.gz *.bbl'),
-                  echo=verbose)
+    cmd = ('cd {parent} && rm -rf {stem}_cache/ {stem}_files/ '
+           'code* '
+           '{stem}.pdf {stem}.docx {stem}.html {stem}.md {stem}.tex '
+           '{stem}.aux {stem}.out {stem}.log {stem}.synctex.gz {stem}.bbl')
+    ctx.run(cmd.format(parent=parent, stem=stem), echo=verbose)
+
 
 @task(help=dict(name='If name is "list", list available figure names.'))
 def img(ctx, name, output=None, ext='png', dpi=300):
@@ -119,3 +124,13 @@ def get_available_docs(name=''):
                 if Path(rmd).isfile()]
 
     return rmds
+
+
+ns = Collection()
+ns.add_task(clean)
+ns.add_task(configure)
+ns.add_task(img)
+ns.add_task(install)
+ns.add_task(load)
+ns.add_task(make)
+ns.add_collection(bots_tasks, "bots")

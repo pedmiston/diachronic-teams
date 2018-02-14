@@ -1,4 +1,4 @@
-# ---- cogsci
+# ---- iterated-problem-solving
 
 # Setup ----
 library(magrittr)
