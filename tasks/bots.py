@@ -5,22 +5,22 @@ from invoke import task
 import pandas
 from unipath import Path
 
-import simulations
-import graph
-from tasks.paths import R_PKG
+import bots
+import graphdb
+from tasks.config import R_PKG
 
 
-@task
+@task(help=dict(experiment="Name of experiment to run. Pass 'list' to list all experiments."))
 def run(ctx, experiment, output_dir=None, verbose=False, analyze_after=False):
     """Simulate robotic players playing the totems game."""
     experiments = determine_experiments(experiment)
     for experiment_yaml in experiments:
-        output_dir = Path(output_dir or Path(R_PKG, 'data-raw/simulations'))
+        output_dir = Path(output_dir or Path(R_PKG, 'data-raw/bots'))
         if not output_dir.isdir():
             output_dir.mkdir(True)
         output = Path(output_dir, experiment_yaml.stem + '.csv')
         print('Running experiment { %s }' % experiment_yaml.stem)
-        simulations.run_experiment(experiment_yaml, output=output, verbose=verbose)
+        bots.run_experiment(experiment_yaml, output=output, verbose=verbose)
 
     if analyze_after:
         analyze(ctx, experiment)
@@ -38,16 +38,16 @@ def analyze(ctx, experiment):
 def determine_experiments(experiment):
     if experiment == 'list':
         print('Available experiments:')
-        for experiment in simulations.paths.EXPERIMENTS.listdir('*.yaml'):
+        for experiment in bots.paths.EXPERIMENTS.listdir('*.yaml'):
             print(' - ' + experiment.stem)
         sys.exit()
     elif experiment == 'all':
-        experiments = simulations.paths.EXPERIMENTS.listdir('*.yaml')
+        experiments = bots.paths.EXPERIMENTS.listdir('*.yaml')
     elif Path(experiment).exists():
         experiments = [Path(experiment)]
         output_dir = output_dir or Path(experiment).parent
     else:
-        experiment = Path(simulations.paths.EXPERIMENTS, experiment + '.yaml')
+        experiment = Path(bots.paths.EXPERIMENTS, experiment + '.yaml')
         assert experiment.exists(), 'experiment %s not found' % experiment
         experiments = [experiment]
 
@@ -75,15 +75,15 @@ def difficulty(inventories):
 
 
 def find_simulations_csv(inventories):
-    return Path(R_PKG, 'data-raw/simulations', inventories+'.csv')
+    return Path(R_PKG, 'data-raw/bots', inventories+'.csv')
 
 
 # @task
 def expand(ctx, experiment):
     """Show the simulation vars used in an experiment."""
     if not Path(experiment).exists():
-        experiment = Path(simulations.paths.EXPERIMENTS, experiment + '.yaml')
+        experiment = Path(bots.paths.EXPERIMENTS, experiment + '.yaml')
         assert experiment.exists(), 'experiment %s not found' % experiment
-    experiment = simulations.read_experiment_yaml(experiment)
-    simulations = experiment.expand_all()
-    simulations.to_csv(sys.stdout, index=False)
+    experiment = bots.read_experiment_yaml(experiment)
+    bots = experiment.expand_all()
+    bots.to_csv(sys.stdout, index=False)

@@ -6,7 +6,7 @@ from invoke import task, Collection
 
 import graphdb
 
-from tasks import R, docs
+from tasks import R, docs, bots
 from tasks.config import R_PKG
 
 
@@ -42,3 +42,4 @@ namespace = Collection()
 namespace.add_task(configure)
 namespace.add_collection(R)
 namespace.add_collection(docs)
+namespace.add_collection(bots)

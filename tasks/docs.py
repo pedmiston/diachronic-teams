@@ -6,7 +6,6 @@ from unipath import Path
 import jinja2
 
 import graphdb
-from bots import tasks as bots_tasks
 
 from tasks.config import PROJ
 
@@ -114,13 +113,3 @@ def get_available_docs(name=''):
                 if Path(rmd).is_file()]
 
     return rmds
-
-
-ns = Collection()
-ns.add_task(clean)
-ns.add_task(configure)
-ns.add_task(img)
-ns.add_task(install)
-ns.add_task(load)
-ns.add_task(make)
-ns.add_collection(bots_tasks, "bots")
