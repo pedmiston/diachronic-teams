@@ -254,6 +254,9 @@ prop_guess_types_50min_plot
 
 # Experiment 3 {-}
 
+```{r teamsize}
+```
+
 (ref:team-structures-exp4) Problem solving strategies compared in Experiment 3.
 
 ```{r team-structures-exp4, engine="dot", out.width="80%", fig.cap="(ref:team-structures-exp3)"}
@@ -264,7 +267,7 @@ max_innovations_by_teamsize_plot
 ```
 
 ```{r bots-teamsize, fig.width=5}
-
+bots_players_plot
 ```
 
 ## Discussion {-}
