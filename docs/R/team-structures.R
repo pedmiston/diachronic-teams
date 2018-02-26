@@ -791,35 +791,6 @@ max_innovations_by_teamsize_plot <- ggplot(Innovations) +
   ) +
   xlab("")
 
-# * Rate of innovation ----
-data("Sampled")
-
-Sampled50min <- Sampled %>%
-  filter(
-    TeamStatus == "V",
-    Exp == "50LaborMinutes"
-  ) %>%
-  recode_strategy() %>%
-  label_inheritance() %>%
-  mutate(NumInnovations = InventorySize - 6)
-
-innovation_rate_50min_plot <- ggplot(Sampled50min) +
-  aes(TeamTime, NumInnovations) +
-  geom_line(aes(color = StrategyLabel,
-                group = interaction(StrategyLabel, Generation),
-                size = Inheritance),
-            stat = "summary", fun.y = "mean") +
-  t_$scale_x_team_time +
-  t_$scale_color_strategy +
-  scale_size_manual(values = c(1.8, 1.0)) +
-  t_$scale_y_num_innovations +
-  guides(linetype = "none", size = "none") +
-  t_$base_theme +
-  theme(legend.position = c(0.2, 0.8))
-
-# TeamSizeSimulations ----
-data("BotsPlayers")
-
 # BotsPlayers ----
 data("BotsPlayers")
 
@@ -839,7 +810,7 @@ BotsPlayersFinal <- BotsPlayers %>%
   filter_final_round() %>%
   mutate(num_innovations = inventory_size - 6)
 
-ggplot(BotsPlayersFinal) +
+bots_team_size_plot <- ggplot(BotsPlayersFinal) +
   aes(strategy, num_innovations) +
   geom_bar(aes(fill = strategy), stat = "summary", fun.y = "mean", alpha = 0.6) +
   geom_point(aes(color = strategy), shape = 1, position = position_jitter(width = 0.2)) +
