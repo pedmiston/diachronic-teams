@@ -103,15 +103,15 @@ report_lmer_mod <- function(lmer_mod, term, formats = NULL, reverse_sign = FALSE
   results <- broom::tidy(lmer_mod, effects = "fixed") %>%
     filter(term == term_) %>%
     as.list()
-  
+
   if(reverse_sign) {
     results$estimate <- -results$estimate
     results$statistic <- -results$statistic
   }
-  
+
   fmt <- c(b=2, se=2, t=2)
   if(!is.null(formats)) fmt[names(formats)] <- formats
-  
+
   fstring <- sprintf("_b_ = %%.%sf (SE = %%.%sf), _t_ = %%.%sf", fmt["b"], fmt["se"], fmt["t"])
   sprintf(fstring, results$estimate, results$std.error, results$statistic)
 }
@@ -121,16 +121,16 @@ report_lm_mod <- function(lm_mod, term, min_p_value = 0.001, p_value_only = FALS
   results <- broom::tidy(lm_mod) %>%
     filter(term == term_) %>%
     as.list()
-  
+
   lm_summary <- broom::glance(lm_mod) %>% as.list()
   results$df <- lm_summary$df.residual
-  
+
   results$p_value_str <- compute_p_string(results$p.value)
-  
+
   if (p_value_only == TRUE) {
     return(results$p_value_str)
   }
-  
+
   sprintf("_b_ = %.2f (SE = %.2f), _t_(%.1f) = %.2f, %s",
           results$estimate, results$std.error, results$df, results$statistic, results$p_value_str)
 }
@@ -140,12 +140,12 @@ report_glm_mod <- function(glm_mod, term, min_p_value = 0.001, p_value_only = FA
   results <- broom::tidy(glm_mod) %>%
     filter(term == term_) %>%
     as.list()
-  
+
   glm_summary <- broom::glance(glm_mod) %>% as.list()
   results$df <- glm_summary$df.residual
-  
+
   results$p_value_str <- compute_p_string(results$p.value)
-  
+
   sprintf("_b_ = %.2f logodds (SE = %.2f), _z_ = %.2f, %s",
           results$estimate, results$std.error, results$statistic, results$p_value_str)
 }
@@ -366,7 +366,7 @@ data("Teams")
 SessionTypes50min <- Sessions %>%
   filter_50min() %>%
   recode_session_type_50min() %>%
-  
+
   # Collapse Synchronic players into a single team,
   # but leave Diachronic and Isolated players alone.
   select(Strategy, SessionType, TeamID, Generation) %>%
@@ -374,10 +374,10 @@ SessionTypes50min <- Sessions %>%
 
 GuessesPerItem50min <- Guesses %>%
   filter_50min() %>%
-  
+
   # Treat all Synchronic players as "playing" even if they are lagging.
   mutate(Stage = ifelse(Strategy == "Synchronic", "playing", Stage)) %>%
-  
+
   # Copy guesses for each adjacent item
   left_join(AdjacentItems, by = c("PrevSessionInventoryID" = "ID")) %>%
   recode_session_type_50min()
@@ -392,7 +392,7 @@ CostPerItem50min <- GuessesPerItem50min %>%
     Discovered = any(Result == Adjacent)
   ) %>%
   ungroup() %>%
-  
+
   # Re-label summarized data
   left_join(SessionTypes50min) %>%
   recode_strategy() %>%
@@ -440,7 +440,7 @@ CostPerItem50minPlaying <- GuessesPerItem50min %>%
     Discovered = any(Result == Adjacent)
   ) %>%
   ungroup() %>%
-  
+
   # Re-label summarized data
   left_join(SessionTypes50min) %>%
   recode_strategy() %>%
@@ -706,7 +706,6 @@ first_discovery_by_generation_plot <- ggplot(FirstDiscovery) +
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank()) +
   ggtitle("Cost of first innovation")
-
 
 # ---- teamsize
 # TeamSize ----

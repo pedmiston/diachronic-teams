@@ -35,7 +35,7 @@ opts_chunk$set(
   message = FALSE,
   warning = FALSE,
   results = "hide",
-  
+
   # Width: 789 – 2250 pixels (at 300 dpi). Height maximum: 2625 pixels (at 300 dpi).
   fig.width = 3,
   fig.height = 3,

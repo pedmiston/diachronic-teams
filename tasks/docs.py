@@ -1,19 +1,16 @@
+import sys
 from glob import glob
 from pathlib import Path
 
 from invoke import task, Collection
-from unipath import Path
 import jinja2
 
 import graphdb
 
 from tasks.config import PROJ
 
-
-PROJ = Path(__file__).absolute().parent
-R_PKG = Path(PROJ, 'data')
-REPORTS = Path(PROJ, 'reports')
 TOTEMS = Path(PROJ, 'experiment')
+R_PKG = Path(PROJ, 'data')
 ITEM_IMAGES = Path(R_PKG, 'inst/extdata/items')
 TOTEMS_RAW_DATA = Path(R_PKG, 'data-raw/totems')
 
@@ -96,10 +93,7 @@ def clean(ctx, name, verbose=False):
 
 
 def get_available_docs(name=''):
-    available_docs = [Path(rmd) for rmd in
-                      glob('{proj}/docs/**/*.Rmd'.format(proj=PROJ),
-                           recursive=True)
-                      if Path(rmd).is_file()]
+    available_docs = [Path(rmd) for rmd in glob('{proj}/docs/*.Rmd'.format(proj=PROJ))]
 
     if name == '':
         rmds = available_docs
