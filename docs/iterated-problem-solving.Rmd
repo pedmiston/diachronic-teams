@@ -60,7 +60,7 @@ read_chunk(file.path(chunks_dir, "iterated-problem-solving.R"))
 ```{r iterated-problem-solving, include=FALSE}
 ```
 
-# Introduction
+# Introduction {-}
 
 Humans are effective problem solvers, having solved a wide range of problems
 related to foraging, hunting, and preparing food, while surviving predators,
@@ -122,7 +122,7 @@ controlled for successful transmission by allowing future generations to
 inherit the discoveries made by the previous generation, and measured the
 ability of participants to exceed the solutions they inherited.
 
-# Methods
+# Methods {-}
 
 To understand how problem solving knowledge accumulates through vertical
 transmission, we used a transmission chain paradigm where participants were
@@ -166,16 +166,16 @@ ancestor. Note that the participants inherited the recipes, but not the tools
 themselves. In order use these tools in further combinations, the tools and all
 of their constituent parts first had to be recreated.
 
-## Participants
+## Participants {-}
 
 Participants were recruited from the UW-Madison student body and received
 course credit in exchange for participation. Each participant was assigned to
 a single generation of a four-generation chain. Data was collected
 for a total of `r exp1$n_teams` complete chains (N=`r exp1$n_participants` participants).
 
-# Results
+# Results {-}
 
-## Performance by generation
+## Performance by generation {-}
 
 We found that problem solving knowledge accumulated over generations such that
 participants in later generations were able to solve more problems in the same
@@ -205,7 +205,7 @@ with each generation, `r exp1$difficulty_by_generation_mod_slope_stats`,
 and this benefit did not diminish for later generations,
 `r exp1$difficulty_by_generation_quad_mod_slope_stats`.
 
-## Performance by inheritance size
+## Performance by inheritance size {-}
 
 ```{r fig4, fig.height=8, fig.cap="Performance by inheritance size. A. Number of tools created relative to those inherited. The dotted line is a reference with slope=1 such that points above the line indicate future generations exceeding their ancestors. B. Number of new tools relative to those inherited. The same reference line is now shown horizontally. C. Change in accumulated difficulty score. Analogous to B, but with innovations weighted by complexity. In B and C, the error ranges specify the model predictions with ±1 standard error."}
 grid.arrange(
@@ -259,7 +259,7 @@ meaningfully diminish the rate of future problem solving.
 playing_time_plot
 ```
 
-## Performance by inheritance
+## Performance by inheritance {-}
 
 Next we compared performance in the first generation, where participants did
 not benefit from any previous ancestor, to performance in generations 2-4.
@@ -296,7 +296,7 @@ in which future guesses are generated.
 prop_guess_types_50min_plot
 ```
 
-# Discussion
+# Discussion {-}
 
 The ability to accumulate a body of socially learned problem solving knowledge
 is visible in all human cultures [@Boyd:2017diff; @Fernandez:2001civ]. Although
