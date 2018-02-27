@@ -1,4 +1,4 @@
-# ---- setup
+# ---- Setup ----
 library(magrittr)
 library(broom)
 library(lme4)
@@ -9,10 +9,8 @@ library(totems)
 library(tidyverse) # Load tidyverse after totems to prevent dplyr::filter from being masked
 t_ <- load_totems_theme()
 
-# ---- intro
-# Intro ----
+# ---- Intro ----
 
-# * Types of time ----
 # Makes "types of time" plot.
 # Types of time plot shows the relationship
 # between labor time, calendar time, and learning time.
@@ -88,8 +86,7 @@ gg_person <- ggplot(time) +
   theme(legend.position = "none",
         panel.grid.major.x = element_blank())
 
-# ---- methods
-# Methods ----
+# ---- Methods ----
 
 data("Teams")
 data("Sessions")
@@ -97,112 +94,6 @@ data("Sessions")
 methods <- list()  # Store vars for in-text reference
 methods$n_unique_guesses_6 <- count_unique_guesses(6)
 methods$n_unique_guesses_6_pct <- round(3/methods$n_unique_guesses_6 * 100, 1)
-
-report_lmer_mod <- function(lmer_mod, term, formats = NULL, reverse_sign = FALSE) {
-  term_ <- term  # work around NSE in filter
-  results <- broom::tidy(lmer_mod, effects = "fixed") %>%
-    filter(term == term_) %>%
-    as.list()
-  
-  if(reverse_sign) {
-    results$estimate <- -results$estimate
-    results$statistic <- -results$statistic
-  }
-  
-  fmt <- c(b=2, se=2, t=2)
-  if(!is.null(formats)) fmt[names(formats)] <- formats
-  
-  fstring <- sprintf("_b_ = %%.%sf (SE = %%.%sf), _t_ = %%.%sf", fmt["b"], fmt["se"], fmt["t"])
-  sprintf(fstring, results$estimate, results$std.error, results$statistic)
-}
-
-report_lm_mod <- function(lm_mod, term, min_p_value = 0.001, p_value_only = FALSE) {
-  term_ <- term  # work around NSE in call to filter
-  results <- broom::tidy(lm_mod) %>%
-    filter(term == term_) %>%
-    as.list()
-  
-  lm_summary <- broom::glance(lm_mod) %>% as.list()
-  results$df <- lm_summary$df.residual
-  
-  results$p_value_str <- compute_p_string(results$p.value)
-  
-  if (p_value_only == TRUE) {
-    return(results$p_value_str)
-  }
-  
-  sprintf("_b_ = %.2f (SE = %.2f), _t_(%.1f) = %.2f, %s",
-          results$estimate, results$std.error, results$df, results$statistic, results$p_value_str)
-}
-
-report_glm_mod <- function(glm_mod, term, min_p_value = 0.001, p_value_only = FALSE) {
-  term_ <- term  # work around NSE in call to filter
-  results <- broom::tidy(glm_mod) %>%
-    filter(term == term_) %>%
-    as.list()
-  
-  glm_summary <- broom::glance(glm_mod) %>% as.list()
-  results$df <- glm_summary$df.residual
-  
-  results$p_value_str <- compute_p_string(results$p.value)
-  
-  sprintf("_b_ = %.2f logodds (SE = %.2f), _z_ = %.2f, %s",
-          results$estimate, results$std.error, results$statistic, results$p_value_str)
-}
-
-report_beta <- function(mod, param, digits = 1, transform = NULL) {
-  param_ <- param # prevent masking in NSE
-  estimate <- mod %>%
-    summary %>%
-    .$coefficients %>%
-    as.data.frame() %>%
-    rownames_to_column("param") %>%
-    filter(param == param_) %>%
-    .$Estimate
-  if(!is.null(transform)) estimate <- transform(estimate)
-  round(estimate, digits = digits)
-}
-
-report_modcomp <- function(modcomp) {
-  modcomp <- as.list(modcomp[2, ])
-  p_string <- compute_p_string(modcomp$`Pr(>Chisq)`)
-  print(sprintf("$\\chi^2$(%i) = %.4f, %s", modcomp$`Chi Df`, modcomp$Chisq, p_string))
-}
-
-report_page_test <- function(page_trend_test_results) {
-  page_trend_test_results$p_val_str <- compute_p_string(page_trend_test_results$px2)
-  print(sprintf("Page's _L_ = %.0f, $\\chi^2$ = %.0f, %s",
-                page_trend_test_results$L,
-                page_trend_test_results$x2L,
-                page_trend_test_results$p_val_str))
-}
-
-compute_p_string <- function(p_value) {
-  min_p_value <- 0.001
-  if (p_value < min_p_value) {
-    p_value_str <- "_p_ < 0.001"
-  } else {
-    p_value_str <- paste("_p_ = ", round(p_value, 3))
-  }
-  p_value_str
-}
-
-# Jitter Generation by TeamID for plotting
-jitter_team_generation <- . %>%
-  group_by(TeamID) %>%
-  mutate(GenerationJittered = Generation + rnorm(1, mean = 0, sd = 0.05)) %>%
-  ungroup()
-
-# Recode Generation poly
-recode_generation_quad <- . %>%
-  mutate(
-    GenerationSqr = Generation^2,
-    Generation0Sqr = Generation0^2
-  )
-
-recode_generation_base0 <- . %>%
-  mutate(Generation0 = Generation - 1)
-
 
 TeamCounts <- Teams %>%
   filter(
@@ -238,8 +129,7 @@ ConditionCounts <- Teams %>%
   left_join(TeamCounts) %>%
   left_join(PlayerCounts)
 
-# ---- exp1
-# 50min ----
+# ---- 50min ----
 
 # List to hold descriptives for in-text citation
 exp1 <- list()
@@ -542,13 +432,13 @@ prop_guess_types_50min_plot <- ggplot(GuessTypes50minSummary) +
   t_$base_theme +
   theme(panel.grid.major.x = element_blank())
 
-# ---- selfother
-# SelfOther ----
+# ---- SelfOther ----
+
 # * Methods ----
 data("Sessions")
 
 Exp3Participants <- Sessions %>%
-  filter_exp3() %>%
+  filter_selfother() %>%
   select(Strategy, PlayerID) %>%
   unique() %>%
   count(Strategy) %>%
@@ -559,7 +449,7 @@ data("Guesses")
 data("Sessions")
 
 Innovations <- Guesses %>%
-  filter_exp3() %>%
+  filter_selfother() %>%
   recode_guess_type(unique_guess = "UniqueSessionGuess", unique_result = "UniqueSessionResult") %>%
   group_by(SessionID) %>%
   summarize(NumInnovations = sum(GuessType == "unique_item")) %>%
@@ -604,13 +494,14 @@ innovations_by_generation_plot <- ggplot(Innovations) +
 
 # * Cost by stage ----
 data("Guesses")
-data("Players")
+data("Sessions")
 data("AdjacentItems")
 
-IndividualPlayers <- filter(Players, Strategy != "Synchronic", Exp == "100LaborMinutes", TeamStatus == "V")
+IndividualPlayers <- Sessions %>%
+  filter_selfother()
 
 IndividualGuesses <- Guesses %>%
-  filter(Strategy != "Synchronic", Exp == "100LaborMinutes", TeamStatus == "V") %>%
+  filter_selfother() %>%
   left_join(AdjacentItems, by = c("PrevSessionInventoryID" = "ID")) %>%
   label_stage_ix()
 
@@ -707,8 +598,8 @@ first_discovery_by_generation_plot <- ggplot(FirstDiscovery) +
         panel.grid.minor.x = element_blank()) +
   ggtitle("Cost of first innovation")
 
-# ---- teamsize
-# TeamSize ----
+# ---- TeamSize ----
+
 # * Methods ----
 
 # * Number of innovations ----
@@ -738,15 +629,7 @@ Innovations100min <- Guesses %>%
   recode_strategy() %>%
   mutate(NumPlayers = 4)
 
-recode_team_size <- function(frame) {
-  team_size_labels <- c("Two person teams", "Four person teams")
-  team_size_map <- data_frame(
-    NumPlayers = c(2, 4),
-    NumPlayersLabel = factor(team_size_labels, levels = team_size_labels)
-  )
-  if(missing(frame)) return(team_size_map)
-  left_join(frame, team_size_map)
-}
+
 
 Innovations <- bind_rows(Innovations50min, Innovations100min) %>%
   group_by(Strategy, NumPlayers, TeamID) %>%
@@ -791,10 +674,7 @@ max_innovations_by_teamsize_plot <- ggplot(Innovations) +
   xlab("")
 
 
-# TeamSizeSimulations ----
-data("BotsPlayers")
-
-# BotsPlayers ----
+# * BotsPlayers ----
 data("BotsPlayers")
 
 sim_vars <- c("strategy", "n_guesses", "n_players", "seed", "player_memory", "team_memory")

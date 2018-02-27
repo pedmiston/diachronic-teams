@@ -59,17 +59,17 @@ chunks <- c(
 sapply(chunks, read_graphviz_chunk, package = "totems")
 ```
 
-```{r setup, include=FALSE, cache=FALSE}
+```{r Setup, include=FALSE, cache=FALSE}
 ```
 
 # Introduction {-}
 
-```{r intro, include=FALSE}
+```{r Intro, include=FALSE}
 ```
 
 # Methods {-}
 
-```{r methods, include=FALSE}
+```{r Methods, include=FALSE}
 ```
 
 (ref:types-of-time) Team structures controlling for labor time. **Left.** Team structures. Each node is a person. **Middle.** Relationship between labor time and calendar time. Sychronic teams spend labor time more quickly than the other strategies. **Right.** Learning times by strategy, showing that an isolated strategy provides the most time for individual learning.
@@ -142,20 +142,12 @@ draw_image("gameplay", "totems")
 
 ## Participants {-}
 
-Participants were students at the University of Wisconsin-Madison who completed
-the experiment in exchange for course credit. Students received credit based on
-the duration of each completed session, 25 minutes or 50 minutes. Participants
-assigned to the Isolated, multi-session condition who completed all four
-sessions were awarded additional credit.
-
+Participants were undergraduate students at the University of Wisconsin-Madison
+who completed the experiment in exchange for course credit. Students received
+credit based on the duration of each completed session. Sessions were either 25
+minutes or 50 minutes. Participants assigned to the Isolated, multi-session
+condition who completed all four sessions were awarded additional credit.
 Participants were recruited until there were at least 40 teams in each strategy.
-Most strategies, other than four-person synchronic teams, ended up receiving
-more than 40 teams. The reason for this is that participants were scheduled in
-groups of 4 participants at a time, and frequently one or more participants
-would fail to show up for their extra credit opportunity. In these cases, the
-remaining participants were run as a combination of diachronic and
-two-person synchronic participants, resulting in a higher-than-expected
-number of participants in those conditions.
 
 (ref:condition-counts) Total participant and team recruitment.
 
@@ -165,7 +157,7 @@ kable(ConditionCounts, caption = "(ref:condition-counts)")
 
 # Experiment 1 {-}
 
-```{r exp1, include=FALSE}
+```{r 50min, include=FALSE}
 ```
 
 In Experiment 1, we compared the simplest form of diachronic inheritance---a
@@ -173,22 +165,25 @@ two-person diachronic team---to two alternative strategies for allocating the
 same 50 minutes of labor: isolated individuals working alone and two-person
 sychronic teams (Fig. \@ref(fig:team-structures-exp2)).
 
+## Methods {-}
+
 (ref:team-structures-exp2) Problem solving strategies compared in Experiment 1.
 
 ```{r team-structures-exp2, engine="dot", out.width="50%", fig.cap="(ref:team-structures-exp2)"}
 ```
 
-Diachronic problem solvers with inheritance
-significantly exceeded the number of innovations discovered in a single
-25-minute session, `r exp1$DG2_v_DG1`. We found that diachronic
-problem solvers with inheritance outperformed isolated individuals given 50
-minutes, however this difference was not reliable, `r exp1$DG2_v_I50`.
-Conversely, two-person synchronic teams outperformed second generation diachronic
-teams, but again, this different was not reliable, `r exp1$S2_v_DG2`. These
-results, although they do not demonstrate a clear benefit to inheritance in terms of
-overall performance, are in line with our conclusion that inheritance does not
-negatively impact problem solving relative to alternative strategies (Fig.
-\@ref(fig:innovations-50min).
+## Results {-}
+
+Second generation diachronic problem solvers significantly exceeded the number
+of innovations discovered by their ancestors, `r exp1$DG2_v_DG1`. We found that
+diachronic problem solvers with inheritance outperformed isolated individuals
+given 50 minutes, however this difference was not reliable, `r exp1$DG2_v_I50`.
+Conversely, two-person synchronic teams outperformed second generation
+diachronic teams, but again, this different was not reliable, `r exp1$S2_v_DG2`.
+These results, although they do not demonstrate a clear benefit to inheritance
+in terms of overall performance, are in line with our conclusion that
+inheritance does not negatively impact problem solving relative to alternative
+strategies (Fig. \@ref(fig:innovations-50min).
 
 Comparing two-person teams (both diachronic and synchronic) to isolated
 individuals revealed a benefit to teamwork in this task,
@@ -245,22 +240,74 @@ prop_guess_types_50min_plot
 
 ## Discussion {-}
 
+In Experiment 1, we found that inheriting from a previous generation problem solver
+is comparable to alternative strategies for solving the same set of problems. Two
+generations of problem solvers working for 25 minutes each results in similar final
+performance to an isolated individual given 50 minutes and two problem solvers
+working in parallel for 25 minutes each.
+
+We detected the effects of inheriting from a previous generation in the guessing efficiency
+and guessing strategies employed by diachronic problem solvers. Inheriting the solutions
+from a previous generation improved the efficiency of future generations of problem solvers
+by allowing them to recreate those same items with fewer guesses overall. However, this
+improvement in efficiency did not extend to future problem solving, as second generation
+diachronic problem solvers were not any more efficient in solving problems that had not
+been discovered by their ancestor.
+
+Second generation diachronic players did seem to employ a different guessing strategy
+as reflected in the distribution of guesses by type. In this game, redundant guesses
+are unhelpful in that they will never yield new discoveries, and yet most participants
+generate a significant proportion of redundant guesses. This detrimental tendency to guess
+redundantly may be is lessened by diachronic collaboration, as second generation diachronic
+problem solvers generated fewer redundant guesses than their ancestors. However, similar
+proportions of redundant guesses were generated by participants in the synchronic strategy
+as well.
+
 # Experiment 2 {-}
+
+```{r SelfOther, include=FALSE}
+```
+
+In Experiment 2, we compare the effectiveness of inheriting from someone else to
+the effectiveness of inheriting from yourself (Fig. \@ref(fig:team-structures-exp3).
+In this experiment, participants were assigned to the diachronic condition or
+the isolated condition. Participants in the isolated condition were asked to
+come back to the experiment for four separate sessions, each 25 minutes long. At
+each session after the first, these participants inherited the recipes for the
+tools they had created at the end of the previous session.
+
+## Methods {-}
 
 (ref:team-structures-exp3) Problem solving strategies compared in Experiment 2.
 
 ```{r team-structures-exp3, engine="dot", out.width="70%", fig.cap="(ref:team-structures-exp2)"}
 ```
 
+## Results {-}
+
+```{r innovations-by-generation-selfother}
+innovations_by_generation_plot
+```
+
+```{r cost-of-first-innovation}
+first_discovery_by_generation_plot
+```
+
+## Discussion {-}
+
 # Experiment 3 {-}
 
-```{r teamsize}
+```{r TeamSize}
 ```
+
+## Methods {-}
 
 (ref:team-structures-exp4) Problem solving strategies compared in Experiment 3.
 
 ```{r team-structures-exp4, engine="dot", out.width="80%", fig.cap="(ref:team-structures-exp3)"}
 ```
+
+## Results {-}
 
 ```{r max-innovations-by-teamsize, fig.width=5}
 max_innovations_by_teamsize_plot
