@@ -64,24 +64,18 @@ sapply(chunks, read_graphviz_chunk, package = "totems")
 
 # Introduction {-}
 
-```{r intro, include=FALSE}
+```{r intro, include=FALSE, cache=FALSE}
 ```
 
 # Methods {-}
 
-```{r methods, include=FALSE}
+```{r methods, include=FALSE, cache=FALSE}
 ```
 
 (ref:types-of-time) Team structures controlling for labor time. **Left.** Team structures. Each node is a person. **Middle.** Relationship between labor time and calendar time. Sychronic teams spend labor time more quickly than the other strategies. **Right.** Learning times by strategy, showing that an isolated strategy provides the most time for individual learning.
 
 ```{r types-of-time, fig.width=5, fig.height=2, fig.pos="b", out.extra="", fig.cap="(ref:types-of-time)"}
-grid.arrange(
-  read_graphviz("team-structures", package = "totems"),
-  gg_time,
-  gg_person,
-  nrow = 1,
-  widths = c(0.25, 0.375, 0.375)
-)
+types_of_time_plot
 ```
 
 (ref:team-structures-all) All experimental conditions.

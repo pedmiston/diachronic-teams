@@ -88,6 +88,14 @@ gg_person <- ggplot(time) +
   theme(legend.position = "none",
         panel.grid.major.x = element_blank())
 
+types_of_time_plot <- gridExtra::grid.arrange(
+  crotchet::read_graphviz("team-structures", package = "totems"),
+  gg_time,
+  gg_person,
+  nrow = 1,
+  widths = c(0.25, 0.375, 0.375)
+)
+
 # ---- methods
 # Methods ----
 
