@@ -26,7 +26,7 @@ output:
     keep_tex: yes
     number_sections: no
 ---
-```{r team-structures-config, include=FALSE}
+```{r team-structures-config, include=FALSE, cache=FALSE}
 library(knitr)
 library(crotchet)
 
