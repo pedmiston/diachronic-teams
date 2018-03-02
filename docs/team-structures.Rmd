@@ -1,12 +1,9 @@
 ---
 title: "The impact of team structure on problem solving performance"
 author:
-  - name: Pierce Edmiston
-    affiliation_id: 1
-  - name: Maxime Derex
-    affiliation_id: 2
-  - name: Gary Lupyan
-    affiliation_id: 1
+  - { name: Pierce Edmiston, affiliation_id: 1 }
+  - { name: Maxime Derex, affiliation_id: 2 }
+  - { name: Gary Lupyan, affiliation_id: 1 }
 affiliation:
   - id: 1
     department: Department of Psychology
@@ -26,7 +23,7 @@ output:
     keep_tex: yes
     number_sections: no
 ---
-```{r team-structures-config, include=FALSE, cache=FALSE}
+```{r team-structures-config, include=FALSE}
 library(knitr)
 library(crotchet)
 
@@ -36,6 +33,7 @@ opts_chunk$set(
   warning = FALSE,
   results = "hide",
 
+  # PLOS One figure requirements.
   # Width: 789 – 2250 pixels (at 300 dpi). Height maximum: 2625 pixels (at 300 dpi).
   fig.width = 3,
   fig.height = 3,
