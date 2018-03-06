@@ -1,12 +1,9 @@
 ---
 title: "The impact of team structure on problem solving performance"
 author:
-  - name: Pierce Edmiston
-    affiliation_id: 1
-  - name: Maxime Derex
-    affiliation_id: 2
-  - name: Gary Lupyan
-    affiliation_id: 1
+  - { name: Pierce Edmiston, affiliation_id: 1 }
+  - { name: Maxime Derex, affiliation_id: 2 }
+  - { name: Gary Lupyan, affiliation_id: 1 }
 affiliation:
   - id: 1
     department: Department of Psychology
@@ -35,7 +32,8 @@ opts_chunk$set(
   message = FALSE,
   warning = FALSE,
   results = "hide",
-  
+
+  # PLOS One figure requirements.
   # Width: 789 – 2250 pixels (at 300 dpi). Height maximum: 2625 pixels (at 300 dpi).
   fig.width = 3,
   fig.height = 3,
@@ -51,10 +49,9 @@ read_chunk(file.path(chunks_dir, "team-structures.R"))
 # Read all the diagrams made with graphviz in the totems package
 chunks <- c(
   "team-structures",
-  "team-structures-all",
-  "team-structures-exp2",
-  "team-structures-exp3",
-  "team-structures-exp4"
+  "team-structures-50min",
+  "team-structures-selfother",
+  "team-structures-scalability"
 )
 sapply(chunks, read_graphviz_chunk, package = "totems")
 ```
@@ -67,24 +64,41 @@ sapply(chunks, read_graphviz_chunk, package = "totems")
 ```{r Intro}
 ```
 
+(ref:types-of-time) Team structures controlling for labor time. **Left.** Team structures. Each node is a person. **Middle.** Relationship between labor time and calendar time. Sychronic teams spend labor time more quickly than the other strategies. **Right.** Learning times by strategy, showing that an isolated strategy provides the most time for individual learning.
+
+```{r types-of-time, fig.width=5, fig.height=2, fig.pos="b", out.extra="", fig.cap="(ref:types-of-time)"}
+types_of_time_plot
+```
+
 # Methods {-}
 
 ```{r Methods}
 ```
 
-(ref:types-of-time) Team structures controlling for labor time. **Left.** Team structures. Each node is a person. **Middle.** Relationship between labor time and calendar time. Sychronic teams spend labor time more quickly than the other strategies. **Right.** Learning times by strategy, showing that an isolated strategy provides the most time for individual learning.
+## Team structures {-}
 
-```{r types-of-time, fig.width=5, fig.height=2, fig.pos="b", out.extra="", fig.cap="(ref:types-of-time)"}
-grid.arrange(
-  read_graphviz("team-structures", package = "totems"),
-  gg_time,
-  gg_person,
-  nrow = 1,
-  widths = c(0.25, 0.375, 0.375)
-)
-```
+Participants were randomly assigned to work on the same problem solving task in
+different team structure conditions (Fig. \@ref(fig:team-structures-all)).
+Participants in the diachronic condition worked on the problem solving task one
+at a time. At the end of a diachronic participant's session, the solutions they
+had discovered were passed on to be inherited by a single participant assigned
+to the next generation. All diachronic participants after the first generation
+started off the problem solving task with some solutions that had been
+discovered by a previous generation.
 
-(ref:team-structures-all) All experimental conditions.
+Participants assigned to the synchronic team structure worked independently and
+in parallel but their labor was coordinated in that solutions discovered by one
+team member were immediately shared with the other members of the team who were
+working at the same time. Isolated participants completed the problem solving
+task as individuals, only benefiting from the solutions they could discover on
+their own.
+
+(ref:team-structures-all) All experimental conditions. Participants assigned
+to diachronic teams worked one at a time, each inheriting the solutions
+discovered by the previous generation. Participants in the isolated condition
+were recruited for a single 50 minute session, or returned for four 25 minute
+sessions. Participants assigned to synchronic teams worked for 25 minutes
+in teams of two or four individuals.
 
 ```{r team-structures-all, out.width="50%", engine="dot", fig.cap='(ref:team-structures-all)'}
 ```
@@ -97,6 +111,8 @@ used as a handle, a sharpened rock for the blade, and a string wound from bark
 fibers for binding (Fig. \@ref(fig:landscape-sample)). More advanced tools
 produce larger and more intricate totems, resulting in higher performance
 scores.
+
+## Solution landscape {-}
 
 (ref:landscape-sample) A sample of the solution landscape. The top row of 6
 items were available to problem solvers at the start of the game. New items
@@ -114,27 +130,44 @@ could combine up to four items at a time (with replacement), meaning the
 initial six items could form a total of `r methods$n_unique_guesses_6`
 combinations. Of all possible combinations, very few resulted in new items. For
 example, of all the guesses that could be formed from the initial items, only
-three (`r methods$n_unique_guesses_6_pct`%) yielded new tools (Fig. 2). As
-participants accumulate solutions, the combinatorial complexity of the problem
-space increases exponentially such that the discovery of more complex tools is
-less likely to happen by chance.
+three (`r methods$n_unique_guesses_6_pct`%) yielded new tools (Fig.
+\@ref(fig:landscape-sample)). As participants accumulate solutions, the
+combinatorial complexity of the problem space increases exponentially such that
+the discovery of more complex tools is less likely to happen by chance.
+
+## Innovation record {-}
 
 Once a tool was discovered, the recipe for its creation---a list of the items
 that had to be combined in order to create the tool---was recorded in an
 innovation record. Participants could review their past innovations and see the
-recipes for their previous discoveries. **Participants assigned to generations
-after the first inherited the innovation record of the previous generation
-participant.** From the beginning of the experiment, these participants could
-review the recipes for all the innovations that had been discovered by their
-ancestor. Note that the participants inherited the recipes, but not the tools
-themselves. In order use these tools in further combinations, the tools and all
-of their constituent parts first had to be recreated.
+recipes for their previous discoveries.
+
+An innovation record was also used as a means for sharing solutions among
+members of a team. For diachronic participants after the first generation, the
+innovation record from the previous generation participant was made available
+to them from the start of the experiment. They could view their predecessors'
+innovations and see how to make each one. Note that the participants inherited
+the recipes, but not the tools themselves. In order use these tools in further
+combinations, the tools and all of their constituent parts first had to be
+recreated.
+
+Participants assigned to the synchronic condition could see the
+innovation records of each of their teammates throughout the session. Once a
+participant discovered a tool, the recipe for it's creation could be viewed by
+all members of the team.
+
+Isolated participants returning for multiple sessions started with
+the innovation record from their previous session. As was true for
+participants in the diachronic and synchronic conditions, recipes
+inherited via the innovation record had to be recreated in order to
+be used in future combinations.
+
+## Procedure {-}
 
 (ref:interface) The Totems gameplay interface. Participants generated guesses
 by dragging items into the Workshop and selecting the Try button. If the guess
 created an item, it could be dragged into the Stock panel, and used again. Once
-segments of a totem were made through cutting, carving, and painting, they could be
-dragged into the Totem panel for scoring.
+segments of a totem were made through cutting, carving, and painting, they could be dragged into the Totem panel for scoring.
 
 ```{r interface, fig.cap="(ref:interface)", out.width="100%"}
 draw_image("gameplay", "totems")
@@ -147,7 +180,15 @@ who completed the experiment in exchange for course credit. Students received
 credit based on the duration of each completed session. Sessions were either 25
 minutes or 50 minutes. Participants assigned to the Isolated, multi-session
 condition who completed all four sessions were awarded additional credit.
-Participants were recruited until there were at least 40 teams in each strategy.
+
+Participants were recruited until there were at least 40 teams in each
+strategy. Most strategies, other than four-person synchronic teams, ended up
+receiving more than 40 teams. The reason for this is that participants were
+scheduled in groups of 4 participants at a time, and frequently one or more
+participants would fail to show up for their extra credit opportunity. In these
+cases, the remaining participants were run as a combination of diachronic and
+two-person synchronic participants, resulting in a higher-than-expected number
+of participants in those conditions.
 
 (ref:condition-counts) Total participant and team recruitment.
 
@@ -163,13 +204,14 @@ kable(ConditionCounts, caption = "(ref:condition-counts)")
 In Experiment 1, we compared the simplest form of diachronic inheritance---a
 two-person diachronic team---to two alternative strategies for allocating the
 same 50 minutes of labor: isolated individuals working alone and two-person
-sychronic teams (Fig. \@ref(fig:team-structures-exp2)).
+synchronic teams (Fig. \@ref(fig:team-structures-50min)). We first report
+differences between strategies in terms of final team performance.
 
 ## Methods {-}
 
-(ref:team-structures-exp2) Problem solving strategies compared in Experiment 1.
+(ref:team-structures-50min) Problem solving strategies compared in Experiment 1.
 
-```{r team-structures-exp2, engine="dot", out.width="50%", fig.cap="(ref:team-structures-exp2)"}
+```{r team-structures-50min, engine="dot", out.width="50%", fig.cap="(ref:team-structures-50min)"}
 ```
 
 ## Results {-}
@@ -269,7 +311,7 @@ as well.
 ```
 
 In Experiment 2, we compare the effectiveness of inheriting from someone else to
-the effectiveness of inheriting from yourself (Fig. \@ref(fig:team-structures-exp3).
+the effectiveness of inheriting from yourself (Fig. \@ref(fig:team-structures-selfother).
 In this experiment, participants were assigned to the diachronic condition or
 the isolated condition. Participants in the isolated condition were asked to
 come back to the experiment for four separate sessions, each 25 minutes long. At
@@ -278,9 +320,9 @@ tools they had created at the end of the previous session.
 
 ## Methods {-}
 
-(ref:team-structures-exp3) Problem solving strategies compared in Experiment 2.
+(ref:team-structures-selfother) Problem solving strategies compared in Experiment 2.
 
-```{r team-structures-exp3, engine="dot", out.width="70%", fig.cap="(ref:team-structures-exp2)"}
+```{r team-structures-selfother, engine="dot", out.width="70%", fig.cap="(ref:team-structures-selfother)"}
 ```
 
 ## Results {-}
@@ -302,9 +344,9 @@ first_discovery_by_generation_plot
 
 ## Methods {-}
 
-(ref:team-structures-exp4) Problem solving strategies compared in Experiment 3.
+(ref:team-structures-scalability) Problem solving strategies compared in Experiment 3.
 
-```{r team-structures-exp4, engine="dot", out.width="80%", fig.cap="(ref:team-structures-exp3)"}
+```{r team-structures-scalability, engine="dot", out.width="80%", fig.cap="(ref:team-structures-scalability)"}
 ```
 
 ## Results {-}
@@ -314,7 +356,7 @@ max_innovations_by_teamsize_plot
 ```
 
 ```{r bots-teamsize, fig.width=5}
-bots_players_plot
+bots_team_size_plot
 ```
 
 ## Discussion {-}

@@ -256,7 +256,7 @@ data("Teams")
 SessionTypes50min <- Sessions %>%
   filter_50min() %>%
   recode_session_type_50min() %>%
-  
+
   # Collapse Synchronic players into a single team,
   # but leave Diachronic and Isolated players alone.
   select(Strategy, SessionType, TeamID, Generation) %>%
@@ -264,10 +264,10 @@ SessionTypes50min <- Sessions %>%
 
 GuessesPerItem50min <- Guesses %>%
   filter_50min() %>%
-  
+
   # Treat all Synchronic players as "playing" even if they are lagging.
   mutate(Stage = ifelse(Strategy == "Synchronic", "playing", Stage)) %>%
-  
+
   # Copy guesses for each adjacent item
   left_join(AdjacentItems, by = c("PrevSessionInventoryID" = "ID")) %>%
   recode_session_type_50min()
@@ -282,7 +282,7 @@ CostPerItem50min <- GuessesPerItem50min %>%
     Discovered = any(Result == Adjacent)
   ) %>%
   ungroup() %>%
-  
+
   # Re-label summarized data
   left_join(SessionTypes50min) %>%
   recode_strategy() %>%
@@ -330,7 +330,7 @@ CostPerItem50minPlaying <- GuessesPerItem50min %>%
     Discovered = any(Result == Adjacent)
   ) %>%
   ungroup() %>%
-  
+
   # Re-label summarized data
   left_join(SessionTypes50min) %>%
   recode_strategy() %>%
@@ -693,7 +693,7 @@ BotsPlayersFinal <- BotsPlayers %>%
   filter_final_round() %>%
   mutate(num_innovations = inventory_size - 6)
 
-bots_players_plot <- ggplot(BotsPlayersFinal) +
+bots_team_size_plot <- ggplot(BotsPlayersFinal) +
   aes(strategy, num_innovations) +
   geom_bar(aes(fill = strategy), stat = "summary", fun.y = "mean", alpha = 0.6) +
   geom_point(aes(color = strategy), shape = 1, position = position_jitter(width = 0.2)) +
