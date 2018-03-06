@@ -49,6 +49,7 @@ read_chunk(file.path(chunks_dir, "team-structures.R"))
 # Read all the diagrams made with graphviz in the totems package
 chunks <- c(
   "team-structures",
+  "team-structures-all",
   "team-structures-50min",
   "team-structures-selfother",
   "team-structures-scalability"
@@ -67,7 +68,13 @@ sapply(chunks, read_graphviz_chunk, package = "totems")
 (ref:types-of-time) Team structures controlling for labor time. **Left.** Team structures. Each node is a person. **Middle.** Relationship between labor time and calendar time. Sychronic teams spend labor time more quickly than the other strategies. **Right.** Learning times by strategy, showing that an isolated strategy provides the most time for individual learning.
 
 ```{r types-of-time, fig.width=5, fig.height=2, fig.pos="b", out.extra="", fig.cap="(ref:types-of-time)"}
-types_of_time_plot
+types_of_time_plot <- gridExtra::arrangeGrob(
+  crotchet::read_graphviz("team-structures", package = "totems"),
+  gg_time,
+  gg_person,
+  nrow = 1,
+  widths = c(0.25, 0.375, 0.375)
+)
 ```
 
 # Methods {-}
@@ -115,6 +122,16 @@ fibers for binding (Fig. \@ref(fig:landscape-sample)). More advanced tools
 produce larger and more intricate totems, resulting in higher performance
 scores.
 
+Participants discovered new tools by combining existing items. Participants
+could combine up to four items at a time (with replacement), meaning the
+initial six items could form a total of `r methods$n_unique_combinations_6`
+combinations. Of all possible combinations, very few resulted in new items. For
+example, of all the guesses that could be formed from the initial items, only
+three (`r methods$n_unique_combinations_6_pct`%) yielded new tools (Fig.
+\@ref(fig:landscape-sample)). As participants accumulate solutions, the
+combinatorial complexity of the problem space increased exponentially such that
+the discovery of more complex tools is less likely to happen by chance.
+
 (ref:landscape-sample) A sample of the solution landscape. The top row of 6
 items were available to problem solvers at the start of the game. New items
 could be produced through the combination of different items (more than one
@@ -126,35 +143,24 @@ pole.
 draw_image("landscape-sample.gv", package = "totems")
 ```
 
-Participants discovered new tools by combining existing items. Participants
-could combine up to four items at a time (with replacement), meaning the
-initial six items could form a total of `r methods$n_unique_combinations_6`
-combinations. Of all possible combinations, very few resulted in new items. For
-example, of all the guesses that could be formed from the initial items, only
-three (`r methods$n_unique_combinations_6_pct`%) yielded new tools (Fig.
-\@ref(fig:landscape-sample)). As participants accumulate solutions, the
-combinatorial complexity of the problem space increases exponentially such that
-the discovery of more complex tools is less likely to happen by chance.
-
-## Innovation record {-}
-
 Once a tool was discovered, the recipe for its creation---a list of the items
 that had to be combined in order to create the tool---was recorded in an
-innovation record. Participants could review their past innovations and see the
-recipes for their previous discoveries.
+innovation record (Fig. \@ref(fig:interface)). Participants could review their
+past innovations and see the recipes for their previous discoveries.
 
-An innovation record was also used as a means for sharing solutions among
+The innovation record was also used as the means for sharing solutions among
 members of a team. For diachronic participants after the first generation, the
 innovation record from the previous generation participant was made available
 to them from the start of the experiment. They could view their predecessors'
-innovations and see how to make each one. Note that the participants inherited
-the recipes, but not the tools themselves. In order use these tools in further
-combinations, the tools and all of their constituent parts first had to be
-recreated.
+innovation record and see how to make each one.
+
+Note that the participants inherited the recipes for creating the tools, and not
+the tools themselves. In order use these tools in further combinations, the
+tools and all of their constituent parts first had to be recreated.
 
 Participants assigned to the synchronic condition could see the
 innovation records of each of their teammates throughout the session. Once a
-participant discovered a tool, the recipe for it's creation could be viewed by
+participant discovered a tool, the recipe for its creation could be viewed by
 all members of the team.
 
 Isolated participants returning for multiple sessions started with
@@ -162,8 +168,6 @@ the innovation record from their previous session. As was true for
 participants in the diachronic and synchronic conditions, recipes
 inherited via the innovation record had to be recreated in order to
 be used in future combinations.
-
-## Procedure {-}
 
 (ref:interface) The Totems gameplay interface. Participants generated guesses
 by dragging items into the Workshop and selecting the Try button. If the guess
@@ -181,15 +185,6 @@ who completed the experiment in exchange for course credit. Students received
 credit based on the duration of each completed session. Sessions were either 25
 minutes or 50 minutes. Participants assigned to the Isolated, multi-session
 condition who completed all four sessions were awarded additional credit.
-
-Participants were recruited until there were at least 40 teams in each
-strategy. Most strategies, other than four-person synchronic teams, ended up
-receiving more than 40 teams. The reason for this is that participants were
-scheduled in groups of 4 participants at a time, and frequently one or more
-participants would fail to show up for their extra credit opportunity. In these
-cases, the remaining participants were run as a combination of diachronic and
-two-person synchronic participants, resulting in a higher-than-expected number
-of participants in those conditions.
 
 (ref:condition-counts) Total participant and team recruitment.
 
@@ -212,29 +207,36 @@ differences between strategies in terms of final team performance.
 
 (ref:team-structures-50min) Problem solving strategies compared in Experiment 1.
 
-```{r team-structures-50min, engine="dot", out.width="50%", fig.cap="(ref:team-structures-50min)"}
+```{r team-structures-50min, engine="dot", out.width="30%", fig.cap="(ref:team-structures-50min)"}
 ```
 
 ## Results {-}
 
-Second generation diachronic problem solvers significantly exceeded the number
-of innovations discovered by their ancestors, `r exp1$DG2_v_DG1`. We found that
-diachronic problem solvers with inheritance outperformed isolated individuals
-given 50 minutes, however this difference was not reliable, `r exp1$DG2_v_I50`.
-Conversely, two-person synchronic teams outperformed second generation
-diachronic teams, but again, this different was not reliable, `r exp1$S2_v_DG2`.
-These results, although they do not demonstrate a clear benefit to inheritance
-in terms of overall performance, are in line with our conclusion that
-inheritance does not negatively impact problem solving relative to alternative
-strategies (Fig. \@ref(fig:innovations-50min).
+### Innovations {-}
 
-Comparing two-person teams (both diachronic and synchronic) to isolated
-individuals revealed a benefit to teamwork in this task,
+The number of innovations discovered using each of the three team strategies
+is shown in Fig. \@ref(fig:innovations-50min). Our primary hypothesis concerned
+the effectiveness of a diachronic strategy as compared to alternative strategies
+for allocating the same number of labor hours. The results show that when
+controlling for labor hours, diachronic teams did not result in significantly
+different performance than the alternative strategies. Diachronic teams
+discovered more innovations on average than isolated individuals, but post
+hoc tests revealed that this difference was not statistically significant,
+`r exp1$DG2_v_I50`. Conversely, diachronic teams discovered fewer innovations
+on average than two-person synchronic teams, but again this difference was
+not statistically significant, `r exp1$S2_v_DG2`. This result speaks to the
+importance of controlling for labor hours when trying to understand the
+impact of teammwork on problem solving.
+
+To test the effectiveness of teamwork as opposed to individual labor,
+we compared two-person teams (both diachronic and synchronic) to
+isolated individuals. We found a benefit to teamwork in this task,
 `r exp1$teamwork_stats`, with no residual difference between diachronic and
-synchronic strategies, `r exp1$teamwork_residual`. This result suggests that
-maximizing individual learning time is not the most productive way to improve
-problem solving efficiency, instead demonstrating that teamwork is beneficial
-even when controlling for labor hours, instead of calendar hours.
+synchronic strategies, `r exp1$teamwork_residual`. Post hoc tests revealed that
+this effect of teamwork was driven primarily by synchronic teams outperforming
+isolated individuals, `r exp1$S2_v_I50`. This result suggests that maximizing
+individual learning time is not always the most effective way of improving
+problem solving performance.
 
 (ref:innovations-50min) Innovations discovered in 50 labor minutes by strategy. **A.**
 Rate of innovation by labor hours. **B.** Final innovations by strategy. Bars with
@@ -249,13 +251,20 @@ grid.arrange(
 )
 ```
 
-Next we investigated the impact of inheritance on a per-innovation basis.
-We hypothesized that inheritance would reduce the overall number of guesses
-expended in discovering each item over the alternative strategies.
-To count the number of guesses for each innovation, we tallied all guesses
-made from the moment in which a new item was adjacent to the current inventory,
-until that item was discovered. This way we only included guesses that could
-have created the item.
+### Guesses per innovation {-}
+
+We compared the three strategies in terms of how many guesses were required to
+discover each new innovation. To count the number of guesses that were required
+for each innovation, we tallied all guesses made from the moment in which a new
+item was eligible for discovery until that item was discovered. A new item was
+eligible for discovery once all of the items required to create the new item had
+been discovered. New items that are eligible for discovery are referred to as
+adjacent items, since they are adjacent to the current inventory in the
+overall problem space. The minimum number of adjacent items for an inventory
+was one, indicating that there was a single innovation that must be discovered
+before new items can be created. The median number of adjacent items was four.
+When there was more than one adjacent item, each guess counted toward the total
+number of guesses for each of the adjacent items not created by the guess.
 
 We found that diachronic inheritance did reduce the total number of guesses
 made for each new item relative to the same items being guessed with an
@@ -272,10 +281,14 @@ did not reveal a benefit to inheritance (Fig. \@ref(fig:guesses-per-item)B).
 guesses_per_item_treatment_plot
 ```
 
+### Guessing strategy {-}
+
 Finally we investigated the guessing strategy employed in each strategy.
 We were interested in whether inheritance caused second generation
 diachronic problem solvers to guess differently than players in
-the other strategies. Our results are shown in Fig. \@ref(fig:guess-types).
+the other strategies.
+
+Our results are shown in Fig. \@ref(fig:guess-types).
 
 ```{r guess-types, fig.width=5}
 prop_guess_types_50min_plot

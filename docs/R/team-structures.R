@@ -176,6 +176,13 @@ exp1$DG2_v_DG1 <- report_lmer_mod(num_innovations_50min_mod, "DG2_v_DG1", revers
 exp1$DG2_v_I50 <- report_lmer_mod(num_innovations_50min_mod, "DG2_v_I50", reverse_sign = TRUE)
 exp1$S2_v_DG2 <- report_lmer_mod(num_innovations_50min_mod, "DG2_v_S2", reverse_sign = FALSE)
 
+num_innovations_50min_s2_treat_mod <- lmer(
+  NumInnovations ~ S2_v_DG1 + S2_v_DG2 + S2_v_I50 + (1|TeamID),
+  data = Innovations
+)
+
+exp1$S2_v_I50 <- report_lmer_mod(num_innovations_50min_s2_treat_mod, "S2_v_I50")
+
 num_innovations_50min_teamwork_mod <- lmer(
   NumInnovations ~ DSvI + DvS + (1|TeamID),
   data = filter(Innovations, SessionType != "DG1")
@@ -256,7 +263,6 @@ data("Teams")
 SessionTypes50min <- Sessions %>%
   filter_50min() %>%
   recode_session_type_50min() %>%
-
   # Collapse Synchronic players into a single team,
   # but leave Diachronic and Isolated players alone.
   select(Strategy, SessionType, TeamID, Generation) %>%
