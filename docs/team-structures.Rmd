@@ -82,19 +82,20 @@ different team structure conditions (Fig. \@ref(fig:team-structures-all)).
 Participants in the diachronic condition worked on the problem solving task one
 at a time. At the end of a diachronic participant's session, the solutions they
 had discovered were passed on to be inherited by a single participant assigned
-to the next generation. All diachronic participants after the first generation
-started off the problem solving task with some solutions that had been
-discovered by a previous generation.
+to the next generation of the same team.
 
 Participants assigned to the synchronic team structure worked independently and
-in parallel but their labor was coordinated in that solutions discovered by one
-team member were immediately shared with the other members of the team who were
-working at the same time. Isolated participants completed the problem solving
-task as individuals, only benefiting from the solutions they could discover on
-their own.
+in parallel. Their labor was coordinated in that solutions discovered by one
+team member were immediately shared with the other members of the team via the
+computer interface.
 
-(ref:team-structures-all) All experimental conditions. Participants assigned
-to diachronic teams worked one at a time, each inheriting the solutions
+Isolated participants completed the problem solving task as individuals, only
+benefiting from the solutions they could discover on their own. Isolated participants
+completed the experiment in a single 50 minute session or came back for four 25
+minute sessions scheduled with at least one full day between subsequent sessions.
+
+(ref:team-structures-all) All team structure conditions. Participants assigned
+to the diachronic condition worked one at a time, each inheriting the solutions
 discovered by the previous generation. Participants in the isolated condition
 were recruited for a single 50 minute session, or returned for four 25 minute
 sessions. Participants assigned to synchronic teams worked for 25 minutes
@@ -102,6 +103,8 @@ in teams of two or four individuals.
 
 ```{r team-structures-all, out.width="50%", engine="dot", fig.cap='(ref:team-structures-all)'}
 ```
+
+## Problem solving task {-}
 
 Participants played the "Totems" game adapted from @Derex:2015cbb. Their task
 was to discover how to build tools with the ultimate goal of creating "a sacred
@@ -111,8 +114,6 @@ used as a handle, a sharpened rock for the blade, and a string wound from bark
 fibers for binding (Fig. \@ref(fig:landscape-sample)). More advanced tools
 produce larger and more intricate totems, resulting in higher performance
 scores.
-
-## Solution landscape {-}
 
 (ref:landscape-sample) A sample of the solution landscape. The top row of 6
 items were available to problem solvers at the start of the game. New items
@@ -127,10 +128,10 @@ draw_image("landscape-sample.gv", package = "totems")
 
 Participants discovered new tools by combining existing items. Participants
 could combine up to four items at a time (with replacement), meaning the
-initial six items could form a total of `r methods$n_unique_guesses_6`
+initial six items could form a total of `r methods$n_unique_combinations_6`
 combinations. Of all possible combinations, very few resulted in new items. For
 example, of all the guesses that could be formed from the initial items, only
-three (`r methods$n_unique_guesses_6_pct`%) yielded new tools (Fig.
+three (`r methods$n_unique_combinations_6_pct`%) yielded new tools (Fig.
 \@ref(fig:landscape-sample)). As participants accumulate solutions, the
 combinatorial complexity of the problem space increases exponentially such that
 the discovery of more complex tools is less likely to happen by chance.
