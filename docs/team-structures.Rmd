@@ -59,17 +59,17 @@ chunks <- c(
 sapply(chunks, read_graphviz_chunk, package = "totems")
 ```
 
-```{r Setup, include=FALSE, cache=FALSE}
+```{r Setup}
 ```
 
 # Introduction {-}
 
-```{r Intro, include=FALSE}
+```{r Intro}
 ```
 
 # Methods {-}
 
-```{r Methods, include=FALSE}
+```{r Methods}
 ```
 
 (ref:types-of-time) Team structures controlling for labor time. **Left.** Team structures. Each node is a person. **Middle.** Relationship between labor time and calendar time. Sychronic teams spend labor time more quickly than the other strategies. **Right.** Learning times by strategy, showing that an isolated strategy provides the most time for individual learning.
@@ -157,7 +157,7 @@ kable(ConditionCounts, caption = "(ref:condition-counts)")
 
 # Experiment 1 {-}
 
-```{r 50min, include=FALSE}
+```{r 50min}
 ```
 
 In Experiment 1, we compared the simplest form of diachronic inheritance---a
@@ -265,7 +265,7 @@ as well.
 
 # Experiment 2 {-}
 
-```{r SelfOther, include=FALSE}
+```{r SelfOther}
 ```
 
 In Experiment 2, we compare the effectiveness of inheriting from someone else to
