@@ -365,7 +365,3 @@ start to individual learning is not known. Although much work is still
 needed to fully understand the human propensity for cumulative cultural
 evolution, we believe our research is a valuable contribution to ongoing
 efforts to understand how and why human culture is so integrally cumulative.
-
-\setlength{\parindent}{-0.1in}
-\setlength{\leftskip}{0.125in}
-\noindent

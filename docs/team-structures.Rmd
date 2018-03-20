@@ -39,7 +39,8 @@ opts_chunk$set(
   fig.height = 3,
   dpi = 300,
 
-  cache = TRUE
+  cache = TRUE,
+  autodep = TRUE
 )
 
 # Read all knitr chunks in .R files
