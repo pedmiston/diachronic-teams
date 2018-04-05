@@ -1,0 +1,9 @@
+name: totems 
+root: ~/PhD/totems
+tmux_options: -2
+windows:
+  - main:
+      layout: even-horizontal
+      panes:
+        - source .environment && git status && inv -l
+        - source .environment && cd data && git status
