@@ -377,9 +377,3 @@ bots_team_size_plot
 ## Discussion {-}
 
 # General Discussion {-}
-
-# References {-}
-
-\setlength{\parindent}{-0.1in}
-\setlength{\leftskip}{0.15in}
-\noindent
