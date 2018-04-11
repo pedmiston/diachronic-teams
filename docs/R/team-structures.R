@@ -10,7 +10,6 @@ library(tidyverse) # Load tidyverse after totems to prevent dplyr::filter from b
 t_ <- load_totems_theme()
 
 # ---- Intro ----
-
 # Makes "types of time" plot.
 # Types of time plot shows the relationship
 # between labor time, calendar time, and learning time.
@@ -39,7 +38,7 @@ time <- rbind(diachronic, synchronic, isolated) %>%
   group_by(Strategy, Person) %>%
   mutate(PersonHours = 1:n()) %>%
   ungroup() %>%
-  recode_strategy() %>%
+  totems::recode_strategy() %>%
   mutate(
     LaborHours = ifelse(Strategy == "Synchronic", LaborHours,
                         ifelse(Strategy == "Diachronic", LaborHours + 1, LaborHours - 1))
@@ -48,7 +47,7 @@ time <- rbind(diachronic, synchronic, isolated) %>%
 axis_breaks <- c(0, 50, 100)
 axis_labels <- c(0, expression(1/2), 1)
 
-labels <- recode_strategy() %>%
+labels <- totems::recode_strategy() %>%
   mutate(
     CalendarHours = 25,
     LaborHours = c(60, 18, 35),
@@ -68,7 +67,7 @@ gg_time <- ggplot(time, aes(CalendarHours, LaborHours)) +
 time %<>%
   mutate(StrategyIsolated = factor(Strategy, levels = c("Synchronic", "Diachronic", "Isolated")))
 
-labels <- recode_strategy() %>%
+labels <- totems::recode_strategy() %>%
   mutate(
     StrategyIsolated = factor(Strategy, levels = c("Synchronic", "Diachronic", "Isolated")),
     PersonHours = 5

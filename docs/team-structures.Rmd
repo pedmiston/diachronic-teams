@@ -46,16 +46,6 @@ opts_chunk$set(
 # Read all knitr chunks in .R files
 chunks_dir <- "R"
 read_chunk(file.path(chunks_dir, "team-structures.R"))
-
-# Read all the diagrams made with graphviz in the totems package
-chunks <- c(
-  "team-structures",
-  "team-structures-all",
-  "team-structures-50min",
-  "team-structures-selfother",
-  "team-structures-scalability"
-)
-sapply(chunks, read_graphviz_chunk, package = "totems")
 ```
 
 ```{r Setup}
@@ -68,8 +58,8 @@ sapply(chunks, read_graphviz_chunk, package = "totems")
 
 (ref:types-of-time) Team structures controlling for labor time. **Left.** Team structures. Each node is a person. **Middle.** Relationship between labor time and calendar time. Sychronic teams spend labor time more quickly than the other strategies. **Right.** Learning times by strategy, showing that an isolated strategy provides the most time for individual learning.
 
-```{r types-of-time, fig.width=5, fig.height=2, fig.pos="b", out.extra="", fig.cap="(ref:types-of-time)"}
-types_of_time_plot <- gridExtra::arrangeGrob(
+```{r types-of-time, fig.width=5, fig.height=2, fig.cap="(ref:types-of-time)"}
+gridExtra::grid.arrange(
   crotchet::read_graphviz("team-structures", package = "totems"),
   gg_time,
   gg_person,
@@ -109,7 +99,8 @@ were recruited for a single 50 minute session, or returned for four 25 minute
 sessions. Participants assigned to synchronic teams worked for 25 minutes
 in teams of two or four individuals.
 
-```{r team-structures-all, out.width="50%", engine="dot", fig.cap='(ref:team-structures-all)'}
+```{r team-structures-all, out.width="50%", fig.cap='(ref:team-structures-all)'}
+crotchet::draw_graphviz("team-structures-all", package = "totems")
 ```
 
 ## Problem solving task {-}
@@ -208,7 +199,8 @@ differences between strategies in terms of final team performance.
 
 (ref:team-structures-50min) Problem solving strategies compared in Experiment 1.
 
-```{r team-structures-50min, engine="dot", out.width="30%", fig.cap="(ref:team-structures-50min)"}
+```{r team-structures-50min, out.width="30%", fig.cap="(ref:team-structures-50min)"}
+crotchet::draw_graphviz("team-structures-50min", package = "totems")
 ```
 
 ## Results {-}
@@ -337,7 +329,8 @@ tools they had created at the end of the previous session.
 
 (ref:team-structures-selfother) Problem solving strategies compared in Experiment 2.
 
-```{r team-structures-selfother, engine="dot", out.width="70%", fig.cap="(ref:team-structures-selfother)"}
+```{r team-structures-selfother, out.width="70%", fig.cap="(ref:team-structures-selfother)"}
+crotchet::draw_graphviz("team-structures-selfother", package = "totems")
 ```
 
 ## Results {-}
@@ -361,7 +354,8 @@ first_discovery_by_generation_plot
 
 (ref:team-structures-scalability) Problem solving strategies compared in Experiment 3.
 
-```{r team-structures-scalability, engine="dot", out.width="80%", fig.cap="(ref:team-structures-scalability)"}
+```{r team-structures-scalability, out.width="80%", fig.cap="(ref:team-structures-scalability)"}
+crotchet::draw_graphviz("team-structures-scalability", package = "totems")
 ```
 
 ## Results {-}
