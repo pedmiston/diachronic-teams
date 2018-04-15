@@ -37,10 +37,7 @@ opts_chunk$set(
   # Width: 789 – 2250 pixels (at 300 dpi). Height maximum: 2625 pixels (at 300 dpi).
   fig.width = 3,
   fig.height = 3,
-  dpi = 300,
-
-  cache = TRUE,
-  autodep = TRUE
+  dpi = 300
 )
 
 # Read all knitr chunks in .R files
