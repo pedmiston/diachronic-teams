@@ -1,0 +1,292 @@
+Dear Pierce Edmiston :
+
+We are very pleased to inform you that your paper submission
+
+  2388 - Cumulative improvements in iterated problem solving
+
+has been accepted for oral presentation at CogSci 2018. Please read this entire email carefully, as it contains important information about your presentation, and instructions for finalizing your submission for publication in the proceedings.
+
+We received 691 paper submissions this year, and each underwent careful peer review. While many submissions were found to be of high quality, time and space constraints allowed us to accept 215 (31%) for oral presentation and a further 289 (42%) for poster presentation. Your submission will be allocated a standard 20-minute presentation period in order for you, or another one of the paper’s authors, to present this paper and to answer questions from the audience. Details concerning resources and expectations for your presentation will be provided in the coming weeks. First, there are a few issues to address.
+
+As with last year's conference, you have the option of publishing either your full, 6-page paper or just the abstract. This option was introduced to address concerns that some authors have expressed about publishing the same, or similar, paper in a journal after it has already appeared in the CogSci Conference Proceedings. Although the Cognitive Science Society's policy is clear on this (http://www.cognitivesciencesociety.org/wp-content/uploads/2016/10/Policy-on-Journal-Publication-of-Conference-Papers.pdf), there have been isolated issues in some journals. If you decide to publish the 6-page paper, you are required to respond to the reviewer comments that appear at the end of this message by editing your paper.
+
+Regardless of which option you choose, you must log on to the Precision Conference website to make your final submission. If you do not take this final step to finalize your submission, neither your paper nor your abstract will appear in the conference proceedings, and no presentation time will be reserved for you. Thus, it is very important that you complete this step before May 14, 2018 at:
+
+https://new.precisionconference.com/cogsci
+
+Please keep in mind that papers cannot be longer than 6 pages. If your submitted final draft is longer than this limit, it will be rejected without further opportunities for revision. If the document is too long, it will not appear in the conference proceedings, and you will not be allocated space in the conference schedule. Please make sure that the final draft of your paper does not exceed 6 pages.
+
+Requests to schedule your presentation on a specific day or at a specific time cannot be accommodated due to the complexities inherent in a conference of this size. By submitting your final draft, you are implicitly agreeing to have one of the authors of this paper deliver an oral presentation at any time during the conference: from July 26 to July 28, 2018. A detailed conference schedule, including information about when your presentation is to take place, will be made available well before the conference dates.
+
+Details about conference registration will be made available on or around May 1, 2018. They will appear at:
+
+http://www.cognitivesciencesociety.org/conference/cogsci-2018/registration/
+
+In order for your paper to be presented, at least one of the paper’s authors must be registered for the conference by June 15, 2018. If none of the authors are pre-registered for the conference by this date, your paper will not appear in the conference proceedings, and your talk will not be placed in the conference schedule. Please make sure that at least one author is pre-registered by June 15, 2018.
+
+Please begin making travel arrangements for the conference. CogSci 2018 has discounted rooms at the Hilton Madison Monona Terrace. To take advantage of the group discount, please reserve your room here: 
+
+http://www.hilton.com/en/hi/groups/personalized/M/MSNMHHF-CSS-20180723/index.jhtml?WT.mc_id=POG
+
+If you live outside the United States, please check your visa requirements soon for travel to the conference. The CogSci 2018 website will have information about visitor visas and the application process in the near future in the "Travel Info" page.  Upon request, invitation letters will be provided for authors of accepted papers or posters who are also registered for the conference.  A link to request a letter will be available when registration opens on or around May 1, 2018.
+
+Thank you very much for contributing this interesting paper to CogSci 2018! The participation of cognitive scientists like yourself is what will make this an exciting, informative, and productive meeting. We look forward to seeing you in Madison this summer!
+
+With best regards,
+
+Chuck Kalish, Martina Rau, Jerry Zhu and Tim Rogers
+Program Co-Chairs
+CogSci 2018
+cogsci2018@wcer.wisc.edu
+
+----------------------------------------------------------------
+
+coordinator review
+score 5/5
+
+  Type of Submission
+
+    Cognitive Science, Psychology
+
+  The Review
+
+    This excellent paper experimentally explores the cultural accumulation of
+    innovations over generations. All reviewers recommend acceptance of this paper as
+    a talk, and, as a meta-reviewer, I strongly endorse their recommendation. I assume
+    that the authors will address the reviewers' suggestions in their final draft.
+
+----------------------------------------------------------------
+
+reviewer 1 review
+score 5/5
+
+  Type of Submission
+
+    Cognitive Science
+
+  The Review
+
+    This paper makes an interesting contribution to the question of how knowledge of
+    problem-solving is accumulated in human cultures. I think it would be of general
+    interest to Cogsci participants. It is clearly written and promises to be an
+    interesting presentation.
+
+    I have a few comments. It is clear that verbal instruction itself is not a
+    strategy that really benefits humans in terms of their learning new skills or
+    learning to solve problems. Humans do not learn better through verbal instruction,
+    and the ethnographic literature clearly indicates that in modern societies of all
+    kinds, life skills are not generally learned via verbal instruction, but by
+    watching, paying attention and being good at imitation. (Which chimps and other
+    apes are not as good at.) This applies to all sorts of life skills, from farming
+    techniques and hunting to dentistry and surgery! Humans excel in the biological
+    propensity to learn in a social setting, sometimes termed docility. Other species
+    may indeed benefit from social learning, but none has the ramped-up specialization
+    of docility that humans have. This in and of itself may be responsible for the
+    cumulative cultural evolution that we find.
+
+    It is also worth noting that the ‘ancestors’ in this experiment were of the same
+    cognitive capacity as the inheritors of the problems. This may well not be the
+    case in the real evolution of humans. A time of rapid change (punctuated
+    equilibrium) might have meant that very fast evolution of intelligence occurred
+    during some periods. In other words, an inheritor might just have been a lot
+    smarter than her ancestor a few short generations ago, and this might have led to
+    her ability to solve problems better.
+
+----------------------------------------------------------------
+
+reviewer 2 review
+score 5/5
+
+  Type of Submission
+
+    Cognitive Science
+
+  The Review
+
+    Review of Cumulative improvements in iterated problem solving
+    This paper presents experimental work investigating the cumulative cultural
+    evolution of problem solving. In a paradigm called "the Totem game", participants
+    build artefacts by finding specific combinations of materials over five
+    generations in an iterated learning chain. After each individual session the
+    'recipe' for artefacts are passed on to the next generation. The authors observe
+    accumulation of solutions making later generations produce more and more complex
+    tools.
+    I warmly welcome this interesting piece of work. The majority of studies on
+    cultural evolution have focused on diffusion and transmission and have thus tended
+    to leave innovation and emergence of new variants to the domain of unintentional
+    mutation, drift and cognitive biases (with some important exceptions). This study
+    show that human innovation can be an intentional process involving active search
+    for intelligent solutions. I consider this research both very timely, original,
+    and important.
+    The paper is well written and clear. Methods and analyses are appropriate.
+    However, there are a few issues that require authors' attention.
+    1)      It is not clear what is transferred between generations in this study. It
+    seems to be a kind of recipe for artefacts (maybe a list of things to combine)
+    while new generations do not inherit the artefact itself. I.e. this is not really
+    emulation learning, but it is also not clear which kind of social learning it is?
+    It fact, the transmission/learning process either falls ambiguously in between
+    observation learning and teaching? Or - it could be argued to involve very
+    advanced and evolutionarily young processes of producing a kind of written
+    instructions? It would be great if authors could share their thoughts on how they
+    see transmission in this paradigm in relation to existing theories.
+    2)      Following the previous comment: The authors talk about the transfer of
+    solutions. However, it is not clear whether the cumulative process in this study
+    is only an accumulation of solutions or also problem-solving strategies? The
+    authors notice that participants "must use tacit knowledge to help form
+    combinations that are most likely to yield new tools".
+    3)      The authors themselves point to the fact that some of their findings -
+    especially the observation that the rate of innovation decreases over generation -
+    could possibly be an artifact of the experimental design. I very much agree. Cross
+    sectional data (e.g. from archeology) definitely do not support this finding.
+    4)      Minor things: last sentence of the abstract: "We discuss the limitations
+    of thiswork, and motivate future directions" -> devide "thiswork" in two words
+    Page 4: "This rate was not found to vary based on the number of inherited tools,
+    as revealed by comparing a model predicting unique innovations from playing time
+    alone to one predicting unique innovations from the interaction between playing
+    time and inheritance size, ." -> delete last comma+white space.
+
+----------------------------------------------------------------
+
+reviewer 3 review
+score 5/5
+
+  Type of Submission
+
+    Anthropology, Cognitive Science, Psychology
+
+  The Review
+
+    This is a beautiful paper which experimentally explored the accumulation of
+    innovations (i.e., creating new tools) over consecutive generations. The authors
+    used a transmission chain game, where participants create new tools and pass their
+    innovations on to the next generation of participants. They find that participants
+    in later generations build up on their ancestors tools, improving performance over
+    time. The authors also show that inheriting more tools leads participants to make
+    less redundant guesses in the process of discovering new tools – suggesting that
+    richer input benefited participants’ learning strategies.
+
+    I highly recommend accepting it as a talk, and I think it will be of great
+    interest to the wide CogSci community. This paper presents novel results and novel
+    ideas in a well-written manner, has clear and nice visualizations, and was
+    altogether very interesting and thought-provoking to read.
+
+    A few minor things that should be addressed in the revised version:
+
+    1.      The authors switch back and forth between the phrases “solving problems”
+    to “discovering tools”, which I found to be confusing. “Problem solving” triggers
+    slightly different associations (e.g., complex reasoning), while in this case
+    we’re mostly talking about simple combinations and educated guesses. For clarity,
+    consistency and accuracy, I would simply stick to the tool-making theme
+    throughout, and get rid of the problem-solving theme.
+
+    2.      The part in the discussion about the restrictions of the design (i.e.,
+    only one possible path to each tool; new tools are more likely to be combined)
+    belong in the *methods* section. These two issues bugged me throughout the results
+    sections, and would have been much better to acknowledge them sooner.
+
+    3.      The results section has a lot of different measures (overall no. of tool
+    discovered, no. of new tools discovered, learning rates, discovery rates, types of
+    guesses etc.). It would be good to prepare the reader in advance for what is going
+    to happen by explaining all measures that were collected in the methods section.
+    Additionally, there are a lot of different analyses for each measure, but it’s not
+    always clear what these are (regressions models? If so, what was their fixed and
+    random effects structure?). If the authors need more space for these details, they
+    can definitely cut out the first two paragraphs of discussion as they were really
+    redundant.
+
+    4.      In the regression model reported in “performance by generation”, it seems
+    like Generation Number was coded as a categorical variable. This seems strange
+    given that it can be treated as continuous or ordered, which would be more
+    informative. I would run this model to examine linear and quadratic changes in the
+    number of tools created over generations (see also comment 7):
+
+       Total no. of tools discovered ~ poly(generation,2) + (1+poly(generation,2) |
+    chain)
+
+    5.      The sentence “we measured complexity as the combinatorial complexity of
+    the number of items in the participants’ inventories at the time a discovery was
+    made” was not clear. Is it the likelihood of discovering that specific combination
+    given the participant’s current inventory (more complex = less chances to be
+    discovered)?
+
+    6.      What exactly is “discovering a tool by chance alone”? Is “chance alone” a
+    single guess (e.g., 1/1544 in generation 1), or a series of random guesses that
+    could be made in 25 minutes? These are very different, and in fact the latter
+    makes more sense to me (though I suspect the authors measured this with a single
+    guess). It’s important to establish what exactly the chance-level of this measure
+    is (i.e., how many guesses can be made on average during 25 minutes, divided by
+    the number of possible combinations).
+
+    7.      “Diminishing return” is a bit vague. I assume the idea is that the
+    increase in the number of tools levels off in later generations (i.e, the increase
+    in not linear). This could be written more specifically, and also attested for
+    using the model mentioned above.
+
+    8.      In Fig. 2’s caption it’s mentioned that items can be “refined”. How is
+    this done? Refinement was not mentioned anywhere in the text.
+
+    9.  In Fig. 3, some of the lines are shifted to the left.
+
+    10.     The part out outliers marked with X belongs in the caption of Fig. 6 (not
+    in Fig. 5).
+
+    11.     Fig. 8’s caption belongs in the main text (explaining what each guess
+    category means).
+
+    12.     Better to avoid the term “problem solvers”: it’s leads to garden-path
+    sentences. Just use “participants” or “individuals”.
+
+    13.     In the sentence “… other forms of problem solving that do not involve
+    vertical transmission” – Is the idea to compare these findings with one emerging
+    in purely communication scenarios?
+
+    14. There was a typo in “building tours of spaghetti” - should be “towers”.
+
+----------------------------------------------------------------
+
+reviewer 4 review
+score 4/5
+
+  Type of Submission
+
+    Cognitive Science
+
+  The Review
+
+    This contribution presents an experimental study looking the cumulative evolution
+    of problem solving. It is theoretically justified and technically sound, and a
+    nice little experiment! However, I think the paper can do more to justify why this
+    is different from previous studies and what gap it is filling in the literature.
+    The 2nd paragraph of the conclusion say that the study "examined the likelihood
+    that problem solving knowledge would accumulate given that problem solving
+    knowledge could be effectively transferred to the next generation" - This is
+    presented as being different from the ability to have verbal instructions, or the
+    ability to just watch people doing the task before you, but I'm not sure how
+    different these things are different. Is it the cumulative aspect of it? I think
+    this needs to be really clarified and sign-posted.
+
+    The writing is mostly excellent, but there were a few points I had:
+
+    I think the paper would have benefitted from outlining your research questions
+    more specifically in the introduction. At the minute the beginning of each results
+    sections (“Next we asked…”) comes as a surprise.
+
+    I think you need to acknowledge at the end of the “performance by generation”
+    section that later generations might have made fewer discoveries because more of
+    their time was spent completing the recipes of those before, I know you go on to
+    address this in the rate of discovery section but it feels like a bit of a hole at
+    the minute.
+
+    “ Data was collected for a total of 42 teams (N=168 participants).”
+    - this confused me because the word “teams” made me think it was a group activity
+    and i’d missed something so I went back and read the methods again. I see that you
+    mean chains, which is perhaps a better word to use here.
+
+    “ found evidence that the number of tools discovered within each chain increased
+    over generations Page’s L  = 1193, c2  = 234, p <  0.001”
+    - you at least need a comma before the stats here. 
+
+    “interaction between playing time and inheritance size, .”
+    - weird comma+full stop combo at the end of this sentence
+
+----------------------------------------------------------------
