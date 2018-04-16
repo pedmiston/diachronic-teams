@@ -195,7 +195,9 @@ synchronic teams (Fig. \@ref(fig:team-structures-50min)).
 crotchet::draw_graphviz("team-structures-50min", package = "totems")
 ```
 
-## Innovations {-}
+## Results {-}
+
+### Innovations {-}
 
 The number of innovations discovered using each of the three team strategies is
 shown in Fig. \@ref(fig:innovations-50min). Our primary hypothesis concerned
@@ -261,9 +263,12 @@ number of guesses per item only for items that were newly discovered by the
 second generation diachronic problem solvers did not reveal a benefit to
 inheritance (Fig. \@ref(fig:guesses-per-innovation)B).
 
-(ref:guesses-per-innovation) Average guesses per innovation.
+(ref:guesses-per-innovation) Guesses per innovation by inheritance condition.
+Each thin gray line shows the average number of guesses for a particular
+innovation. **A.** Guesses per innovation for all tools. **B.** Guesses per
+innovation for novel tools, not discovered by an ancestor.
 
-```{r guesses-per-innovation, fig.width=5}
+```{r guesses-per-innovation, fig.width=5, fig.cap="(ref:guesses-per-innovation)"}
 gridExtra::grid.arrange(
   guesses_per_item_plot + ggtitle("A"),
   guesses_per_new_item_plot +
@@ -286,7 +291,12 @@ the other strategies.
 
 Our results are shown in Fig. \@ref(fig:guess-types).
 
-```{r guess-types, fig.width=5}
+(ref:guess-types) Guessing strategies by team strategy. Redundant guesses were
+incorrect guesses made once before. Repeat items were recreated tools. Unique
+guesses were incorrect guesses never made. Unique items were unique guesses that
+created a new tool.
+
+```{r guess-types, fig.width=5, fig.cap="(ref:guess-types)"}
 prop_guess_types_50min_plot
 ```
 
@@ -328,8 +338,6 @@ come back to the experiment for four separate sessions, each 25 minutes long. At
 each session after the first, these participants inherited the recipes for the
 tools they had created at the end of the previous session.
 
-## Methods {-}
-
 (ref:team-structures-selfother) Problem solving strategies compared in Experiment 2.
 
 ```{r team-structures-selfother, out.width="70%", fig.cap="(ref:team-structures-selfother)"}
@@ -351,14 +359,6 @@ first_discovery_by_generation_plot
 # Experiment 3 {-}
 
 ```{r TeamSize}
-```
-
-## Methods {-}
-
-(ref:team-structures-scalability) Problem solving strategies compared in Experiment 3.
-
-```{r team-structures-scalability, out.width="80%", fig.cap="(ref:team-structures-scalability)"}
-crotchet::draw_graphviz("team-structures-scalability", package = "totems")
 ```
 
 ## Results {-}

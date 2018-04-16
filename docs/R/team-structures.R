@@ -125,11 +125,11 @@ ConditionCounts <- Teams %>%
   select(Strategy, SessionDuration, PlayersPerSession) %>%
   unique() %>%
   arrange(Strategy) %>%
-  mutate(`Sessions per participant` = c(1, 1, 4, 1, 1)) %>%
+  mutate(`Sessions` = c(1, 1, 4, 1, 1)) %>%
   left_join(TeamCounts) %>%
   left_join(PlayerCounts) %>%
-  rename(`Duration (min)` = SessionDuration, `Participants per session` = PlayersPerSession,
-         `$N_{teams}$` = NumTeams, `$N_{participants}` = NumPlayers)
+  rename(`Duration (min)` = SessionDuration, `Session size` = PlayersPerSession,
+         `Teams` = NumTeams, `Participants` = NumPlayers)
 
 # ---- 50min ----
 
