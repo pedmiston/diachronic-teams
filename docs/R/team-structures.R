@@ -125,8 +125,11 @@ ConditionCounts <- Teams %>%
   select(Strategy, SessionDuration, PlayersPerSession) %>%
   unique() %>%
   arrange(Strategy) %>%
+  mutate(`Sessions per participant` = c(1, 1, 4, 1, 1)) %>%
   left_join(TeamCounts) %>%
-  left_join(PlayerCounts)
+  left_join(PlayerCounts) %>%
+  rename(`Duration (min)` = SessionDuration, `Participants per session` = PlayersPerSession,
+         `$N_{teams}$` = NumTeams, `$N_{participants}` = NumPlayers)
 
 # ---- 50min ----
 
@@ -294,9 +297,20 @@ CostPerItem50min <- GuessesPerItem50min %>%
   recode_session_type_50min() %>%
   recode_discovered() %>%
   label_inheritance() %>%
-  recode_inheritance()
+  recode_inheritance() %>%
+  recode_strategy()
 
 # Guesses per item by inheritance.
+guesses_per_item_inheritance_mod <- lmer(
+  TotalGuesses ~ Diachronic_v_NoInheritance + (Diachronic_v_NoInheritance|Adjacent),
+  data = filter(CostPerItem50min, Discovered)
+)
+guesses_per_item_inheritance_preds <- recode_inheritance() %>%
+  filter(Inheritance != "individual_inheritance") %>%
+  cbind(., predictSE(guesses_per_item_inheritance_mod, newdata = ., se = TRUE)) %>%
+  rename(TotalGuesses = fit, SE = se.fit)
+
+# Guesses per item by strategy.
 guesses_per_item_treatment_mod <- lmer(
   TotalGuesses ~ DG2_v_DG1 + DG2_v_S2 + DG2_v_I50 +
     (DG2_v_DG1 + DG2_v_S2 + DG2_v_I50|Adjacent),
@@ -304,18 +318,42 @@ guesses_per_item_treatment_mod <- lmer(
 
 guesses_per_item_treatment_preds <- recode_session_type_50min() %>%
   cbind(., predictSE(guesses_per_item_treatment_mod, newdata = ., se = TRUE)) %>%
-  rename(TotalGuesses = fit, SE = se.fit) %>%
+  rename(TotalGuesses = fit, SE = se.fit)
+
+guesses_per_item_treatment_means <- guesses_per_item_treatment_preds %>%
+  filter(SessionType != "DG2") %>%
+  mutate(Inheritance = "no_inheritance") %>%
+  recode_inheritance() %>%
   recode_strategy()
 
-guesses_per_item_treatment_plot <- ggplot(CostPerItem50min) +
-  aes(SessionTypeSimple, TotalGuesses) +
-  geom_point(aes(group = Adjacent, color = StrategyLabel), position = position_jitter(width = 0.2),
-             stat = "summary", fun.y = "mean", shape = 1) +
-  geom_errorbar(aes(ymin = TotalGuesses-SE, ymax = TotalGuesses+SE, color = StrategyLabel),
-                data = guesses_per_item_treatment_preds,
-                width = 0.1, size = 1.2) +
-  xlab("") +
+guesses_per_item_treatment_means_2 <- guesses_per_item_treatment_preds %>%
+  filter(SessionType == "DG2") %>%
+  mutate(Inheritance = "diachronic_inheritance") %>%
+  recode_inheritance() %>%
+  recode_strategy()
+
+guesses_per_item_plot <- ggplot(CostPerItem50min) +
+  aes(InheritanceShort, TotalGuesses) +
+  geom_line(aes(group = Adjacent), stat = "summary", fun.y = "mean",
+            color = "gray") +
+  geom_line(aes(group = 1), data = guesses_per_item_inheritance_preds,
+            size = 0.8) +
+  geom_errorbar(aes(ymin = TotalGuesses-SE, ymax = TotalGuesses+SE),
+                data = guesses_per_item_inheritance_preds,
+                width = 0.075, size = 0.8) +
+  geom_point(aes(color = StrategyLabel),
+             data = guesses_per_item_treatment_means, x = 0.9) +
+  geom_text(aes(label = SessionType, color = StrategyLabel),
+            hjust = 1, size = 3,
+            data = guesses_per_item_treatment_means, x = 0.86) +
+  geom_point(aes(color = StrategyLabel),
+             data = guesses_per_item_treatment_means_2, x = 2.1) +
+  geom_text(aes(label = SessionType, color = StrategyLabel),
+            hjust = 0, size = 3,
+            data = guesses_per_item_treatment_means_2, x = 2.14) +
+  xlab("Inheritance") +
   scale_y_continuous("Guesses per innovation", breaks = seq(0, 300, by = 50)) +
+  coord_cartesian(xlim = c(0.65, 2.35), ylim = c(0, 200), expand = FALSE) +
   t_$scale_color_strategy +
   t_$base_theme +
   theme(
@@ -344,34 +382,66 @@ CostPerItem50minPlaying <- GuessesPerItem50min %>%
   label_inheritance() %>%
   recode_inheritance()
 
-# Guesses per item by inheritance.
-# Determine the impact of inheritance on guessing ability
-# by comparing guessing rates for each item discovered
-# by Diachronic players.
-guesses_per_new_item_by_inheritance_mod <- lmer(
-  TotalGuesses ~ Diachronic_v_NoInheritance +
-    (Diachronic_v_NoInheritance|Adjacent),
-  data = filter(CostPerItem50minPlaying, Discovered))
-
-guesses_per_new_item_by_inheritance_preds <- recode_inheritance() %>%
+guesses_per_new_item_inheritance_mod <- lmer(
+  TotalGuesses ~ Diachronic_v_NoInheritance + (Diachronic_v_NoInheritance|Adjacent),
+  data = filter(CostPerItem50minPlaying, Discovered)
+)
+guesses_per_new_item_inheritance_preds <- recode_inheritance() %>%
   filter(Inheritance != "individual_inheritance") %>%
-  cbind(., predictSE(guesses_per_new_item_by_inheritance_mod, newdata = ., se = TRUE)) %>%
+  cbind(., predictSE(guesses_per_new_item_inheritance_mod, newdata = ., se = TRUE)) %>%
   rename(TotalGuesses = fit, SE = se.fit)
 
-guesses_per_new_item_by_inheritance_plot <- ggplot(CostPerItem50minPlaying) +
-  aes(InheritanceLabel, TotalGuesses) +
-  geom_line(aes(group = Adjacent), color = t_$color_picker("blue"),
-            stat = "summary", fun.y = "mean",
+# Guesses per item by strategy.
+guesses_per_new_item_treatment_mod <- lmer(
+  TotalGuesses ~ DG2_v_DG1 + DG2_v_S2 + DG2_v_I50 +
+    (DG2_v_DG1 + DG2_v_S2 + DG2_v_I50|Adjacent),
+  data = filter(CostPerItem50minPlaying, Discovered))
+
+guesses_per_new_item_treatment_preds <- recode_session_type_50min() %>%
+  cbind(., predictSE(guesses_per_new_item_treatment_mod, newdata = ., se = TRUE)) %>%
+  rename(TotalGuesses = fit, SE = se.fit)
+
+guesses_per_new_item_treatment_means <- guesses_per_new_item_treatment_preds %>%
+  filter(SessionType != "DG2") %>%
+  mutate(Inheritance = "no_inheritance") %>%
+  recode_inheritance() %>%
+  recode_strategy()
+
+guesses_per_new_item_treatment_means_2 <- guesses_per_new_item_treatment_preds %>%
+  filter(SessionType == "DG2") %>%
+  mutate(Inheritance = "diachronic_inheritance") %>%
+  recode_inheritance() %>%
+  recode_strategy()
+
+guesses_per_new_item_plot <- ggplot(guesses_per_new_item_treatment_mod) +
+  aes(InheritanceShort, TotalGuesses) +
+  geom_line(aes(group = Adjacent), stat = "summary", fun.y = "mean",
+            color = "gray") +
+  geom_line(aes(group = 1), data = guesses_per_new_item_inheritance_preds,
             size = 0.8) +
-  geom_line(aes(group = 1),
-            stat = "identity", data = guesses_per_new_item_by_inheritance_preds,
-            size = 1.2) +
   geom_errorbar(aes(ymin = TotalGuesses-SE, ymax = TotalGuesses+SE),
-                data = guesses_per_new_item_by_inheritance_preds,
-                width = 0.05, size = 1.2) +
-  xlab("") +
-  scale_y_continuous("Guesses per item") +
-  t_$base_theme
+                data = guesses_per_new_item_inheritance_preds,
+                width = 0.075, size = 0.8) +
+  geom_point(aes(color = StrategyLabel),
+             data = guesses_per_new_item_treatment_means, x = 0.9) +
+  geom_text(aes(label = SessionType, color = StrategyLabel),
+            hjust = 1, size = 3,
+            data = guesses_per_new_item_treatment_means, x = 0.86) +
+  geom_point(aes(color = StrategyLabel),
+             data = guesses_per_new_item_treatment_means_2, x = 2.1) +
+  geom_text(aes(label = SessionType, color = StrategyLabel),
+            hjust = 0, size = 3,
+            data = guesses_per_new_item_treatment_means_2, x = 2.14) +
+  xlab("Inheritance") +
+  scale_y_continuous("Guesses per innovation", breaks = seq(0, 300, by = 50)) +
+  coord_cartesian(xlim = c(0.65, 2.375), ylim = c(0, 200), expand = FALSE) +
+  t_$scale_color_strategy +
+  t_$base_theme +
+  theme(
+    legend.position = "none",
+    panel.grid.major.x = element_blank()
+  )
+
 
 # * Guess types ----
 GuessTypes <- Guesses %>%
