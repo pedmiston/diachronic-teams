@@ -7,3 +7,17 @@ windows:
       panes:
         - source .environment && git status && inv -l
         - source .environment && cd data && git status
+  - team-structures:
+      layout: main-vertical
+      panes:
+        - source .environment && cd docs && vim team-structures.Rmd
+        -
+  - iterated-problem-solving:
+      layout: main-vertical
+      panes:
+        - source .environment && cd docs && vim iterated-problem-solving.Rmd
+  - experiment:
+      layout: even-horizontal
+      panes:
+        - cd experiment && git status
+        - cd ~/Dropbox/LupyanExps/totems-experiment && git status
