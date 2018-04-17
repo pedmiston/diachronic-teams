@@ -132,8 +132,6 @@ pole.
 draw_image("landscape-sample.gv", package = "totems")
 ```
 
-### Innovation record {-}
-
 Once a tool was discovered, the recipe for its creation---a list of the items
 that had to be combined in order to create the tool---was recorded in an
 innovation record (Fig. \@ref(fig:interface)). Participants could review their
@@ -212,15 +210,16 @@ statistically significant, `r exp1$DG2_v_I50`. Conversely, diachronic teams
 discovered fewer innovations on average than two-person synchronic teams, but
 again this difference was not statistically significant, `r exp1$S2_v_DG2`.
 
-We did find an overall benefit to teamwork in this task. To test this, we compared
-two-person teams (both diachronic and synchronic) to isolated individuals.
-Teams performed reliably better on this task than individuals,
-`r exp1$teamwork_stats`, without a significant residual difference between the diachronic and
-synchronic strategies, `r exp1$teamwork_residual`. Post hoc tests revealed that
-this effect of teamwork was driven primarily by synchronic teams outperforming
-isolated individuals, `r exp1$S2_v_I50`. This result suggests that maximizing
-individual learning time is not always the most effective way to improve
-problem solving performance.
+We did find an overall benefit to teamwork in this task. To test this,
+we compared two-person teams (both diachronic and synchronic) to isolated
+individuals. Teams performed reliably better on this task than individuals,
+`r exp1$teamwork_stats`, without a significant residual difference between the
+diachronic and synchronic strategies, `r exp1$teamwork_residual`. Post hoc tests
+revealed that this effect of teamwork was driven primarily by synchronic teams
+outperforming isolated individuals, `r exp1$S2_v_I50`. This result, showing an
+advantage of teamwork over individual labor, suggests that maximizing individual
+learning time is not always the most effective way to improve problem solving
+performance.
 
 (ref:innovations-50min) Innovations discovered in 50 labor minutes by strategy.
 **A.** Rate of innovation by labor hours. Each line is the average number of
@@ -254,15 +253,16 @@ before new items can be created. The median number of adjacent items was four.
 When there was more than one adjacent item, each guess counted toward the total
 number of guesses for each of the adjacent items not created by the guess.
 
-We found that diachronic inheritance reduced the average number of guesses made
-for each new item relative to the same items being guessed by participants in
-either the isolated or synchronic conditions (Fig.
-\@ref(fig:guesses-per-innovation)A). However, we found that this overall
-benefit to inheritance in terms of fewer guesses per item did not extend to
-items that had not been discovered by the previous generation. Comparing the
-number of guesses per item only for items that were newly discovered by the
-second generation diachronic problem solvers did not reveal a benefit to
-inheritance (Fig. \@ref(fig:guesses-per-innovation)B).
+We found that diachronic inheritance reduced the average number of guesses
+required to discover each item relative to the same items being guessed by
+participants in either the isolated or synchronic conditions,
+`r exp1$guesses_per_item_inheritance` (Fig.
+\@ref(fig:guesses-per-innovation)A). However, we found that this overall benefit
+to inheritance in terms of fewer guesses per item did not extend to items that
+had not been discovered by the previous generation. Comparing the number of
+guesses per item only for items that were newly discovered by the second
+generation diachronic problem solvers did not reveal a benefit to inheritance,
+`r exp1$guesses_per_new_item_inheritance` (Fig. \@ref(fig:guesses-per-innovation)B).
 
 (ref:guesses-per-innovation) Guesses per innovation by inheritance condition.
 Each thin gray line shows the average number of guesses for a particular
@@ -285,28 +285,55 @@ gridExtra::grid.arrange(
 
 ### Guessing strategy {-}
 
-We next analyzed the effectiveness of the guessing strategies employed by participants
-in each strategy. Each guess can be categorized into one of four types (Table \@ref(tab:guess-types)).
+We next analyzed the effectiveness of the guessing strategies employed by
+participants in each strategy. The analyses of guesses reported above treat all
+incorrect guesses as the same, but in reality some guessing strategies are more
+optimal than others. Specifically, in this task an optimal guessing strategy is
+to only attempt unique guesses. However, in the Totems game, many people end up
+making repeat guesses, thus employing a suboptimal strategy. The nature of these
+repeat guesses varies, as there are a total of four types of guesses that can be
+made. The different guess types are shown in Table \@ref(tab:guess-types).
 
-The analyses of guesses reported above treat all incorrect guesses as the same,
-but in reality some guessing strategies are more optimal than others. Specifically,
-an optimal guessing strategy is to only guess unique guesses. However, in the
-totems game, many people end up making repeat guesses. The nature of these
-repeat guesses varies, as there are four types of guesses that
+(ref:guess-types) Guess types. Each guess can be categorized into one of four
+types. Redundant guesses were incorrect guesses made once before. Repeat items
+were recreated tools. Unique guesses were incorrect guesses never made. Unique
+items were unique guesses that created a new tool.
 
-Finally we investigated the guessing strategy employed in each strategy.
-We were interested in whether inheritance caused second generation
-diachronic problem solvers to guess differently than players in
-the other strategies.
+```{r guess-types, results="asis"}
+recode_guess_type() %>%
+  select(`Guess type` = GuessTypeLabel,
+         `Unique guess` = UniqueGuess,
+         `Created item` = CreatedItem,
+         `Unique result` = UniqueResult) %>%
+  kable(caption = "(ref:guess-types)")
+```
 
-Our results are shown in Fig. \@ref(fig:guess-types).
+We calculated the proportion of guesses made by participants in each condition
+falling into the four guess types. Our results are shown in Fig.
+\@ref(fig:guess-props).
 
-(ref:guess-types) Guessing strategies by team strategy. Redundant guesses were
-incorrect guesses made once before. Repeat items were recreated tools. Unique
-guesses were incorrect guesses never made. Unique items were unique guesses that
-created a new tool.
+For our analysis, we were particularly interested in the proportions of
+redundant and unique guesses. Looking just at redundant guesses, we found
+that inheritance caused participants to guess fewer redundant guesses
+than the the other strategies, `r exp1$prop_redundant_inheritance`.
+Post hoc comparisons revealed that second generation diachronic
+participants had a lower percentage of redundant guesses than first
+generation participants, `r exp1$prop_redundant_dg2`, and isolated
+individuals, `r exp1$prop_redundant_i50`, but not synchronic participants,
+`r exp1$prop_redundant_i50`.
 
-```{r guess-types, fig.width=5, fig.cap="(ref:guess-types)"}
+Looking at the proportion of unique guesses, we found no overall effect of
+inheritance, `r exp1$prop_unique_inheritance`. Pairwise comparisons revealed
+a significant difference between second generation diachronic participants
+and isolated individuals, `r exp1$prop_unique_i50`, but not between second and
+first generation diachronic players, `r exp1$prop_unique_dg2`, and not between
+diachronic and synchronic strategies, `r exp1$prop_unique_s2`.
+
+(ref:guess-props) Guessing strategies by team structure. DG1 and DG2 refer to first
+and second generation diachronic participants. I50 refers to isolated participants
+given 50 minutes. S2 refers to two-person synchronic teams.
+
+```{r guess-props, fig.width=5, fig.cap="(ref:guess-props)"}
 prop_guess_types_50min_plot
 ```
 
@@ -330,29 +357,32 @@ Second generation diachronic players did seem to employ a different guessing str
 as reflected in the distribution of guesses by type. In this game, redundant guesses
 are unhelpful in that they will never yield new discoveries, and yet most participants
 generate a significant proportion of redundant guesses. This detrimental tendency to guess
-redundantly may be is lessened by diachronic collaboration, as second generation diachronic
-problem solvers generated fewer redundant guesses than their ancestors. However, similar
-proportions of redundant guesses were generated by participants in the synchronic strategy
-as well.
+redundantly may be lessened by diachronic collaboration, as second generation
+diachronic problem solvers generated fewer redundant guesses than their
+ancestors and participants in an isolated strategy. However, similar proportions
+of redundant guesses were generated by participants in the synchronic strategy.
 
-This result supports the original
-findings reported by @Derex:2015cbb that synchronic collaboration can
-result in an improvement in problem solving performance relative to isolated
-individuals working alone. Here we
-cumulative problem solving tasks.
+The results of Experiment 1 support and extend the original findings reported by
+@Derex:2015cbb that synchronic collaboration can result in an improvement in
+problem solving performance relative to isolated individuals working alone. Here
+we demonstrate that this advantage holds even when labor hours are controlled.
 
-# Experiment 2 {-}
+Next we report the results of an Experiment designed to compare a diachronic
+strategy to one in which the same individual returns for multiple visits.
+
+# Experiment 2: Inheriting from self or other {-}
 
 ```{r SelfOther}
 ```
 
 In Experiment 2, we compare the effectiveness of inheriting from someone else to
-the effectiveness of inheriting from yourself (Fig. \@ref(fig:team-structures-selfother).
-In this experiment, participants were assigned to the diachronic condition or
-the isolated condition. Participants in the isolated condition were asked to
-come back to the experiment for four separate sessions, each 25 minutes long. At
-each session after the first, these participants inherited the recipes for the
-tools they had created at the end of the previous session.
+the effectiveness of inheriting from yourself (Fig.
+\@ref(fig:team-structures-selfother)). In this experiment, participants were
+assigned to the diachronic condition or the isolated condition. Participants in
+the isolated condition were asked to come back to the experiment for four
+separate sessions, each 25 minutes long. At each session after the first, these
+participants inherited the recipes for the tools they had created at the end of
+the previous session.
 
 (ref:team-structures-selfother) Problem solving strategies compared in Experiment 2.
 
@@ -372,7 +402,7 @@ first_discovery_by_generation_plot
 
 ## Discussion {-}
 
-# Experiment 3 {-}
+# Experiment 3: Scalability of diachronic and synchronic collaboration {-}
 
 ```{r TeamSize}
 ```

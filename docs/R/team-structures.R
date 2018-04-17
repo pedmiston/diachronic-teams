@@ -305,6 +305,9 @@ guesses_per_item_inheritance_mod <- lmer(
   TotalGuesses ~ Diachronic_v_NoInheritance + (Diachronic_v_NoInheritance|Adjacent),
   data = filter(CostPerItem50min, Discovered)
 )
+exp1$guesses_per_item_inheritance <- report_lmer_mod(guesses_per_item_inheritance_mod,
+                                                     "Diachronic_v_NoInheritance")
+
 guesses_per_item_inheritance_preds <- recode_inheritance() %>%
   filter(Inheritance != "individual_inheritance") %>%
   cbind(., predictSE(guesses_per_item_inheritance_mod, newdata = ., se = TRUE)) %>%
@@ -351,7 +354,7 @@ guesses_per_item_plot <- ggplot(CostPerItem50min) +
   geom_text(aes(label = SessionType, color = StrategyLabel),
             hjust = 0, size = 3,
             data = guesses_per_item_treatment_means_2, x = 2.14) +
-  xlab("Inheritance") +
+  xlab("") +
   scale_y_continuous("Guesses per innovation", breaks = seq(0, 300, by = 50)) +
   coord_cartesian(xlim = c(0.65, 2.35), ylim = c(0, 200), expand = FALSE) +
   t_$scale_color_strategy +
@@ -386,6 +389,8 @@ guesses_per_new_item_inheritance_mod <- lmer(
   TotalGuesses ~ Diachronic_v_NoInheritance + (Diachronic_v_NoInheritance|Adjacent),
   data = filter(CostPerItem50minPlaying, Discovered)
 )
+exp1$guesses_per_new_item_inheritance <- report_lmer_mod(guesses_per_new_item_inheritance_mod,
+                                                     "Diachronic_v_NoInheritance")
 guesses_per_new_item_inheritance_preds <- recode_inheritance() %>%
   filter(Inheritance != "individual_inheritance") %>%
   cbind(., predictSE(guesses_per_new_item_inheritance_mod, newdata = ., se = TRUE)) %>%
@@ -432,7 +437,7 @@ guesses_per_new_item_plot <- ggplot(guesses_per_new_item_treatment_mod) +
   geom_text(aes(label = SessionType, color = StrategyLabel),
             hjust = 0, size = 3,
             data = guesses_per_new_item_treatment_means_2, x = 2.14) +
-  xlab("Inheritance") +
+  xlab("") +
   scale_y_continuous("Guesses per innovation", breaks = seq(0, 300, by = 50)) +
   coord_cartesian(xlim = c(0.65, 2.375), ylim = c(0, 200), expand = FALSE) +
   t_$scale_color_strategy +
@@ -464,13 +469,30 @@ GuessTypes <- Guesses %>%
     PropRepeatedItems = NumRepeatedItems/NumGuesses,
     PropUniqueGuesses = NumUniqueGuesses/NumGuesses,
     PropUniqueItems = NumUniqueItems/NumGuesses
-  )
+  ) %>%
+  label_inheritance() %>%
+  recode_inheritance()
+
+prop_redundant_inheritance_mod <- lm(PropRedundantGuesses ~ Diachronic_v_NoInheritance,
+                                     data = GuessTypes)
+exp1$prop_redundant_inheritance <- report_lm_mod(prop_redundant_inheritance_mod,
+                                                 "Diachronic_v_NoInheritance")
 
 prop_redundant_guesses_mod <- lm(PropRedundantGuesses ~ DG2_v_DG1 + DG2_v_I50 + DG2_v_S2,
                                  data = GuessTypes)
+exp1$prop_redundant_dg2 <- report_lm_mod(prop_redundant_guesses_mod, "DG2_v_DG1")
+exp1$prop_redundant_i50 <- report_lm_mod(prop_redundant_guesses_mod, "DG2_v_I50")
+exp1$prop_redundant_s2 <- report_lm_mod(prop_redundant_guesses_mod, "DG2_v_S2")
+
+prop_unique_inheritance_mod <- lm(PropUniqueGuesses ~ Diachronic_v_NoInheritance,
+                                  data = GuessTypes)
+exp1$prop_unique_inheritance <- report_lm_mod(prop_unique_inheritance_mod, "Diachronic_v_NoInheritance")
 
 prop_unique_guesses_mod <- lm(PropUniqueGuesses ~ DG2_v_DG1 + DG2_v_I50 + DG2_v_S2,
                               data = GuessTypes)
+exp1$prop_unique_dg2 <- report_lm_mod(prop_unique_guesses_mod, "DG2_v_DG1")
+exp1$prop_unique_i50 <- report_lm_mod(prop_unique_guesses_mod, "DG2_v_I50")
+exp1$prop_unique_s2 <- report_lm_mod(prop_unique_guesses_mod, "DG2_v_S2")
 
 GuessTypes50minSummary <- Guesses %>%
   filter_50min() %>%
