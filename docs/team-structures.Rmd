@@ -13,8 +13,6 @@ affiliation:
     university: University of Exeter
 email: pedmiston\@wisc.edu
 address: 1202 W. Johnson St., Department of Psychology, University of Wisconsin, Madison, WI 53703.
-abstract: |
-
 bibliography: "references.bib"
 csl: "templates/plos-one.csl"
 output:
@@ -53,7 +51,7 @@ read_chunk(file.path(chunks_dir, "team-structures.R"))
 ```{r Intro}
 ```
 
-(ref:types-of-time) Team structures controlling for labor time. **Left.** Team structures. Each node is a person. **Middle.** Relationship between labor time and calendar time. Sychronic teams spend labor time more quickly than the other strategies. **Right.** Learning times by strategy, showing that an isolated strategy provides the most time for individual learning.
+(ref:types-of-time) Team structures controlling for labor time. **Left.** Team structures. Each node is a person. **Middle.** Relationship between labor time and calendar time. Synchronic teams spend labor time more quickly than the other strategies. **Right.** Learning times by strategy, showing that an isolated strategy provides the most time for individual learning.
 
 ```{r types-of-time, fig.width=5, fig.height=2, fig.cap="(ref:types-of-time)"}
 gridExtra::grid.arrange(
