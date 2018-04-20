@@ -150,10 +150,20 @@ could combine up to four items at a time (with replacement), meaning the
 initial six items could form a total of `r methods$n_unique_guesses_6`
 combinations. Of all possible combinations, very few resulted in new items. For
 example, of all the guesses that could be formed from the initial items, only
-three (`r methods$n_unique_guesses_6_pct`%) yielded new tools (Fig.
-\@ref(fig:landscape-sample-1)). As participants accumulate solutions, the
-combinatorial complexity of the problem space increases exponentially such that
-the discovery of more complex tools is less likely to happen by chance.
+three (`r methods$n_unique_guesses_6_pct`%) yielded new tools.
+
+In the game, as tools are accumulated, the number of possible combinations that
+can be made with those tools increases exponentially such that the discovery of
+later tools was less likely to happen by chance alone. This increase in
+combinatorial complexity suggests that later tools might be harder to discover
+than earlier tools. However, combinatorial complexity is not a perfect measure
+of difficulty in this task because participants do not guess entirely at
+random. In reality participants are far more likely to make some guesses than
+others. For example, once discovering an axe, participants quickly discover
+that they can use the axe to chop down a tree, regardless of the other tools
+they may have at the time. At the same time, participants do not find all tools
+equally intuitive, and the difference in combinatorial complexity should not be
+ignored. In our results, we report performance based on both measures.
 
 Once a tool was discovered, the recipe for its creation---a list of the items
 that had to be combined in order to create the tool---was recorded in an
