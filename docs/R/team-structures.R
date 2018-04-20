@@ -554,39 +554,45 @@ Innovations <- Guesses %>%
   left_join(Sessions) %>%
   jitter_team_generation() %>%
   recode_generation_base0() %>%
-  recode_generation_quad()
+  recode_generation_quad() %>%
+  recode_strategy()
 
 innovations_by_generation_mod <- lmer(
-  NumInnovations ~ Generation + (Generation|TeamID),
+  NumInnovations ~ Generation * Diachronic_v_Isolated  + (Generation|TeamID),
   data = Innovations
 )
 
 innovations_by_generation_quad_mod <- lmer(
-  NumInnovations ~ Generation0 + Generation0Sqr + (Generation0 + Generation0Sqr|TeamID),
+  NumInnovations ~ (Generation0 + Generation0Sqr) * Diachronic_v_Isolated + (Generation0 + Generation0Sqr|TeamID),
   data = Innovations
 )
-innovations_by_generation_preds <- data_frame(Generation = 1:4) %>%
+innovations_by_generation_preds <- expand.grid(
+    Generation = 1:4, Strategy = c("Diachronic", "Isolated"),
+    stringsAsFactors = FALSE
+  ) %>%
   recode_generation_base0() %>%
   recode_generation_quad() %>%
+  recode_strategy() %>%
   cbind(., predictSE(innovations_by_generation_quad_mod, newdata = ., SE = TRUE)) %>%
   rename(NumInnovations = fit, SE = se.fit)
 
 innovations_by_generation_plot <- ggplot(Innovations) +
-  aes(Generation, NumInnovations) +
+  aes(Generation, NumInnovations, color = StrategyLabel) +
   geom_line(aes(GenerationJittered, group = TeamID, color = Strategy),
             alpha = 0.6) +
-  # geom_line(aes(group = 1), data = innovations_by_generation_preds,
-  #           color = t_$color_picker("blue"), size = 1.5) +
-  # geom_errorbar(aes(ymin = NumInnovations-SE, ymax = NumInnovations+SE),
-  #               data = innovations_by_generation_preds,
-  #               color = t_$color_picker("blue"), width = 0.2, size = 1.5) +
-  geom_point(stat = "summary", fun.y = "mean",
-             color = t_$color_picker("green"), shape = 4, size = 3) +
+  geom_line(aes(group = 1), data = innovations_by_generation_preds,
+            size = 1.5) +
+  geom_errorbar(aes(ymin = NumInnovations-SE, ymax = NumInnovations+SE),
+                data = innovations_by_generation_preds,
+                width = 0.2, size = 1.5) +
   facet_wrap("Strategy") +
-  # t_$scale_y_num_innovations +
+  scale_color_manual(values = t_$color_picker(c("blue", "green"))) +
+  t_$scale_y_num_innovations +
   t_$base_theme +
   theme(
-    panel.grid.minor.x = element_blank()
+    legend.position = "none",
+    panel.grid.minor.x = element_blank(),
+    panel.grid.minor.y = element_blank()
   )
 
 # * Cost by stage ----
@@ -655,36 +661,30 @@ first_discovery_mod <- lm(NumGuesses ~ Diachronic_v_Individual,
 
 first_discovery_preds <- recode_inheritance() %>%
   filter(Inheritance != "no_inheritance") %>%
+  mutate(Strategy = c("Diachronic", "Isolated")) %>%
   cbind(., predict(first_discovery_mod, newdata = ., se = TRUE)) %>%
-  rename(NumGuesses = fit, SE = se.fit)
+  rename(NumGuesses = fit, SE = se.fit) %>%
+  recode_strategy()
 
 first_discovery_plot <- ggplot(FirstDiscovery) +
   aes(StrategyLabel, NumGuesses) +
-  # geom_bar(aes(fill = StrategyLabel),
-  #          stat = "identity", data = first_discovery_preds,
-  #          alpha = 0.6) +
-  # geom_linerange(aes(ymin = NumGuesses - SE, ymax = NumGuesses + SE),
-  #                data = first_discovery_preds) +
   geom_bar(aes(fill = StrategyLabel),
            stat = "summary", fun.y = "mean",
            alpha = 0.6) +
-  geom_point(aes(color = StrategyLabel),
-             position = position_jitter(width = 0.2)) +
+  geom_errorbar(aes(ymin = NumGuesses - SE, ymax = NumGuesses + SE),
+                width = 0.2, data = first_discovery_preds) +
   scale_y_continuous("Number of guesses") +
   t_$scale_color_strategy +
   t_$scale_fill_strategy +
   t_$base_theme +
   theme(legend.position = "none",
-        panel.grid.major.x = element_blank()) +
-  ggtitle("Cost of first innovation")
+        panel.grid.major.x = element_blank())
 
 first_discovery_by_generation_plot <- ggplot(FirstDiscovery) +
   aes(Generation, NumGuesses) +
   geom_bar(aes(fill = StrategyLabel, group = factor(Generation)),
            stat = "summary", fun.y = "mean",
            alpha = 0.6, width = 0.8) +
-  geom_point(aes(color = StrategyLabel),
-             position = position_jitter(width = 0.2)) +
   facet_wrap("StrategyLabel") +
   scale_x_continuous(breaks = 2:4) +
   t_$scale_fill_strategy +
@@ -692,8 +692,7 @@ first_discovery_by_generation_plot <- ggplot(FirstDiscovery) +
   t_$base_theme +
   theme(legend.position = "none",
         panel.grid.major.x = element_blank(),
-        panel.grid.minor.x = element_blank()) +
-  ggtitle("Cost of first innovation")
+        panel.grid.minor.x = element_blank())
 
 # ---- TeamSize ----
 
@@ -738,6 +737,7 @@ Innovations <- bind_rows(Innovations50min, Innovations100min) %>%
 max_innovations_by_teamsize_mod <- lmer(
   NumInnovations ~ Diachronic_v_Synchronic * NumPlayers + (1|TeamID),
   data = Innovations)
+
 max_innovations_by_teamsize_preds <- expand.grid(
   Strategy = c("Diachronic", "Synchronic"),
   NumPlayers = c(2, 4),
