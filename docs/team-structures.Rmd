@@ -52,14 +52,15 @@ read_chunk(file.path(chunks_dir, "team-structures.R"))
 ```
 
 Cultural evolution is a complex process involving both vertical and horizontal
-transmission. Vertical transmission is the process of passing cultural products
-from parent to child, whereas horizontal transmission involves passing cultural
-products among peers in the same generation. Some cultural products are more
-likely to be passed vertically than horizontally. For example, religious
-beliefs are more likely to be learned from parents than from peers. But far
-more cultural products are believed to be shared among unrelated individuals
-via horizontal transmission. As a result, horizontal transmission has been
-argued to be the default process in cultural evolution [@Kroeber:1948ant].
+transmission [@Boyd:1985cu]. Vertical transmission is the process of passing
+cultural products from parent to child, whereas horizontal transmission
+involves passing cultural products among peers in the same generation. Some
+cultural products are more likely to be passed vertically than horizontally.
+For example, religious beliefs are more likely to be learned from parents than
+from peersi [@Newcomb:1937vy]. But far more cultural products are believed to
+be shared among unrelated individuals via horizontal transmission. As a result,
+horizontal transmission has been argued to be the default process in cultural
+evolution [@Kroeber:1948ant].
 
 The distinction between vertical and horizontal transmission is motivated by
 analogous processes in genetic evolution. In genetic evolution, vertical
@@ -67,36 +68,37 @@ transmission occurs via reproduction, whereas horizontal transmission is the
 transfer of genetic material by any means other than reproduction
 [@Soucy:2015gp]. Thus, the distinction between vertical and horizontal
 transmission of genetic material is motivated by an underlying difference in
-mechanism, as the mechanisms involved in reproduction (e.g., sexual
-recombination) are different from those involved in horizontal transfer (e.g.,
-conjugation).
+mechanism, as the cellular mechanisms involved in reproduction (e.g., meiosis)
+are different from those involved in horizontal transfer (e.g., conjugation).
 
 In contrast, there is no such difference in mechanism between the vertical
 and horizontal transmission of cultural products. All processes of cultural
 transmission involve social learning, in which one person learns a behavior
 from the observation or interaction with someone else. The cognitive mechanisms
 that allow for social learning are functionally the same regardless of who is
-being copied. Hence, the distinction between vertical and horizontal
-transmission may not be as important in our understanding of cultural evolution
-as it is in genetic evolution.
+being copied. Hence, the difference between vertical and horizontal transmission
+in cultural evolution can be understood as a bias or filter on which behaviors
+are most likely to be copied.
 
-Nonetheless, whether individuals tend to learn from parents or from peers does
-have consequences for cultural phenomena. For example, @Bettinger:1999vv
-surveyed the design of projectile points found in the Great Basin region, and
-found two types of points. In the eastern California region, design attributes
-of the recovered projectile points were poorly coordinated with one another,
-indicating great variability in design. They argue that this variability across
-members of the same society indicates a culture of vertical transmission, in
-which each family must innovate unique projectile point designs. Over the same
-period in central Nevada, the projectile points were highly correlated with one
-another, indicating the presence of a horizontal transmission process that they
-argue may have been biased by the prestige of the hunters. In the societies in
-central Nevada, new generations of hunters copied the most prestige hunters in
-the group rather than their parents, resulting in more similarity among
-projectile point designs in these populations. This hypothesis has been
-supported by experimental and computational simulations showing that fully
-connected networks of problem solvers result in greater convergence than
-independently evolving lineages [@Mesoudi:2008vi; @Mesoudi:2008we].
+Although both vertical and horizontal transmission involve social learning,
+whether individuals tend to learn from parents or from peers may have
+consequences for the distribution of traits in a population. For example,
+@Bettinger:1999vv surveyed the design of projectile points found in the Great
+Basin region, and found two types of points. In the eastern California region,
+design attributes of the recovered projectile points were poorly coordinated
+with one another, indicating great variability in design. They argue that this
+variability across members of the same society indicates a culture of vertical
+transmission, in which each family must innovate unique projectile point
+designs. Over the same period in central Nevada, the projectile points were
+highly correlated with one another, indicating the presence of a horizontal
+transmission process that they argue may have been biased by the prestige of
+the hunters. In the societies in central Nevada, new generations of hunters
+copied the most prestige hunters in the group rather than their parents,
+resulting in more similarity among projectile point designs in these
+populations. This hypothesis has been supported by experimental and
+computational simulations showing that fully connected networks of problem
+solvers result in greater convergence than independently evolving lineages
+[@Mesoudi:2008vi; @Mesoudi:2008we].
 
 In considering how human societies are able to accumulate technological
 innovations over generations, horizontal transmission has been favored because
