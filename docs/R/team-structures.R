@@ -531,6 +531,8 @@ prop_guess_types_50min_plot <- ggplot(GuessTypes50minSummary) +
 
 # ---- SelfOther ----
 
+exp2 <- list()
+
 # * Methods ----
 data("Sessions")
 
@@ -561,6 +563,8 @@ innovations_by_generation_mod <- lmer(
   NumInnovations ~ Generation * Diachronic_v_Isolated  + (Generation|TeamID),
   data = Innovations
 )
+
+exp2$innovations_by_inheritance_slope <- report_lmer_mod(innovations_by_generation_mod, "Generation:Diachronic_v_Isolated")
 
 innovations_by_generation_quad_mod <- lmer(
   NumInnovations ~ (Generation0 + Generation0Sqr) * Diachronic_v_Isolated + (Generation0 + Generation0Sqr|TeamID),

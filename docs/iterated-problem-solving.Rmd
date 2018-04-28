@@ -281,7 +281,7 @@ generation, `r exp1$guesses_per_item_by_inheritance`. As expected, this effect
 is especially pronounced for the items that were inherited. We did not find
 any evidence that inheritance had an affect on the number of guesses per novel
 item, `r exp1$guesses_per_new_item_by_inheritance_mod` (Fig.
-\@ref(guesses-per-innovation-1)). This finding suggests that although inheritance
+\@ref(fig:guesses-per-innovation-1)). This finding suggests that although inheritance
 benefits participants in recreating inherited solutions, it does not confer any
 benefits to future problem solving.
 

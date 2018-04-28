@@ -137,6 +137,12 @@ complete the same task but alone. We expected to find an overall benefit to
 teamwork in this task, but we were particularly interested in how diachronic
 collaboration compared to both synchronic and isolated strategies.
 
+@Michaelsen:1989vs found evidence for an assembly bonus effect where groups
+  outperformed the average individual and the best individual.
+
+However it depends on how the groups are compared [@Propp:2003kj;
+  @Tindale:1992ub].
+
 (ref:types-of-time) Team structures controlling for labor time. **Left.** Team
 structures. Each node is a person. **Middle.** Relationship between labor time
 and calendar time. Synchronic teams spend labor time more quickly than the
@@ -639,4 +645,4 @@ that the reason might be related to synchronic individuals each making the same
 incorrect guesses in tandem, meaning that each individual is unable to only guess
 unique combinations for the team.
 
-# General Discussion {-}
+# Discussion {-}
