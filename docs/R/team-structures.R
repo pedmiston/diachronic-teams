@@ -559,6 +559,24 @@ Innovations <- Guesses %>%
   recode_generation_quad() %>%
   recode_strategy()
 
+innovations_gen1_mod <- lm(NumInnovations ~ Diachronic_v_Isolated,
+                           data = filter(Innovations, Generation == 1))
+exp2$gen1_innovations <- report_lm_mod(innovations_gen1_mod, "Diachronic_v_Isolated")
+
+diachronic_gen_mod <- lmer(NumInnovations ~ Generation + (Generation|TeamID),
+                           data = filter(Innovations, Strategy == "Diachronic"))
+exp2$tools_per_diachronic_gen <- report_beta(diachronic_gen_mod, "Generation")
+exp2$tools_per_diachronic_gen_stats <- report_lmer_mod(diachronic_gen_mod, "Generation")
+
+isolated_gen_mod <- lmer(NumInnovations ~ Generation + (Generation|TeamID),
+                         data = filter(Innovations, Strategy == "Isolated"))
+exp2$tools_per_isolated_gen <- report_beta(isolated_gen_mod, "Generation")
+exp2$tools_per_isolated_gen_stats <- report_lmer_mod(isolated_gen_mod, "Generation")
+
+innovations_gen4_mod <- lm(NumInnovations ~ Diachronic_v_Isolated,
+                           data = filter(Innovations, Generation == 4))
+exp2$gen4_innovations <- report_lm_mod(innovations_gen4_mod, "Diachronic_v_Isolated")
+
 innovations_by_generation_mod <- lmer(
   NumInnovations ~ Generation * Diachronic_v_Isolated  + (Generation|TeamID),
   data = Innovations
@@ -598,6 +616,118 @@ innovations_by_generation_plot <- ggplot(Innovations) +
     panel.grid.minor.x = element_blank(),
     panel.grid.minor.y = element_blank()
   )
+
+# * Guess types ----
+GuessTypesSelfOther <- Guesses %>%
+  filter_selfother() %>%
+  recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
+  group_by(SessionID) %>%
+  summarize(
+    NumGuesses = n(),
+    NumRedundantGuesses = sum(GuessType == "redundant"),
+    NumRepeatedItems = sum(GuessType == "repeat_item"),
+    NumUniqueGuesses = sum(GuessType == "unique_guess"),
+    NumUniqueItems = sum(GuessType == "unique_item")
+  ) %>%
+  ungroup() %>%
+  left_join(Sessions) %>%
+  recode_strategy() %>%
+  mutate(
+    PropRedundantGuesses = NumRedundantGuesses/NumGuesses,
+    PropRepeatedItems = NumRepeatedItems/NumGuesses,
+    PropUniqueGuesses = NumUniqueGuesses/NumGuesses,
+    PropUniqueItems = NumUniqueItems/NumGuesses
+  ) %>%
+  recode_strategy()
+
+prop_redundant_strategy_mod <- lmer(PropRedundantGuesses ~ Diachronic_v_Isolated + (1|TeamID),
+                                    data = GuessTypesSelfOther)
+exp2$prop_redundant_strategy <- report_lmer_mod(prop_redundant_strategy_mod, "Diachronic_v_Isolated")
+
+prop_redundant_gen_mod <- lmer(PropRedundantGuesses ~ Generation + (1|TeamID),
+                               data = GuessTypesSelfOther)
+exp2$prop_redundant_gen <- report_lmer_mod(prop_redundant_gen_mod, "Generation", formats = c(se=3))
+
+prop_redundant_inter_mod <- lmer(PropRedundantGuesses ~ Generation * Diachronic_v_Isolated + (Generation|TeamID),
+                               data = GuessTypesSelfOther)
+exp2$prop_redundant_inter <- report_lmer_mod(prop_redundant_gen_mod, "Generation:Diachronic_v_Isolated")
+
+
+prop_unique_strategy_mod <- lmer(PropUniqueGuesses ~ Diachronic_v_Isolated + (1|TeamID),
+                              data = GuessTypesSelfOther)
+exp2$prop_unique_strategy <- report_lmer_mod(prop_unique_strategy_mod, "Diachronic_v_Isolated")
+
+prop_unique_gen_mod <- lmer(PropUniqueGuesses ~ Generation + (Generation|TeamID),
+                              data = GuessTypesSelfOther)
+exp2$prop_unique_gen <- report_lmer_mod(prop_unique_gen_mod, "Generation", formats = c(b=3))
+
+prop_unique_inter_mod <- lmer(PropUniqueGuesses ~ Generation * Diachronic_v_Isolated + (Generation|TeamID),
+                            data = GuessTypesSelfOther)
+exp2$prop_unique_inter <- report_lmer_mod(prop_unique_inter_mod, "Generation:Diachronic_v_Isolated")
+
+
+GuessTypesSelfOtherSummary <- Guesses %>%
+  filter_selfother() %>%
+  recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
+  group_by(Strategy, Generation) %>%
+  summarize(
+    NumGuesses = n(),
+    NumRedundantGuesses = sum(GuessType == "redundant"),
+    NumRepeatedItems = sum(GuessType == "repeat_item"),
+    NumUniqueGuesses = sum(GuessType == "unique_guess"),
+    NumUniqueItems = sum(GuessType == "unique_item")
+  ) %>%
+  ungroup() %>%
+  mutate(
+    PropRedundantGuesses = NumRedundantGuesses/NumGuesses,
+    PropRepeatedItems = NumRepeatedItems/NumGuesses,
+    PropUniqueGuesses = NumUniqueGuesses/NumGuesses,
+    PropUniqueItems = NumUniqueItems/NumGuesses
+  ) %>%
+  select(Strategy, Generation, PropRedundantGuesses, PropRepeatedItems, PropUniqueGuesses, PropUniqueItems) %>%
+  gather(PropGuessType, PropGuesses, -c(Strategy, Generation)) %>%
+  recode_prop_guess_type_total()
+
+prop_guess_types_selfother_plot <- ggplot(GuessTypesSelfOtherSummary) +
+  aes(Generation, PropGuesses, fill = PropGuessTypeLabel) +
+  geom_bar(stat = "identity") +
+  facet_wrap("Strategy") +
+  xlab("") +
+  scale_y_continuous("Proportion of guesses", labels = scales::percent) +
+  scale_fill_manual("Guess types",
+                    values = t_$color_picker(c("green", "blue", "orange", "pink"))) +
+  t_$base_theme +
+  theme(panel.grid.major.x = element_blank())
+
+# * Learning times ----
+StageTimesSelfOther <- Guesses %>%
+  filter_selfother() %>%
+  filter(Generation > 1) %>%
+  group_by(SessionID) %>%
+  summarize(LearningTime = max(SessionTime[Stage == "learning"])) %>%
+  mutate(PlayingTime = 25 - LearningTime) %>%
+  left_join(Sessions) %>%
+  recode_strategy()
+
+exp2$mean_learning_time <- round(mean(StageTimesSelfOther$LearningTime), 1)
+exp2$prop_learning_time <- round((mean(StageTimesSelfOther$LearningTime)/25) * 100, 1)
+
+learning_times_mod <- lmer(LearningTime ~ Generation * Diachronic_v_Isolated + (Generation|TeamID),
+                           data = StageTimesSelfOther)
+exp2$learning_times_inter <- report_lmer_mod(learning_times_mod, "Generation:Diachronic_v_Isolated")
+
+learning_times_plot <- ggplot(StageTimesSelfOther) +
+  aes(Generation, LearningTime) +
+  geom_bar(aes(fill = Strategy), stat = "summary", fun.y = "mean", alpha = 0.6) +
+  geom_point(aes(color = Strategy), position = position_jitter(width=0.1, height=0)) +
+  facet_wrap("Strategy") +
+  scale_y_continuous("Learning time (min)") +
+  t_$base_theme +
+  scale_fill_manual(values = t_$color_picker(c("blue", "green"))) +
+  scale_color_manual(values = t_$color_picker(c("blue", "green"))) +
+  theme(legend.position = "none",
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank())
 
 # * Cost by stage ----
 data("Guesses")
@@ -689,11 +819,11 @@ first_discovery_by_generation_plot <- ggplot(FirstDiscovery) +
   geom_bar(aes(fill = StrategyLabel, group = factor(Generation)),
            stat = "summary", fun.y = "mean",
            alpha = 0.6, width = 0.8) +
-  facet_wrap("StrategyLabel") +
+  facet_wrap("Strategy") +
   scale_x_continuous(breaks = 2:4) +
-  t_$scale_fill_strategy +
-  t_$scale_color_strategy +
   t_$base_theme +
+  scale_fill_manual(values = t_$color_picker(c("blue", "green"))) +
+  scale_color_manual(values = t_$color_picker(c("blue", "green"))) +
   theme(legend.position = "none",
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank())
