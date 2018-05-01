@@ -507,7 +507,7 @@ In Experiment 2, we test this idea further by comparing the benefit of
 inheriting from someone else, as in the case of diachronic teams, to the
 benefit of inheriting from oneself, over multiple sessions.
 
-# Experiment 2: Inheriting from oneself or someone else {-}
+# Experiment 2: Diachronic versus individual inheritance {-}
 
 ```{r SelfOther}
 ```
