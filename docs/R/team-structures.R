@@ -601,15 +601,15 @@ innovations_by_generation_preds <- expand.grid(
 innovations_by_generation_plot <- ggplot(Innovations) +
   aes(Generation, NumInnovations, color = StrategyLabel) +
   geom_line(aes(GenerationJittered, group = TeamID, color = Strategy),
-            alpha = 0.6) +
+            size = 0.4, alpha = 0.6) +
   geom_line(aes(group = 1), data = innovations_by_generation_preds,
-            size = 1.5) +
+            size = 1.2) +
   geom_errorbar(aes(ymin = NumInnovations-SE, ymax = NumInnovations+SE),
                 data = innovations_by_generation_preds,
-                width = 0.2, size = 1.5) +
+                width = 0.2, size = 1.2) +
   facet_wrap("Strategy") +
   scale_color_manual(values = t_$color_picker(c("blue", "green"))) +
-  t_$scale_y_num_innovations +
+  scale_y_continuous("Number of innovations", breaks = seq(0, 40, by = 5)) +
   t_$base_theme +
   theme(
     legend.position = "none",
@@ -729,7 +729,9 @@ learning_times_plot <- ggplot(StageTimesSelfOther) +
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank())
 
-# * Cost by stage ----
+# * Guesses per item ----
+
+# * Fixation ----
 data("Guesses")
 data("Sessions")
 data("AdjacentItems")
@@ -742,43 +744,10 @@ IndividualGuesses <- Guesses %>%
   left_join(AdjacentItems, by = c("PrevSessionInventoryID" = "ID")) %>%
   label_stage_ix()
 
-IndividualStages <- IndividualGuesses %>%
-  group_by(SessionID, Stage, Result) %>%
-  summarize(
-    NumGuesses = n()
-  ) %>%
-  left_join(IndividualPlayers) %>%
-  highlight_inheritance_100() %>%
-  # Should not be necessary!
-  filter(!is.na(Inheritance))
-
-individual_stages_mod <- lmer(
-  NumGuesses ~ Diachronic_v_Individual * Stage +
-    (Stage|TeamID),
-  data = IndividualStages
-)
-
-individual_stages_preds <- expand.grid(
-  Stage = c("learning", "playing"),
-  Inheritance = c("diachronic_inheritance", "individual_inheritance"),
-  stringsAsFactors = FALSE
-) %>%
-  recode_inheritance() %>%
-  cbind(., predictSE(individual_stages_mod, newdata = ., se = TRUE)) %>%
-  rename(NumGuesses = fit, SE = se.fit)
-
-individual_stages_plot <- ggplot(IndividualStages) +
-  aes(Stage, NumGuesses, color = Inheritance) +
-  geom_line(aes(group = Inheritance),
-            stat = "identity", data = individual_stages_preds) +
-  geom_errorbar(aes(ymin = NumGuesses-SE, ymax = NumGuesses+SE),
-                data = individual_stages_preds,
-                width = 0.2)
-
 FirstDiscovery <- IndividualGuesses %>%
   label_inheritance() %>%
   filter(StageIX == 0, Inheritance != "no_inheritance") %>%
-  group_by(SessionID, Result) %>%
+  group_by(SessionID) %>%
   summarize(
     NumGuesses = n()
   ) %>%
@@ -792,6 +761,9 @@ FirstDiscovery <- IndividualGuesses %>%
 
 first_discovery_mod <- lm(NumGuesses ~ Diachronic_v_Individual,
                           data = FirstDiscovery)
+exp2$first_discovery_mean <- round(mean(FirstDiscovery$NumGuesses), 0)
+exp2$first_discovery_beta <- report_beta(first_discovery_mod, "Diachronic_v_Individual")
+exp2$first_discovery_stats <- report_lm_mod(first_discovery_mod, "Diachronic_v_Individual")
 
 first_discovery_preds <- recode_inheritance() %>%
   filter(Inheritance != "no_inheritance") %>%
@@ -814,13 +786,36 @@ first_discovery_plot <- ggplot(FirstDiscovery) +
   theme(legend.position = "none",
         panel.grid.major.x = element_blank())
 
+first_discovery_by_generation_mod <- lmer(NumGuesses ~ Diachronic_v_Individual * Generation +
+                                            (Generation|TeamID),
+                                          data = FirstDiscovery)
+exp2$first_discovery_by_gen_stats <- report_lmer_mod(first_discovery_by_generation_mod,
+                                                     "Diachronic_v_Individual:Generation")
+
+first_discovery_by_generation_preds <- expand.grid(
+    Generation = 2:4, Inheritance = c("diachronic_inheritance", "individual_inheritance"),
+    stringsAsFactors = FALSE
+  ) %>%
+  recode_inheritance() %>%
+  mutate(Strategy = rep(c("Diachronic", "Isolated"), each = 3)) %>%
+  recode_strategy() %>%
+  cbind(., predictSE(first_discovery_by_generation_mod, newdata = ., se = TRUE)) %>%
+  rename(NumGuesses = fit, SE = se.fit)
+
 first_discovery_by_generation_plot <- ggplot(FirstDiscovery) +
   aes(Generation, NumGuesses) +
+  geom_point(aes(color = StrategyLabel),
+             position = position_jitter(width = 0.1, height = 0)) +
   geom_bar(aes(fill = StrategyLabel, group = factor(Generation)),
-           stat = "summary", fun.y = "mean",
+           data = first_discovery_by_generation_preds,
+           stat = "identity",
            alpha = 0.6, width = 0.8) +
+  geom_errorbar(aes(ymin = NumGuesses-SE, ymax = NumGuesses+SE),
+                data = first_discovery_by_generation_preds,
+                width = 0.1) +
   facet_wrap("Strategy") +
   scale_x_continuous(breaks = 2:4) +
+  scale_y_continuous("Number of guesses") +
   t_$base_theme +
   scale_fill_manual(values = t_$color_picker(c("blue", "green"))) +
   scale_color_manual(values = t_$color_picker(c("blue", "green"))) +
@@ -830,12 +825,23 @@ first_discovery_by_generation_plot <- ggplot(FirstDiscovery) +
 
 # ---- TeamSize ----
 
+exp3 <- list()
+
 # * Methods ----
 
 # * Number of innovations ----
 data("Guesses")
 
 drop_isolated <- . %>% filter(Strategy != "Isolated")
+
+recode_strategy_diachronic_v_synchronic <- function(frame) {
+  diachronic_v_synchronic <- data_frame(
+    Strategy = c("Diachronic", "Synchronic"),
+    Diachronic_v_Synchronic_C = c(-0.5, 0.5)
+  )
+  if(missing(frame)) return(diachronic_v_synchronic)
+  left_join(frame, diachronic_v_synchronic)
+}
 
 Innovations50min <- Guesses %>%
   filter_50min() %>%
@@ -859,18 +865,43 @@ Innovations100min <- Guesses %>%
   recode_strategy() %>%
   mutate(NumPlayers = 4)
 
-
-
 Innovations <- bind_rows(Innovations50min, Innovations100min) %>%
   group_by(Strategy, NumPlayers, TeamID) %>%
   summarize(NumInnovations = max(NumInnovations)) %>%
   ungroup() %>%
   recode_strategy() %>%
-  recode_team_size()
+  recode_team_size() %>%
+  recode_strategy_diachronic_v_synchronic()
+
+max_innovations_50min_mod <- lm(
+  NumInnovations ~ Diachronic_v_Synchronic_C,
+  data = filter(Innovations, NumPlayers == 2)
+)
+
+max_innovations_100min_mod <- lm(
+  NumInnovations ~ Diachronic_v_Synchronic_C,
+  data = filter(Innovations, NumPlayers == 4)
+)
+
+max_innovations_synchronic <- lm(
+  NumInnovations ~ NumPlayers,
+  data = filter(Innovations, Strategy == "Synchronic")
+)
+
+max_innovations_diachronic <- lm(
+  NumInnovations ~ NumPlayers,
+  data = filter(Innovations, Strategy == "Diachronic")
+)
 
 max_innovations_by_teamsize_mod <- lmer(
   NumInnovations ~ Diachronic_v_Synchronic * NumPlayers + (1|TeamID),
   data = Innovations)
+
+exp3$DvS_2 <- report_lm_mod(max_innovations_50min_mod, "Diachronic_v_Synchronic_C")
+exp3$DvS_4 <- report_lm_mod(max_innovations_100min_mod, "Diachronic_v_Synchronic_C")
+exp3$S_2v4 <- report_lm_mod(max_innovations_synchronic, "NumPlayers")
+exp3$D_2v4 <- report_lm_mod(max_innovations_diachronic, "NumPlayers")
+exp3$DvS_2v4 <- report_lmer_mod(max_innovations_by_teamsize_mod, "Diachronic_v_Synchronic:NumPlayers")
 
 max_innovations_by_teamsize_preds <- expand.grid(
   Strategy = c("Diachronic", "Synchronic"),
