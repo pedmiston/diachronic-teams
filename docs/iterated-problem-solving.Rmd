@@ -110,16 +110,17 @@ draw_graphviz("iterated-problem-solving", package = "totems")
 ```
 
 We investigated the human propensity to exceed our ancestors in a problem
-solving task using a transmission chain paradigm (Fig. 1). Previous research
-using this paradigm has found that problem solving performance for simple tasks
-like folding paper airplanes and building tours out of spaghetti can accumulate
-over generations [@Caldwell:2008gf], although the mechanisms are unclear
-[@Caldwell:2009fl]. @Morgan:2015hu more carefully manipulated the mechanisms of
-transmission, and found that teaching, and especially verbal instruction, was
-crucial for successful transmission of skilled behaviors along chains. Here we
-controlled for successful transmission by allowing future generations to
-inherit the discoveries made by the previous generation, and measured the
-ability of participants to exceed the solutions they inherited.
+solving task using a transmission chain paradigm (Fig.
+\@ref(iterated-problem-solving)). Previous research using this paradigm has
+found that problem solving performance for simple tasks like folding paper
+airplanes and building tours out of spaghetti can accumulate over generations
+[@Caldwell:2008gf], although the mechanisms are unclear [@Caldwell:2009fl].
+@Morgan:2015hu more carefully manipulated the mechanisms of transmission, and
+found that teaching, and especially verbal instruction, was crucial for
+successful transmission of skilled behaviors along chains. Here we controlled
+for successful transmission by allowing future generations to inherit the
+discoveries made by the previous generation, and measured the ability of
+participants to exceed the solutions they inherited.
 
 # Methods {-}
 
