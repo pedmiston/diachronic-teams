@@ -54,13 +54,28 @@ read_chunk(file.path(chunks_dir, "team-structures.R"))
 Cultural evolution involves both vertical and horizontal transmission
 [@Boyd:1985cu]. Vertical transmission is the process of passing cultural
 products from parent to child, whereas horizontal transmission involves passing
-cultural products among peers in the same generation. Some cultural products
-are more likely to be passed vertically than horizontally. For example,
-religious beliefs are more likely to be learned from parents than from peers
-[@Newcomb:1937vy]. But far more cultural products are believed to be shared
-among unrelated individuals via horizontal transmission. As a result,
-horizontal transmission has been argued to be the default process in cultural
-evolution [@Kroeber:1948ant].
+cultural products among peers in the same generation.
+
+
+Some cultural products,
+such as religious beliefs, are more likely to be learned from parents than from
+peers [@Newcomb:1937vy]. But far more cultural products are shared among
+unrelated individuals via horizontal transmission. As a result, horizontal
+transmission has been argued to be the default process in cultural evolution
+[@Kroeber:1948ant].
+
+Whether or not individuals learn from parents or peers may have consequences
+for the distribution of traits in a population. For example, @Bettinger:1999vv
+argued that high correlations among projectile point designs recovered in the
+Great Basin region indicated a culture of biased horizontal transmission, in
+which members of a society tend to copy the most prestigious hunters.
+Projectile points found in a different region over the same time period were
+very dissimilar from one another, indicating that each family may have
+innovated their own point designs through generations of vertical transmission.
+This interpretation has been supported by experimental and computational
+simulations showing that fully connected networks of problem solvers result in
+greater convergence and smaller variation in design than independently evolving
+lineages [@Mesoudi:2008vi; @Mesoudi:2008we].
 
 The distinction between vertical and horizontal transmission is motivated by
 analogous processes in genetic evolution. In genetic evolution, vertical
@@ -76,26 +91,12 @@ horizontal transmission of cultural products. All processes of cultural
 transmission involve social learning, in which one person learns a behavior
 from the observation or interaction with someone else. The cognitive mechanisms
 that allow for social learning are functionally the same regardless of who is
-being copied.
+being copied. For example, the ability to reason about other's mental states,
+also known as theory of mind, is believed to be independent of who is being
+reasoned about.
 
-Whether individuals learn from parents or peers does have consequences on the
-distribution of traits in a population. For example, @Bettinger:1999vv surveyed
-variation in the design of projectile points found in the Great Basin region,
-and found two types of points. In eastern California, design attributes of the
-recovered projectile points were poorly coordinated with one another,
-indicating greater variability in design in this region. They argued that this
-variability among members of the same society indicates a culture of vertical
-transmission, in which each family may have invented their own projectile point
-designs and passed them down along family lines. In contrast, in central Nevada
-over the same period, projectile point designs were highly correlated with one
-another, indicating a process of horizontal transmission. Bettinger and
-Eerkens argued that in these societies, new generations of hunters may have
-copied the most prestige hunters in the group rather than their parents, which
-had the result of more similarity among projectile point designs.
-This hypothesis has been supported by experimental and computational simulations
-showing that fully connected networks of problem solvers result in greater
-convergence and smaller variation in design than independently evolving
-lineages [@Mesoudi:2008vi; @Mesoudi:2008we].
+Although social learning is involved for both vertical and horizontal transmission,
+
 
 When considering the consequences of vertical and horizontal transmission,
 horizontal transmission is considered advantageous because it provides a level
@@ -152,7 +153,7 @@ problem solving ability. Without controlling for labor time, any differences
 between the three strategies are more difficult to interpret. For example,
 if only calendar hours are controlled, an isolated individual given 30 minutes
 could be compared to a synchronic team given 30 minutes _regardless of the
-size of the synchronic team_. This fact makes it difficult to understand 
+size of the synchronic team_. This fact makes it difficult to understand
 the effect of teamwork on individual performance when only controlling for
 calendar time [@Propp:2003kj; @Tindale;1992ub].
 
@@ -518,7 +519,7 @@ problem solving performance relative to isolated individuals working alone. Here
 we demonstrate that this advantage holds even when labor hours are controlled.
 
 The results of Experiment 1 suggest that, rather than engaging in a problem
-solving task as an isolated individual, it might in some cases be more efficient 
+solving task as an isolated individual, it might in some cases be more efficient
 to pass the solutions on to a future generation via diachronic collaboration.
 In Experiment 2, we test this idea further by comparing the benefit of
 inheriting from someone else, as in the case of diachronic teams, to the
