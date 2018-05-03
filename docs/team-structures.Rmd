@@ -50,49 +50,37 @@ read_chunk(file.path(chunks_dir, "team-structures.R"))
 ```{r Intro}
 ```
 
-Humans are not the only tool users in the animal kingdom, but we do
-seem to use the most of them. What sets human tool users apart
-is the ability to use tools and other solutions to problems that were created by other people,
-which is a form of social learning. Social learning is learning
-new skill from the observation or interaction with someone else
-Humans have evolved a system of cultural inheritance that allows groups of
-problem solvers to solve problems that individuals would be unlikely to solve
-on their own [@Henrich:2015; @Boyd:2017diff; @Derex:2015cbb]. Human cultural
-inheritance is enabled by social learning abilities that a
-to cultural inheritance 
+Cultural inheritance involves both vertical and horizontal forms of
+transmission [@Boyd:1985cu]. Vertical transmission involves passing cultural
+products from parent to child, whereas in horizontal transmission, cultural
+products are passed among peers in the same generation. Although both forms of
+cultural transmission involve social learning, the consequences of either
+vertical or horizontal transmission have not been directly compared. Here we
+tested whether problem solving knowledge that is inherited at the start of a
+problem solving task via vertical transmission results in different problem
+solving performance than purportedly the same knowledge shared horizontally
+among problem solvers working in parallel.
 
-Cultural
-inheritance involves both vertical and horizontal forms of transmission
-[@Boyd:1985cu]. Vertical transmission involves passing cultural products from
-parent to child, whereas in horizontal transmission, cultural products are
-passed among peers in the same generation. Although both forms of cultural
-transmission involve social learning, the consequences of either vertical or
-horizontal transmission have not been compared. Here we tested whether problem
-solving knowledge that is inherited at the start of a problem solving task via
-vertical transmission results in different problem solving performance than
-purportedly the same knowledge shared horizontally among problem solvers
-working in parallel.
-
-Previous research on the differences between vertical and horizontal
+Previous research on the difference between vertical and horizontal
 transmission has found that some cultural products, such as religious beliefs,
 are more likely to be learned from parents than from peers [@Newcomb:1937vy].
 Whether or not individuals learn from parents or peers may also have
 consequences for the distribution of traits in a population. For example,
 @Bettinger:1999vv surveyed projectile points recovered in the Great Basin
-region and found two distinct distributions. In one region, the projectile point
+region, and found two distinct distributions. In one, the projectile point
 designs were highly correlated with one another, indicating a culture of horizontal
 transmission, where members of the society copied the designs of the most
 prestigious hunters. In a different region, over the same period, the recovered points
-were very dissimilar from one another, indicating a process of vertical
-transmission in which each family may have innovated their own point designs.
-This interpretation has been supported by experimental and computational
-simulations showing that fully connected networks of problem solvers result in
-greater convergence and smaller variation in design than independently evolving
-lineages [@Mesoudi:2008vi; @Mesoudi:2008we].
+were very dissimilar from one another, indicating a process of individual
+learning and vertical transmission in which each family may have innovated
+their own point designs. This interpretation has been supported by experimental
+and computational simulations showing that fully connected networks of problem
+solvers result in greater convergence and smaller variation in design than
+independently evolving lineages [@Mesoudi:2008vi; @Mesoudi:2008we].
 
 Although mode of transmission is known to have an impact on the distribution of
-traits in a population, it is not generally considered to have an impact on the
-types of problem solving behaviors that can be performed by individuals in each
+traits in a population, it has not been considered to have an impact on the
+problem solving performance that can be performed by individuals in each
 group. Part of the reason is that both horizontal and vertical transmission are
 believed to involve the same social learning mechanisms. This makes the
 distinction between vertical and horizontal cultural transmission different
@@ -111,6 +99,13 @@ that allow for social learning are functionally the same regardless of who is
 being copied. For example, the ability to reason about other's mental states,
 known as "theory of mind", is by most formulations independent of who is being
 reasoned about.
+
+However, there is a difference between vertical and horizontal transmission
+that has yet to be explored, and that is the difference in learning experience
+between traits that are passed from parent to child, and traits that
+are shared among individuals working in parallel. When solutions are passed
+vertically, the new generation of problem solvers begins with the solutions
+created by the previous generation.
 
 We argue that the difference between vertical and horizontal transmission is
 in the unique learning experience afforded by vertical transmission. In vertical
