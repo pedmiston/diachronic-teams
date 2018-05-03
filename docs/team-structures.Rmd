@@ -50,9 +50,18 @@ read_chunk(file.path(chunks_dir, "team-structures.R"))
 ```{r Intro}
 ```
 
+Humans are not the only tool users in the animal kingdom, but we do
+seem to use the most of them. What sets human tool users apart
+is the ability to use tools and other solutions to problems that were created by other people,
+which is a form of social learning. Social learning is learning
+new skill from the observation or interaction with someone else
 Humans have evolved a system of cultural inheritance that allows groups of
 problem solvers to solve problems that individuals would be unlikely to solve
-on their own [@Henrich:2015; @Boyd:2017diff; @Derex:2015cbb]. Cultural
+on their own [@Henrich:2015; @Boyd:2017diff; @Derex:2015cbb]. Human cultural
+inheritance is enabled by social learning abilities that a
+to cultural inheritance 
+
+Cultural
 inheritance involves both vertical and horizontal forms of transmission
 [@Boyd:1985cu]. Vertical transmission involves passing cultural products from
 parent to child, whereas in horizontal transmission, cultural products are
