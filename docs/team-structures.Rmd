@@ -50,6 +50,15 @@ read_chunk(file.path(chunks_dir, "team-structures.R"))
 ```{r Intro}
 ```
 
+Humans are not the only tool users in the animal kingdom, but we do seem to
+have the most of them. What sets human tool users apart may not be our ability
+to invent tools on our own, but our ability to use and improve tools that were
+invented by other people [@Boyd:2011gp]. Humans are exceptional social
+learners, having evolved a number of abilities such as imitation, teaching, and
+language that enable the sharing of tools and other solutions to problems with
+other problem solvers. As a result, human cultures have been able to accumulate
+complex tools that no individual could invent on their own.
+
 Cultural inheritance involves both vertical and horizontal forms of
 transmission [@Boyd:1985cu]. Vertical transmission involves passing cultural
 products from parent to child, whereas in horizontal transmission, cultural
@@ -238,12 +247,12 @@ scores.
 Participants could combine up to four items at a time (with replacement),
 meaning the initial six items could form a total of
 `r methods$n_unique_combinations_6` combinations. Of all possible combinations,
-very few resulted in new items. For example, of all the combinations that could
+very few resulted in new tools. For example, of all the combinations that could
 be formed from the initial items, only three
 (`r methods$n_unique_combinations_6_pct`%) yielded new tools.
 
 (ref:landscape-sample) A sample of the solution landscape. The top row of 6
-items were available to problem solvers at the start of the game. New items
+items were available to problem solvers at the start of the game. New tools
 could be produced through the combination of different items (more than one
 arrow points to the item) or through the refinement of a single item (a single
 arrow points to the item). The axe is required to construct the first totem
@@ -256,7 +265,7 @@ draw_image("landscape-sample.gv", package = "totems")
 Once a tool was discovered, the recipe for its creation---a list of the items
 that had to be combined in order to create the tool---was recorded in an
 innovation record (Fig. \@ref(fig:innovation-record)). Participants could
-review their past discoveries by clicking on an item to see its recipe.
+review their past discoveries by clicking on a tool to see its recipe.
 
 The innovation record was also used as the means for sharing solutions among
 members of a team and across sessions. For diachronic participants, the
@@ -282,7 +291,7 @@ draw_image("innovation-record", "totems")
 
 (ref:interface) The Totems gameplay interface. Participants generated guesses
 by dragging items into the **Workshop** and selecting the "Try" button. If the
-guess created an item, it could be dragged into the **Stock** panel, and used
+guess created a tool, it could be dragged into the **Stock** panel, and used
 again in later combinations. Once segments of a totem were made through
 cutting, carving, and painting, they could be dragged into the **Totem** panel
 for scoring.
@@ -301,13 +310,13 @@ condition who completed all four sessions were awarded additional credit as
 an incentive to prevent dropout.
 
 Total participant and team recruitment is presented in Table
-\@ref(tab:counts-table). Data from these participants is reported as Experiments
-1-3. Data from some participants is reported in multiple experiments.
-Specifically, data from first and second generation diachronic participants is
-included in the analyses for all experiments. Data from third and fourth
-generation diachronic participants is reported in Experiment 2 and Experiment 3.
-Data from two-person synchronic teams is reported in Experiment 1 and Experiment
-3.
+\@ref(tab:counts-table). Data from these participants is reported as
+Experiments 1-3. Although each experiment introduces new data, some data is
+reported in multiple experiments. Specifically, data from first and second
+generation diachronic participants is included in the analyses for all
+experiments. Data from third and fourth generation diachronic participants is
+reported in Experiment 2 and Experiment 3. Data from two-person synchronic
+teams is reported in Experiment 1 and Experiment 3.
 
 (ref:condition-counts) Total participant and team recruitment across all experiments.
 
@@ -336,47 +345,48 @@ crotchet::draw_graphviz("team-structures-50min", package = "totems")
 
 We compared the performance of participants assigned to use the diachronic,
 synchronic, and isolated strategies in three ways. First we compared performance
-based on the total number of innovations that were discovered. Second we report
-guessing effectiveness on a per-item basis. Were some tools easier to discover
-by some team structures than others? Finally, we compared the guessing
+based on the total number of tools that were discovered. Second we report
+guessing efficiency on a per-tool basis. Did strategy improve guessing
+efficiency while controlling for tool? Finally, we compared the guessing
 strategies used by participants in each condition. Our analyses focus on
 comparing the effectiveness of diachronic collaboration to the alternative
 strategies.
 
-### Innovations {-}
+### Total tools {-}
 
-The number of innovations discovered using each of the three team strategies is
+The total number of tools discovered using each of the three strategies is
 shown in Fig. \@ref(fig:innovations-50min). Our primary hypothesis concerned
 the effectiveness of a diachronic strategy as compared to the alternative
 strategies for solving the same problems in the same amount of time. To test
-this, we fit a hierarchical linear model predicting total innovations for each
-participant based on team strategy, with strategy contrast-coded such that a
-diachronic strategy was the reference group. The hierarchical model included
-random intercepts for each team. The results showed that a diachronic strategy
-was similarly effective to either alternative strategy. Diachronic teams
-discovered more innovations on average than isolated individuals, but post hoc
-tests revealed that this difference was not statistically significant,
-`r exp1$DG2_v_I50`. Conversely, diachronic teams discovered fewer innovations on
-average than two-person synchronic teams, but again this difference was not
-statistically significant, `r exp1$S2_v_DG2`.
+this, we fit a hierarchical linear model predicting the total number of tools
+discovered by each participant based on strategy, where strategy was
+dummy-coded such that second generation diachronic participants were the
+reference group. The hierarchical model included random intercepts for each
+team. The results showed that a diachronic strategy was similarly effective to
+either alternative strategy. Second generation diachronic participants
+discovered more tools on average than isolated individuals, but this
+difference was not statistically significant, `r exp1$DG2_v_I50`. Conversely,
+diachronic teams discovered fewer tools on average than two-person
+synchronic teams, but again this difference was not statistically significant,
+`r exp1$S2_v_DG2`.
 
-We did find an overall benefit to teamwork in this task. To test this,
-we compared two-person teams (both diachronic and synchronic) to isolated
-individuals. In the hierarchical linear model, team strategy was coded with
-Helmert contrasts, and random intercepts for team were included.
-Teams performed reliably better on this task than individuals,
+We also tested the effectiveness of teamwork compared to solving the same
+problems as individuals. To test this, we compared two-person teams (both
+diachronic and synchronic) to isolated individuals. In the hierarchical linear
+model, team strategy was coded with Helmert contrasts, and random intercepts
+for team were included. Teams discovered more tools than individuals,
 `r exp1$teamwork_stats`, without a significant residual difference between the
-diachronic and synchronic strategies, `r exp1$teamwork_residual`. Post hoc tests
-revealed that this effect of teamwork was driven primarily by synchronic teams
-outperforming isolated individuals, `r exp1$S2_v_I50`. This result, showing an
-advantage of teamwork over individual labor, suggests that maximizing individual
-learning time is not always the most effective way to improve problem solving
-performance.
+diachronic and synchronic strategies, `r exp1$teamwork_residual`. Post hoc
+tests revealed that this effect of teamwork was driven primarily by synchronic
+teams discovering more tools than isolated individuals, `r exp1$S2_v_I50`. This
+result, showing an advantage of teamwork over individual labor, suggests that
+maximizing individual learning time is not always the most effective way to
+improve problem solving performance.
 
-(ref:innovations-50min) Innovations discovered in 50 labor minutes by strategy.
+(ref:innovations-50min) Tools discovered in 50 labor minutes by strategy.
 **A.** Rate of innovation by labor hours. Each line is the average number of
-innovations discovered by participants in each condition. **B.** Final
-innovations by strategy. Each point is a single participant. Bars with errors
+tools discovered by participants in each condition. **B.** Total
+tools by strategy. Each point is a single participant. Bars with errors
 show model predictions with ±1 standard error.
 
 ```{r innovations-50min, fig.width=5, fig.height=3, fig.cap="(ref:innovations-50min)"}
@@ -390,26 +400,26 @@ grid.arrange(
 
 ### Guesses per tool {-}
 
-In addition to comparing the three strategies in terms of overall number of
-tools, we also performed a more fine-grained analysis of guessing behaviors. We
-compared the three strategies in terms of how many guesses were required to
-discover each tool. To count the number of guesses that were required for each
-tool, we tallied all guesses made from the moment in which a new tool was
-eligible for discovery until that tool was discovered. A new tool was eligible
-for discovery once all of the items required to create the new tool had been
-discovered. We refer to new tools that are eligible for discovery as "adjacent",
-since they are adjacent to the current inventory in the solution landscape. The
-minimum number of adjacent tools for any inventory was one, indicating that
-there was a single tool that must be discovered before new tools can be
-created. The median number of adjacent tools was four. When there was more than
-one adjacent tools, each incorrect guess was counted toward the total number of
-guesses required for each of the adjacent tools.
+In addition to comparing the three strategies in terms of total number of
+tools discovered, we also performed a more fine-grained analysis of guessing
+behaviors. We compared the three strategies in terms of how many guesses were
+required to discover each tool. To count the number of guesses that were
+required for each tool, we tallied all guesses made from the moment in which
+a new tool was eligible for discovery until that tool was discovered. A new
+tool was eligible for discovery once all of the items required to create the
+new tool had been discovered. We refer to new tools that are eligible for
+discovery as "adjacent", since they are adjacent to the current inventory in
+the solution landscape. The minimum number of adjacent tools for any inventory
+was one, indicating that there was a single tool that must be discovered before
+new tools can be created. The median number of adjacent tools was four. When
+there was more than one adjacent tools, each incorrect guess was counted toward
+the total number of guesses required for each of the adjacent tools.
 
 We found that second generation diachronic participants required significantly
 fewer guesses to discover each tool relative to the same tools being
-discovered by participants in conditions without diachronic inheritance,
+discovered by participants in conditions without inheritance,
 `r exp1$guesses_per_item_inheritance` (Fig. \@ref(fig:guesses-per-innovation)A).
-However, this overall benefit to inheritance in terms of fewer guesses per
+However, this benefit to inheritance in terms of fewer guesses per
 tool did not extend to tools that had not been discovered by the previous
 generation. Comparing the number of guesses per tool for only the tools that
 were newly discovered by the second generation diachronic participants did not
@@ -419,7 +429,7 @@ reveal a benefit to inheritance that extended beyond the inherited solutions,
 
 (ref:guesses-per-innovation) Guesses per tool by inheritance condition.
 Each thin gray line shows the average number of guesses for a particular
-innovation. The "No inheritance" condition includes guesses from synchronic
+tool. The "No inheritance" condition includes guesses from synchronic
 and isolated participants, as well as first generation diachronic players.
 The inheritance condition includes second generation diachronic
 participants only. **A.** Guesses per tool for all tools, including those inherited
@@ -441,14 +451,15 @@ gridExtra::grid.arrange(
 
 ### Guessing strategy {-}
 
-The analyses of performance reported above treat all incorrect guesses as the
-same, but in reality some guesses are more informative than others.
-Specifically, in this task an optimal guessing strategy is to only attempt
-unique guesses. However, many people make repeat guesses, thus employing a
-suboptimal strategy. The nature of these repeat guesses varies, as there are
-four types of guesses that could be made, shown in Table
-\@ref(tab:guess-types). We next report our analysis of whether participants in
-each team structure employed different guessing strategies.
+The analyses of guessing effectiveness reported above treat all incorrect
+guesses as the same, but in reality some guesses are more informative than
+others. Specifically, an optimal guessing strategy is to only attempt unique
+guesses that have never been tried before. However, participants often attempt
+redundant guesses, thus employing a suboptimal guessing strategy. To quantify
+the guessing strategies used by participants in each team strategy, we
+classified each guess into one of four types, shown in Table
+\@ref(tab:guess-types), and tested whether team strategy had an impact on
+guessing strategy.
 
 (ref:guess-types) Guess types. Each guess can be categorized into one of four
 types. Redundant guesses were incorrect guesses made (at least) once before.
@@ -465,13 +476,12 @@ recode_guess_type() %>%
   kable(caption = "(ref:guess-types)")
 ```
 
-We calculated the proportion of guesses made by participants in each condition
-falling into the four guess types. Our results are shown in Fig.
+The guessing strategies for participants in each team strategy are shown in Fig.
 \@ref(fig:guess-props). For our analysis, we focused on the proportions of
-redundant and unique guesses, corresponding to an inefficient and an efficient
-guessing strategy, respectively.
+redundant and unique guesses, corresponding to inefficient and efficient
+guessing strategies, respectively.
 
-Looking just at inefficient redundant guesses, we found that second generation
+Looking just at redundant guesses, we found that second generation
 diachronic participants generated a lower proportion of redundant guesses than
 participants in the other strategies, `r exp1$prop_redundant_inheritance`.
 Post hoc comparisons revealed that second generation diachronic participants
@@ -480,13 +490,14 @@ diachronic participants, `r exp1$prop_redundant_dg2`, and isolated
 individuals, `r exp1$prop_redundant_i50`, but not synchronic participants,
 `r exp1$prop_redundant_i50`.
 
-Looking just at efficient unique guesses, we found no difference between
+Looking just at unique guesses, we found no difference between
 second generation diachronic participants and the other strategies,
 `r exp1$prop_unique_inheritance`. Pairwise comparisons suggested
-a difference between second generation diachronic participants
-and isolated individuals, `r exp1$prop_unique_i50`, but neither
-first generation participants, `r exp1$prop_unique_dg2` nor
-synchronic participants, `r exp1$prop_unique_s2`.
+a difference between second generation diachronic
+and isolated participants, `r exp1$prop_unique_i50`, but not between
+second and first generation diachronic participants,
+`r exp1$prop_unique_dg2`, and not between second generation diachronic
+and synchronic participants, `r exp1$prop_unique_s2`.
 
 (ref:guess-props) Guessing strategies by team structure. See Table
 \@ref(tab:guess-types) for a description of the types of guesses. DG1 and DG2 refer
