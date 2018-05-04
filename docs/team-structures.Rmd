@@ -51,13 +51,17 @@ read_chunk(file.path(chunks_dir, "team-structures.R"))
 ```
 
 Humans are not the only tool users in the animal kingdom, but we do seem to
-have the most of them. What sets human tool users apart may not be our ability
-to invent tools on our own, but our ability to use and improve tools that were
-invented by other people [@Boyd:2011gp]. Humans are exceptional social
-learners, having evolved a number of abilities such as imitation, teaching, and
-language that enable the sharing of tools and other solutions to problems with
-other problem solvers. As a result, human cultures have been able to accumulate
-complex tools that no individual could invent on their own.
+have the most of them. Human tool users are particularly skilled at using and
+improving tools and other solutions to problems that were first discovered by
+other people, as evidenced by the widespread prevalence of reuse in the history
+of human technology [@Basalla]. The reuse 
+
+observation of and interaction with others, generally known as social learning.
+Humans are exceptional social learners, having evolved a number of abilities
+such as imitation, teaching, and language that enable the sharing of tools and
+other solutions to problems with other problem solvers. As a result of our
+social learning abilities, human cultures have been able to accumulate complex
+tools that no individual could invent on their own.
 
 Cultural inheritance involves both vertical and horizontal forms of
 transmission [@Boyd:1985cu]. Vertical transmission involves passing cultural
@@ -530,7 +534,7 @@ problems that had not been discovered by their ancestor.
 
 We also found evidence that second generation diachronic participants employed a
 different guessing strategy as reflected in the distribution of guesses by type.
-In this experiment, redundant guesses are unhelpful in that they will never
+Redundant guesses are unhelpful in that they will never
 yield new discoveries, and yet most participants generate a significant
 proportion of redundant guesses. We found that the tendency to guess redundantly
 may be lessened by diachronic collaboration, as second generation diachronic
@@ -557,21 +561,15 @@ benefit of inheriting from oneself, over multiple sessions.
 ```{r SelfOther}
 ```
 
-In Experiment 2, we compared the effectiveness of four generations of
-diachronic inheritance---inheriting from someone else---to the effectiveness of
-isolated individuals given four separate sessions (Fig.
+In Experiment 2, we compared the performance of four generations of diachronic
+inheritance---inheriting from someone else---to the performance of isolated
+individuals given four separate sessions (Fig.
 \@ref(fig:team-structures-selfother)). Participants in the isolated condition
 came back to the experiment for four separate sessions, each 25 minutes long.
 At each session after the first, these participants inherited the recipes for
 the tools they had created at the end of the previous session. Thus, in this
 experiment, both diachronic and isolated individuals started each session
-recreating inherited tools before extending these to discover
-new tools.
-
-Based on the results of Experiment 1 and previous work using this paradigm
-[@Derex:2015cbb], we expected individual problem solvers to become fixated on
-previous incorrect solutions. The purpose of Experiment 2 was to see if
-diachronic collaboration could be used to remediate these costs of fixation.
+recreating inherited tools before extending these to discover new tools.
 
 (ref:team-structures-selfother) Problem solving strategies compared in Experiment 2.
 
@@ -588,7 +586,7 @@ than diachronic teams given the same total amount of time. The remaining analyse
 test hypotheses about why an isolated strategy was more effective than a
 diachronic strategy.
 
-### Innovations {-}
+### Total tools {-}
 
 The number of innovations discovered in each diachronic generation and isolated
 session are shown in Fig. \@ref(fig:innovations-by-generation-selfother). After
@@ -653,9 +651,10 @@ tools versus time spent inventing new tools.
 
 ### Learning times {-}
 
-Participants took on average `r exp2$mean_learning_time` minutes of the 25
+Participants who inherited an innovation record from a previous generation
+or from a previous session took on average `r exp2$mean_learning_time` minutes of the 25
 minute session (`r exp2$prop_learning_time`%) to recreate the inherited
-tools---a portion of the experiment we refer to as the learning period. We
+tools. We refer to this portion of the experiment we refer to as the learning period. We
 found that isolated individuals returning for multiple sessions took significantly
 less time to recreate the tools they had invented at the end of their previous
 session as compared to diachronic participants who were playing
@@ -668,16 +667,6 @@ but that they were able to more quickly recreate the tools they inherited, and
 thus had more time to dedicate to discovering new tools. Diachronic
 participants, who were exposed to the game for the first time, took longer to
 recreate the inherited items, and had less time to discover new tools.
-
-(ref:learning-times) Learning times by strategy. Learning time refers to
-the number of minutes it took to recreate the inherited items. For
-diachronic participants (**left**), learning time scaled linearly with
-generations, but for isolated participants returning for multiple sessions
-(**right**), learning times were stable across sessions.
-
-```{r learning-times, fig.width=5, fig.cap="(ref:learning-times)"}
-learning_times_plot
-```
 
 ### Guesses for new discoveries {-}
 
@@ -698,11 +687,15 @@ than isolated individuals, `r exp2$first_discovery_stats`. This difference got l
 over generations, `r exp2$first_discovery_by_gen_stats`, indicating that an isolated
 strategy was becoming more fixated on previous incorrect solutions.
 
-(ref:cost-of-first-innovation) Number of guesses required to discover the first
-new tool each session.
+(ref:learning-times) **A.** Learning times by strategy. Learning time refers to
+the number of minutes it took to recreate the inherited items. For diachronic
+participants (**left**), learning time scaled linearly with generations, but
+for isolated participants returning for multiple sessions (**right**), learning
+times were stable across sessions. **B**. Number of guesses required to
+discover the first new tool each session.
 
-```{r cost-of-first-innovation, fig.width=5, fig.cap="(ref:cost-of-first-innovation)"}
-first_discovery_by_generation_plot
+```{r cost-of-first-innovation, fig.height=6, fig.width=5, fig.cap="(ref:learning-times)"}
+gridExtra::grid.arrange(learning_times_plot, first_discovery_plot, ncol = 1)
 ```
 
 ## Discussion {-}
