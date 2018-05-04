@@ -716,10 +716,21 @@ learning_times_mod <- lmer(LearningTime ~ Generation * Diachronic_v_Isolated + (
                            data = StageTimesSelfOther)
 exp2$learning_times_inter <- report_lmer_mod(learning_times_mod, "Generation:Diachronic_v_Isolated")
 
+learning_times_preds <- expand.grid(
+  Generation = 2:4,
+  Strategy = c("Diachronic", "Isolated"),
+  stringsAsFactors = FALSE
+) %>%
+  recode_strategy() %>%
+  cbind(., predictSE(learning_times_mod, newdata = ., se = TRUE)) %>%
+  rename(LearningTime = fit, SE = se.fit)
+
 learning_times_plot <- ggplot(StageTimesSelfOther) +
   aes(Generation, LearningTime) +
-  geom_bar(aes(fill = Strategy), stat = "summary", fun.y = "mean", alpha = 0.6) +
-  geom_point(aes(color = Strategy), position = position_jitter(width=0.1, height=0)) +
+  geom_bar(aes(fill = StrategyLabel), stat = "identity", data = learning_times_preds, alpha = 0.6) +
+  geom_point(aes(color = StrategyLabel), position = position_jitter(width=0.1, height=0)) +
+  geom_errorbar(aes(ymin = LearningTime-SE, ymax = LearningTime+SE),
+                data = learning_times_preds, width = 0.2) +
   facet_wrap("Strategy") +
   scale_y_continuous("Learning time (min)") +
   t_$base_theme +

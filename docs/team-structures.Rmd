@@ -51,122 +51,30 @@ read_chunk(file.path(chunks_dir, "team-structures.R"))
 ```
 
 Humans are not the only tool users in the animal kingdom, but we do seem to
-have the most of them. Human tool users are particularly skilled at using and
-improving tools and other solutions to problems that were first discovered by
-other people, as evidenced by the widespread prevalence of reuse in the history
-of human technology [@Basalla]. The reuse 
+have the most of them. What sets human tool users apart may not be our ability
+to invent tools on our own, but our ability to use and improve tools that were
+invented by other people [@Boyd:2011gp]. Humans are exceptional social
+learners, having evolved a number of abilities such as imitation, teaching, and
+language that enable the sharing of tools and other solutions to problems with
+other problem solvers. As a result, human cultures have been able to accumulate
+complex tools that no individual could invent on their own in a process
+known as cumulative cultural evolution.
 
-observation of and interaction with others, generally known as social learning.
-Humans are exceptional social learners, having evolved a number of abilities
-such as imitation, teaching, and language that enable the sharing of tools and
-other solutions to problems with other problem solvers. As a result of our
-social learning abilities, human cultures have been able to accumulate complex
-tools that no individual could invent on their own.
+Cumulative cultural evolution involves both vertical and horizontal forms of
+transmission. Vertical transmission involves passing cultural products from
+parent to child, whereas in horizontal transmission, cultural products are
+passed among peers in the same generation. Although both forms of cultural
+transmission involve social learning, the consequences of either vertical or
+horizontal transmission have not been directly compared. Here we tested whether
+problem solving knowledge that is inherited at the start of a problem solving
+task via vertical transmission results in different problem solving performance
+than purportedly the same knowledge shared horizontally among problem solvers
+working in parallel.
 
-Cultural inheritance involves both vertical and horizontal forms of
-transmission [@Boyd:1985cu]. Vertical transmission involves passing cultural
-products from parent to child, whereas in horizontal transmission, cultural
-products are passed among peers in the same generation. Although both forms of
-cultural transmission involve social learning, the consequences of either
-vertical or horizontal transmission have not been directly compared. Here we
-tested whether problem solving knowledge that is inherited at the start of a
-problem solving task via vertical transmission results in different problem
-solving performance than purportedly the same knowledge shared horizontally
-among problem solvers working in parallel.
-
-Previous research on the difference between vertical and horizontal
-transmission has found that some cultural products, such as religious beliefs,
-are more likely to be learned from parents than from peers [@Newcomb:1937vy].
-Whether or not individuals learn from parents or peers may also have
-consequences for the distribution of traits in a population. For example,
-@Bettinger:1999vv surveyed projectile points recovered in the Great Basin
-region, and found two distinct distributions. In one, the projectile point
-designs were highly correlated with one another, indicating a culture of horizontal
-transmission, where members of the society copied the designs of the most
-prestigious hunters. In a different region, over the same period, the recovered points
-were very dissimilar from one another, indicating a process of individual
-learning and vertical transmission in which each family may have innovated
-their own point designs. This interpretation has been supported by experimental
-and computational simulations showing that fully connected networks of problem
-solvers result in greater convergence and smaller variation in design than
-independently evolving lineages [@Mesoudi:2008vi; @Mesoudi:2008we].
-
-Although mode of transmission is known to have an impact on the distribution of
-traits in a population, it has not been considered to have an impact on the
-problem solving performance that can be performed by individuals in each
-group. Part of the reason is that both horizontal and vertical transmission are
-believed to involve the same social learning mechanisms. This makes the
-distinction between vertical and horizontal cultural transmission different
-from the analogous processes in genetic evolution. In genetic evolution,
-vertical transmission occurs via reproduction, whereas horizontal transmission
-is the transfer of genetic material by any means _other_ than reproduction
-[@Soucy:2015gp]. Thus, the difference between vertical and horizontal
-transmission of genetic material is motivated by an underlying difference in
-mechanism, as the cellular mechanisms involved in reproduction (e.g., meiosis)
-are different from those involved in horizontal transfer (e.g., conjugation).
-In contrast, there is no such difference in mechanism between the vertical and
-horizontal transmission of cultural products. All processes of cultural
-transmission involve social learning, in which one person learns a behavior
-from the observation or interaction with someone else. The cognitive mechanisms
-that allow for social learning are functionally the same regardless of who is
-being copied. For example, the ability to reason about other's mental states,
-known as "theory of mind", is by most formulations independent of who is being
-reasoned about.
-
-However, there is a difference between vertical and horizontal transmission
-that has yet to be explored, and that is the difference in learning experience
-between traits that are passed from parent to child, and traits that
-are shared among individuals working in parallel. When solutions are passed
-vertically, the new generation of problem solvers begins with the solutions
-created by the previous generation.
-
-We argue that the difference between vertical and horizontal transmission is
-in the unique learning experience afforded by vertical transmission. In vertical
-transmission, individuals start off with solutions to problems that were
-inherited from a previous generation. These solutions provide a unique learning
-environment as compared to solving purportedly the same problems without
-the same starting point.
-
-When considering the consequences of vertical and horizontal transmission,
-horizontal transmission is considered advantageous because it provides a level
-of redundancy that combats the potential for information loss due to
-transmission error. If every instance of cultural transmission has some
-probability of transmission error, the ability to share innovations widely
-within a given generation increases the likelihood that it will survive to be
-used and improved by the next generation. As a case study of this phenomena,
-@Henrich:2004ht modeled the apparent loss of technological complexity among
-Tasmanian islanders over an 8,000 year period as the result of a decreasing
-population size. With fewer replicators within each generation to learn complex
-skills, eventually transmission errors resulted in the loss of some
-technologies. This effect has been demonstrated in a behavioral experiment
-[@Derex:2013kk]. To overcome the potential for information loss, human cultures
-must increase in size, and excel at propagating innovations horizontally to as
-many people in each generation as possible.
-
-Another way in which horizontal transmission is believed to have different
-consequences than purely vertical transmission is in providing multiple
-behavioral models to learn from. A common assumption in models of the cultural
-evolutionary process is that individuals learn behaviors from just one model.
-However, computational models by @Enquist:2010gw have shown that when
-individuals learn from just one parent (as in vertical transmission),
-cumulative culture is unlikely to occur. The reason is that, along chains of
-vertical transmission, any error in transmission is necessarily propagated to
-future generations, increasing the likelihood of maladaptive traits becoming
-established in populations. In contrast, when individuals can learn from
-multiple cultural models and adaptively filter among the observed behaviors to
-determine the best person to copy, then the cumulative cultural process can
-proceed as expected [@Rendell:2011gk].
-
-Horizontal transmission is beneficial in providing redundancy among replicators
-and opportunities for adaptive filtering, but are there any advantages to
-vertical transmission? To answer this question, we compared the effectiveness
-of vertical and horizontal transmission in a problem solving task.
-
-In this research, we distinguish between vertical and horizontal transmission
-along two dimensions of time. Vertical transmission is defined as coordination
+In this research, we define vertical transmission as collaboration
 over generations, such that innovations discovered by one generation are passed
 on to be used and improved by the next generation. Horizontal transmission is
-defined as coordination in parallel and in the same generation. We refer to
+defined as collaboration in parallel and in the same generation. We refer to
 labor that is coordinated via vertical transmission as "diachronic
 collaboration" and labor that is coordinated via horizontal transmission as
 "synchronic collaboration". We compared the effectiveness of diachronic
@@ -184,7 +92,7 @@ if only calendar hours are controlled, an isolated individual given 30 minutes
 could be compared to a synchronic team given 30 minutes _regardless of the
 size of the synchronic team_. This fact makes it difficult to understand
 the effect of teamwork on individual performance when only controlling for
-calendar time [@Propp:2003kj; @Tindale;1992ub].
+calendar time [@Propp:2003kj; @Tindale:1992ub].
 
 (ref:types-of-time) Team structures controlling for labor time. **Left.** Team
 structures. Each node is a person. **Middle.** Relationship between labor time
@@ -659,7 +567,7 @@ found that isolated individuals returning for multiple sessions took significant
 less time to recreate the tools they had invented at the end of their previous
 session as compared to diachronic participants who were playing
 the Totems game for the first time, `r exp2$learning_times_inter` (Fig.
-\@ref(fig:learning-times)).
+\@ref(fig:diachronic-v-isolated-inheritance)A).
 
 This result suggests that what made an isolated strategy successful in
 Experiment 2 is not that isolated individuals were better at guessing new tools,
@@ -679,7 +587,7 @@ to make the first new tool after recreating all inherited tools.
 
 We found that diachronic participants were able to discover the first new tool
 with fewer guesses than isolated participants (Fig.
-\@ref(fig:cost-of-first-innovation)). On average, participants in both diachronic
+\@ref(fig:diachronic-v-isolated-inheritance)B). On average, participants in both diachronic
 and isolated strategies took `r exp2$first_discovery_mean` guesses to discover
 a new item not inherited from a previous participant or previous session. Diachronic
 participants discovered a novel item in `r exp2$first_discovery_beta` fewer guesses
@@ -687,15 +595,19 @@ than isolated individuals, `r exp2$first_discovery_stats`. This difference got l
 over generations, `r exp2$first_discovery_by_gen_stats`, indicating that an isolated
 strategy was becoming more fixated on previous incorrect solutions.
 
-(ref:learning-times) **A.** Learning times by strategy. Learning time refers to
+(ref:diachronic-v-isolated-inheritance) **A.** Learning times by strategy. Learning time refers to
 the number of minutes it took to recreate the inherited items. For diachronic
 participants (**left**), learning time scaled linearly with generations, but
 for isolated participants returning for multiple sessions (**right**), learning
 times were stable across sessions. **B**. Number of guesses required to
 discover the first new tool each session.
 
-```{r cost-of-first-innovation, fig.height=6, fig.width=5, fig.cap="(ref:learning-times)"}
-gridExtra::grid.arrange(learning_times_plot, first_discovery_plot, ncol = 1)
+```{r diachronic-v-isolated-inheritance, fig.height=6, fig.width=5, fig.cap="(ref:diachronic-v-isolated-inheritance)"}
+gridExtra::grid.arrange(
+  learning_times_plot + ggtitle("A"),
+  first_discovery_by_generation_plot + ggtitle("B"),
+  ncol = 1
+)
 ```
 
 ## Discussion {-}
@@ -772,3 +684,10 @@ incorrect guesses in tandem, meaning that each individual is unable to only gues
 unique combinations for the team.
 
 # Discussion {-}
+
+We compared the effectiveness of problem solving strategies involving vertical
+and horizontal transmission in order to better understand the processes that
+give rise to cumulative cultural evolution. In vertical transmission, solutions
+created by one generation are inherited at the start of the problem solving task
+by the next generation, whereas in horizontal transmission, all problem solvers
+start at the same time, and collaborate in parallel.
