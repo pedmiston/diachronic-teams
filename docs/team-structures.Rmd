@@ -643,7 +643,7 @@ minute session (`r exp2$prop_learning_time`%) to recreate the inherited
 tools. We refer to this portion of the experiment we refer to as the learning
 period.
 
-We found that the major difference between diachronic and isolated
+We found that a large difference between diachronic and isolated
 individuals was in the length of the learning period.
 Isolated individuals returning for multiple sessions took significantly
 less time to recreate the tools they had invented at the end of their previous
@@ -651,12 +651,17 @@ session as compared to diachronic participants who were playing
 the Totems game for the first time, `r exp2$learning_times_inter` (Fig.
 \@ref(fig:diachronic-v-isolated-inheritance)A).
 
-This result suggests that what made an isolated strategy successful in
+This result means that what made an isolated strategy successful in
 Experiment 2 is not that isolated individuals were better at guessing new tools,
 but that they were able to more quickly recreate the tools they inherited, and
 thus had more time to dedicate to discovering new tools. Diachronic
 participants, who were exposed to the game for the first time, took longer to
 recreate the inherited items, and had less time to discover new tools.
+
+However, the benefit of an isolated strategy in improving the time to
+recreate existing tools comes at the cost of becoming fixated on previous
+and incorrect learning experiences. Next we report the cost of generating
+the first new discovery each new session.
 
 ### Guesses for new discoveries {-}
 
@@ -677,12 +682,15 @@ than isolated individuals, `r exp2$first_discovery_stats`. This difference got l
 over generations, `r exp2$first_discovery_by_gen_stats`, indicating that an isolated
 strategy was becoming more fixated on previous incorrect solutions.
 
-(ref:diachronic-v-isolated-inheritance) **A.** Learning times by strategy. Learning time refers to
-the number of minutes it took to recreate the inherited items. For diachronic
-participants (**left**), learning time scaled linearly with generations, but
-for isolated participants returning for multiple sessions (**right**), learning
-times were stable across sessions. **B**. Number of guesses required to
-discover the first new tool each session.
+(ref:diachronic-v-isolated-inheritance) **A.** Learning times by strategy.
+Learning time refers to the number of minutes it took to recreate the inherited
+items. For diachronic participants (**left**), learning time scaled linearly
+with generations, but for isolated participants returning for multiple sessions
+(**right**), learning times were stable across sessions. **B**. Number of
+guesses required to discover the first new tool each session. For diachronic
+participants (**left**), new tools were equally likely to be discovered by each
+new generation, but for isolated participants (**right**) the cost of
+discovering a new item increased with new sessions.
 
 ```{r diachronic-v-isolated-inheritance, fig.height=6, fig.width=5, fig.cap="(ref:diachronic-v-isolated-inheritance)"}
 gridExtra::grid.arrange(
@@ -699,22 +707,22 @@ were able to outperform diachronic individuals, each given only 25 minutes.
 However, an isolated strategy did not result in more efficient problem
 solving than a diachronic strategy. Isolated participants did not guess
 less redundantly, or generate a higher proportion of unique guesses,
-than diachronic participants. Isolated participants, given multiple sessions,
+than diachronic participants. Instead, isolated participants, given multiple sessions,
 were able to more quickly recreate the tools they discovered in the previous
 session, thus giving them more time to discover new tools. In contrast,
 for diachronic participants, recreating the tools inherited from their
 ancestor took longer and longer over generations, leaving less time for
 new tool discovery.
 
-We did obtain evidence of one way in which a diachronic strategy can
-promote a more efficient problem solving. We found that isolated
-individuals were more likely to be fixated on incorrect solutions, causing
-them to guess inefficiently. These fixation effects extended over multiple
-sessions, causing the performance of some isolated individuals to stagnate.
-Diachronic participants, however, were less impacted by fixation, and were
-more easily able to move beyond the solutions they inherited to discover
-new solutions. These results reveal an important benefit to diachronic
-collaboration and inheritance.
+We did obtain evidence of one way in which a diachronic strategy can promote a
+more efficient form of problem solving. We found that isolated individuals were
+more likely to become fixated on previous, incorrect solutions, causing them to
+guess inefficiently. These fixation effects extended over multiple sessions,
+causing the performance of some isolated individuals to stagnate. Diachronic
+participants, however, were less impacted by fixation, and were more easily
+able to move beyond the solutions they inherited to discover new solutions.
+These results reveal a novel benefit to vertical transmission in relieving
+the pressures that slow individual problem solvers down.
 
 In Experiment 3, we investigated whether adding more participants to
 a synchronic strategy increases problem solving performance to the same
@@ -767,19 +775,35 @@ unique combinations for the team.
 
 # Discussion {-}
 
-We compared the effectiveness of problem solving strategies involving vertical
-and horizontal transmission in order to better understand the processes that
-give rise to cumulative cultural evolution. In vertical transmission, solutions
-created by one generation are inherited at the start of the problem solving task
-by the next generation, whereas in horizontal transmission, all problem solvers
-start at the same time, and collaborate in parallel.
+We sought to better understand the process by which groups of problem solvers
+can solve problems that no individual could on their own. Previous research
+addressing this question has found that groups of problem solvers collaborating
+via horizontal transmission can in some cases raise the performance of the group
+beyond what would be likely to be achieved individually. We extended this line
+of research by comparing the effectiveness of vertical transmission, where
+individuals start off a problem solving task by inheriting directly from a previous
+generation.
 
-Although mode of transmission is known to have an impact on the distribution of
-traits in a population, it has not been considered to have an impact on the
-problem solving performance that can be performed by individuals in each
-group. Part of the reason is that both horizontal and vertical transmission are
-believed to involve the same social learning mechanisms. This makes the
-distinction between vertical and horizontal cultural transmission different
+We found that vertical transmission promotes a unique kind of problem solving
+compared to horizontal transmission and isolated individuals. In comparing
+vertical and horizontal transmission, we found that the effectiveness of
+vertical transmission is more likely to scale with additional problem solvers
+compared to horizontal transmission. In comparing vertical transmission
+to isolated labor, we found that vertical transmission may be helpful in
+remediating the costs of fixation that slow down or hamper progress by
+isolated learners.
+
+Although the purpose of the experiments reported here was to disentangle
+the effects of vertical and horizontal transmission, future work must
+address the more natural forms of collaboration involving both
+diachronic and synchronic elements. Among animals, for example,
+multiple forms of cultural transmission are observed occurring in the
+wild, and not all of these were tested here [@Whiten:2008dl].
+
+Another difficulty in interpreting our results as evidence of a difference
+between vertical and horizontal transmission is that both forms of cultural
+transmission are believed to involve similar learning mechanisms. This makes
+the distinction between vertical and horizontal cultural transmission different
 from the analogous processes in genetic evolution. In genetic evolution,
 vertical transmission occurs via reproduction, whereas horizontal transmission
 is the transfer of genetic material by any means _other_ than reproduction
@@ -792,5 +816,25 @@ horizontal transmission of cultural products. All processes of cultural
 transmission involve social learning, in which one person learns a behavior
 from the observation or interaction with someone else. The cognitive mechanisms
 that allow for social learning are functionally the same regardless of who is
-being copied. For example, the ability to reason about other people's mental states,
-known as "theory of mind", is largely independent of who is being reasoned about.
+being copied. For example, the ability to reason about other people's mental
+states, known as "theory of mind", is largely independent of who is being
+reasoned about [@Heyes:2012kt].
+
+Nonetheless, our results suggest that there may be a difference between horizontal
+and vertical transmission. The reason is related to the unique learning
+environment experienced by diachronic collaborators. In vertical transmission,
+new generations directly inherit and adapt solutions at the start of a problem solving
+task, making continued problem solving dependent on these previous learning
+experiences. These learning experiences may be different than acquiring
+purportedly the same knowledge after initial learning has already taken place.
+What this means is that vertical transmission may promote unique problem
+solving behaviors that could not be achieved individually.
+
+In seeking to explain how and why humans are unique skilled problem solvers,
+many have pointed to our ability to copy skilled behaviors learned by others.
+In modern societies, we clearly see the results of copying and improving
+behaviors in that some cultural artifacts are very complex and would be unlikely
+to be rediscovered by individuals working alone. But whether we can detect
+the impact of social learning on individual problem solving performance is
+an open area of research. Here we demonstrate that vertical transmission
+is a unique form a problem solving that is worth further investigation.
