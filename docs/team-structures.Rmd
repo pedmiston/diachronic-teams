@@ -57,13 +57,13 @@ by other people. This ability is often referred to as the "ratchet effect"
 [@Tomasello:1993vh; @Dean:2013db], and is believed to be an important component
 of cumulative cultural evolution. One of the defining features of cumulative
 cultural evolution is that cultures of problem solvers, through generations of
-ratcheting, can sustain tools and other solutions to problems that no individual
-could recreate on their own [@Boyd:2011gp]. Although the capacity to engage in
-cultural ratcheting is well-known, the effectiveness of cultural transmission
-as a strategy for solving problems is an area in need of further research. The
-purpose of this research was to better understand the effectiveness of cultural
-transmission in accumulating solutions to problems that no individual could
-recreate on their own.
+incremental improvement, can sustain complex tools and other solutions to
+problems that no individual could recreate on their own [@Boyd:2011gp].
+Although the capacity to engage in cultural ratcheting is well-known, the
+effectiveness of cultural transmission as a strategy for solving problems is an
+area in need of further research. The purpose of this research was to better
+understand the effectiveness of cultural transmission in accumulating solutions
+to problems that no individual could recreate on their own.
 
 Groups of problem solvers can share information via both vertical and
 horizontal forms of cultural transmission [@Boyd:1985cu]. Vertical transmission
@@ -92,8 +92,9 @@ of a horizontal transmission process where members of the society copy the most
 prestigious hunters, whereas uncorrelated points would result from vertical
 transmission where each family innovated their own designs. This interpretation
 has been supported by experimental and computational simulations showing that
-groups of problem solvers result in smaller variation in design than than
-independently evolving lineages [@Mesoudi:2008vi; @Mesoudi:2008we].
+groups of problem solvers result in greater convergence and smaller variation
+in design than than independently evolving lineages [@Mesoudi:2008vi;
+@Mesoudi:2008we].
 
 But in explaining how groups of problem solvers can solve problems that
 individuals cannot, previous research has focused on horizontal transmission
@@ -104,22 +105,22 @@ proved more effective for discovering complex solutions than an isolated
 strategy. The adaptiveness of horizontal transmission over individual problem
 solving has been attributed to an advantage of parallel search in that groups
 are better able to search the space of possible solutions than individuals
-working alone [@Acerbi:2016ej]. As a result, horizontal transmission is
-believed to be adaptive for a wider range of problem solving scenarios than
-individual learning [@Golman:2010fz; @Rendell:2010go].
+working alone [@Acerbi:2016ej]. Horizontal transmission among groups of
+problem solvers has been shown to be adaptive for a wider range of problem
+solving scenarios than individual learning [@Golman:2010fz; @Rendell:2010go].
 
 When vertical transmission has been studied directly, it has not been compared
 to alternative strategies for solving the same problems. For example,
 @Caldwell:2008gf had participants create paper airplanes or spaghetti towers in
-a transmission chain design, where new generations of problem solvers learned
-from the previous generation. The results showed that performance tended to
-improve along the transmission chains, suggesting that human problem solvers
-are uniquely skilled at using and improving solutions to problems that were
-created by others. But since the performance of the transmission chains was not
-compared to performance of isolated individuals given the same opportunities,
-we do not know whether vertical transmission by itself can result in the
-accumulation of problem solving knowledge that no individual could recreate on
-their own.
+a transmission chain design involving vertical transmission, where new
+generations of problem solvers learned from the previous generation. The
+results showed that performance tended to improve along the transmission
+chains, suggesting that human problem solvers are skilled at using and
+improving solutions to problems that were created by others. But since the
+performance of the transmission chains was not compared to performance of
+isolated individuals given the same opportunities, we do not know whether
+vertical transmission by itself can result in the accumulation of problem
+solving knowledge that no individual could recreate on their own.
 
 To better understand the effectiveness of vertical transmission as a strategy
 for solving problems, we conducted an experiment where participants completed
@@ -129,11 +130,11 @@ diachronic collaboration, participants completed the problem solving task one
 at a time, and at the end of the session, they passed the solutions they had
 discovered on to the next generation. The next generation, rather than starting
 from scratch, starts off with the solutions inherited from the previous
-generation. In **synchronic collaboration**, participants work on the same
-problem solving task at the same time and in parallel, sharing solutions with
-each other as they are discovered. Both diachronic and synchronic strategies
-are compared to an isolated strategy in which individuals work alone on the
-same problems.
+generation. In **synchronic collaboration**, participants work in a team on the
+same problem solving task at the same time and in parallel, sharing solutions
+with each other as they are discovered. Both diachronic and synchronic
+strategies are compared to an isolated strategy in which individuals work alone
+on the same problems.
 
 In our comparison of diachronic, synchronic, and isolated strategies, we
 controlled for **labor time**. Labor time can be contrasted with calendar time
@@ -167,10 +168,9 @@ gridExtra::grid.arrange(
 Our results are reported in three experiments. In Experiment 1, we measured the
 effectiveness of the simplest form of diachronic inheritance involving two
 generations of problem solvers collaborating via vertical transmission. We find
-that diachronic collaboration is similarly effective to the alternative
-strategies, but we also demonstrate the ways in which starting off a problem
-solving task with solutions inherited from a previous generation results in
-a unique form of problem solving compared to the alternative strategies. In
+that diachronic collaboration is similarly effective to both alternative
+strategies, but we also demonstrate the ways in which inheriting from
+a previous generation results in a unique form of problem solving. In
 Experiment 2, we compared four generations of diachronic problem solvers to
 four sessions of isolated problem solving in order to tease apart the effects
 of inheriting from someone else as opposed to inheriting from oneself. We find
@@ -211,7 +211,7 @@ came back for four 25 minute sessions.
 at a time, each inheriting the solutions discovered by the previous generation,
 labeled G1-G4. Isolated participants were recruited for a single 50 minute
 session, or returned for four 25 minute sessions, labeled S1-S4. Synchronic
-participants were assigned to teams of two or four individuals that all worked
+participants were assigned to teams of two or four individuals that worked
 at the same time.
 
 ```{r team-structures-all, out.width="100%", fig.cap='(ref:team-structures-all)'}
@@ -496,13 +496,13 @@ prop_guess_types_50min_plot
 
 ## Discussion {-}
 
-In Experiment 1, we found that the simplest form of vertical transmission, in
-which one person inherits from a previous generation, is comparable to
-alternative strategies for solving the same set of problems in the same amount
-of labor time (see Fig. \@ref(fig:types-of-time)). Two generations of
-diachronic problem solvers each working for 25 minutes results in similar final
-performance to an isolated individual given 50 minutes and two problem solvers
-working in parallel for 25 minutes each.
+In Experiment 1, we found that the simplest form of vertical transmission via
+diachronic collaboration, in which one person inherits from a previous
+generation, is comparable to alternative strategies for solving the same set of
+problems in the same amount of labor time (see Fig. \@ref(fig:types-of-time)).
+Two generations of diachronic problem solvers each working for 25 minutes
+results in similar final performance to an isolated individual given 50 minutes
+and two problem solvers working in parallel for 25 minutes each.
 
 Although in Experiment 1, the three strategies were similar in overall
 performance, we detected the impact of inheriting from a previous generation in
@@ -514,16 +514,16 @@ improvement in efficiency did not extend to future problem solving, as second
 generation diachronic problem solvers were not any more efficient in solving
 problems that had not been discovered by their ancestor.
 
-We also found evidence that second generation diachronic participants employed a
-different guessing strategy as reflected in the distribution of guesses by type.
-Redundant guesses are unhelpful in that they will never
-yield new discoveries, and yet most participants generate a significant
-proportion of redundant guesses. We found that the tendency to guess redundantly
-may be lessened by diachronic collaboration, as second generation diachronic
-problem solvers generated fewer redundant guesses than their ancestors and
-participants in an isolated strategy. However, similar proportions of redundant
-guesses were generated by participants in the synchronic strategy, suggesting
-that diachronic inheritance is not the only strategy for reducing redundancy in
+We also found evidence that second generation diachronic participants employed
+a different guessing strategy as reflected in the distribution of guesses by
+type. Redundant guesses are unhelpful in that they will never yield new
+discoveries, and yet most participants generate a significant proportion of
+redundant guesses. We found that the tendency to guess redundantly may be
+lessened by diachronic collaboration, as second generation diachronic problem
+solvers generated fewer redundant guesses than their ancestors and participants
+in an isolated strategy. However, similar proportions of redundant guesses were
+generated by participants in the synchronic strategy, suggesting that
+diachronic inheritance is not the only strategy for reducing redundancy in
 guessing.
 
 The results of Experiment 1 also support and extend the findings reported by
@@ -544,9 +544,9 @@ benefit of inheriting from oneself, over multiple sessions.
 ```{r SelfOther}
 ```
 
-In Experiment 2, we compared the performance of four generations of vertical
-transmission---inheriting from someone else---to the performance of isolated
-individuals given four separate sessions (Fig.
+In Experiment 2, we compared the performance of four generations of diachronic
+collaboration via vertical transmission---inheriting from someone else---to the
+performance of isolated individuals given four separate sessions (Fig.
 \@ref(fig:team-structures-selfother)). Participants in the isolated condition
 came back to the experiment for four separate sessions, each 25 minutes long.
 Sessions were scheduled at least one day apart. At each session after the
@@ -605,7 +605,8 @@ diachronic strategy, we asked whether isolated individuals employed a more
 efficient guessing strategy than diachronic participants. As in Experiment 1, we
 measured both the proportion of redundant guesses and unique guesses made by
 participants in either strategy, corresponding to an inefficient and efficient
-guessing strategy, respectively.
+guessing strategy, respectively. Our results are shown in Fig.
+\@ref(fig:guessing-strategy-by-generation).
 
 Although participants in the isolated strategy discovered more tools after
 four sessions than diachronic teams after four generations, they did not engage
@@ -667,22 +668,24 @@ the first new discovery each new session.
 
 Both diachronic and isolated participants first had to recreate the tools
 discovered by the previous generation participant or in the previous session.
-Given the tendency for individuals to get fixated in this task, we asked
-whether a diachronic or isolated strategy was more effective at discovering new
-tools. To test this, we counted the number of guesses it took each participant
-to make the first new tool after recreating all inherited tools.
+Given the tendency for individuals to get fixated in this task
+[@Derex:2015cbb], we asked whether a diachronic or isolated strategy was more
+effective at discovering new tools. To test this, we counted the number of
+guesses it took each participant to make the first new tool after recreating
+all inherited tools.
 
 We found that diachronic participants were able to discover the first new tool
 with fewer guesses than isolated participants (Fig.
 \@ref(fig:diachronic-v-isolated-inheritance)B). On average, participants in both diachronic
 and isolated strategies took `r exp2$first_discovery_mean` guesses to discover
-a new item not inherited from a previous participant or previous session. Diachronic
-participants discovered a novel item in `r exp2$first_discovery_beta` fewer guesses
-than isolated individuals, `r exp2$first_discovery_stats`. This difference got larger
+a new tool not inherited from a previous participant or previous session. Diachronic
+participants discovered a new tool in `r exp2$first_discovery_beta` fewer guesses
+than isolated individuals, `r exp2$first_discovery_stats`. This difference increased
 over generations, `r exp2$first_discovery_by_gen_stats`, indicating that an isolated
 strategy was becoming more fixated on previous incorrect solutions.
 
-(ref:diachronic-v-isolated-inheritance) **A.** Learning times by strategy.
+(ref:diachronic-v-isolated-inheritance) Costs and benefits of diachronic inheritance
+relative to individual inheritance. **A.** Learning times by strategy.
 Learning time refers to the number of minutes it took to recreate the inherited
 items. For diachronic participants (**left**), learning time scaled linearly
 with generations, but for isolated participants returning for multiple sessions
@@ -690,7 +693,7 @@ with generations, but for isolated participants returning for multiple sessions
 guesses required to discover the first new tool each session. For diachronic
 participants (**left**), new tools were equally likely to be discovered by each
 new generation, but for isolated participants (**right**) the cost of
-discovering a new item increased with new sessions.
+discovering a new tool increased with new sessions.
 
 ```{r diachronic-v-isolated-inheritance, fig.height=6, fig.width=5, fig.cap="(ref:diachronic-v-isolated-inheritance)"}
 gridExtra::grid.arrange(
@@ -714,7 +717,7 @@ for diachronic participants, recreating the tools inherited from their
 ancestor took longer and longer over generations, leaving less time for
 new tool discovery.
 
-We did obtain evidence of one way in which a diachronic strategy can promote a
+We obtained evidence of one way in which a diachronic strategy can promote a
 more efficient form of problem solving. We found that isolated individuals were
 more likely to become fixated on previous, incorrect solutions, causing them to
 guess inefficiently. These fixation effects extended over multiple sessions,
@@ -724,9 +727,10 @@ able to move beyond the solutions they inherited to discover new solutions.
 These results reveal a novel benefit to vertical transmission in relieving
 the pressures that slow individual problem solvers down.
 
-In Experiment 3, we investigated whether adding more participants to
-a synchronic strategy increases problem solving performance to the same
-extend as adding generations to a diachronic team.
+In Experiment 3, we compare the performance of four-person synchronic teams to
+four-generation diachronic teams. We investigated whether adding more
+participants to a synchronic strategy increases problem solving performance to
+the same extend as adding generations to a diachronic team.
 
 # Experiment 3: Scalability of diachronic and synchronic collaboration {-}
 
@@ -735,10 +739,11 @@ extend as adding generations to a diachronic team.
 
 In Experiment 3 we measured the scalability of diachronic and synchronic collaboration.
 Does adding more people to the problem solving team improve the performance of
-each strategy equally? We hypothesized that diachronic collaboration would be
-more scalable than synchronic collaboration. To test this, we compared
-diachronic and synchronic collaboration given 50 minutes to the same strategies
-given 100 minutes.
+each strategy equally? Given that large groups are subject to effects such as
+social loafing that decrease motivation and individual performance [@Mao:2016ds], we
+hypothesized that diachronic collaboration would be more scalable than
+synchronic collaboration. To test this, we compared diachronic and synchronic
+collaboration given 50 minutes to the same strategies given 100 minutes.
 
 ## Results {-}
 
@@ -765,24 +770,23 @@ max_innovations_by_teamsize_plot
 
 ## Discussion {-}
 
-In Experiment 3, we demonstrated that diachronic and synchronic collaboration differ
+In Experiment 3, we compared diachronic and synchronic collaboration strategies
+at different team sizes, and found that diachronic and synchronic collaboration differ
 in their ability to scale up to larger teams. Diachronic collaboration can add
-more generations that each correspond to an increase in team performance, but the utility
-of adding problem solvers to a synchronic strategy is smaller. Specifically we found
-that the reason might be related to synchronic individuals each making the same
-incorrect guesses in tandem, meaning that each individual is unable to only guess
-unique combinations for the team.
+more generations that each correspond to an increase in team performance, but
+the added utility of adding problem solvers to a synchronic strategy is
+smaller.
 
 # Discussion {-}
 
 We sought to better understand the process by which groups of problem solvers
-can solve problems that no individual could on their own. Previous research
-addressing this question has found that groups of problem solvers collaborating
-via horizontal transmission can in some cases raise the performance of the group
-beyond what would be likely to be achieved individually. We extended this line
-of research by comparing the effectiveness of vertical transmission, where
-individuals start off a problem solving task by inheriting directly from a previous
-generation.
+can arrive at solutions to problems that no individual could on their own.
+Previous research addressing this question has found that groups of problem
+solvers collaborating via horizontal transmission can in some cases raise the
+performance of the group beyond what would be likely to be achieved
+individually. We extended this line of research by comparing the effectiveness
+of vertical transmission, where individuals start off a problem solving task by
+inheriting directly from a previous generation.
 
 We found that vertical transmission promotes a unique kind of problem solving
 compared to horizontal transmission and isolated individuals. In comparing
@@ -820,15 +824,16 @@ being copied. For example, the ability to reason about other people's mental
 states, known as "theory of mind", is largely independent of who is being
 reasoned about [@Heyes:2012kt].
 
-Nonetheless, our results suggest that there may be a difference between horizontal
-and vertical transmission. The reason is related to the unique learning
-environment experienced by diachronic collaborators. In vertical transmission,
-new generations directly inherit and adapt solutions at the start of a problem solving
-task, making continued problem solving dependent on these previous learning
-experiences. These learning experiences may be different than acquiring
-purportedly the same knowledge after initial learning has already taken place.
-What this means is that vertical transmission may promote unique problem
-solving behaviors that could not be achieved individually.
+Nonetheless, our results suggest that there may be different consequences
+of horizontal and vertical transmission in a problem solving context. The
+reason may be related to the unique learning environment experienced in
+vertical transmission. In vertical transmission, new generations directly inherit and
+adapt solutions at the start of a problem solving task, making continued
+problem solving dependent on these previous learning experiences. These
+learning experiences may be different than acquiring purportedly the same
+knowledge after initial learning has already taken place. As a result,
+vertical transmission may be able to promote problem solving behaviors that
+could not be achieved individually.
 
 In seeking to explain how and why humans are unique skilled problem solvers,
 many have pointed to our ability to copy skilled behaviors learned by others.
