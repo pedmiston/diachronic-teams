@@ -529,6 +529,84 @@ prop_guess_types_50min_plot <- ggplot(GuessTypes50minSummary) +
   t_$base_theme +
   theme(panel.grid.major.x = element_blank())
 
+# * Guessing rates ----
+data("Sampled")
+sampled_interval <- 1 # Sampled data was sampled at 1 minute intervals
+
+recode_session_time <- function(frame) {
+  session_time_map <- data_frame(
+    SessionTime = 0:50,
+    SessionTimeC = -25:25,
+    SessionTimeZ = (SessionTimeC - mean(SessionTimeC))/sd(SessionTimeC),
+    SessionTimeZ_2 = SessionTimeZ^2,
+    SessionTimeZ_3 = SessionTimeZ^3
+  )
+  if(missing(frame)) return(session_time_map)
+  left_join(frame, session_time_map)
+}
+
+GuessingRates <- Sampled %>%
+  filter_50min() %>%
+  mutate(NumRedundant = NumGuesses - NumUniqueGuesses) %>%
+  group_by(SessionID) %>%
+  mutate(
+    NewItems = (InventorySize - lag(InventorySize)),
+    NewItemRate = NewItems/sampled_interval,
+    GuessDiff = NumGuesses - lag(NumGuesses),
+    GuessRate = GuessDiff/sampled_interval,
+    UniqueDiff = NumUniqueGuesses - lag(NumUniqueGuesses),
+    UniqueRate = UniqueDiff/sampled_interval,
+    RedundantDiff = NumRedundant - lag(NumRedundant),
+    RedundancyRate = RedundantDiff/sampled_interval
+  ) %>%
+  recode_strategy() %>%
+  recode_session_type_50min() %>%
+  label_inheritance() %>%
+  recode_session_time()
+
+
+new_items_per_minute_mod <- lm(NewItems ~ (SessionTimeZ + SessionTimeZ_2 + SessionTimeZ_3) * (DG2_v_DG1 + DG2_v_I50 + DG2_v_S2),
+                               data = GuessingRates)
+new_items_per_minute_preds <- expand.grid(
+  SessionType = c("DG1", "DG2", "I50", "S2"),
+  SessionTime = 0:50,
+  stringsAsFactors = FALSE
+) %>%
+  recode_session_time() %>%
+  filter(SessionType == "I50" | SessionTime <= 25) %>%
+  recode_session_type_50min() %>%
+  cbind(., predict(new_items_per_minute_mod, newdata = ., se = TRUE)) %>%
+  as_data_frame() %>%
+  rename(NewItemRate = fit, SE = se.fit) %>%
+  recode_strategy()
+
+guessing_rate_plot <- ggplot(GuessingRates) +
+  aes(SessionTime) +
+  geom_point(aes(group = SessionType, color = Strategy, shape = Inheritance),
+             stat = "summary", fun.y = "mean") +
+  xlab("Session time (minutes)") +
+  scale_shape_manual(values = c(1, 16), guide = "none") +
+  t_$scale_color_strategy +
+  t_$base_theme
+
+new_items_per_minute <- guessing_rate_plot +
+  aes(y = NewItemRate) +
+  # geom_ribbon(aes(group = SessionType, fill = Strategy, ymin = NewItemRate-SE, ymax = NewItemRate+SE),
+  #             data = new_items_per_minute_preds,
+  #             alpha = 0.6) +
+  t_$scale_fill_strategy
+
+guesses_per_minute <- guessing_rate_plot +
+  aes(y = GuessRate) +
+  geom_hline(yintercept = mean(GuessingRates$GuessRate, na.rm = TRUE), linetype = 2)
+
+unique_per_minute <- guessing_rate_plot +
+  aes(y = UniqueRate) +
+  ylab("")
+
+redundant_per_minute <- guessing_rate_plot +
+  aes(y = RedundancyRate)
+
 # ---- SelfOther ----
 
 exp2 <- list()

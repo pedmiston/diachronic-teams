@@ -489,6 +489,28 @@ participants given 50 minutes. S2 refers to two-person synchronic teams.
 prop_guess_types_50min_plot
 ```
 
+### Guessing rates {-}
+
+(ref:guess-rates) Guessing rate by session time.
+
+```{r guess-rates, fig.width=6, fig.height=6, fig.cap="(ref:guess-rates)"}
+grid.arrange(
+  new_items_per_minute +
+    labs(y = "", title = "A. New tools per minute") +
+    theme(legend.position = "none"),
+  guesses_per_minute +
+    labs(y = "", title = "B. Guesses per minute") +
+    theme(legend.position = "none"),
+  unique_per_minute +
+    labs(y = "", title = "C. Unique guesses per minute") +
+    theme(legend.position = "none"),
+  redundant_per_minute +
+    labs(y = "", title = "D. Redundant guesses per minute") +
+    theme(legend.position = "none"),
+  nrow = 2
+)
+```
+
 ## Discussion {-}
 
 In Experiment 1, we found that the simplest form of vertical transmission via
