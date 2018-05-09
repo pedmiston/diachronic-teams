@@ -23,6 +23,7 @@ docs/templates/*.pdf
 
 # editor
 *.swp
+*.swo
 
 # os
 .DS_Store
