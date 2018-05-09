@@ -111,7 +111,7 @@ draw_graphviz("iterated-problem-solving", package = "totems")
 
 We investigated the human propensity to exceed our ancestors in a problem
 solving task using a transmission chain paradigm (Fig.
-\@ref(fig:iterated-problem-solving)). Previous research using this paradigm has
+\@ref(fig:iterated-problem-solving-fig)). Previous research using this paradigm has
 found that problem solving performance for simple tasks like folding paper
 airplanes and building tours out of spaghetti can accumulate over generations
 [@Caldwell:2008gf], although the mechanisms are unclear [@Caldwell:2009fl].
