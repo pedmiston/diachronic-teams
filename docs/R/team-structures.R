@@ -1,4 +1,4 @@
-# ---- setup
+# ---- Setup ----
 library(magrittr)
 library(broom)
 library(lme4)
@@ -9,10 +9,7 @@ library(totems)
 library(tidyverse) # Load tidyverse after totems to prevent dplyr::filter from being masked
 t_ <- load_totems_theme()
 
-# ---- intro
-# Intro ----
-
-# * Types of time ----
+# ---- Intro ----
 # Makes "types of time" plot.
 # Types of time plot shows the relationship
 # between labor time, calendar time, and learning time.
@@ -41,7 +38,7 @@ time <- rbind(diachronic, synchronic, isolated) %>%
   group_by(Strategy, Person) %>%
   mutate(PersonHours = 1:n()) %>%
   ungroup() %>%
-  recode_strategy() %>%
+  totems::recode_strategy() %>%
   mutate(
     LaborHours = ifelse(Strategy == "Synchronic", LaborHours,
                         ifelse(Strategy == "Diachronic", LaborHours + 1, LaborHours - 1))
@@ -50,7 +47,7 @@ time <- rbind(diachronic, synchronic, isolated) %>%
 axis_breaks <- c(0, 50, 100)
 axis_labels <- c(0, expression(1/2), 1)
 
-labels <- recode_strategy() %>%
+labels <- totems::recode_strategy() %>%
   mutate(
     CalendarHours = 25,
     LaborHours = c(60, 18, 35),
@@ -70,7 +67,7 @@ gg_time <- ggplot(time, aes(CalendarHours, LaborHours)) +
 time %<>%
   mutate(StrategyIsolated = factor(Strategy, levels = c("Synchronic", "Diachronic", "Isolated")))
 
-labels <- recode_strategy() %>%
+labels <- totems::recode_strategy() %>%
   mutate(
     StrategyIsolated = factor(Strategy, levels = c("Synchronic", "Diachronic", "Isolated")),
     PersonHours = 5
@@ -88,121 +85,14 @@ gg_person <- ggplot(time) +
   theme(legend.position = "none",
         panel.grid.major.x = element_blank())
 
-# ---- methods
-# Methods ----
+# ---- Methods ----
 
 data("Teams")
 data("Sessions")
 
 methods <- list()  # Store vars for in-text reference
-methods$n_unique_guesses_6 <- count_unique_guesses(6)
-methods$n_unique_guesses_6_pct <- round(3/methods$n_unique_guesses_6 * 100, 1)
-
-report_lmer_mod <- function(lmer_mod, term, formats = NULL, reverse_sign = FALSE) {
-  term_ <- term  # work around NSE in filter
-  results <- broom::tidy(lmer_mod, effects = "fixed") %>%
-    filter(term == term_) %>%
-    as.list()
-  
-  if(reverse_sign) {
-    results$estimate <- -results$estimate
-    results$statistic <- -results$statistic
-  }
-  
-  fmt <- c(b=2, se=2, t=2)
-  if(!is.null(formats)) fmt[names(formats)] <- formats
-  
-  fstring <- sprintf("_b_ = %%.%sf (SE = %%.%sf), _t_ = %%.%sf", fmt["b"], fmt["se"], fmt["t"])
-  sprintf(fstring, results$estimate, results$std.error, results$statistic)
-}
-
-report_lm_mod <- function(lm_mod, term, min_p_value = 0.001, p_value_only = FALSE) {
-  term_ <- term  # work around NSE in call to filter
-  results <- broom::tidy(lm_mod) %>%
-    filter(term == term_) %>%
-    as.list()
-  
-  lm_summary <- broom::glance(lm_mod) %>% as.list()
-  results$df <- lm_summary$df.residual
-  
-  results$p_value_str <- compute_p_string(results$p.value)
-  
-  if (p_value_only == TRUE) {
-    return(results$p_value_str)
-  }
-  
-  sprintf("_b_ = %.2f (SE = %.2f), _t_(%.1f) = %.2f, %s",
-          results$estimate, results$std.error, results$df, results$statistic, results$p_value_str)
-}
-
-report_glm_mod <- function(glm_mod, term, min_p_value = 0.001, p_value_only = FALSE) {
-  term_ <- term  # work around NSE in call to filter
-  results <- broom::tidy(glm_mod) %>%
-    filter(term == term_) %>%
-    as.list()
-  
-  glm_summary <- broom::glance(glm_mod) %>% as.list()
-  results$df <- glm_summary$df.residual
-  
-  results$p_value_str <- compute_p_string(results$p.value)
-  
-  sprintf("_b_ = %.2f logodds (SE = %.2f), _z_ = %.2f, %s",
-          results$estimate, results$std.error, results$statistic, results$p_value_str)
-}
-
-report_beta <- function(mod, param, digits = 1, transform = NULL) {
-  param_ <- param # prevent masking in NSE
-  estimate <- mod %>%
-    summary %>%
-    .$coefficients %>%
-    as.data.frame() %>%
-    rownames_to_column("param") %>%
-    filter(param == param_) %>%
-    .$Estimate
-  if(!is.null(transform)) estimate <- transform(estimate)
-  round(estimate, digits = digits)
-}
-
-report_modcomp <- function(modcomp) {
-  modcomp <- as.list(modcomp[2, ])
-  p_string <- compute_p_string(modcomp$`Pr(>Chisq)`)
-  print(sprintf("$\\chi^2$(%i) = %.4f, %s", modcomp$`Chi Df`, modcomp$Chisq, p_string))
-}
-
-report_page_test <- function(page_trend_test_results) {
-  page_trend_test_results$p_val_str <- compute_p_string(page_trend_test_results$px2)
-  print(sprintf("Page's _L_ = %.0f, $\\chi^2$ = %.0f, %s",
-                page_trend_test_results$L,
-                page_trend_test_results$x2L,
-                page_trend_test_results$p_val_str))
-}
-
-compute_p_string <- function(p_value) {
-  min_p_value <- 0.001
-  if (p_value < min_p_value) {
-    p_value_str <- "_p_ < 0.001"
-  } else {
-    p_value_str <- paste("_p_ = ", round(p_value, 3))
-  }
-  p_value_str
-}
-
-# Jitter Generation by TeamID for plotting
-jitter_team_generation <- . %>%
-  group_by(TeamID) %>%
-  mutate(GenerationJittered = Generation + rnorm(1, mean = 0, sd = 0.05)) %>%
-  ungroup()
-
-# Recode Generation poly
-recode_generation_quad <- . %>%
-  mutate(
-    GenerationSqr = Generation^2,
-    Generation0Sqr = Generation0^2
-  )
-
-recode_generation_base0 <- . %>%
-  mutate(Generation0 = Generation - 1)
-
+methods$n_unique_combinations_6 <- count_unique_combinations(6)
+methods$n_unique_combinations_6_pct <- round(3/methods$n_unique_combinations_6 * 100, 1)
 
 TeamCounts <- Teams %>%
   filter(
@@ -235,11 +125,13 @@ ConditionCounts <- Teams %>%
   select(Strategy, SessionDuration, PlayersPerSession) %>%
   unique() %>%
   arrange(Strategy) %>%
+  mutate(`Sessions` = c(1, 1, 4, 1, 1)) %>%
   left_join(TeamCounts) %>%
-  left_join(PlayerCounts)
+  left_join(PlayerCounts) %>%
+  rename(`Duration (min)` = SessionDuration, `Session size` = PlayersPerSession,
+         `Teams` = NumTeams, `Participants` = NumPlayers)
 
-# ---- exp1
-# 50min ----
+# ---- 50min ----
 
 # List to hold descriptives for in-text citation
 exp1 <- list()
@@ -285,6 +177,13 @@ num_innovations_50min_mod <- lmer(
 exp1$DG2_v_DG1 <- report_lmer_mod(num_innovations_50min_mod, "DG2_v_DG1", reverse_sign = TRUE)
 exp1$DG2_v_I50 <- report_lmer_mod(num_innovations_50min_mod, "DG2_v_I50", reverse_sign = TRUE)
 exp1$S2_v_DG2 <- report_lmer_mod(num_innovations_50min_mod, "DG2_v_S2", reverse_sign = FALSE)
+
+num_innovations_50min_s2_treat_mod <- lmer(
+  NumInnovations ~ S2_v_DG1 + S2_v_DG2 + S2_v_I50 + (1|TeamID),
+  data = Innovations
+)
+
+exp1$S2_v_I50 <- report_lmer_mod(num_innovations_50min_s2_treat_mod, "S2_v_I50")
 
 num_innovations_50min_teamwork_mod <- lmer(
   NumInnovations ~ DSvI + DvS + (1|TeamID),
@@ -366,7 +265,6 @@ data("Teams")
 SessionTypes50min <- Sessions %>%
   filter_50min() %>%
   recode_session_type_50min() %>%
-  
   # Collapse Synchronic players into a single team,
   # but leave Diachronic and Isolated players alone.
   select(Strategy, SessionType, TeamID, Generation) %>%
@@ -374,10 +272,10 @@ SessionTypes50min <- Sessions %>%
 
 GuessesPerItem50min <- Guesses %>%
   filter_50min() %>%
-  
+
   # Treat all Synchronic players as "playing" even if they are lagging.
   mutate(Stage = ifelse(Strategy == "Synchronic", "playing", Stage)) %>%
-  
+
   # Copy guesses for each adjacent item
   left_join(AdjacentItems, by = c("PrevSessionInventoryID" = "ID")) %>%
   recode_session_type_50min()
@@ -392,16 +290,30 @@ CostPerItem50min <- GuessesPerItem50min %>%
     Discovered = any(Result == Adjacent)
   ) %>%
   ungroup() %>%
-  
+
   # Re-label summarized data
   left_join(SessionTypes50min) %>%
   recode_strategy() %>%
   recode_session_type_50min() %>%
   recode_discovered() %>%
   label_inheritance() %>%
-  recode_inheritance()
+  recode_inheritance() %>%
+  recode_strategy()
 
 # Guesses per item by inheritance.
+guesses_per_item_inheritance_mod <- lmer(
+  TotalGuesses ~ Diachronic_v_NoInheritance + (Diachronic_v_NoInheritance|Adjacent),
+  data = filter(CostPerItem50min, Discovered)
+)
+exp1$guesses_per_item_inheritance <- report_lmer_mod(guesses_per_item_inheritance_mod,
+                                                     "Diachronic_v_NoInheritance")
+
+guesses_per_item_inheritance_preds <- recode_inheritance() %>%
+  filter(Inheritance != "individual_inheritance") %>%
+  cbind(., predictSE(guesses_per_item_inheritance_mod, newdata = ., se = TRUE)) %>%
+  rename(TotalGuesses = fit, SE = se.fit)
+
+# Guesses per item by strategy.
 guesses_per_item_treatment_mod <- lmer(
   TotalGuesses ~ DG2_v_DG1 + DG2_v_S2 + DG2_v_I50 +
     (DG2_v_DG1 + DG2_v_S2 + DG2_v_I50|Adjacent),
@@ -409,18 +321,42 @@ guesses_per_item_treatment_mod <- lmer(
 
 guesses_per_item_treatment_preds <- recode_session_type_50min() %>%
   cbind(., predictSE(guesses_per_item_treatment_mod, newdata = ., se = TRUE)) %>%
-  rename(TotalGuesses = fit, SE = se.fit) %>%
+  rename(TotalGuesses = fit, SE = se.fit)
+
+guesses_per_item_treatment_means <- guesses_per_item_treatment_preds %>%
+  filter(SessionType != "DG2") %>%
+  mutate(Inheritance = "no_inheritance") %>%
+  recode_inheritance() %>%
   recode_strategy()
 
-guesses_per_item_treatment_plot <- ggplot(CostPerItem50min) +
-  aes(SessionTypeSimple, TotalGuesses) +
-  geom_point(aes(group = Adjacent, color = StrategyLabel), position = position_jitter(width = 0.2),
-             stat = "summary", fun.y = "mean", shape = 1) +
-  geom_errorbar(aes(ymin = TotalGuesses-SE, ymax = TotalGuesses+SE, color = StrategyLabel),
-                data = guesses_per_item_treatment_preds,
-                width = 0.1, size = 1.2) +
+guesses_per_item_treatment_means_2 <- guesses_per_item_treatment_preds %>%
+  filter(SessionType == "DG2") %>%
+  mutate(Inheritance = "diachronic_inheritance") %>%
+  recode_inheritance() %>%
+  recode_strategy()
+
+guesses_per_item_plot <- ggplot(CostPerItem50min) +
+  aes(InheritanceShort, TotalGuesses) +
+  geom_line(aes(group = Adjacent), stat = "summary", fun.y = "mean",
+            color = "gray") +
+  geom_line(aes(group = 1), data = guesses_per_item_inheritance_preds,
+            size = 0.8) +
+  geom_errorbar(aes(ymin = TotalGuesses-SE, ymax = TotalGuesses+SE),
+                data = guesses_per_item_inheritance_preds,
+                width = 0.075, size = 0.8) +
+  geom_point(aes(color = StrategyLabel),
+             data = guesses_per_item_treatment_means, x = 0.9) +
+  geom_text(aes(label = SessionType, color = StrategyLabel),
+            hjust = 1, size = 3,
+            data = guesses_per_item_treatment_means, x = 0.86) +
+  geom_point(aes(color = StrategyLabel),
+             data = guesses_per_item_treatment_means_2, x = 2.1) +
+  geom_text(aes(label = SessionType, color = StrategyLabel),
+            hjust = 0, size = 3,
+            data = guesses_per_item_treatment_means_2, x = 2.14) +
   xlab("") +
   scale_y_continuous("Guesses per innovation", breaks = seq(0, 300, by = 50)) +
+  coord_cartesian(xlim = c(0.65, 2.35), ylim = c(0, 200), expand = FALSE) +
   t_$scale_color_strategy +
   t_$base_theme +
   theme(
@@ -440,7 +376,7 @@ CostPerItem50minPlaying <- GuessesPerItem50min %>%
     Discovered = any(Result == Adjacent)
   ) %>%
   ungroup() %>%
-  
+
   # Re-label summarized data
   left_join(SessionTypes50min) %>%
   recode_strategy() %>%
@@ -449,34 +385,68 @@ CostPerItem50minPlaying <- GuessesPerItem50min %>%
   label_inheritance() %>%
   recode_inheritance()
 
-# Guesses per item by inheritance.
-# Determine the impact of inheritance on guessing ability
-# by comparing guessing rates for each item discovered
-# by Diachronic players.
-guesses_per_new_item_by_inheritance_mod <- lmer(
-  TotalGuesses ~ Diachronic_v_NoInheritance +
-    (Diachronic_v_NoInheritance|Adjacent),
-  data = filter(CostPerItem50minPlaying, Discovered))
-
-guesses_per_new_item_by_inheritance_preds <- recode_inheritance() %>%
+guesses_per_new_item_inheritance_mod <- lmer(
+  TotalGuesses ~ Diachronic_v_NoInheritance + (Diachronic_v_NoInheritance|Adjacent),
+  data = filter(CostPerItem50minPlaying, Discovered)
+)
+exp1$guesses_per_new_item_inheritance <- report_lmer_mod(guesses_per_new_item_inheritance_mod,
+                                                     "Diachronic_v_NoInheritance")
+guesses_per_new_item_inheritance_preds <- recode_inheritance() %>%
   filter(Inheritance != "individual_inheritance") %>%
-  cbind(., predictSE(guesses_per_new_item_by_inheritance_mod, newdata = ., se = TRUE)) %>%
+  cbind(., predictSE(guesses_per_new_item_inheritance_mod, newdata = ., se = TRUE)) %>%
   rename(TotalGuesses = fit, SE = se.fit)
 
-guesses_per_new_item_by_inheritance_plot <- ggplot(CostPerItem50minPlaying) +
-  aes(InheritanceLabel, TotalGuesses) +
-  geom_line(aes(group = Adjacent), color = t_$color_picker("blue"),
-            stat = "summary", fun.y = "mean",
+# Guesses per item by strategy.
+guesses_per_new_item_treatment_mod <- lmer(
+  TotalGuesses ~ DG2_v_DG1 + DG2_v_S2 + DG2_v_I50 +
+    (DG2_v_DG1 + DG2_v_S2 + DG2_v_I50|Adjacent),
+  data = filter(CostPerItem50minPlaying, Discovered))
+
+guesses_per_new_item_treatment_preds <- recode_session_type_50min() %>%
+  cbind(., predictSE(guesses_per_new_item_treatment_mod, newdata = ., se = TRUE)) %>%
+  rename(TotalGuesses = fit, SE = se.fit)
+
+guesses_per_new_item_treatment_means <- guesses_per_new_item_treatment_preds %>%
+  filter(SessionType != "DG2") %>%
+  mutate(Inheritance = "no_inheritance") %>%
+  recode_inheritance() %>%
+  recode_strategy()
+
+guesses_per_new_item_treatment_means_2 <- guesses_per_new_item_treatment_preds %>%
+  filter(SessionType == "DG2") %>%
+  mutate(Inheritance = "diachronic_inheritance") %>%
+  recode_inheritance() %>%
+  recode_strategy()
+
+guesses_per_new_item_plot <- ggplot(guesses_per_new_item_treatment_mod) +
+  aes(InheritanceShort, TotalGuesses) +
+  geom_line(aes(group = Adjacent), stat = "summary", fun.y = "mean",
+            color = "gray") +
+  geom_line(aes(group = 1), data = guesses_per_new_item_inheritance_preds,
             size = 0.8) +
-  geom_line(aes(group = 1),
-            stat = "identity", data = guesses_per_new_item_by_inheritance_preds,
-            size = 1.2) +
   geom_errorbar(aes(ymin = TotalGuesses-SE, ymax = TotalGuesses+SE),
-                data = guesses_per_new_item_by_inheritance_preds,
-                width = 0.05, size = 1.2) +
+                data = guesses_per_new_item_inheritance_preds,
+                width = 0.075, size = 0.8) +
+  geom_point(aes(color = StrategyLabel),
+             data = guesses_per_new_item_treatment_means, x = 0.9) +
+  geom_text(aes(label = SessionType, color = StrategyLabel),
+            hjust = 1, size = 3,
+            data = guesses_per_new_item_treatment_means, x = 0.86) +
+  geom_point(aes(color = StrategyLabel),
+             data = guesses_per_new_item_treatment_means_2, x = 2.1) +
+  geom_text(aes(label = SessionType, color = StrategyLabel),
+            hjust = 0, size = 3,
+            data = guesses_per_new_item_treatment_means_2, x = 2.14) +
   xlab("") +
-  scale_y_continuous("Guesses per item") +
-  t_$base_theme
+  scale_y_continuous("Guesses per innovation", breaks = seq(0, 300, by = 50)) +
+  coord_cartesian(xlim = c(0.65, 2.375), ylim = c(0, 200), expand = FALSE) +
+  t_$scale_color_strategy +
+  t_$base_theme +
+  theme(
+    legend.position = "none",
+    panel.grid.major.x = element_blank()
+  )
+
 
 # * Guess types ----
 GuessTypes <- Guesses %>%
@@ -499,13 +469,30 @@ GuessTypes <- Guesses %>%
     PropRepeatedItems = NumRepeatedItems/NumGuesses,
     PropUniqueGuesses = NumUniqueGuesses/NumGuesses,
     PropUniqueItems = NumUniqueItems/NumGuesses
-  )
+  ) %>%
+  label_inheritance() %>%
+  recode_inheritance()
+
+prop_redundant_inheritance_mod <- lm(PropRedundantGuesses ~ Diachronic_v_NoInheritance,
+                                     data = GuessTypes)
+exp1$prop_redundant_inheritance <- report_lm_mod(prop_redundant_inheritance_mod,
+                                                 "Diachronic_v_NoInheritance")
 
 prop_redundant_guesses_mod <- lm(PropRedundantGuesses ~ DG2_v_DG1 + DG2_v_I50 + DG2_v_S2,
                                  data = GuessTypes)
+exp1$prop_redundant_dg2 <- report_lm_mod(prop_redundant_guesses_mod, "DG2_v_DG1")
+exp1$prop_redundant_i50 <- report_lm_mod(prop_redundant_guesses_mod, "DG2_v_I50")
+exp1$prop_redundant_s2 <- report_lm_mod(prop_redundant_guesses_mod, "DG2_v_S2")
+
+prop_unique_inheritance_mod <- lm(PropUniqueGuesses ~ Diachronic_v_NoInheritance,
+                                  data = GuessTypes)
+exp1$prop_unique_inheritance <- report_lm_mod(prop_unique_inheritance_mod, "Diachronic_v_NoInheritance")
 
 prop_unique_guesses_mod <- lm(PropUniqueGuesses ~ DG2_v_DG1 + DG2_v_I50 + DG2_v_S2,
                               data = GuessTypes)
+exp1$prop_unique_dg2 <- report_lm_mod(prop_unique_guesses_mod, "DG2_v_DG1")
+exp1$prop_unique_i50 <- report_lm_mod(prop_unique_guesses_mod, "DG2_v_I50")
+exp1$prop_unique_s2 <- report_lm_mod(prop_unique_guesses_mod, "DG2_v_S2")
 
 GuessTypes50minSummary <- Guesses %>%
   filter_50min() %>%
@@ -542,13 +529,93 @@ prop_guess_types_50min_plot <- ggplot(GuessTypes50minSummary) +
   t_$base_theme +
   theme(panel.grid.major.x = element_blank())
 
-# ---- selfother
-# SelfOther ----
+# * Guessing rates ----
+data("Sampled")
+sampled_interval <- 1 # Sampled data was sampled at 1 minute intervals
+
+recode_session_time <- function(frame) {
+  session_time_map <- data_frame(
+    SessionTime = 0:50,
+    SessionTimeC = -25:25,
+    SessionTimeZ = (SessionTimeC - mean(SessionTimeC))/sd(SessionTimeC),
+    SessionTimeZ_2 = SessionTimeZ^2,
+    SessionTimeZ_3 = SessionTimeZ^3
+  )
+  if(missing(frame)) return(session_time_map)
+  left_join(frame, session_time_map)
+}
+
+GuessingRates <- Sampled %>%
+  filter_50min() %>%
+  mutate(NumRedundant = NumGuesses - NumUniqueGuesses) %>%
+  group_by(SessionID) %>%
+  mutate(
+    NewItems = (InventorySize - lag(InventorySize)),
+    NewItemRate = NewItems/sampled_interval,
+    GuessDiff = NumGuesses - lag(NumGuesses),
+    GuessRate = GuessDiff/sampled_interval,
+    UniqueDiff = NumUniqueGuesses - lag(NumUniqueGuesses),
+    UniqueRate = UniqueDiff/sampled_interval,
+    RedundantDiff = NumRedundant - lag(NumRedundant),
+    RedundancyRate = RedundantDiff/sampled_interval
+  ) %>%
+  recode_strategy() %>%
+  recode_session_type_50min() %>%
+  label_inheritance() %>%
+  recode_session_time()
+
+
+new_items_per_minute_mod <- lm(NewItems ~ (SessionTimeZ + SessionTimeZ_2 + SessionTimeZ_3) * (DG2_v_DG1 + DG2_v_I50 + DG2_v_S2),
+                               data = GuessingRates)
+new_items_per_minute_preds <- expand.grid(
+  SessionType = c("DG1", "DG2", "I50", "S2"),
+  SessionTime = 0:50,
+  stringsAsFactors = FALSE
+) %>%
+  recode_session_time() %>%
+  filter(SessionType == "I50" | SessionTime <= 25) %>%
+  recode_session_type_50min() %>%
+  cbind(., predict(new_items_per_minute_mod, newdata = ., se = TRUE)) %>%
+  as_data_frame() %>%
+  rename(NewItemRate = fit, SE = se.fit) %>%
+  recode_strategy()
+
+guessing_rate_plot <- ggplot(GuessingRates) +
+  aes(SessionTime) +
+  geom_point(aes(group = SessionType, color = Strategy, shape = Inheritance),
+             stat = "summary", fun.y = "mean") +
+  xlab("Session time (minutes)") +
+  scale_shape_manual(values = c(1, 16), guide = "none") +
+  t_$scale_color_strategy +
+  t_$base_theme
+
+new_items_per_minute <- guessing_rate_plot +
+  aes(y = NewItemRate) +
+  # geom_ribbon(aes(group = SessionType, fill = Strategy, ymin = NewItemRate-SE, ymax = NewItemRate+SE),
+  #             data = new_items_per_minute_preds,
+  #             alpha = 0.6) +
+  t_$scale_fill_strategy
+
+guesses_per_minute <- guessing_rate_plot +
+  aes(y = GuessRate) +
+  geom_hline(yintercept = mean(GuessingRates$GuessRate, na.rm = TRUE), linetype = 2)
+
+unique_per_minute <- guessing_rate_plot +
+  aes(y = UniqueRate) +
+  ylab("")
+
+redundant_per_minute <- guessing_rate_plot +
+  aes(y = RedundancyRate)
+
+# ---- SelfOther ----
+
+exp2 <- list()
+
 # * Methods ----
 data("Sessions")
 
 Exp3Participants <- Sessions %>%
-  filter_exp3() %>%
+  filter_selfother() %>%
   select(Strategy, PlayerID) %>%
   unique() %>%
   count(Strategy) %>%
@@ -559,7 +626,7 @@ data("Guesses")
 data("Sessions")
 
 Innovations <- Guesses %>%
-  filter_exp3() %>%
+  filter_selfother() %>%
   recode_guess_type(unique_guess = "UniqueSessionGuess", unique_result = "UniqueSessionResult") %>%
   group_by(SessionID) %>%
   summarize(NumInnovations = sum(GuessType == "unique_item")) %>%
@@ -567,90 +634,209 @@ Innovations <- Guesses %>%
   left_join(Sessions) %>%
   jitter_team_generation() %>%
   recode_generation_base0() %>%
-  recode_generation_quad()
+  recode_generation_quad() %>%
+  recode_strategy()
+
+innovations_gen1_mod <- lm(NumInnovations ~ Diachronic_v_Isolated,
+                           data = filter(Innovations, Generation == 1))
+exp2$gen1_innovations <- report_lm_mod(innovations_gen1_mod, "Diachronic_v_Isolated")
+
+diachronic_gen_mod <- lmer(NumInnovations ~ Generation + (Generation|TeamID),
+                           data = filter(Innovations, Strategy == "Diachronic"))
+exp2$tools_per_diachronic_gen <- report_beta(diachronic_gen_mod, "Generation")
+exp2$tools_per_diachronic_gen_stats <- report_lmer_mod(diachronic_gen_mod, "Generation")
+
+isolated_gen_mod <- lmer(NumInnovations ~ Generation + (Generation|TeamID),
+                         data = filter(Innovations, Strategy == "Isolated"))
+exp2$tools_per_isolated_gen <- report_beta(isolated_gen_mod, "Generation")
+exp2$tools_per_isolated_gen_stats <- report_lmer_mod(isolated_gen_mod, "Generation")
+
+innovations_gen4_mod <- lm(NumInnovations ~ Diachronic_v_Isolated,
+                           data = filter(Innovations, Generation == 4))
+exp2$gen4_innovations <- report_lm_mod(innovations_gen4_mod, "Diachronic_v_Isolated")
 
 innovations_by_generation_mod <- lmer(
-  NumInnovations ~ Generation + (Generation|TeamID),
+  NumInnovations ~ Generation * Diachronic_v_Isolated  + (Generation|TeamID),
   data = Innovations
 )
 
+exp2$innovations_by_inheritance_slope <- report_lmer_mod(innovations_by_generation_mod, "Generation:Diachronic_v_Isolated")
+
 innovations_by_generation_quad_mod <- lmer(
-  NumInnovations ~ Generation0 + Generation0Sqr + (Generation0 + Generation0Sqr|TeamID),
+  NumInnovations ~ (Generation0 + Generation0Sqr) * Diachronic_v_Isolated + (Generation0 + Generation0Sqr|TeamID),
   data = Innovations
 )
-innovations_by_generation_preds <- data_frame(Generation = 1:4) %>%
+innovations_by_generation_preds <- expand.grid(
+    Generation = 1:4, Strategy = c("Diachronic", "Isolated"),
+    stringsAsFactors = FALSE
+  ) %>%
   recode_generation_base0() %>%
   recode_generation_quad() %>%
+  recode_strategy() %>%
   cbind(., predictSE(innovations_by_generation_quad_mod, newdata = ., SE = TRUE)) %>%
   rename(NumInnovations = fit, SE = se.fit)
 
 innovations_by_generation_plot <- ggplot(Innovations) +
-  aes(Generation, NumInnovations) +
+  aes(Generation, NumInnovations, color = StrategyLabel) +
   geom_line(aes(GenerationJittered, group = TeamID, color = Strategy),
-            alpha = 0.6) +
-  # geom_line(aes(group = 1), data = innovations_by_generation_preds,
-  #           color = t_$color_picker("blue"), size = 1.5) +
-  # geom_errorbar(aes(ymin = NumInnovations-SE, ymax = NumInnovations+SE),
-  #               data = innovations_by_generation_preds,
-  #               color = t_$color_picker("blue"), width = 0.2, size = 1.5) +
-  geom_point(stat = "summary", fun.y = "mean",
-             color = t_$color_picker("green"), shape = 4, size = 3) +
+            size = 0.4, alpha = 0.6) +
+  geom_line(aes(group = 1), data = innovations_by_generation_preds,
+            size = 1.2) +
+  geom_errorbar(aes(ymin = NumInnovations-SE, ymax = NumInnovations+SE),
+                data = innovations_by_generation_preds,
+                width = 0.2, size = 1.2) +
   facet_wrap("Strategy") +
-  # t_$scale_y_num_innovations +
+  scale_color_manual(values = t_$color_picker(c("blue", "green"))) +
+  scale_y_continuous("Number of innovations", breaks = seq(0, 40, by = 5)) +
   t_$base_theme +
   theme(
-    panel.grid.minor.x = element_blank()
+    legend.position = "none",
+    panel.grid.minor.x = element_blank(),
+    panel.grid.minor.y = element_blank()
   )
 
-# * Cost by stage ----
-data("Guesses")
-data("Players")
-data("AdjacentItems")
-
-IndividualPlayers <- filter(Players, Strategy != "Synchronic", Exp == "100LaborMinutes", TeamStatus == "V")
-
-IndividualGuesses <- Guesses %>%
-  filter(Strategy != "Synchronic", Exp == "100LaborMinutes", TeamStatus == "V") %>%
-  left_join(AdjacentItems, by = c("PrevSessionInventoryID" = "ID")) %>%
-  label_stage_ix()
-
-IndividualStages <- IndividualGuesses %>%
-  group_by(SessionID, Stage, Result) %>%
+# * Guess types ----
+GuessTypesSelfOther <- Guesses %>%
+  filter_selfother() %>%
+  recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
+  group_by(SessionID) %>%
   summarize(
-    NumGuesses = n()
+    NumGuesses = n(),
+    NumRedundantGuesses = sum(GuessType == "redundant"),
+    NumRepeatedItems = sum(GuessType == "repeat_item"),
+    NumUniqueGuesses = sum(GuessType == "unique_guess"),
+    NumUniqueItems = sum(GuessType == "unique_item")
   ) %>%
-  left_join(IndividualPlayers) %>%
-  highlight_inheritance_100() %>%
-  # Should not be necessary!
-  filter(!is.na(Inheritance))
+  ungroup() %>%
+  left_join(Sessions) %>%
+  recode_strategy() %>%
+  mutate(
+    PropRedundantGuesses = NumRedundantGuesses/NumGuesses,
+    PropRepeatedItems = NumRepeatedItems/NumGuesses,
+    PropUniqueGuesses = NumUniqueGuesses/NumGuesses,
+    PropUniqueItems = NumUniqueItems/NumGuesses
+  ) %>%
+  recode_strategy()
 
-individual_stages_mod <- lmer(
-  NumGuesses ~ Diachronic_v_Individual * Stage +
-    (Stage|TeamID),
-  data = IndividualStages
-)
+prop_redundant_strategy_mod <- lmer(PropRedundantGuesses ~ Diachronic_v_Isolated + (1|TeamID),
+                                    data = GuessTypesSelfOther)
+exp2$prop_redundant_strategy <- report_lmer_mod(prop_redundant_strategy_mod, "Diachronic_v_Isolated")
 
-individual_stages_preds <- expand.grid(
-  Stage = c("learning", "playing"),
-  Inheritance = c("diachronic_inheritance", "individual_inheritance"),
+prop_redundant_gen_mod <- lmer(PropRedundantGuesses ~ Generation + (1|TeamID),
+                               data = GuessTypesSelfOther)
+exp2$prop_redundant_gen <- report_lmer_mod(prop_redundant_gen_mod, "Generation", formats = c(se=3))
+
+prop_redundant_inter_mod <- lmer(PropRedundantGuesses ~ Generation * Diachronic_v_Isolated + (Generation|TeamID),
+                               data = GuessTypesSelfOther)
+exp2$prop_redundant_inter <- report_lmer_mod(prop_redundant_gen_mod, "Generation:Diachronic_v_Isolated")
+
+
+prop_unique_strategy_mod <- lmer(PropUniqueGuesses ~ Diachronic_v_Isolated + (1|TeamID),
+                              data = GuessTypesSelfOther)
+exp2$prop_unique_strategy <- report_lmer_mod(prop_unique_strategy_mod, "Diachronic_v_Isolated")
+
+prop_unique_gen_mod <- lmer(PropUniqueGuesses ~ Generation + (Generation|TeamID),
+                              data = GuessTypesSelfOther)
+exp2$prop_unique_gen <- report_lmer_mod(prop_unique_gen_mod, "Generation", formats = c(b=3))
+
+prop_unique_inter_mod <- lmer(PropUniqueGuesses ~ Generation * Diachronic_v_Isolated + (Generation|TeamID),
+                            data = GuessTypesSelfOther)
+exp2$prop_unique_inter <- report_lmer_mod(prop_unique_inter_mod, "Generation:Diachronic_v_Isolated")
+
+
+GuessTypesSelfOtherSummary <- Guesses %>%
+  filter_selfother() %>%
+  recode_guess_type("UniqueSessionGuess", "UniqueSessionResult") %>%
+  group_by(Strategy, Generation) %>%
+  summarize(
+    NumGuesses = n(),
+    NumRedundantGuesses = sum(GuessType == "redundant"),
+    NumRepeatedItems = sum(GuessType == "repeat_item"),
+    NumUniqueGuesses = sum(GuessType == "unique_guess"),
+    NumUniqueItems = sum(GuessType == "unique_item")
+  ) %>%
+  ungroup() %>%
+  mutate(
+    PropRedundantGuesses = NumRedundantGuesses/NumGuesses,
+    PropRepeatedItems = NumRepeatedItems/NumGuesses,
+    PropUniqueGuesses = NumUniqueGuesses/NumGuesses,
+    PropUniqueItems = NumUniqueItems/NumGuesses
+  ) %>%
+  select(Strategy, Generation, PropRedundantGuesses, PropRepeatedItems, PropUniqueGuesses, PropUniqueItems) %>%
+  gather(PropGuessType, PropGuesses, -c(Strategy, Generation)) %>%
+  recode_prop_guess_type_total()
+
+prop_guess_types_selfother_plot <- ggplot(GuessTypesSelfOtherSummary) +
+  aes(Generation, PropGuesses, fill = PropGuessTypeLabel) +
+  geom_bar(stat = "identity") +
+  facet_wrap("Strategy") +
+  xlab("") +
+  scale_y_continuous("Proportion of guesses", labels = scales::percent) +
+  scale_fill_manual("Guess types",
+                    values = t_$color_picker(c("green", "blue", "orange", "pink"))) +
+  t_$base_theme +
+  theme(panel.grid.major.x = element_blank())
+
+# * Learning times ----
+StageTimesSelfOther <- Guesses %>%
+  filter_selfother() %>%
+  filter(Generation > 1) %>%
+  group_by(SessionID) %>%
+  summarize(LearningTime = max(SessionTime[Stage == "learning"])) %>%
+  mutate(PlayingTime = 25 - LearningTime) %>%
+  left_join(Sessions) %>%
+  recode_strategy()
+
+exp2$mean_learning_time <- round(mean(StageTimesSelfOther$LearningTime), 1)
+exp2$prop_learning_time <- round((mean(StageTimesSelfOther$LearningTime)/25) * 100, 1)
+
+learning_times_mod <- lmer(LearningTime ~ Generation * Diachronic_v_Isolated + (Generation|TeamID),
+                           data = StageTimesSelfOther)
+exp2$learning_times_inter <- report_lmer_mod(learning_times_mod, "Generation:Diachronic_v_Isolated")
+
+learning_times_preds <- expand.grid(
+  Generation = 2:4,
+  Strategy = c("Diachronic", "Isolated"),
   stringsAsFactors = FALSE
 ) %>%
-  recode_inheritance() %>%
-  cbind(., predictSE(individual_stages_mod, newdata = ., se = TRUE)) %>%
-  rename(NumGuesses = fit, SE = se.fit)
+  recode_strategy() %>%
+  cbind(., predictSE(learning_times_mod, newdata = ., se = TRUE)) %>%
+  rename(LearningTime = fit, SE = se.fit)
 
-individual_stages_plot <- ggplot(IndividualStages) +
-  aes(Stage, NumGuesses, color = Inheritance) +
-  geom_line(aes(group = Inheritance),
-            stat = "identity", data = individual_stages_preds) +
-  geom_errorbar(aes(ymin = NumGuesses-SE, ymax = NumGuesses+SE),
-                data = individual_stages_preds,
-                width = 0.2)
+learning_times_plot <- ggplot(StageTimesSelfOther) +
+  aes(Generation, LearningTime) +
+  geom_bar(aes(fill = StrategyLabel), stat = "identity", data = learning_times_preds, alpha = 0.6) +
+  geom_point(aes(color = StrategyLabel), position = position_jitter(width=0.1, height=0)) +
+  geom_errorbar(aes(ymin = LearningTime-SE, ymax = LearningTime+SE),
+                data = learning_times_preds, width = 0.2) +
+  facet_wrap("Strategy") +
+  scale_y_continuous("Learning time (min)") +
+  t_$base_theme +
+  scale_fill_manual(values = t_$color_picker(c("blue", "green"))) +
+  scale_color_manual(values = t_$color_picker(c("blue", "green"))) +
+  theme(legend.position = "none",
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank())
+
+# * Guesses per item ----
+
+# * Fixation ----
+data("Guesses")
+data("Sessions")
+data("AdjacentItems")
+
+IndividualPlayers <- Sessions %>%
+  filter_selfother()
+
+IndividualGuesses <- Guesses %>%
+  filter_selfother() %>%
+  left_join(AdjacentItems, by = c("PrevSessionInventoryID" = "ID")) %>%
+  label_stage_ix()
 
 FirstDiscovery <- IndividualGuesses %>%
   label_inheritance() %>%
   filter(StageIX == 0, Inheritance != "no_inheritance") %>%
-  group_by(SessionID, Result) %>%
+  group_by(SessionID) %>%
   summarize(
     NumGuesses = n()
   ) %>%
@@ -664,57 +850,87 @@ FirstDiscovery <- IndividualGuesses %>%
 
 first_discovery_mod <- lm(NumGuesses ~ Diachronic_v_Individual,
                           data = FirstDiscovery)
+exp2$first_discovery_mean <- round(mean(FirstDiscovery$NumGuesses), 0)
+exp2$first_discovery_beta <- report_beta(first_discovery_mod, "Diachronic_v_Individual")
+exp2$first_discovery_stats <- report_lm_mod(first_discovery_mod, "Diachronic_v_Individual")
 
 first_discovery_preds <- recode_inheritance() %>%
   filter(Inheritance != "no_inheritance") %>%
+  mutate(Strategy = c("Diachronic", "Isolated")) %>%
   cbind(., predict(first_discovery_mod, newdata = ., se = TRUE)) %>%
-  rename(NumGuesses = fit, SE = se.fit)
+  rename(NumGuesses = fit, SE = se.fit) %>%
+  recode_strategy()
 
 first_discovery_plot <- ggplot(FirstDiscovery) +
   aes(StrategyLabel, NumGuesses) +
-  # geom_bar(aes(fill = StrategyLabel),
-  #          stat = "identity", data = first_discovery_preds,
-  #          alpha = 0.6) +
-  # geom_linerange(aes(ymin = NumGuesses - SE, ymax = NumGuesses + SE),
-  #                data = first_discovery_preds) +
   geom_bar(aes(fill = StrategyLabel),
            stat = "summary", fun.y = "mean",
            alpha = 0.6) +
-  geom_point(aes(color = StrategyLabel),
-             position = position_jitter(width = 0.2)) +
+  geom_errorbar(aes(ymin = NumGuesses - SE, ymax = NumGuesses + SE),
+                width = 0.2, data = first_discovery_preds) +
   scale_y_continuous("Number of guesses") +
   t_$scale_color_strategy +
   t_$scale_fill_strategy +
   t_$base_theme +
   theme(legend.position = "none",
-        panel.grid.major.x = element_blank()) +
-  ggtitle("Cost of first innovation")
+        panel.grid.major.x = element_blank())
+
+first_discovery_by_generation_mod <- lmer(NumGuesses ~ Diachronic_v_Individual * Generation +
+                                            (Generation|TeamID),
+                                          data = FirstDiscovery)
+exp2$first_discovery_by_gen_stats <- report_lmer_mod(first_discovery_by_generation_mod,
+                                                     "Diachronic_v_Individual:Generation")
+
+first_discovery_by_generation_preds <- expand.grid(
+    Generation = 2:4, Inheritance = c("diachronic_inheritance", "individual_inheritance"),
+    stringsAsFactors = FALSE
+  ) %>%
+  recode_inheritance() %>%
+  mutate(Strategy = rep(c("Diachronic", "Isolated"), each = 3)) %>%
+  recode_strategy() %>%
+  cbind(., predictSE(first_discovery_by_generation_mod, newdata = ., se = TRUE)) %>%
+  rename(NumGuesses = fit, SE = se.fit)
 
 first_discovery_by_generation_plot <- ggplot(FirstDiscovery) +
   aes(Generation, NumGuesses) +
-  geom_bar(aes(fill = StrategyLabel, group = factor(Generation)),
-           stat = "summary", fun.y = "mean",
-           alpha = 0.6, width = 0.8) +
   geom_point(aes(color = StrategyLabel),
-             position = position_jitter(width = 0.2)) +
-  facet_wrap("StrategyLabel") +
+             position = position_jitter(width = 0.1, height = 0)) +
+  geom_bar(aes(fill = StrategyLabel, group = factor(Generation)),
+           data = first_discovery_by_generation_preds,
+           stat = "identity",
+           alpha = 0.6, width = 0.8) +
+  geom_errorbar(aes(ymin = NumGuesses-SE, ymax = NumGuesses+SE),
+                data = first_discovery_by_generation_preds,
+                width = 0.1) +
+  facet_wrap("Strategy") +
   scale_x_continuous(breaks = 2:4) +
-  t_$scale_fill_strategy +
-  t_$scale_color_strategy +
+  scale_y_continuous("Number of guesses") +
   t_$base_theme +
+  scale_fill_manual(values = t_$color_picker(c("blue", "green"))) +
+  scale_color_manual(values = t_$color_picker(c("blue", "green"))) +
   theme(legend.position = "none",
         panel.grid.major.x = element_blank(),
-        panel.grid.minor.x = element_blank()) +
-  ggtitle("Cost of first innovation")
+        panel.grid.minor.x = element_blank())
 
-# ---- teamsize
-# TeamSize ----
+# ---- TeamSize ----
+
+exp3 <- list()
+
 # * Methods ----
 
 # * Number of innovations ----
 data("Guesses")
 
 drop_isolated <- . %>% filter(Strategy != "Isolated")
+
+recode_strategy_diachronic_v_synchronic <- function(frame) {
+  diachronic_v_synchronic <- data_frame(
+    Strategy = c("Diachronic", "Synchronic"),
+    Diachronic_v_Synchronic_C = c(-0.5, 0.5)
+  )
+  if(missing(frame)) return(diachronic_v_synchronic)
+  left_join(frame, diachronic_v_synchronic)
+}
 
 Innovations50min <- Guesses %>%
   filter_50min() %>%
@@ -738,26 +954,44 @@ Innovations100min <- Guesses %>%
   recode_strategy() %>%
   mutate(NumPlayers = 4)
 
-recode_team_size <- function(frame) {
-  team_size_labels <- c("Two person teams", "Four person teams")
-  team_size_map <- data_frame(
-    NumPlayers = c(2, 4),
-    NumPlayersLabel = factor(team_size_labels, levels = team_size_labels)
-  )
-  if(missing(frame)) return(team_size_map)
-  left_join(frame, team_size_map)
-}
-
 Innovations <- bind_rows(Innovations50min, Innovations100min) %>%
   group_by(Strategy, NumPlayers, TeamID) %>%
   summarize(NumInnovations = max(NumInnovations)) %>%
   ungroup() %>%
   recode_strategy() %>%
-  recode_team_size()
+  recode_team_size() %>%
+  recode_strategy_diachronic_v_synchronic()
+
+max_innovations_50min_mod <- lm(
+  NumInnovations ~ Diachronic_v_Synchronic_C,
+  data = filter(Innovations, NumPlayers == 2)
+)
+
+max_innovations_100min_mod <- lm(
+  NumInnovations ~ Diachronic_v_Synchronic_C,
+  data = filter(Innovations, NumPlayers == 4)
+)
+
+max_innovations_synchronic <- lm(
+  NumInnovations ~ NumPlayers,
+  data = filter(Innovations, Strategy == "Synchronic")
+)
+
+max_innovations_diachronic <- lm(
+  NumInnovations ~ NumPlayers,
+  data = filter(Innovations, Strategy == "Diachronic")
+)
 
 max_innovations_by_teamsize_mod <- lmer(
   NumInnovations ~ Diachronic_v_Synchronic * NumPlayers + (1|TeamID),
   data = Innovations)
+
+exp3$DvS_2 <- report_lm_mod(max_innovations_50min_mod, "Diachronic_v_Synchronic_C")
+exp3$DvS_4 <- report_lm_mod(max_innovations_100min_mod, "Diachronic_v_Synchronic_C")
+exp3$S_2v4 <- report_lm_mod(max_innovations_synchronic, "NumPlayers")
+exp3$D_2v4 <- report_lm_mod(max_innovations_diachronic, "NumPlayers")
+exp3$DvS_2v4 <- report_lmer_mod(max_innovations_by_teamsize_mod, "Diachronic_v_Synchronic:NumPlayers")
+
 max_innovations_by_teamsize_preds <- expand.grid(
   Strategy = c("Diachronic", "Synchronic"),
   NumPlayers = c(2, 4),
@@ -791,10 +1025,7 @@ max_innovations_by_teamsize_plot <- ggplot(Innovations) +
   xlab("")
 
 
-# TeamSizeSimulations ----
-data("BotsPlayers")
-
-# BotsPlayers ----
+# * BotsPlayers ----
 data("BotsPlayers")
 
 sim_vars <- c("strategy", "n_guesses", "n_players", "seed", "player_memory", "team_memory")
@@ -813,7 +1044,7 @@ BotsPlayersFinal <- BotsPlayers %>%
   filter_final_round() %>%
   mutate(num_innovations = inventory_size - 6)
 
-bots_players_plot <- ggplot(BotsPlayersFinal) +
+bots_team_size_plot <- ggplot(BotsPlayersFinal) +
   aes(strategy, num_innovations) +
   geom_bar(aes(fill = strategy), stat = "summary", fun.y = "mean", alpha = 0.6) +
   geom_point(aes(color = strategy), shape = 1, position = position_jitter(width = 0.2)) +
