@@ -18,17 +18,18 @@ bibliography: references.bib
 abstract: |
   As compared to other animals, humans are particularly skilled at using and
   improving tools and other solutions to problems that were first discovered by
-  other people. Although the human capacity for cumulative cultural evolution is
-  well-known, the effectiveness of inheritance as a form of problem solving is
-  an area in need of further research. We report an experiment designed to
-  understand how effectively problem solving knowledge accumulates over
-  generations of problem solving. We found that participants were consistently
-  able to solve more problems in a 25 minute session than their ancestors.
-  Participants who inherited more solutions tended to solve fewer novel ones,
-  but the ones they did solve were more complex. We also found that participants
-  who inherited solutions tended to generate less redundant guesses, suggesting
-  a potential downstream consequence to iterated problem solving. We discuss the
-  limitations of this work, and motivate future directions.
+  other people. Although the human capacity for cumulative cultural evolution
+  is well-known, the effectiveness of inheritance as a form of problem solving
+  is an area in need of further research. We report an experiment designed to
+  understand how effectively solutions to problems accumulate over generations
+  of problem solving. Using a tool-discovery game, we found that participants
+  were consistently able to discover more tools in a 25 minute session than
+  their ancestors. Participants who inherited more tools tended to discover
+  fewer novel ones, but the ones they did discover were more complex. We also
+  found that participants who inherited tools tended to generate less redundant
+  guesses, suggesting a potential downstream consequence to iterated problem
+  solving. We discuss the limitations of this work, and motivate future
+  directions.
 keywords: "cultural evolution; transmission chain; iterated learning"
 output:
   bookdown::pdf_document2:
@@ -63,11 +64,11 @@ read_chunk(file.path(chunks_dir, "iterated-problem-solving.R"))
 
 Humans are effective problem solvers, having solved a wide range of problems
 related to foraging, hunting, and preparing food, while surviving predators,
-each other, and a large range of terrestrial environments [@Boyd:2017diff;
+each other, and a large range of terrestrial environments [@Boyd:2018diff;
 @Fernandez:2001civ]. What has enabled our success in being able to solve such a
 diverse set of problems? Some have suggested that the answer lies more in our
 ability to inherit knowledge from others than our ability to make discoveries by
-ourselves [@Richerson:2008not; @Henrich:2015srt; @Boyd:2017diff]. Humans possess
+ourselves [@Richerson:2005not; @Henrich:2015srt; @Boyd:2018diff]. Humans possess
 a number of advanced social learning abilities including teaching through verbal
 instruction and imitation that provide reliable ways of transferring problem
 solving knowledge across individuals [@Dean:2012gv]. If problem solving
@@ -99,39 +100,53 @@ record of slow or stagnant growth in stone tool complexity [@Torre:2011jl;
 @Lycett:2008di]. As to what it was that allowed our ancestors to begin to
 develop more complex tools, an answer that has been proposed is that humans
 evolved more robust ways of transmitting cultural information to the next
-generation, allowing future generations of problem solvers to more quickly learn
+generation. This allowed future generations to more quickly learn
 the skills honed by their ancestors, and thus giving them more time to make
 improvements to those technologies [@Sterelny:2012ea]. On this view,
 human cultural evolution has been defined not by our ability to inherit the
 skills of our ancestors, but by the ability to exceed and improve them.
 
-```{r iterated-problem-solving-fig, fig.pos="b", fig.align="center", fig.width=3.5, fig.cap="Transmission of problem solving knowledge. Participants were assigned to generations within chains. Each participant completed the same problem solving task for 25 minutes. Participants in generations after the first began the problem solving task with the solutions that were discovered by the previous generation."}
+```{r iterated-problem-solving-fig, fig.pos="b", fig.align="center", fig.width=3.5, fig.cap="Iterated problem solving paradigm. Participants were assigned to generations within chains. Each participant completed the same problem solving task for 25 minutes. Participants in generations after the first began the problem solving task with the solutions that were discovered by the previous generation."}
 draw_graphviz("iterated-problem-solving", package = "totems")
 ```
 
 We investigated the human propensity to exceed our ancestors in a problem
 solving task using a transmission chain paradigm (Fig.
-\@ref(fig:iterated-problem-solving-fig)). Previous research using this paradigm has
-found that problem solving performance for simple tasks like folding paper
-airplanes and building tours out of spaghetti can accumulate over generations
+\@ref(fig:iterated-problem-solving-fig)). Previous research using this paradigm
+has found that problem solving performance for simple tasks like folding paper
+airplanes and building towers out of spaghetti can accumulate over generations
 [@Caldwell:2008gf], although the mechanisms are unclear [@Caldwell:2009fl].
 @Morgan:2015hu more carefully manipulated the mechanisms of transmission, and
 found that teaching, and especially verbal instruction, was crucial for
 successful transmission of skilled behaviors along chains. Here we controlled
-for successful transmission by allowing future generations to inherit the
-discoveries made by the previous generation, and measured the ability of
-participants to exceed the solutions they inherited.
+for successful transmission by allowing future generations to inherit symbolic
+information about how to recreate the tools that had been discovered by an
+ancestor. Specifically, participants inherited the recipes for creating tools
+from the combination of items. Once inherited, the tools had to be created
+before they could be used in further combinations. We then measured the ability
+of participants to recreate and exceed the tools they inherited.
+
+In addition to asking whether participants were able to exceed the total number
+of tools discovered by their ancestor, we also asked whether inheritance
+influenced the way in which future problems were solved. To answer this
+question, we analyzed whether participants who inherited more tools from their
+ancestors were more or less effective at discovering new tools. We also
+analyzed the guessing strategies used by participants who benefited from
+inheritance as compared to first generation participants who did not inherit
+from any ancestor. These analyses are used to address potential downstream
+consequences to iteratively inheriting from a previous generation.
 
 # Methods {-}
 
-To understand how problem solving knowledge accumulates through vertical
+To understand how solutions to problems accumulate through vertical
 transmission, we used a transmission chain paradigm where participants were
 assigned to a single generation within a four-generation chain. Each
-participant attempted the same problem solving task for 25 minutes. The
-solutions that each participant had discovered by the end of the session were
-passed on to be inherited by a participant in the next generation of the
-chain. Thus, participants assigned to generations after the first began the
-problem solving task with solutions inherited from the previous generation.
+participant attempted the same tool discovery task for 25 minutes. The recipes
+for how to create the tools that each participant had discovered by the end of
+the session were passed on to be inherited by a participant in the next
+generation of the chain. Thus, participants assigned to generations after the
+first began the experiment with information about how to create the tools
+inherited from the previous generation.
 
 Participants played the "Totems" game adapted from @Derex:2015cbb. Their task
 was to discover how to build tools with the ultimate goal of creating "a sacred
@@ -142,29 +157,33 @@ fibers for binding (Fig. \@ref(fig:landscape-sample-1)). More advanced tools
 produce larger and more intricate totems, resulting in higher performance
 scores.
 
-```{r landscape-sample-1, fig.height=6, fig.cap="A sample of the solution landscape. The top row of 6 items were available to problem solvers at the start of the game. New items could be produced through the combination of different items (more than one arrow points to the item) or through the refinement of a single item (a single arrow points to the item). The axe is required to construct the first totem pole."}
+```{r landscape-sample-1, fig.height=6, fig.cap="A sample of the solution landscape. The top row of 6 items were available to participants at the start of the game. New items could be produced through the combination of different items (more than one arrow points to the item) or through the refinement of a single item (a single arrow points to the item). The axe is required to construct the first totem pole."}
 draw_image("landscape-sample.gv", package = "totems")
 ```
 
 Participants discovered new tools by combining existing items. Participants
-could combine up to four items at a time (with replacement), meaning the
-initial six items could form a total of `r methods$n_unique_guesses_6`
-combinations. Of all possible combinations, very few resulted in new items. For
-example, of all the guesses that could be formed from the initial items, only
-three (`r methods$n_unique_guesses_6_pct`%) yielded new tools.
+could refine individual items, or combine up to four items at a time (with
+replacement), meaning the initial six items could form a total of
+`r methods$n_unique_guesses_6` combinations. Of all possible combinations, very
+few resulted in new items. For example, of all the guesses that could be formed
+from the initial items, only three (`r methods$n_unique_guesses_6_pct`%)
+yielded new tools.
 
-In the game, as tools are accumulated, the number of possible combinations that
-can be made with those tools increases exponentially such that the discovery of
-later tools was less likely to happen by chance alone. This increase in
-combinatorial complexity suggests that later tools might be harder to discover
-than earlier tools. However, combinatorial complexity is not a perfect measure
-of difficulty in this task because participants do not guess entirely at
-random. In reality participants are far more likely to make some guesses than
-others. For example, once discovering an axe, participants quickly discover
-that they can use the axe to chop down a tree, regardless of the other tools
-they may have at the time. At the same time, participants do not find all tools
-equally intuitive, and the difference in combinatorial complexity should not be
-ignored. In our results, we report performance based on both measures.
+As tools are accumulated, the number of possible combinations that can be made
+with those tools increases exponentially such that the discovery of later tools
+was less likely to happen by chance alone. This increase in combinatorial
+complexity suggests that later tools might be harder to discover than earlier
+tools. However, combinatorial complexity is not a perfect measure of difficulty
+in this task because of the way the solution space was designed, and because
+participants do not guess entirely at random. Based on previous research using
+this task, we know that participants are far more likely to make some guesses
+than others, indicating they are using tacit knowledge about the tools to
+generate combinations. For example, once discovering an axe, participants
+quickly discover that they can use the axe to chop down a tree, regardless of
+the other tools they may have at the time. At the same time, participants do
+not find all tools equally intuitive, and the difference in combinatorial
+complexity should not be ignored. In our results, we report performance based
+on both measures.
 
 Once a tool was discovered, the recipe for its creation---a list of the items
 that had to be combined in order to create the tool---was recorded in an
@@ -186,36 +205,51 @@ for a total of `r exp1$n_teams` complete chains (N=`r exp1$n_participants` parti
 
 # Results {-}
 
+Our results are presented in three sections. First, we report performance over
+generations along each chain to determine the extent to which each new
+generation was able to exceed the innovations discovered by their ancestor. The
+remaining analyses were carried out to determine whether participants' ability
+to discover new tools was influenced by the tools they inherited. In the second
+section, we report performance based on the number of inherited tools as
+opposed to generation. In the final section, we compare the guessing strategies
+of participants who inherited from an ancestor compared to first generation
+participants who did not benefit from inheritance.
+
 ## Performance by generation {-}
 
-We found that problem solving knowledge accumulated over generations such that
-participants in later generations were able to solve more problems in the same
-amount of time than their ancestors (Fig. \@ref(fig:innovations-by-generation)).
-We tested this in multiple ways. First, we used Page's trend test (a repeated
-measures test for monotonicity), and found evidence that the number of tools
-discovered within each chain increased over generations `r exp1$page_test`.
-Next, we tested whether the extent to which participants were able to exceed
-their ancestors changed over generation. We fit a hierarchical regression
-model to the number of tools discovered in each generation with these effects
-nested by chain. On average, second generation participants were able to
-discover `r exp1$gen0_slope` more tools than first generation participants,
-`r exp1$gen0_slope_stats`. This effect decreased by `r exp1$gen0sqr_slope`
-each generation for third and fourth generation participants,
-`r exp1$gen0sqr_slope_stats`. This diminishing return suggests that future
-generations have a harder time exceeding their ancestors.
+We found that tools accumulated over generations such that participants in
+later generations were able to discover more tools in the same amount of time
+than their ancestors (Fig. \@ref(fig:innovations-by-generation)). We tested
+this in multiple ways. First, we used Page's trend test (a repeated measures
+test for monotonicity), and found evidence that the number of tools discovered
+within each chain increased over generations, `r exp1$page_test`. Next, we
+tested whether tools accumulated linearly or quadratically over generations. We
+fit a hierarchical regression model with polynomial contrasts to the number of
+tools discovered in each generation with random effects for chain. On average,
+second generation participants were able to discover `r exp1$gen0_slope` more
+tools than first generation participants, `r exp1$gen0_slope_stats`. This
+effect decreased by `r exp1$gen0sqr_slope` each generation for third and fourth
+generation participants, `r exp1$gen0sqr_slope_stats`. That the numbers
+of new tools per generation levels off for later generations could suggest
+that later generations have a harder time exceeding their ancestors, but it
+also could be due to these later generations, having inherited more tools,
+requiring more time in the experimental session to recreate the inherited
+items. We return to both of these potential explanations below.
 
 ```{r innovations-by-generation, fig.cap="Performance by generation. Each of the thin green lines is a chain. The thick blue line is the model predictions with ±1 standard error."}
 innovations_by_generation_plot
 ```
 
 Although later generation participants made fewer new discoveries, the
-discoveries they made were often more complex. We measured complexity as the
-combinatorial complexity of the number of items in the participants' inventories
-at the time a discovery was made. We found that when discoveries were weighted
-by combinatorial complexity, participants solved more complex problems
-with each generation, `r exp1$difficulty_by_generation_mod_slope_stats`,
-and this benefit did not diminish for later generations,
-`r exp1$difficulty_by_generation_quad_mod_slope_stats`.
+discoveries they made were often more complex. We computed the complexity of a
+tool as the number of combinations that could be made given the number of items
+in the participants' inventories at the time the tool was discovered. A tool
+that was discovered among 12 items was deemed more complex than a tool that was
+discovered among 6 items. Using a hierarchical regression model as
+reported above, we found that when discoveries were weighted by combinatorial
+complexity, participants discovered more complex tools with each generation,
+`r exp1$difficulty_by_generation_mod_slope_stats`, and this benefit did not
+diminish for later generations, `r exp1$difficulty_by_generation_quad_mod_slope_stats`.
 
 ## Performance by inheritance size {-}
 
@@ -231,21 +265,22 @@ grid.arrange(
 Because there is no difference between a second generation participant who
 inherits 10 tools and a fourth generation participant who inherits the same
 tools, we also looked at problem solving performance relative to the number
-of tools that were inherited (Fig. \@ref(fig:inheritance-size)). As the number
-of inherited tools increased, the number of new tools discovered decreased,
-`r exp1$inheritance_size_slope_stats` (Fig. \@ref(fig:inheritance-size)B).
-That participants who inherited more items had a harder time exceeding them
-is expected based on the analysis of performance over generations reported
-above. However, when tools are weighted by combinatorial complexity, the
-amount by which participants are able to exceed their ancestors actually
-increases for larger inheritance sizes, `r exp1$delta_diff_slope_stats` (Fig.
-\@ref(fig:inheritance-size)C), though we are hesitant to draw strong conclusions
-from this finding as it may be explanable by the characteristics of the solution
-landscape, a point we return to in the Discussion.
+of tools that were inherited regardless of generation (Fig.
+\@ref(fig:inheritance-size)). As the number of inherited tools increased, the
+number of new tools discovered decreased, `r exp1$inheritance_size_slope_stats`
+(Fig. \@ref(fig:inheritance-size)B). That participants who inherited more items
+had a harder time exceeding them is expected based on the analysis of
+performance over generations reported above. However, when tools are weighted
+by combinatorial complexity, the amount by which participants are able to
+exceed their ancestors actually increases for larger inheritance sizes,
+`r exp1$delta_diff_slope_stats` (Fig. \@ref(fig:inheritance-size)C), though we are
+hesitant to draw strong conclusions from this finding as it may be explainable
+by the characteristics of the solution landscape, a point we return to in the
+Discussion.
 
-We next asked whether inheriting more tools had an impact on the rate of new
-tool discovery. To answer this question, we first needed to identify the length
-of time spent recreating inherited tools as opposed to discovering new ones.
+Participants who inherited more tools also required more time to recreate those
+tools. We next asked whether inheriting more tools had an impact on the rate of new
+tool discovery, controlling for the length of time spent recreating inherited tools.
 Participants took on average `r exp1$mean_learning_time_min` minutes of the 25
 minute session (`r exp1$proportion_learning_time`%) to recreate the inherited
 tools---a portion of the experiment we refer to as the learning period. The
@@ -257,34 +292,35 @@ learning_rates_plot
 ```
 
 We then calculated discovery rates for each participant: the number of
-novel discoveries relative to the amount of time out of the 25 minute
-session spent discovering new tools (Fig. \@ref(fig:playing-time)). The overall rate of
+new tools discovered relative to the amount of time out of the 25 minute
+session available to discover new tools (Fig. \@ref(fig:playing-time)). The overall rate of
 problem solving was `r exp1$minutes_per_new_innovation` minutes per new
 innovation (`r exp1$new_innovations_per_minute` innovations per minute),
 `r exp1$playing_time_slope_stats`. This rate was not found to vary based on
 the number of inherited tools, as revealed by comparing a model predicting
-unique innovations from playing time alone to one predicting unique
-innovations from the interaction between playing time and inheritance size,
+novel tools from discovery time alone to one predicting novel tools
+from the interaction between discovery time and inheritance size,
 `r exp1$playing_time_modcomp`. This suggests that inheriting more tools did not
-meaningfully diminish the rate of future problem solving.
+meaningfully affect the rate of future problem solving.
 
-```{r playing-time, fig.cap="Problem solving rate in the discovery stage. Discovery time is the amount of time out of a 25 minute session dedicated to discovering new innovations that were not discovered by an ancestor. The line shows the predictions of the hierarchical regression model with ±1 standard error. The slope of this line did not significantly vary based on the size of the inheritance."}
+```{r playing-time, fig.cap="New tool discovery rates. Discovery time is the amount of time out of a 25 minute session dedicated to discovering new innovations that were not discovered by an ancestor. The line shows the predictions of the hierarchical regression model with ±1 standard error. The slope of this line did not significantly vary based on the number of inherited tools."}
 playing_time_plot
 ```
 
 ## Performance by inheritance {-}
 
-Next we compared performance in the first generation, where participants did
-not benefit from any previous ancestor, to performance in generations 2-4.
-We found that participants who benefited from inheritance on average made
-fewer guesses per item than when the same items were attempted in the first
-generation, `r exp1$guesses_per_item_by_inheritance`. As expected, this effect
-is especially pronounced for the items that were inherited. We did not find
-any evidence that inheritance had an affect on the number of guesses per novel
-item, `r exp1$guesses_per_new_item_by_inheritance_mod` (Fig.
-\@ref(fig:guesses-per-innovation-1)). This finding suggests that although inheritance
-benefits participants in recreating inherited solutions, it does not confer any
-benefits to future problem solving.
+In this section, we report whether participants who inherited tools from an
+ancestor guessed differently than participants in the first generation who had
+to discover the first tools on their own. We found that participants who
+benefited from inheritance on average made fewer guesses per tool than when the
+same tools were attempted in the first generation,
+`r exp1$guesses_per_item_by_inheritance`. As expected, this effect is especially
+pronounced for the tools that were inherited. We did not find any evidence that
+inheritance had an affect on the number of guesses per new tool,
+`r exp1$guesses_per_new_item_by_inheritance_mod` (Fig.
+\@ref(fig:guesses-per-innovation-1)). This finding suggests that although
+inheritance benefits participants in recreating inherited solutions, it does
+not confer any benefits to future problem solving.
 
 ```{r guesses-per-innovation-1, fig.height=6, fig.cap="Guesses per tool by inheritance condition. Each line is the average number of guesses it took to discover a particular tool in either inheritance condition. Error bars show ±1 standard of the model predictions. A. Overall guesses per tool, including those inherited. B. Guesses per novel tool."}
 grid.arrange(
@@ -294,84 +330,65 @@ grid.arrange(
 )
 ```
 
-Finally, we analyzed the overall guessing strategy employed by participants
-who inherited from an ancestor versus those who did not. Guesses were
-categorized into one of four types: redundant guesses, repeat items,
-unique guesses, and unique items. The overall proportion of guesses
-made by participants based on their inheritance condition is shown in
-Fig. \@ref(fig:guess-types-1). We found that participants who inherited solutions at the start
-tended to make fewer redundant guesses than first generation participants,
-`r exp1$num_redundant_guesses`, a difference of 12%, `r exp1$prop_redundant_guesses`.
-This result suggests that starting off the problem solving task with
-solutions inherited from a previous generation influenced the way
-in which future guesses are generated.
+Finally, we analyzed the guessing strategy employed by participants who
+inherited from an ancestor versus those who did not. Guesses were categorized
+into one of four types: redundant guesses, repeat items, unique guesses, and
+unique items. Redundant guesses were incorrect guesses made once before. Repeat
+items were recreated tools. Unique guesses were incorrect guesses never made before.
+Unique items were unique guesses that created a new tool.
 
-```{r guess-types-1, fig.width=4, fig.cap="Guessing strategies by inheritance condition. Redundant guesses were incorrect guesses made once before. Repeat items were recreated tools. Unique guesses were incorrect guesses never made. Unique items were unique guesses that created a new tool."}
+The proportion of guesses made by participants based on their inheritance condition
+is shown in Fig. \@ref(fig:guess-types-1). We found that participants who
+inherited solutions at the start tended to make fewer redundant guesses than
+first generation participants, `r exp1$num_redundant_guesses`, a difference of
+12%, `r exp1$prop_redundant_guesses`. This result suggests that starting off
+the problem solving task with solutions inherited from a previous generation
+may have influenced the way in which future guesses are generated.
+
+```{r guess-types-1, fig.width=3.8, fig.cap="Guessing strategies by inheritance condition."}
 prop_guess_types_50min_plot
 ```
 
 # Discussion {-}
 
-The ability to accumulate a body of socially learned problem solving knowledge
-is visible in all human cultures [@Boyd:2017diff; @Fernandez:2001civ]. Although
-the capacity for cumulative improvement is believed to be integral to human
-cultural evolution, we do not fully understand how effectively problem solving
-knowledge can be utilized by future generations of problem solvers. How
-effective are human problem solvers at ratcheting up the tools and other
-solutions to problems that were discovered by others? Here
-we investigated the likelihood that problem solvers could exceed their ancestors
-over generations of problem solving.
-
-In contrast to previous research that has investigated how social learning
-strategies such as verbal instruction play a role in high fidelity transmission
-of problem solving knowledge, here we examined the likelihood that problem
-solving knowledge would accumulate given that solutions could be
-effectively transferred to the next generation. Participants in our study
-inherited the solutions that had been discovered by their ancestor, and we
-measured their ability to recreate and extend this body of problem solving
-knowledge. We asked whether an individuals' ability to improve upon inherited
-knowledge change across generations and as the amount of inherited information
-increases.
-
-We found that problem solvers were consistently able to solve more problems in a
-single 25 minute session than their ancestors, and thus were able to
+We found that participants were consistently able to solve more problems in
+a single 25 minute session than their ancestors, and thus were able to
 cumulatively improve upon the solutions they inherited. All participants were
-expected to be able to recreate the tools they inherited, but whether they could
-discover new tools, beyond those inherited, was unknown. Given the combinatorial
-complexity of the solution landscape, participants were highly unlikely to
-strike upon a beneficial combination by chance alone. Because of this, some
-participants were unable to discover any new tools, but most did discover new
-tools, even when inheriting an already large number of previously discovered
-tools.
+expected to be able to recreate the tools they inherited, but whether they
+could discover new tools, beyond those inherited, was unknown. Given the
+combinatorial complexity of the solution landscape, participants were unlikely
+to strike upon beneficial combinations by guessing at random. Because of this,
+some participants were unable to discover any new tools, but most did discover
+new tools, even when inheriting an already large number of previously
+discovered tools.
 
 We also explored the impact of inherited solutions on future problem solving
-performance. Here our results were mixed. We found that problem solvers who
+performance. Here our results were mixed. We found that participants who
 inherited more tools tended to discover fewer new tools than their ancestors,
-suggesting that inheritance has a diminishing return on future problem solving
-performance. However, if the combinatorial complexity of the solutions is taken
-into account, we found that these problem solvers were able to accumulate more
-complex tools than they would have been likely to discover on their own. In
-addition, we found that controlling for the amount of time each participant had
-to discover new tools (as opposed to recreating inherited tools) failed to
-reveal an effect of inheritance size on the rate of problem solving. Finally,
-we investigated whether starting off a problem solving task influenced the
-way in which problems were solved, and found that inheritance did not have
-an influence on the number of guesses required for new items, but that
-inheritance might benefit future generations by promoting a better problem
-solving strategy.
+suggesting that the benefit to inheritance leveled off for later generations.
+However, if the combinatorial complexity of the solutions is taken into
+account, we found that participants were able to accumulate more complex tools
+than they would have been likely to discover on their own (i.e., as a first
+generation participant). In addition, we found that controlling for the amount
+of time each participant had to discover new tools (as opposed to recreating
+inherited tools) failed to reveal an effect of inheritance size on the rate of
+new tool discovery. Finally, we investigated whether starting off a problem
+solving task with inherited solutions influenced the way in which tools were
+discovered, and found that inheritance did not have an influence on the number
+of guesses required for new items, but that inheritance might benefit future
+generations by promoting a less redundant guessing strategy.
 
-Our conclusions are limited by the nature of the solution landscape in the
+Our conclusions are limited by the design of the solution landscape in the
 Totems game, and the restriction in our methods to a single problem solving
-strategy. The sparsity of the solution landscape, where many thousands of
-possible combinations can be made but far less than 1% yield new tools,
-indicates that participants must use tacit knowledge to help form combinations
-that are most likely to yield new tools. For example, once an axe was
-discovered, its combination with the tree to create a totem was very likely.
-This challenges the notion that the difficulty of a particular tool is directly
-related to its combinatorial complexity. In addition, we believe the
-accumulation of problem solving knowledge through vertical transmission must be
-compared with the accumulation of problem solving knowledge through other forms
-of problem solving that do not involve vertical transmission.
+strategy. The sparsity of the solution landscape, where many combinations can
+be made but very few yield new tools, indicates that in order to succeed
+participants must use tacit knowledge to help form combinations that are most
+likely to yield new tools. This challenges the notion that the difficulty of a
+particular tool is directly related to its combinatorial complexity. In
+addition, we believe the accumulation of problem solving knowledge through
+vertical transmission must be compared with the accumulation of problem solving
+knowledge through other forms of problem solving that do not involve vertical
+transmission.
 
 More than any other animal, humans are particularly skilled at inheriting and
 improving tools and other solutions to problems, but whether the ability
