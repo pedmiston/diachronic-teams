@@ -83,28 +83,22 @@ in a range of species from chimps [@Whiten:1999cic] to fish [@Laland:1997ts]
 and even bees [@Alem:2016fu]. If cumulative cultural evolution depended simply
 on social learning, we might expect these species to likewise show evidence of
 cumulative cultural evolution, yet such evidence is notably lacking
-[@Dean:2012gv; @Tennie:2009gaa]. There are a few exceptions: New Caledonian
-crows have been argued to have improved the grub-skewers they craft from
-pandanus leaves [@Hunt:2003dj], and at least one population of chimpanzees has
-evolved a more advanced termite probe [@Sanz:2009ja], but for the most part
-tool use in animals has remained largely unchanged [cf. @Mercader:2007fd].
+[@Dean:2012gv; @Tennie:2009gaa; but see @Hunt:2003dj; @Sanz:2009ja].
 
-Humans, in contrast, have demonstrated a remarkable ability to adapt
-and improve the tools and other innovations discovered by others. The
-history of human technology is argued to be better understood as a process
-of gradual refinement and repurposing rather than punctuated advances brought by
-the discoveries of rare geniuses [@Basalla:1989wq; @Sole:2013cm]. Rapid
-refinement of inherited innovations has not always been the case over the course
-of human history, as demonstrated by the long periods in the archaeological
-record of slow or stagnant growth in stone tool complexity [@Torre:2011jl;
-@Lycett:2008di]. As to what it was that allowed our ancestors to begin to
-develop more complex tools, an answer that has been proposed is that humans
-evolved more robust ways of transmitting cultural information to the next
-generation. This allowed future generations to more quickly learn
-the skills honed by their ancestors, and thus giving them more time to make
-improvements to those technologies [@Sterelny:2012ea]. On this view,
-human cultural evolution has been defined not by our ability to inherit the
-skills of our ancestors, but by the ability to exceed and improve them.
+Humans, in contrast, have demonstrated a remarkable ability to adapt and
+improve the tools and other innovations discovered by others. The history of
+human technology is argued to be better understood as a process of gradual
+refinement and repurposing rather than punctuated advances brought by the
+discoveries of rare geniuses [@Basalla:1989wq; @Sole:2013cm]. Rapid refinement
+of inherited innovations has not always been the case over the course of human
+history, as demonstrated by the long periods in the archaeological record of
+slow or stagnant growth in stone tool complexity [@Torre:2011jl;
+@Lycett:2008di]. Since then, as humans evolved more robust ways of transmitting
+cultural information, future generations were able to more quickly learn the
+skills honed by their ancestors, thus giving them more time to make
+improvements to those technologies [@Sterelny:2012ea]. On this view, human
+cultural evolution has been defined not by our ability to copy the skills of
+our ancestors, but by the ability to exceed and improve them.
 
 ```{r iterated-problem-solving-fig, fig.pos="b", fig.align="center", fig.width=3.5, fig.cap="Iterated problem solving paradigm. Participants were assigned to generations within chains. Each participant completed the same problem solving task for 25 minutes. Participants in generations after the first began the problem solving task with the solutions that were discovered by the previous generation."}
 draw_graphviz("iterated-problem-solving", package = "totems")
@@ -116,7 +110,7 @@ solving task using a transmission chain paradigm (Fig.
 has found that problem solving performance for simple tasks like folding paper
 airplanes and building towers out of spaghetti can accumulate over generations
 [@Caldwell:2008gf], although the mechanisms are unclear [@Caldwell:2009fl].
-@Morgan:2015hu more carefully manipulated the mechanisms of transmission, and
+@Morgan:2015hu manipulated the mechanisms of transmission, and
 found that teaching, and especially verbal instruction, was crucial for
 successful transmission of skilled behaviors along chains. Here we controlled
 for successful transmission by allowing future generations to inherit symbolic
