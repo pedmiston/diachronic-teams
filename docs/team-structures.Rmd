@@ -54,7 +54,7 @@ Humans are not the only tool users in the animal kingdom [@Beck:1980animal],
 but we do seem to have the most of them. What sets human tool users apart may
 not be our ability to make tools, but our ability to use and improve tools that
 were first created by other people. This ability is often referred to as the
-"ratchet effect" [@Tomasello:1993vh; @Dean:2013db], and is believed to be an
+"ratchet effect" [@Tomasello:1993vh; @Dean:2013dp], and is believed to be an
 important component of cumulative cultural evolution. One of the defining
 features of cumulative cultures is that groups of problem solvers, through
 generations of incremental improvement, can sustain complex tools and other
