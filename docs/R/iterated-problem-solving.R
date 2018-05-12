@@ -287,6 +287,8 @@ learning_rates_preds <- get_lm_mod_preds(learning_rates_mod) %>%
 
 t_$scale_shape_outlier <- scale_shape_manual(values = c(1, 4))
 
+exp1$learning_cor <- round(cor(LearningRates$InheritanceSize, LearningRates$LearningTime), 2)
+
 learning_rates_plot <- ggplot(LearningRates) +
   aes(InheritanceSize, LearningTime, shape = Outlier) +
   geom_point(position = position_jitter(width = 0.1)) +
@@ -517,6 +519,7 @@ GuessesPerItem50min <- Guesses %>%
   left_join(AdjacentItems, by = c("PrevSessionInventoryID" = "ID"))
 
 CostPerItem50min <- GuessesPerItem50min %>%
+  filter(Generation == 1 | Stage == "learning") %>%
   group_by(TeamID, Generation, Adjacent) %>%
   summarize(
     TotalGuesses = n(),
@@ -552,13 +555,13 @@ guesses_per_item_by_inheritance_plot <- ggplot(CostPerItem50min) +
   aes(InheritanceLabel, TotalGuesses) +
   geom_line(aes(group = Adjacent), color = t_$color_picker("blue"),
             stat = "summary", fun.y = "mean",
-            size = 0.8) +
+            size = 0.6) +
   geom_line(aes(group = 1),
             stat = "identity", data = guesses_per_item_by_inheritance_preds,
-            size = 0.8) +
+            size = 0.6) +
   geom_errorbar(aes(ymin = TotalGuesses-SE, ymax = TotalGuesses+SE),
                 data = guesses_per_item_by_inheritance_preds,
-                width = 0.05, size = 0.8) +
+                width = 0.05, size = 0.6) +
   scale_x_discrete("", labels = c("No inheritance", "Inheritance")) +
   scale_y_continuous("Guesses per tool") +
   t_$base_theme
@@ -601,15 +604,15 @@ guesses_per_new_item_by_inheritance_plot <- ggplot(CostPerItem50minPlaying) +
   aes(InheritanceLabel, TotalGuesses) +
   geom_line(aes(group = Adjacent), color = t_$color_picker("blue"),
             stat = "summary", fun.y = "mean",
-            size = 0.8) +
+            size = 0.6) +
   geom_line(aes(group = 1),
             stat = "identity", data = guesses_per_new_item_by_inheritance_preds,
-            size = 0.8) +
+            size = 0.6) +
   geom_errorbar(aes(ymin = TotalGuesses-SE, ymax = TotalGuesses+SE),
                 data = guesses_per_new_item_by_inheritance_preds,
-                width = 0.05, size = 0.8) +
+                width = 0.05, size = 0.6) +
   scale_x_discrete("", labels = c("No inheritance", "Inheritance")) +
-  scale_y_continuous("Guesses per novel tool") +
+  scale_y_continuous("Guesses per tool") +
   t_$base_theme
 
 # Guess types ----
