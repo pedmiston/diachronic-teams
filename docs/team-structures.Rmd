@@ -73,11 +73,11 @@ transmission, cultural products are passed among peers in the same generation.
 Although both forms of cultural transmission involve social learning---learning
 that is enabled by the observation of or interaction with others
 [@Rendell:2011gk]---the consequences of either vertical or horizontal
-transmission have not been directly compared. Here we tested whether problem
-solving knowledge that is inherited at the start of a problem solving task via
-vertical transmission has a different impact on problem solving performance
-than purportedly the same knowledge shared horizontally among problem solvers
-working in parallel.
+transmission on culture accumulation have not been directly compared. Here we
+tested whether problem solving knowledge that is inherited at the start of
+a problem solving task via vertical transmission has a different impact on
+problem solving performance than purportedly the same knowledge shared
+horizontally among problem solvers working in parallel.
 
 Previous research on the differences between vertical and horizontal
 transmission has found that some cultural products, such as religious beliefs,
@@ -110,8 +110,8 @@ working alone [@Acerbi:2016ej]. Horizontal transmission among groups of
 problem solvers has been shown to be adaptive for a wider range of problem
 solving scenarios than individual learning [@Golman:2010fz; @Rendell:2010go].
 
-When vertical transmission has been studied directly, it has not been compared
-to alternative strategies for solving the same problems. For example,
+When vertical transmission has been studied directly, it has often not been
+compared to alternative strategies for solving the same problems. For example,
 @Caldwell:2008gf had participants create paper airplanes or spaghetti towers in
 a transmission chain design involving vertical transmission, where new
 generations of problem solvers learned from the previous generation. The
@@ -131,14 +131,14 @@ diachronic collaboration, participants completed the problem solving task one
 at a time, and at the end of the session, they passed the solutions they had
 discovered on to the next generation. The next generation, rather than starting
 from scratch, starts off with the solutions inherited from the previous
-generation. In **synchronic collaboration**, participants work in a team on the
+generation. In synchronic collaboration, participants work in a team on the
 same problem solving task at the same time and in parallel, sharing solutions
 with each other as they are discovered. Both diachronic and synchronic
 strategies are compared to an isolated strategy in which individuals work alone
 on the same problems.
 
 In our comparison of diachronic, synchronic, and isolated strategies, we
-controlled for **labor time**. Labor time can be contrasted with calendar time
+controlled for labor time. Labor time can be contrasted with calendar time
 and learning time (Fig. \@ref(fig:types-of-time)). We controlled for labor time
 so that our results can be interpreted in terms of the effect each problem
 solving strategy has on individual problem solving ability. Without controlling
@@ -176,13 +176,13 @@ Experiment 2, we compared four generations of diachronic problem solvers to
 four sessions of isolated problem solving in order to tease apart the effects
 of inheriting from someone else as opposed to inheriting from oneself. We find
 that an isolated strategy results in better final performance, but not any more
-efficient guessing. In fact, we find that diachronic collaboration may prove
-effective in relieving the costs of fixation often incurred by individuals
-working alone. In Experiment 3, we investigated how the effectiveness of
-diachronic and synchronic collaboration is affected by increasing group size.
-Here we find that diachronic collaboration scales better as more people are
-added as opposed to synchronic collaboration, in which teamwork may become more
-inefficient with larger groups.
+efficient guessing. Most interestingly, we find that diachronic collaboration
+may prove effective in relieving the costs of fixation often incurred by
+individuals working alone. In Experiment 3, we investigated how the
+effectiveness of diachronic and synchronic collaboration is affected by
+increasing group size. Here we find that diachronic collaboration scales better
+as more people are added as opposed to synchronic collaboration, in which
+teamwork may become more inefficient with larger groups.
 
 # Methods {-}
 
