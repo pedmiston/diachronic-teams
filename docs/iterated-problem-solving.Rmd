@@ -107,27 +107,26 @@ draw_graphviz("iterated-problem-solving", package = "totems")
 We investigated the human propensity to exceed our ancestors in a problem
 solving task using a transmission chain paradigm (Fig.
 \@ref(fig:iterated-problem-solving-fig)). Previous research using this paradigm
-has found that problem solving performance for simple tasks like folding paper
-airplanes and building towers out of spaghetti can accumulate over generations
-[@Caldwell:2008gf]. However, the conditions necessary for cumulative gains
-remain uncertain. In familiar and transparent tasks like building paper
-airplanes, process information about how the planes were built may not be
-necessary for obtaining cumulative gains [@Caldwell:2009fl], but these gains
-may be similar to what could be achieved by individual learners
-[@Zwirner:2015jn]. In unfamiliar and opaque tasks, social learners benefit from
-process information [@Derex:2013ia; @Wasielewski:2014gg], but may not show
-cumulative gains [@Morgan:2015hu]. Here we controlled for successful
-transmission by allowing future generations to inherit symbolic information
-("recipes") about how to recreate the tools that had been discovered by an
-ancestor. We then measured the ability of participants to recreate and exceed
-the tools they inherited.
+has found that problem solving performance can accumulate over generations
+[@Caldwell:2008gf; @Wasielewski:2014gg; @Zwirner:2015jn]. These experiments
+however typically investigate individuals' performance about a single problem
+(such as building paper airplanes or baskets). Yet, cumulative cultural
+evolution allows humans to solve more diverse and ever larger sets of problems.
+Larger sets of problems can only be solved when larger amounts of information
+are transmitted between generations, which is likely to result in increasing
+acquisition costs for learners [@Mesoudi:2011fn]. Despite its pivotal importance,
+the effects of increasing amount of information on learners' performance have
+not been investigated experimentally.
 
-In addition to asking whether participants were able to exceed the total number
-of tools discovered by their ancestor, we also asked whether inheritance
-influenced the way in which future problems were solved. To answer this
-question, we analyzed whether participants who inherited more tools from their
-ancestors were more or less effective at discovering new tools. We also
-analyzed the guessing strategies used by participants who benefited from
+Here we allow future generations to inherit symbolic information
+("recipes") about how to recreate the tools that had been discovered by an
+ancestor and measure the ability of participants to recreate and exceed
+the tools they inherited. In addition to asking whether participants were able
+to exceed the total number of tools discovered by their ancestor, we also asked
+whether inheritance influenced the way in which future problems were solved. To
+answer this question, we analyzed whether participants who inherited more tools
+from their ancestors were more or less effective at discovering new tools. We
+also analyzed the guessing strategies used by participants who benefited from
 inheritance as compared to first generation participants who did not inherit
 from any ancestor. These analyses are used to address potential downstream
 consequences to iteratively inheriting from a previous generation.
@@ -168,20 +167,20 @@ As tools are accumulated, the number of possible combinations that can be made
 with those tools increases exponentially such that the discovery of later tools
 was less likely to happen by chance alone. Based on previous research using
 this task, we know that participants are far more likely to make some guesses
-than others, indicating they are using previously acquired knowledge about the tools to
-generate combinations. For example, once discovering an axe, participants
-quickly discover that they can use the axe to chop down a tree, regardless of
-the other tools they may have at the time. At the same time, participants do
-not find all tools equally intuitive, and the difference in combinatorial
-complexity should not be ignored. In our results, we report performance based
-on both measures.
+than others, indicating they are using common knowledge acquired outside the
+lab to generate combinations. For example, once discovering an axe,
+participants quickly discover that they can use the axe to chop down a tree,
+regardless of the other tools they may have at the time. At the same time,
+participants do not find all tools equally intuitive, and the difference in
+combinatorial complexity should not be ignored. In our results, we report
+performance based on both measures.
 
 Once a tool was discovered, the recipe for its production---a list of the items
 that had to be combined in order to produce the tool---was recorded in an
 innovation record. Participants could review their past innovations and see the
-recipes for their previous discoveries. **Participants assigned to generations
+recipes for their previous discoveries. Participants assigned to generations
 after the first inherited the innovation record of the previous generation
-participant.** From the beginning of the experiment, these participants could
+participant. From the beginning of the experiment, these participants could
 review the recipes for all the innovations that had been discovered by their
 ancestor. Note that the participants inherited the recipes, but not the tools
 themselves. In order use these tools in further combinations, the tools and all
@@ -287,9 +286,9 @@ playing_time_plot
 ## Guesses per tool {-}
 
 In this section, we compared first generation participants who did not inherit
-from anyone (No inheritance) to participants in generations 2-4 who inherited
-at least some tools from an ancestor (Inheritance). We compared these two
-groups in terms of the number of guesses required to discover each tool.
+from anyone to participants in generations 2-4 who inherited at least some
+tools from an ancestor. We compared these two groups in terms of the number of
+guesses required to discover each tool.
 
 To count the number of guesses that were required for each tool, we tallied all
 guesses made from the moment in which a new tool was eligible for discovery
@@ -297,21 +296,19 @@ until that tool was discovered. A new tool was eligible for discovery once all
 of the items required to produce the new tool had been discovered. 
 
 We fit a hierarchical linear model predicting the number of guesses per tool
-based on inheritance condition (No inheritance, Inheritance) with random
-effects by tool. Tools that were only discovered by participants in the
-inheritance condition were excluded from this analysis.
+based on generation (Generation 1, Generations 2-4) with random effects by
+tool. Tools that have been produced by Generations 2-4 were assigned to one of
+two classes: those that were inherited from an ancestor, and those that were
+discovered through a trial-and-error process. This allowed us to test whether
+the benefit to inheritance was restricted to reducing the number of guesses for
+inherited items, or whether inheritance had any effect on future guessing
+behaviors.
 
-For those in the inheritance condition, we separated our analyses based on
-whether the tool was inherited from an ancestor or discovered new. This allowed
-us to test whether the benefit to inheritance was restricted to reducing the
-number of guesses for inherited items, or whether inheritance had any effect
-on future guessing behaviors.
-
-As expected, participants who benefited from inheritance on average
-made fewer guesses per tool than when the same tools were attempted in the
-first generation, `r exp1$guesses_per_item_by_inheritance`. This effect
-demonstrates the benefit of inheriting from a previous generation in providing
-a shortcut to discovering these tools.
+As expected, participants from generations 2-4 made fewer guesses per tool than
+when the same tools were attempted in the first generation,
+`r exp1$guesses_per_item_by_inheritance`. This effect demonstrates the benefit of
+inheriting from a previous generation in providing a shortcut to discovering
+these tools.
 
 However, we did not find any evidence that inheritance had an effect on the
 number of guesses per new tool, `r exp1$guesses_per_new_item_by_inheritance_mod` (Fig.
@@ -319,7 +316,9 @@ number of guesses per new tool, `r exp1$guesses_per_new_item_by_inheritance_mod`
 inheritance benefits participants in recreating inherited solutions, it does
 not confer any benefits to future problem solving.
 
-```{r guesses-per-innovation-1, fig.height=6, fig.cap="Guesses per tool by inheritance condition. Each line is the average number of guesses it took to discover a particular tool in either inheritance condition. Error bars show ±1 standard of the model predictions. A. Inherited tools. B. Novel tools."}
+(ref:guesses-per-innovation) Guesses per tool by generation. Each line is the average number of guesses it took to discover a particular tool. Error bars show ±1 standard error of the model predictions. A. Inherited tools. B. Discovered tools.
+
+```{r guesses-per-innovation-1, fig.height=6, fig.cap="(ref:guesses-per-innovation)"}
 grid.arrange(
   guesses_per_item_by_inheritance_plot + ggtitle("A"),
   guesses_per_new_item_by_inheritance_plot + ggtitle("B"),

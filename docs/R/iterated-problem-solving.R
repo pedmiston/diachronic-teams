@@ -562,7 +562,7 @@ guesses_per_item_by_inheritance_plot <- ggplot(CostPerItem50min) +
   geom_errorbar(aes(ymin = TotalGuesses-SE, ymax = TotalGuesses+SE),
                 data = guesses_per_item_by_inheritance_preds,
                 width = 0.05, size = 0.6) +
-  scale_x_discrete("", labels = c("No inheritance", "Inheritance")) +
+  scale_x_discrete("", labels = c("Generation 1", "Generations 2-4")) +
   scale_y_continuous("Guesses per tool") +
   t_$base_theme
 
@@ -611,7 +611,7 @@ guesses_per_new_item_by_inheritance_plot <- ggplot(CostPerItem50minPlaying) +
   geom_errorbar(aes(ymin = TotalGuesses-SE, ymax = TotalGuesses+SE),
                 data = guesses_per_new_item_by_inheritance_preds,
                 width = 0.05, size = 0.6) +
-  scale_x_discrete("", labels = c("No inheritance", "Inheritance")) +
+  scale_x_discrete("", labels = c("Generation 1", "Generations 2-4")) +
   scale_y_continuous("Guesses per tool") +
   t_$base_theme
 
