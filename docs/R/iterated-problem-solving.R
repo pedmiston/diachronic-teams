@@ -414,12 +414,12 @@ innovations_by_generation_preds <- data_frame(Generation = 1:4) %>%
 innovations_by_generation_plot <- ggplot(Innovations) +
   aes(Generation, NumInnovations) +
   geom_line(aes(GenerationJittered, group = TeamID),
-            color = t_$color_picker("green"), alpha = 0.6) +
+            color = t_$color_picker("blue"), alpha = 0.6) +
   geom_line(aes(group = 1), data = innovations_by_generation_preds,
-            color = t_$color_picker("blue"), size = 1.5) +
+            color = "black", size = 1.0) +
   geom_errorbar(aes(ymin = NumInnovations-SE, ymax = NumInnovations+SE),
                 data = innovations_by_generation_preds,
-                color = t_$color_picker("blue"), width = 0.2, size = 1.5) +
+                color = "black", width = 0.15, size = 1.0) +
   t_$scale_y_num_tools +
   t_$base_theme +
   theme(

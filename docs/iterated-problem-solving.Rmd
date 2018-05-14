@@ -15,6 +15,7 @@ author:
     university: University of Wisconsin-Madison
     last: yes
 bibliography: references.bib
+csl: apa.csl
 abstract: |
   As compared to other animals, humans are particularly skilled at using and
   improving tools and other solutions to problems that were first discovered by
@@ -49,7 +50,8 @@ opts_chunk$set(
   fig.width = 3,
   fig.height = 3,
   fig.crop = F,
-  fig.pos = "tb"
+  fig.pos = "tb",
+  device = "cairo_pdf"
 )
 
 # Read all knitr chunks in .R files
@@ -198,7 +200,7 @@ for a total of `r exp1$n_teams` complete chains (N=`r exp1$n_participants` parti
 Our results are presented in three sections. First we report the total number
 of tools discovered by each generation along chains. Second we report the number
 of new tools discovered relative to the number of tools inherited (as opposed
-to generation). In the second section, we also quantify the amount of time each
+to generation). Also in the second section, we quantify the amount of time each
 participant spent recreating inherited tools versus discovering new ones, and
 test whether the number of tools inherited had an impact on the rate of new
 tool discovery. In the last section, we compare first generation participants
@@ -219,7 +221,9 @@ chain. On average, second generation participants were able to discover
 generation for third and fourth generation participants,
 `r exp1$gen0sqr_slope_stats`.
 
-```{r innovations-by-generation, fig.cap="Tools by generation. Each of the thin green lines is a chain. The thick blue line is the model predictions with ±1 standard error."}
+(ref:innovations-by-generation) Tools by generation. Each of the thin blue lines is a chain. The thick black line shows the model predictions with ±1 standard error.
+
+```{r innovations-by-generation, fig.cap="(ref:innovations-by-generation)"}
 innovations_by_generation_plot
 ```
 
@@ -237,7 +241,9 @@ generations, `r exp1$difficulty_by_generation_quad_mod_slope_stats`.
 
 ## Tools by inheritance size {-}
 
-```{r inheritance-size, fig.height=6, fig.cap="Tools by inheritance size. A. Number of tools created relative to those inherited. The dotted line is a reference with slope=1 such that points above the line indicate future generations exceeding their ancestors. B. Number of new tools relative to those inherited. The same reference line is now shown horizontally. The error ranges specify the model predictions with ±1 standard error."}
+(ref:inheritance-size) Tools by inheritance size. A. Number of tools created relative to those inherited. The dotted line is a reference with slope=1 such that points above the line indicate future generations exceeding their ancestors. B. Number of new tools relative to those inherited. The same reference line is now shown horizontally. The error range shows the model predictions with ±1 standard error.
+
+```{r inheritance-size, fig.height=6, fig.cap="(ref:inheritance-size)"}
 grid.arrange(
   innovations_created_and_inherited_plot + ggtitle("A"),
   new_innovations_plot + ggtitle("B"),
@@ -293,7 +299,7 @@ guesses required to discover each tool.
 To count the number of guesses that were required for each tool, we tallied all
 guesses made from the moment in which a new tool was eligible for discovery
 until that tool was discovered. A new tool was eligible for discovery once all
-of the items required to produce the new tool had been discovered. 
+of the items required to produce the new tool had been discovered.
 
 We fit a hierarchical linear model predicting the number of guesses per tool
 based on generation (Generation 1, Generations 2-4) with random effects by
@@ -316,7 +322,7 @@ number of guesses per new tool, `r exp1$guesses_per_new_item_by_inheritance_mod`
 inheritance benefits participants in recreating inherited solutions, it does
 not confer any benefits to future problem solving.
 
-(ref:guesses-per-innovation) Guesses per tool by generation. Each line is the average number of guesses it took to discover a particular tool. Error bars show ±1 standard error of the model predictions. A. Inherited tools. B. Discovered tools.
+(ref:guesses-per-innovation) Guesses per tool by participant generation. Each line is the average number of guesses it took to discover a particular tool. Error bars show ±1 standard error of the model predictions. A. Inherited tools. B. Discovered tools, not inherited from an ancestor.
 
 ```{r guesses-per-innovation-1, fig.height=6, fig.cap="(ref:guesses-per-innovation)"}
 grid.arrange(
@@ -372,3 +378,8 @@ needed to fully understand the human propensity for cumulative cultural
 evolution, we believe our research is a valuable contribution to ongoing
 efforts to understand how and why human culture is so integrally cumulative.
 
+# Open science practices {-}
+
+The materials, data, and code used to support the conclusions of this paper are
+available via the Open Science Framework page for this research
+at [osf.io/vf2wk](https://osf.io/vf2wk), DOI: 10.17605/OSF.IO/VF2WK.
