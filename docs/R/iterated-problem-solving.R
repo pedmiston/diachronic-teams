@@ -11,6 +11,9 @@ library(totems)
 library(tidyverse) # Load tidyverse after totems to prevent dplyr::filter from being masked
 t_ <- load_totems_theme()
 
+t_$base_theme <- t_$base_theme +
+  theme(text = element_text(family = "serif"))
+
 # List to hold descriptives for in-text citation
 exp1 <- list()
 
@@ -563,7 +566,8 @@ guesses_per_item_by_inheritance_plot <- ggplot(CostPerItem50min) +
                 data = guesses_per_item_by_inheritance_preds,
                 width = 0.05, size = 0.6) +
   scale_x_discrete("", labels = c("Generation 1", "Generations 2-4")) +
-  scale_y_continuous("Guesses per tool") +
+  scale_y_continuous("Guesses per tool", breaks = seq(0, 150, by = 25)) +
+  coord_cartesian(ylim = c(0, 150)) +
   t_$base_theme
 
 # Guesses per item: Playing ----
@@ -612,7 +616,8 @@ guesses_per_new_item_by_inheritance_plot <- ggplot(CostPerItem50minPlaying) +
                 data = guesses_per_new_item_by_inheritance_preds,
                 width = 0.05, size = 0.6) +
   scale_x_discrete("", labels = c("Generation 1", "Generations 2-4")) +
-  scale_y_continuous("Guesses per tool") +
+  scale_y_continuous("Guesses per tool", breaks = seq(0, 150, by = 25)) +
+  coord_cartesian(ylim = c(0, 150)) +
   t_$base_theme
 
 # Guess types ----

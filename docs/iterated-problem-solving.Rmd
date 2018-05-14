@@ -40,6 +40,8 @@ output:
 ---
 ```{r iterated-problem-solving-config, include=FALSE}
 library(knitr)
+library(extrafont)
+loadfonts()
 library(crotchet)
 
 opts_chunk$set(
@@ -312,19 +314,19 @@ behaviors.
 
 As expected, participants from generations 2-4 made fewer guesses per tool than
 when the same tools were attempted in the first generation,
-`r exp1$guesses_per_item_by_inheritance`. This effect demonstrates the benefit of
+`r exp1$guesses_per_item_by_inheritance` (Fig. \@ref(fig:guesses-per-innovation-1)A). This effect demonstrates the benefit of
 inheriting from a previous generation in providing a shortcut to discovering
 these tools.
 
 However, we did not find any evidence that inheritance had an effect on the
 number of guesses per new tool, `r exp1$guesses_per_new_item_by_inheritance_mod` (Fig.
-\@ref(fig:guesses-per-innovation-1)). This finding suggests that although
+\@ref(fig:guesses-per-innovation-1)B). This finding suggests that although
 inheritance benefits participants in recreating inherited solutions, it does
 not confer any benefits to future problem solving.
 
-(ref:guesses-per-innovation) Guesses per tool by participant generation. Each line is the average number of guesses it took to discover a particular tool. Error bars show ±1 standard error of the model predictions. A. Inherited tools. B. Discovered tools, not inherited from an ancestor.
+(ref:guesses-per-innovation-1) Guesses per tool by participant generation. Each line is the average number of guesses it took to discover a particular tool. Error bars show ±1 standard error of the model predictions. A. Inherited tools. B. Discovered tools, not inherited from an ancestor.
 
-```{r guesses-per-innovation-1, fig.height=6, fig.cap="(ref:guesses-per-innovation)"}
+```{r guesses-per-innovation-1, fig.height=6, fig.cap="(ref:guesses-per-innovation-1)"}
 grid.arrange(
   guesses_per_item_by_inheritance_plot + ggtitle("A"),
   guesses_per_new_item_by_inheritance_plot + ggtitle("B"),
