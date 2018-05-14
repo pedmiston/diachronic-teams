@@ -30,12 +30,9 @@ opts_chunk$set(
   message = FALSE,
   warning = FALSE,
   results = "hide",
-
-  # PLOS One figure requirements.
-  # Width: 789 – 2250 pixels (at 300 dpi). Height maximum: 2625 pixels (at 300 dpi).
   fig.width = 3,
   fig.height = 3,
-  dpi = 300
+  fig.crop = F
 )
 
 # Read all knitr chunks in .R files
@@ -215,7 +212,7 @@ session, or returned for four 25 minute sessions, labeled S1-S4. Synchronic
 participants were assigned to teams of two or four individuals that worked
 at the same time.
 
-```{r team-structures-all, out.width="100%", fig.cap='(ref:team-structures-all)'}
+```{r team-structures-all, fig.width=6, fig.cap='(ref:team-structures-all)'}
 crotchet::draw_graphviz("team-structures-all", package = "totems")
 ```
 
@@ -276,7 +273,7 @@ again in later combinations. Once segments of a totem were made through
 cutting, carving, and painting, they could be dragged into the **Totem** panel
 for scoring.
 
-```{r interface, fig.cap="(ref:interface)", out.width="100%"}
+```{r interface, fig.width=6, fig.cap="(ref:interface)"}
 draw_image("gameplay", "totems")
 ```
 
@@ -317,7 +314,7 @@ individuals working alone and two-person synchronic teams working in parallel
 
 (ref:team-structures-50min) Team structures compared in Experiment 1.
 
-```{r team-structures-50min, out.width="50%", fig.cap="(ref:team-structures-50min)"}
+```{r team-structures-50min, fig.cap="(ref:team-structures-50min)"}
 crotchet::draw_graphviz("team-structures-50min", package = "totems")
 ```
 
@@ -489,27 +486,6 @@ participants given 50 minutes. S2 refers to two-person synchronic teams.
 prop_guess_types_50min_plot
 ```
 
-### Guessing rates {-}
-
-(ref:guess-rates) Guessing rate by session time.
-
-```{r guess-rates, fig.width=6, fig.height=6, fig.cap="(ref:guess-rates)"}
-grid.arrange(
-  new_items_per_minute +
-    labs(y = "", title = "A. New tools per minute") +
-    theme(legend.position = "none"),
-  guesses_per_minute +
-    labs(y = "", title = "B. Guesses per minute") +
-    theme(legend.position = "none"),
-  unique_per_minute +
-    labs(y = "", title = "C. Unique guesses per minute") +
-    theme(legend.position = "none"),
-  redundant_per_minute +
-    labs(y = "", title = "D. Redundant guesses per minute") +
-    theme(legend.position = "none"),
-  nrow = 2
-)
-```
 
 ## Discussion {-}
 
@@ -574,7 +550,7 @@ extending these to discover new tools.
 
 (ref:team-structures-selfother) Problem solving strategies compared in Experiment 2.
 
-```{r team-structures-selfother, out.width="70%", fig.cap="(ref:team-structures-selfother)"}
+```{r team-structures-selfother, fig.width=6, fig.cap="(ref:team-structures-selfother)"}
 crotchet::draw_graphviz("team-structures-selfother", package = "totems")
 ```
 
@@ -794,7 +770,7 @@ more generations that each correspond to an increase in team performance, but
 the added utility of adding problem solvers to a synchronic strategy is
 smaller.
 
-# Discussion {-}
+# General Discussion {-}
 
 We sought to better understand the process by which groups of problem solvers
 can arrive at solutions to problems that no individual could on their own.

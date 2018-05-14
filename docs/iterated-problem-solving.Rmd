@@ -40,8 +40,6 @@ output:
 ---
 ```{r iterated-problem-solving-config, include=FALSE}
 library(knitr)
-library(extrafont)
-loadfonts()
 library(crotchet)
 
 opts_chunk$set(
@@ -52,8 +50,7 @@ opts_chunk$set(
   fig.width = 3,
   fig.height = 3,
   fig.crop = F,
-  fig.pos = "tb",
-  device = "cairo_pdf"
+  fig.pos = "tb"
 )
 
 # Read all knitr chunks in .R files
@@ -245,11 +242,11 @@ generations, `r exp1$difficulty_by_generation_quad_mod_slope_stats`.
 
 (ref:inheritance-size) Tools by inheritance size. A. Number of tools created relative to those inherited. The dotted line is a reference with slope=1 such that points above the line indicate future generations exceeding their ancestors. B. Number of new tools relative to those inherited. The same reference line is now shown horizontally. The error range shows the model predictions with ±1 standard error.
 
-```{r inheritance-size, fig.height=6, fig.cap="(ref:inheritance-size)"}
+```{r inheritance-size, fig.width=6, fig.cap="(ref:inheritance-size)"}
 grid.arrange(
   innovations_created_and_inherited_plot + ggtitle("A"),
   new_innovations_plot + ggtitle("B"),
-  ncol = 1
+  nrow = 1
 )
 ```
 
@@ -326,11 +323,11 @@ not confer any benefits to future problem solving.
 
 (ref:guesses-per-innovation-1) Guesses per tool by participant generation. Each line is the average number of guesses it took to discover a particular tool. Error bars show ±1 standard error of the model predictions. A. Inherited tools. B. Discovered tools, not inherited from an ancestor.
 
-```{r guesses-per-innovation-1, fig.height=6, fig.cap="(ref:guesses-per-innovation-1)"}
+```{r guesses-per-innovation-1, fig.width=6, fig.cap="(ref:guesses-per-innovation-1)"}
 grid.arrange(
   guesses_per_item_by_inheritance_plot + ggtitle("A"),
   guesses_per_new_item_by_inheritance_plot + ggtitle("B"),
-  ncol = 1
+  nrow = 1
 )
 ```
 
@@ -380,7 +377,7 @@ needed to fully understand the human propensity for cumulative cultural
 evolution, we believe our research is a valuable contribution to ongoing
 efforts to understand how and why human culture is so integrally cumulative.
 
-# Open science practices {-}
+## Open science practices {-}
 
 The materials, data, and code used to support the conclusions of this paper are
 available via the Open Science Framework page for this research

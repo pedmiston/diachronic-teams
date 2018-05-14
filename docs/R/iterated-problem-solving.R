@@ -11,9 +11,6 @@ library(totems)
 library(tidyverse) # Load tidyverse after totems to prevent dplyr::filter from being masked
 t_ <- load_totems_theme()
 
-t_$base_theme <- t_$base_theme +
-  theme(text = element_text(family = "serif"))
-
 # List to hold descriptives for in-text citation
 exp1 <- list()
 
