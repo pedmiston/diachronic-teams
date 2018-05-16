@@ -281,6 +281,7 @@ GuessesPerItem50min <- Guesses %>%
   recode_session_type_50min()
 
 CostPerItem50min <- GuessesPerItem50min %>%
+  filter(Strategy != "Diachronic" | (Generation == 2 & Stage == "learning")) %>%
   # Summarize the cost of each item for each session type: DG1, DG2, I50, S2.
   # Cost scores are summed across both synchronic players.
   group_by(TeamID, Generation, Adjacent, SessionType) %>%
@@ -366,7 +367,7 @@ guesses_per_item_plot <- ggplot(CostPerItem50min) +
 
 # * Guesses per item: Playing ----
 CostPerItem50minPlaying <- GuessesPerItem50min %>%
-  filter(Stage == "playing") %>%
+  filter(Strategy != "Diachronic" | (Generation == 2 & Stage == "playing")) %>%
   # Summarize the cost of each item for each session type: DG1, DG2, I50, S2.
   # Cost scores are summed across both synchronic players.
   group_by(TeamID, Generation, Adjacent, SessionType) %>%
