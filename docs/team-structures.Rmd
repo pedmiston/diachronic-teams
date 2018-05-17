@@ -42,6 +42,11 @@ read_chunk(file.path(chunks_dir, "team-structures.R"))
 ```{r Setup}
 ```
 
+\begin{chapterAbstract}
+Cumulative cultural evolution is enabled by the cultural transmission
+of problem solving knowledge over generations.
+\end{chapterAbstract}
+
 # Introduction {-}
 
 ```{r Intro}

@@ -16,21 +16,6 @@ author:
     last: yes
 bibliography: references.bib
 csl: apa.csl
-abstract: |
-  As compared to other animals, humans are particularly skilled at using and
-  improving tools and other solutions to problems that were first discovered by
-  other people. Although the human capacity for cumulative cultural evolution is
-  well-known, the effectiveness of inheritance as a form of problem solving is
-  an area in need of further research. We report an experiment designed to
-  understand how effectively solutions to problems accumulate over generations
-  of problem solving. Using a tool-discovery game, we found that participants
-  were consistently able to discover more tools in a 25 minute session than
-  their ancestors. Participants who inherited more tools required more time to
-  recreate them, but their rate of new tool discovery was not slowed. In
-  addition, we show that participants were able to recreate the tools they
-  inherited more efficiently than their ancestors, but that inheritance did not
-  confer any improvement in future problem solving. We discuss the limitations
-  of this work, and motivate future directions.
 keywords: "cultural evolution; transmission chain; iterated learning"
 output:
   bookdown::pdf_document2:
@@ -60,6 +45,23 @@ read_chunk(file.path(chunks_dir, "iterated-problem-solving.R"))
 
 ```{r iterated-problem-solving, include=FALSE}
 ```
+
+\begin{chapterAbstract}
+As compared to other animals, humans are particularly skilled at using and
+improving tools and other solutions to problems that were first discovered by
+other people. Although the human capacity for cumulative cultural evolution is
+well-known, the effectiveness of inheritance as a form of problem solving is
+an area in need of further research. We report an experiment designed to
+understand how effectively solutions to problems accumulate over generations
+of problem solving. Using a tool-discovery game, we found that participants
+were consistently able to discover more tools in a 25 minute session than
+their ancestors. Participants who inherited more tools required more time to
+recreate them, but their rate of new tool discovery was not slowed. In
+addition, we show that participants were able to recreate the tools they
+inherited more efficiently than their ancestors, but that inheritance did not
+confer any improvement in future problem solving. We discuss the limitations
+of this work, and motivate future directions.
+\end{chapterAbstract}
 
 # Introduction {-}
 
