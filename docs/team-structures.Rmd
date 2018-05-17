@@ -43,8 +43,26 @@ read_chunk(file.path(chunks_dir, "team-structures.R"))
 ```
 
 \begin{chapterAbstract}
-Cumulative cultural evolution is enabled by the cultural transmission
-of problem solving knowledge over generations.
+Human cultures are able to accumulate bodies of problem solving knowledge that
+no individual could create on their own. The cultural transmission of problem
+solving knowledge occurs by different means, involving both vertical
+transmission from one generation to the next, and horizontal transmission among
+peers in the same generation. Previous efforts to understand the effectiveness
+of cultural transmission as a problem solving strategy have focused on the
+impact of sharing solutions among peers in the same generation, or studied 
+both forms of cultural transmission in combination. Here we sought to tease apart
+the effects of vertical and horizontal transmission among groups of people relative to
+solving the same set of problems individually. Our analyses focus on whether
+inheriting from a previous generation at the start of a problem solving task
+results in different problem solving performance than would be achieved by
+other means. We find that vertical transmission results in a unique form of
+problem solving that in some cases may be more effective than alternative
+strategies. Specifically, we find that vertical transmission may remediate the
+cost of fixation incurred by isolated individuals, and that vertical
+transmission scales more robustly than horizontal transmission with increasing
+group size. These results improve our understanding of human cultural evolution
+by revealing some of the mechanisms by which groups of problem solvers can
+arrive at solutions to problems that individuals could not.
 \end{chapterAbstract}
 
 # Introduction {-}
@@ -84,7 +102,7 @@ horizontally among problem solvers working in parallel.
 Previous research on the differences between vertical and horizontal
 transmission has found that some cultural products, such as religious beliefs,
 are more likely to be learned from parents than from peers [@Newcomb:1937vy;
-@Boyd:1985cu]. Whether or not individuals learn from parents or peers may also
+@Boyd:1985cu]. Whether individuals learn from parents or peers may also
 have consequences for the distribution of traits in a population. For example,
 @Bettinger:1999vv surveyed projectile points recovered in the Great Basin
 region, and found that in one region, the point designs were highly correlated
@@ -284,13 +302,15 @@ an incentive to prevent dropout.
 Total participant and team recruitment is presented in Table
 \@ref(tab:counts-table). Data from these participants is reported as
 Experiments 1-3. Although each experiment introduces new data, some data is
-reported in multiple experiments. Specifically, data from first and second
+reported in multiple experiments[^diachronic]. Specifically, data from first and second
 generation diachronic participants is included in the analyses for all
 experiments. Data from third and fourth generation diachronic participants is
 reported in Experiment 2 and Experiment 3. Data from two-person synchronic
 teams is reported in Experiment 1 and Experiment 3. Because the
 same data are being analyzed in multiple experiments, no analyses
 across experiments are conducted.
+
+[^diachronic]: Data from all diachronic participants was also reported in Chapter \@ref(diachronic).
 
 (ref:condition-counts) Total participant and team recruitment across all experiments.
 
@@ -759,7 +779,7 @@ can arrive at solutions to problems that no individual could on their own.
 Previous research addressing this question has found that groups of problem
 solvers collaborating via horizontal transmission can in some cases raise the
 performance of the group beyond what would be likely to be achieved
-individually [@Derex:2015cbb]. We extended this line of research by comparing
+individually [@Derex:2015cbb]. We extended this line of research by studying
 the effectiveness of vertical transmission, where individuals start off
 a problem solving task by inheriting directly from a previous generation.
 
@@ -775,11 +795,8 @@ or hamper progress by isolated learners.
 Although the purpose of the experiments reported here was to disentangle
 the effects of vertical and horizontal transmission, future work must
 address the more natural forms of collaboration involving both
-diachronic and synchronic elements. Among animals, for example,
-multiple modes of cultural transmission are observed occurring in the
-wild, and not all of these were tested here [@Whiten:2008dl].
-
-One limitation of these experiments is that both vertical and horizontal
+diachronic and synchronic elements.
+Another limitation of these experiments is that both vertical and horizontal
 transmission are believed to involve similar learning mechanisms. This makes
 the distinction between vertical and horizontal cultural transmission different
 from the analogous processes in genetic evolution. In genetic evolution,

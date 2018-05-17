@@ -729,7 +729,7 @@ exp2$prop_redundant_gen <- report_lmer_mod(prop_redundant_gen_mod, "Generation",
 
 prop_redundant_inter_mod <- lmer(PropRedundantGuesses ~ Generation * Diachronic_v_Isolated + (Generation|TeamID),
                                data = GuessTypesSelfOther)
-exp2$prop_redundant_inter <- report_lmer_mod(prop_redundant_gen_mod, "Generation:Diachronic_v_Isolated")
+exp2$prop_redundant_inter <- report_lmer_mod(prop_redundant_gen_mod, "Generation:Diachronic_v_Isolated", formats = c(b = 3))
 
 
 prop_unique_strategy_mod <- lmer(PropUniqueGuesses ~ Diachronic_v_Isolated + (1|TeamID),

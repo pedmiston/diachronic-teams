@@ -63,6 +63,9 @@ confer any improvement in future problem solving. We discuss the limitations
 of this work, and motivate future directions.
 \end{chapterAbstract}
 
+[^cogsci]: A version of this chapter was accepted for publication in the
+Proceedings for the 40th Annual Meeting of the Cognitive Science Society.
+
 # Introduction {-}
 
 Humans are effective problem solvers, having solved a wide range of problems
@@ -103,7 +106,13 @@ improvements to those technologies [@Sterelny:2012ea; @Kaplan:2002iw]. On this
 view, human cultural evolution has been defined not by our ability to copy the
 skills of our ancestors, but by the ability to exceed and improve them.
 
-```{r iterated-problem-solving-fig, fig.pos="b", fig.align="center", fig.width=3.5, fig.cap="Iterated problem solving paradigm. Participants were assigned to generations within chains. Each participant completed the same problem solving task for 25 minutes. Participants in generations after the first began the problem solving task with the solutions that were discovered by the previous generation."}
+(ref:iterated-problem-solving-fig) Iterated problem solving paradigm.
+Participants were assigned to generations within chains. Each participant
+completed the same problem solving task for 25 minutes. Participants in
+generations after the first began the problem solving task with the solutions
+that were discovered by the previous generation.
+
+```{r iterated-problem-solving-fig, fig.pos="b", fig.align="center", fig.width=3.5, fig.cap="(ref:iterated-problem-solving-fig)"}
 draw_graphviz("iterated-problem-solving", package = "totems")
 ```
 
