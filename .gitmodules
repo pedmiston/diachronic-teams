@@ -13,3 +13,6 @@
 [submodule "db"]
 	path = db
 	url = git@github.com:pedmiston/totems-db.git
+[submodule "docs/iterated-problem-solving"]
+	path = docs/iterated-problem-solving
+	url = git@github.com:pedmiston/iterated-problem-solving.git
