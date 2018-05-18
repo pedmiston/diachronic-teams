@@ -1,3 +1,0 @@
-#!/usr/bin/env Rscript
-library(rmarkdown)
-render("docs/plos-one.Rmd", clean = FALSE)
