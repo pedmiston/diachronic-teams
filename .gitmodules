@@ -16,3 +16,6 @@
 [submodule "docs/iterated-problem-solving"]
 	path = docs/iterated-problem-solving
 	url = git@github.com:pedmiston/iterated-problem-solving.git
+[submodule "docs/team-structures"]
+	path = docs/team-structures
+	url = git@github.com:pedmiston/team-structures.git
