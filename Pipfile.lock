@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "0ce85a95d2e80650d7dcc8241ccd00880126a050a9a3d9a16128fbe8eb5d5e5f"
+            "sha256": "ed85a740bde6495aab76fe9d4af89b8bfa5172d5b67f2c1e04328ab57cb03a15"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -18,10 +18,17 @@
     "default": {
         "ansible": {
             "hashes": [
-                "sha256:6fa450c1f789f73cc0d8bdfbb79e30283b9d1a7bbb378d4bb82ebc5605d00931"
+                "sha256:387fdc72759303a88267abf166a23939f15ddb72e6181298fe158e4ea1097dbd"
             ],
             "index": "pypi",
-            "version": "==2.7.0rc1"
+            "version": "==2.7.0rc2"
+        },
+        "ansible-vault": {
+            "hashes": [
+                "sha256:984c5fe1a875d55669c9c167fd4265cf5c6446de4a6a478e0a057a4d43e6608c"
+            ],
+            "index": "pypi",
+            "version": "==1.2.0"
         },
         "appdirs": {
             "hashes": [
@@ -181,13 +188,6 @@
             ],
             "version": "==4.3.0"
         },
-        "fire": {
-            "hashes": [
-                "sha256:171628f3896388ba86c2362aaf658ef87da929215c63a8353021cb34937549c2"
-            ],
-            "index": "pypi",
-            "version": "==0.1.0"
-        },
         "graphviz": {
             "hashes": [
                 "sha256:310bacfb969f0ac7c872610500e017c3e82b24a8abd33d289e99af162de30cb8",
@@ -205,20 +205,20 @@
         },
         "invoke": {
             "hashes": [
-                "sha256:1c2cf54c9b9af973ad9704d8ba81b225117cab612568cacbfb3fc42958cc20a9",
-                "sha256:334495ea16e73948894e9535019f87a88a44b73e7977492b12c2d1b5085f8197",
-                "sha256:54bdd3fd0245abd1185e05359fd2e4f26be0657cfe7d7bb1bed735e054fa53ab"
+                "sha256:4f4de934b15c2276caa4fbc5a3b8a61c0eb0b234f2be1780d2b793321995c2d6",
+                "sha256:dc492f8f17a0746e92081aec3f86ae0b4750bf41607ea2ad87e5a7b5705121b7",
+                "sha256:eb6f9262d4d25b40330fb21d1e99bf0f85011ccc3526980f8a3eaedd4b43892e"
             ],
             "index": "pypi",
-            "version": "==1.1.1"
+            "version": "==1.2.0"
         },
         "ipython": {
             "hashes": [
-                "sha256:007dcd929c14631f83daff35df0147ea51d1af420da303fd078343878bd5fb62",
-                "sha256:b0f2ef9eada4a68ef63ee10b6dde4f35c840035c50fd24265f8052c98947d5a4"
+                "sha256:1d8c8c73815e2bb2cf0b7b749d573f09ee98440970b066de2b2edcd65230aac2",
+                "sha256:741b6cdd777a6ed951b82408115177acbc3328d1e99addf21fdf5d33abf803d7"
             ],
             "index": "pypi",
-            "version": "==6.5.0"
+            "version": "==7.0.0b1"
         },
         "ipython-genutils": {
             "hashes": [
@@ -339,11 +339,11 @@
         },
         "prompt-toolkit": {
             "hashes": [
-                "sha256:1df952620eccb399c53ebb359cc7d9a8d3a9538cb34c5a1344bdbeb29fbcc381",
-                "sha256:3f473ae040ddaa52b52f97f6b4a493cfa9f5920c255a12dc56a7d34397a398a4",
-                "sha256:858588f1983ca497f1cf4ffde01d978a3ea02b01c8a26a8bbc5cd2e66d816917"
+                "sha256:12e076b21178064b5627f74c4819559c125e31046b55a28d5e024b85fef5617e",
+                "sha256:f2289fe9dd7f27c305421bffe880a543b04cc67660796a2a912595dbcd0d209f",
+                "sha256:ff58ce8bb82c11c43416dd3eec7701dcbe8c576e2d7649f1d2b9d21a2fd93808"
             ],
-            "version": "==1.0.15"
+            "version": "==2.0.4"
         },
         "ptyprocess": {
             "hashes": [
@@ -389,11 +389,11 @@
         },
         "pymysql": {
             "hashes": [
-                "sha256:56e3f5bcef6501012233620b54f6a7b8a34edc5751e85e4e3da9a0d808df5f68",
-                "sha256:ac3dfb1f650582eca2e1e0701598bc04364ac464daa425cbbc26bb32ae54cdd5"
+                "sha256:95f057328357e0e13a30e67857a8c694878b0175797a9a203ee7adbfb9b1ec5f",
+                "sha256:9ec760cbb251c158c19d6c88c17ca00a8632bac713890e465b2be01fdc30713f"
             ],
             "index": "pypi",
-            "version": "==0.7.11"
+            "version": "==0.9.2"
         },
         "pynacl": {
             "hashes": [
