@@ -18,6 +18,8 @@ new_ids <- Sessions %>%
     SessionIX < 4
   ) %>%
   mutate(AncestorID = as.numeric(str_replace(SessionID, "S", ""))) %>%
+  arrange(SessionIX) %>%
+  filter(SessionIX > 1)
   .$AncestorID
 
 write(paste(new_ids, collapse = "\n"), "tom-ids.txt")
