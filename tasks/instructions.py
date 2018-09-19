@@ -24,7 +24,7 @@ def download(ctx, start_id=None, end_id=None, open_after=False):
     text = ""
     for row in sub.itertuples():
         text += f"# {row.ancestor_id}\n\n{row.instructions}\n\n\\newpage\n"
-    outputfile = f"instructions-{start_id}-{end_id}.pdf"
+    outputfile = f"experiment/instructions-{start_id}-{end_id}.pdf"
     pypandoc.convert_text(text, "pdf", format="md", outputfile=outputfile,
                           extra_args=["--template", "tasks/instructions.template"])
     if open_after:
