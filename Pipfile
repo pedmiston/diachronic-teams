@@ -18,6 +18,9 @@ SQLAlchemy = "*"
 ansible = "*"
 black = "*"
 ansible-vault = "*"
+gspread = "*"
+"oauth2client" = "*"
+pypandoc = "*"
 
 [dev-packages]
 

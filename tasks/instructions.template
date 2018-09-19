@@ -1,0 +1,15 @@
+\documentclass[17pt]{extarticle}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{bookman}
+
+\titleformat{\section}[block]{\Large\bfseries\filcenter}{}{1em}{}
+\setcounter{secnumdepth}{0}
+
+\begin{document}
+
+\pagestyle{empty}
+
+$body$
+
+\end{document}
