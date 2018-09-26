@@ -18,6 +18,7 @@ SQLAlchemy = "*"
 ansible = "*"
 black = "*"
 ansible-vault = "*"
+graphdb = {editable = true, path = "."}
 
 [dev-packages]
 

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ed85a740bde6495aab76fe9d4af89b8bfa5172d5b67f2c1e04328ab57cb03a15"
+            "sha256": "43b0673e335ed9db95117febc3d3aa34d74d0c8fa8061d4a2ac4f6400f4b2f17"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -188,6 +188,10 @@
             ],
             "version": "==4.3.0"
         },
+        "graphdb": {
+            "editable": true,
+            "path": "."
+        },
         "graphviz": {
             "hashes": [
                 "sha256:310bacfb969f0ac7c872610500e017c3e82b24a8abd33d289e99af162de30cb8",
@@ -279,7 +283,7 @@
                 "sha256:e3660744cda0d94b90141cdd0db9308b958a372cfeee8d7188fdf5ad9108ea82",
                 "sha256:f2362d0ca3e16c37782c1054d7972b8ad2729169567e3f0f4e5dd3cdf85f188e"
             ],
-            "markers": "python_version != '3.3.*' and python_version != '3.0.*' and python_version >= '2.7' and python_version != '3.2.*' and python_version != '3.1.*'",
+            "markers": "python_version != '3.0.*' and python_version >= '2.7' and python_version != '3.3.*' and python_version != '3.2.*' and python_version != '3.1.*'",
             "version": "==1.15.1"
         },
         "pandas": {
@@ -357,7 +361,7 @@
                 "sha256:06a30435d058473046be836d3fc4f27167fd84c45b99704f2fb5509ef61f9af1",
                 "sha256:50402e9d1c9005d759426988a492e0edaadb7f4e68bcddfea586bc7432d009c6"
             ],
-            "markers": "python_version != '3.2.*' and python_version != '3.3.*' and python_version != '3.1.*' and python_version >= '2.7' and python_version != '3.0.*'",
+            "markers": "python_version != '3.0.*' and python_version >= '2.7' and python_version != '3.3.*' and python_version != '3.2.*' and python_version != '3.1.*'",
             "version": "==1.6.0"
         },
         "py2neo": {
