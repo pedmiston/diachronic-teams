@@ -7,7 +7,8 @@ from invoke import task, Collection
 
 import graphdb
 
-from tasks import R, bots, instructions
+from tasks import bots, instructions
+from data import tasks as data_tasks
 from tasks.config import R_PKG
 
 
@@ -55,6 +56,6 @@ def img(ctx, name, output=None, ext="png", dpi=300):
 
 namespace = Collection()
 namespace.add_task(configure)
-namespace.add_collection(R)
+namespace.add_collection(data_tasks, name="R")
 namespace.add_collection(bots)
 namespace.add_collection(instructions)
