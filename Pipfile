@@ -19,6 +19,9 @@ ansible = "*"
 black = "*"
 ansible-vault = "*"
 graphdb = {editable = true, path = "."}
+gspread = "*"
+"oauth2client" = "*"
+pypandoc = "*"
 
 [dev-packages]
 
