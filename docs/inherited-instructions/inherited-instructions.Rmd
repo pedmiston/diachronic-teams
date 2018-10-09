@@ -1,0 +1,15 @@
+---
+title: "Inherited instructions"
+output:
+  html_document: {}
+---
+```{r config, include=FALSE}
+library(knitr)
+opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE)
+read_chunk("inherited-instructions.R")
+```
+```{r inherited-instructions, include=FALSE}
+```
+```{r num-innovations}
+num_innovations_plot
+```
