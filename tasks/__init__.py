@@ -56,6 +56,7 @@ def img(ctx, name, output=None, ext="png", dpi=300):
 
 namespace = Collection()
 namespace.add_task(configure)
+namespace.add_task(load)
 namespace.add_collection(data_tasks, name="R")
 namespace.add_collection(bots)
 namespace.add_collection(instructions)
