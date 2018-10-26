@@ -19,3 +19,6 @@
 [submodule "docs/team-structures"]
 	path = docs/team-structures
 	url = git@github.com:pedmiston/team-structures.git
+[submodule "docs/fixing-fixation"]
+	path = docs/fixing-fixation
+	url = git@github.com:pedmiston/fixing-fixation
