@@ -59,3 +59,19 @@ num_innovations_plot <- ggplot(Innovations) +
   geom_errorbar(aes(ymin = NumInnovations-SE, ymax = NumInnovations+SE, color = InstructionsLabel),
                 data = num_innovations_preds, width = 0.1, size = 2) +
   scale_x_continuous(breaks = 1:2)
+
+# * Rate of innovation ----
+data("Sampled")
+
+Sampled <- Sampled %>%
+  filter_instructions() %>%
+  recode_strategy() %>%
+  label_instructions_condition() %>%
+  recode_instructions_condition() %>%
+  mutate(NumInnovations = InventorySize - 6)
+
+rate_of_innovation_plot <- ggplot(Sampled) +
+  aes(TeamTime, NumInnovations) +
+  geom_line(aes(color = InstructionsLabel,
+                group = interaction(InstructionsLabel, Generation)),
+            stat = "summary", fun.y = "mean")

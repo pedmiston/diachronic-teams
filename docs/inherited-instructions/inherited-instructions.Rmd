@@ -13,3 +13,6 @@ read_chunk("inherited-instructions.R")
 ```{r num-innovations}
 num_innovations_plot
 ```
+```{r rate-innovation}
+rate_of_innovation_plot
+```
